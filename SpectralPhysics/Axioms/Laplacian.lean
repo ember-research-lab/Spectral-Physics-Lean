@@ -77,14 +77,10 @@ PROOF: isClassical → k(x,y).im = 0 and k(x,y).re ≥ 0
   → exp(0·I) = 1. -/
 theorem classical_eq_one (hc : S.isClassical) (x y : S.X) :
     S.phaseFactor x y = 1 := by
-  -- USE: simp [phaseFactor]
-  --   have h := hc x y; obtain ⟨him, hre⟩ := h
-  --   The key Mathlib lemma: Complex.arg_ofReal_of_nonneg or
-  --     Complex.arg_eq_zero_iff. For z with z.im = 0 and z.re ≥ 0: arg z = 0.
-  --   Then exp(0 * I) = exp(0) = 1.
-  --   USE: rw [show Complex.arg (S.k x y) = 0 from ...]
-  --        simp [Complex.exp_zero] or norm_num
-  sorry
+  simp only [phaseFactor]
+  have ⟨him, hre⟩ := hc x y
+  rw [Complex.arg_eq_zero_iff.mpr ⟨hre, him⟩]
+  simp
 
 /-- Phase factor Hermitian conjugation: phase(y,x) = conj(phase(x,y)).
 PROOF: arg(k(y,x)) = arg(conj(k(x,y))) = -arg(k(x,y))
@@ -117,9 +113,9 @@ namespace weightFactor
 /-- Weight symmetry: |k(x,y)| = |k(y,x)|. -/
 theorem symm (x y : S.X) :
     S.weightFactor x y = S.weightFactor y x := by
-  -- USE: simp [weightFactor]; exact_mod_cast S.kernelModulus_symm x y
-  --   or: congr 1; exact S.kernelModulus_symm x y
-  sorry
+  simp only [weightFactor]
+  congr 1
+  exact S.kernelModulus_symm x y
 
 end weightFactor
 
@@ -132,15 +128,12 @@ namespace SpectralLaplacian
 /-- The Laplacian kills constants (classical case). -/
 theorem kills_constants (hc : S.isClassical) (c : ℂ) :
     SpectralLaplacian S (fun _ => c) = fun _ => 0 := by
-  -- STRATEGY: phase = 1 (classical), so each term = |k|·(c - 1·c)·μ = 0.
-  -- USE:
-  --   ext x
-  --   simp only [SpectralLaplacian, Pi.zero_apply]
-  --   apply Finset.sum_eq_zero
-  --   intro y _
-  --   rw [phaseFactor.classical_eq_one S hc x y]
-  --   simp [sub_self, mul_zero, zero_mul]  -- c - 1*c = 0
-  sorry
+  ext x
+  simp only [SpectralLaplacian, Pi.zero_apply]
+  apply Finset.sum_eq_zero
+  intro y _
+  rw [phaseFactor.classical_eq_one S hc x y]
+  ring
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- SORRY 2: SELF-ADJOINTNESS (decomposed into helpers)
@@ -186,11 +179,7 @@ private theorem ip_split (f g : S.X → ℂ) :
   --   congr 1; ext y
   --   ring  -- rearrange the products and distribute over sub
   --
-  -- POTENTIAL ISSUE: The product ordering may not match diagPart/crossPart
-  -- exactly. Use ring_nf or mul_comm/mul_assoc to rearrange.
-  -- If ring fails on ℂ (unlikely but possible), try:
-  --   simp [mul_sub, mul_comm, mul_assoc, mul_left_comm, Finset.sum_sub_distrib]
-  sorry
+  sorry -- TODO: Expand ⟨f, Lg⟩, distribute mul_sub through inner sum, split into diag - cross
 
 /-- ⟨Lf, g⟩ = diagPart - crossPartConj.
 Same idea but conjugation hits the Laplacian applied to f. -/
@@ -223,14 +212,12 @@ private theorem cross_swap (f g : S.X → ℂ) :
   --   Replace phase(y,x) with conj(phase(x,y)) via phaseFactor.hermitian_conj
   -- Step 3: Rearrange factors to match crossPartConj definition.
   --
-  -- USE:
-  --   simp only [crossPart, crossPartConj]
-  --   rw [Finset.sum_comm]
-  --   congr 1; ext x; congr 1; ext y
-  --   rw [weightFactor.symm S y x]
-  --   rw [phaseFactor.hermitian_conj S x y]
-  --   ring
-  sorry
+  simp only [crossPart, crossPartConj]
+  rw [Finset.sum_comm]
+  congr 1; ext x; congr 1; ext y
+  rw [weightFactor.symm S y x]
+  rw [phaseFactor.hermitian_conj S x y]
+  ring
 
 /-- **Self-adjointness: ⟨f, Lg⟩ = ⟨Lf, g⟩.** -/
 theorem self_adjoint (f g : S.X → ℂ) :
@@ -256,12 +243,13 @@ private theorem quadForm_summand_nonneg (hc : S.isClassical) (f : S.X → ℂ)
   --   normSq ≥ 0: Complex.normSq_nonneg _
   --   μ x > 0: le_of_lt (S.μ_pos x)
   --   μ y > 0: le_of_lt (S.μ_pos y)
-  -- USE: apply mul_nonneg; apply mul_nonneg; apply mul_nonneg
-  --   exact (hc x y).2
-  --   exact Complex.normSq_nonneg _  (may need .toReal or cast)
-  --   exact le_of_lt (S.μ_pos x)
-  --   exact le_of_lt (S.μ_pos y)
-  sorry
+  apply mul_nonneg
+  apply mul_nonneg
+  apply mul_nonneg
+  · exact (hc x y).2
+  · exact Complex.normSq_nonneg _
+  · exact le_of_lt (S.μ_pos x)
+  · exact le_of_lt (S.μ_pos y)
 
 /-- Quadratic form identity (classical): Re⟨f, Lf⟩ = ½ · Q(f). -/
 private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
@@ -301,14 +289,11 @@ private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
 /-- **Positive semi-definiteness (classical): Re⟨f, Lf⟩ ≥ 0.** -/
 theorem pos_semidef (hc : S.isClassical) (f : S.X → ℂ) :
     0 ≤ (innerProduct S f (SpectralLaplacian S f)).re := by
-  -- STRATEGY: Re⟨f,Lf⟩ = ½·Q(f) ≥ 0 since Q(f) ≥ 0.
-  -- USE:
-  --   rw [quadratic_form_identity S hc f]
-  --   apply mul_nonneg (by norm_num : (0:ℝ) ≤ 1/2)
-  --   apply Finset.sum_nonneg; intro x _
-  --   apply Finset.sum_nonneg; intro y _
-  --   exact quadForm_summand_nonneg S hc f x y
-  sorry
+  rw [quadratic_form_identity S hc f]
+  apply mul_nonneg (by norm_num : (0:ℝ) ≤ 1/2)
+  apply Finset.sum_nonneg; intro x _
+  apply Finset.sum_nonneg; intro y _
+  exact quadForm_summand_nonneg S hc f x y
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- SORRY 4: UNIQUENESS (concrete formulation)
@@ -380,11 +365,62 @@ theorem null_space_is_constants (hc : S.isClassical) (hconn : isStronglyConnecte
   --   Take c := f(x₀). Then f = fun _ => c.
   --   USE: ⟨f x₀, funext (fun y => ...)⟩
   --
-  -- KEY ISSUE: The connection between "related" (k ≠ 0) and
-  --   "k.re > 0" requires isClassical: k real non-negative and k ≠ 0
-  --   implies k.re > 0 (since k.im = 0 and k.re ≥ 0 and k ≠ 0).
-  --   This needs: Complex.ext_iff or similar to go from k ≠ 0 to k.re > 0.
-  sorry
+  -- Step 1: Q(f) = 0 from ½·Q = Re⟨f,Lf⟩ = 0
+  have hQ : quadForm S f = 0 := by
+    have h := quadratic_form_identity S hc f; rw [hf] at h; linarith
+  -- Step 2: Each summand = 0 (sum of nonneg = 0 → each = 0)
+  have h_each : ∀ x y : S.X,
+      (S.k x y).re * Complex.normSq (f x - f y) * S.μ x * S.μ y = 0 := by
+    intro x y
+    have h_nonneg_inner : ∀ y', 0 ≤ (S.k x y').re * Complex.normSq (f x - f y') * S.μ x * S.μ y' :=
+      fun y' => quadForm_summand_nonneg S hc f x y'
+    have h_nonneg_outer : ∀ x', 0 ≤ ∑ y' : S.X,
+        (S.k x' y').re * Complex.normSq (f x' - f y') * S.μ x' * S.μ y' :=
+      fun x' => Finset.sum_nonneg (fun y' _ => quadForm_summand_nonneg S hc f x' y')
+    have h_inner_zero : ∑ y' : S.X,
+        (S.k x y').re * Complex.normSq (f x - f y') * S.μ x * S.μ y' = 0 :=
+      le_antisymm
+        (by have := Finset.single_le_sum (fun x' _ => h_nonneg_outer x') (Finset.mem_univ x)
+            simp only [quadForm] at hQ; linarith)
+        (Finset.sum_nonneg (fun y' _ => h_nonneg_inner y'))
+    exact le_antisymm
+      (by have := Finset.single_le_sum (fun y' _ => h_nonneg_inner y') (Finset.mem_univ y)
+          linarith)
+      (h_nonneg_inner y)
+  -- Step 3: Related pairs have equal f-values
+  have h_rel_eq : ∀ x y : S.X, S.related x y → f x = f y := by
+    intro x y hrel
+    have h0 := h_each x y
+    have ⟨him, hre⟩ := hc x y
+    -- k ≠ 0, classical → k.re > 0
+    have hk_pos : 0 < (S.k x y).re := by
+      rcases lt_or_eq_of_le hre with h | h
+      · exact h
+      · exfalso; apply hrel
+        have hre0 : (S.k x y).re = 0 := h.symm
+        have him0 : (S.k x y).im = 0 := him
+        exact Complex.ext hre0 him0
+    -- Product = 0 with k,μ > 0 forces normSq = 0
+    -- h0 : k.re * normSq * μx * μy = 0 with k.re > 0, μx > 0, μy > 0
+    -- So normSq must be 0
+    have hns : Complex.normSq (f x - f y) = 0 := by
+      by_contra hne
+      have hne' : Complex.normSq (f x - f y) > 0 :=
+        lt_of_le_of_ne (Complex.normSq_nonneg _) (Ne.symm hne)
+      linarith [mul_pos (mul_pos (mul_pos hk_pos hne') (S.μ_pos x)) (S.μ_pos y)]
+    rwa [map_eq_zero, sub_eq_zero] at hns
+  -- Step 4: Connectivity → f is constant
+  have h_all_eq : ∀ x y : S.X, f x = f y := by
+    intro x y
+    rcases hconn x y with h | h
+    · rw [h]
+    · induction h with
+      | single h => exact h_rel_eq _ _ h
+      | tail _ hab ih => exact ih.trans (h_rel_eq _ _ hab)
+  -- Step 5: Exhibit the constant
+  by_cases hne : Nonempty S.X
+  · exact ⟨f hne.some, funext (fun y => (h_all_eq _ y).symm)⟩
+  · exact ⟨0, funext (fun x => absurd ⟨x⟩ hne)⟩
 
 /-- **Spectral gap: connected classical structures have λ₁ > 0.** -/
 theorem spectral_gap_pos (hc : S.isClassical) (hconn : isStronglyConnected S) :
