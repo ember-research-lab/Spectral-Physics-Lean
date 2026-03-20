@@ -65,8 +65,8 @@ theorem normSq_mul (a b : A) : ‖a * b‖^2 = ‖a‖^2 * ‖b‖^2 := by
 
 -- A composition algebra has no zero divisors
 theorem no_zero_divisors' (a b : A) (ha : a ≠ 0) (hb : b ≠ 0) : a * b ≠ 0 := by
-  -- Original proof used norm_ne_zero_iff.mpr which may need API adjustment
-  -- in current Mathlib; sorry for now.
+  -- ‖a*b‖ = ‖a‖·‖b‖ (composition). If a*b = 0 then ‖a‖·‖b‖ = 0.
+  -- But ‖a‖ ≠ 0 and ‖b‖ ≠ 0 (since a,b ≠ 0). Contradiction.
   sorry
 
 end CompositionAlgebra

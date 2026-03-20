@@ -102,9 +102,16 @@ theorem hermitian_conj (x y : S.X) :
   --       For purely imaginary z = iθ: conj(exp(iθ)) = exp(-iθ)
   --       This is: starRingEnd ℂ (Complex.exp z) = Complex.exp (-z)
   --       when z.re = 0 (purely imaginary).
-  --       Mathlib: Complex.conj_exp or map_exp_eq...
-  --       Key identity: conj(exp(iθ)) = exp(-iθ) for real θ.
-  sorry
+  --       Key identity: conj(exp(iθ)) = exp(conj(iθ)) = exp(-iθ) for real θ.
+  simp only [phaseFactor]
+  rw [S.k_hermitian y x, Complex.arg_conj]
+  split_ifs with h
+  · -- arg = π case: exp(πi) = -1, conj(-1) = -1 = exp(πi)
+    simp [h]
+  · -- normal case: arg(conj z) = -arg(z)
+    rw [← Complex.exp_conj]
+    congr 1
+    simp [Complex.conj_ofReal, conj_I]
 
 end phaseFactor
 
@@ -179,7 +186,10 @@ private theorem ip_split (f g : S.X → ℂ) :
   --   congr 1; ext y
   --   ring  -- rearrange the products and distribute over sub
   --
-  sorry -- TODO: Expand ⟨f, Lg⟩, distribute mul_sub through inner sum, split into diag - cross
+  -- Expand ⟨f, Lg⟩ = Σ_x conj(f(x))·(Σ_y w·(g(x)-phase·g(y))·μ(y))·μ(x)
+  -- Pull outer factors inside, distribute mul_sub, split into diag - cross.
+  -- Needs: Finset.mul_sum, mul_sub distributing, Finset.sum_sub_distrib, ring
+  sorry
 
 /-- ⟨Lf, g⟩ = diagPart - crossPartConj.
 Same idea but conjugation hits the Laplacian applied to f. -/
@@ -194,10 +204,11 @@ private theorem ip_split_rhs (f g : S.X → ℂ) :
   --   Diagonal part: conj(f(x))·|k|·g(x)·μ(y)·μ(x) — same as diagPart ✓
   --   Cross part: |k|·conj(phase)·conj(f(y))·g(x)·μ(y)·μ(x) = crossPartConj ✓
   --
-  -- USE: Same approach as ip_split, plus:
-  --   map_sum (starRingEnd ℂ) for distributing conjugation over sums
-  --   map_mul (starRingEnd ℂ) for distributing over products
-  --   starRingEnd_self_apply for conj(real) = real (on |k| and μ)
+  -- The conjugation distribution is complex; use sorry for now.
+  -- The proof structure mirrors ip_split but additionally needs:
+  --   map_sum (starRingEnd ℂ), map_mul (starRingEnd ℂ),
+  --   starRingEnd_self_apply for real-valued |k| and μ,
+  --   and star_sub for distributing conj over subtraction.
   sorry
 
 /-- ★ THE KEY LEMMA: crossPart = crossPartConj via the x↔y swap. -/
