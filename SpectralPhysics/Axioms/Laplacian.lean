@@ -211,11 +211,13 @@ private theorem ip_split_rhs (f g : S.X → ℂ) :
   --   Diagonal part: conj(f(x))·|k|·g(x)·μ(y)·μ(x) — same as diagPart ✓
   --   Cross part: |k|·conj(phase)·conj(f(y))·g(x)·μ(y)·μ(x) = crossPartConj ✓
   --
-  -- Same structure as ip_split but with conjugation preamble.
-  -- After map_sum/map_mul/map_sub (starRingEnd ℂ) + Complex.conj_ofReal,
-  -- the pattern matches ip_split. Then Finset.mul_sum + Finset.sum_mul + key + sum_sub_distrib.
-  -- Blocked: product ordering after conjugation distribution doesn't match key LHS.
-  -- Needs interactive session to see exact term after simp_rw [map_*].
+  simp only [innerProduct, SpectralLaplacian, diagPart, crossPartConj, weightFactor]
+  -- Push conj through sum and products
+  simp_rw [map_sum (starRingEnd ℂ), map_mul (starRingEnd ℂ), map_sub (starRingEnd ℂ),
+    Complex.conj_ofReal]
+  simp_rw [Finset.sum_mul]
+  -- After sum_mul, each summand has the sub inside products with g x and μ x.
+  -- Ring-split and then sum_sub_distrib.
   sorry
 
 /-- ★ THE KEY LEMMA: crossPart = crossPartConj via the x↔y swap. -/
