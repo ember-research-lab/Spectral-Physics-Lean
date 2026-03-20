@@ -8,6 +8,7 @@ import Mathlib.LinearAlgebra.Matrix.Hermitian
 import Mathlib.LinearAlgebra.Eigenspace.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+import Mathlib.Algebra.BigOperators.Group.Finset.Defs
 
 /-!
 # Axiom 2: Symmetry Constraints & Laplacian Uniqueness
@@ -196,11 +197,11 @@ private theorem ip_split (f g : S.X → ℂ) :
       starRingEnd ℂ (f x) * S.weightFactor x y * g x * ↑(S.μ y) * ↑(S.μ x) -
       starRingEnd ℂ (f x) * S.weightFactor x y * S.phaseFactor x y * g y * ↑(S.μ y) * ↑(S.μ x) :=
     fun _ _ => by ring
-  -- key rewrites each summand to (diag_term - cross_term)
-  -- Then split Σ(a-b) = Σa - Σb
-  -- BLOCKED: Finset.sum_sub_distrib not found in current Mathlib.
-  -- The identity is ∑ (f - g) = ∑ f - ∑ g, which follows from
-  -- sub_eq_add_neg + Finset.sum_add_distrib + Finset.sum_neg_distrib.
+  -- Strategy verified: key provides ring-level splitting of each summand.
+  -- sum_sub_distrib (from Finset.prod_div_distrib @[to_additive]) splits Σ(a-b) = Σa - Σb.
+  -- Blocked: simp_rw [key] can't match after Finset.mul_sum rearranges product order.
+  -- Fix: use `conv` targeting the exact subexpression, or match product order in key.
+  -- Needs interactive Lean session with `set_option pp.all true` to see exact terms.
   sorry
 
 /-- ⟨Lf, g⟩ = diagPart - crossPartConj.
