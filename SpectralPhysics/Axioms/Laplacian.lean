@@ -353,6 +353,50 @@ private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
   -- LHS: Re(conj(fx)*(fx-fy)) = normSq(fx) - Re(conj(fx)*fy).
   -- RHS: ½*normSq(fx-fy) = ½*(normSq(fx) + normSq(fy) - 2*Re(conj(fx)*fy)),
   --   then sym swaps normSq(fy) → normSq(fx), giving normSq(fx) - Re(conj(fx)*fy).
+  -- Helper: expand Re(conj(a) * (↑r * (a - b) * ↑s) * ↑t) to real products
+  have lhs_summand : ∀ (a b : ℂ) (r s t : ℝ),
+      (starRingEnd ℂ a * (↑r * (a - b) * ↑s) * ↑t).re =
+      r * Complex.normSq a * s * t - r * (starRingEnd ℂ a * b).re * s * t := by
+    intro a b r s t
+    simp only [Complex.mul_re, Complex.mul_im, Complex.sub_re, Complex.sub_im,
+      Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im,
+      Complex.normSq_apply]
+    ring
+  -- Helper: normSq(a-b) = normSq(a) + normSq(b) - 2*Re(conj(a)*b)
+  have normSq_expand : ∀ a b : ℂ,
+      Complex.normSq (a - b) = Complex.normSq a + Complex.normSq b -
+        2 * (starRingEnd ℂ a * b).re := by
+    intro a b
+    simp only [Complex.normSq_apply, Complex.sub_re, Complex.sub_im,
+      Complex.mul_re, Complex.conj_re, Complex.conj_im]
+    nlinarith [sq_nonneg (a.re - b.re), sq_nonneg (a.im - b.im),
+      sq_nonneg a.re, sq_nonneg a.im, sq_nonneg b.re, sq_nonneg b.im]
+  -- Rewrite both sides
+  simp_rw [lhs_summand, normSq_expand]
+  -- Split sums and apply sym
+  -- LHS: Σ Σ (k*normSq(fx)*μy*μx + -(k*Re(conj(fx)*fy)*μy*μx))
+  -- RHS: Σ Σ ½*(k*(normSq(fx) + normSq(fy) - 2*Re(conj(fx)*fy))*μx*μy)
+  --     = ½*Σ k*normSq(fx)*μ*μ + ½*Σ k*normSq(fy)*μ*μ - Σ k*Re(..)*μ*μ
+  --     = ½*A + ½*A - B  (by sym)  = A - B = LHS
+  -- Use Finset.sum_congr to rearrange each summand, then sym closes it.
+  have key2 : ∀ x y : S.X,
+      1 / 2 * ((S.k x y).re * (Complex.normSq (f x) + Complex.normSq (f y) -
+        2 * (starRingEnd ℂ (f x) * f y).re) * S.μ x * S.μ y) =
+      1 / 2 * ((S.k x y).re * Complex.normSq (f x) * S.μ x * S.μ y) +
+      1 / 2 * ((S.k x y).re * Complex.normSq (f y) * S.μ x * S.μ y) -
+      (S.k x y).re * (starRingEnd ℂ (f x) * f y).re * S.μ x * S.μ y := by
+    intro x y; ring
+  -- Normalize μ ordering in LHS summands: ... * μy * μx → ... * μx * μy
+  have lhs_reorder : ∀ x y : S.X,
+      (S.k x y).re * Complex.normSq (f x) * S.μ y * S.μ x -
+      (S.k x y).re * (starRingEnd ℂ (f x) * f y).re * S.μ y * S.μ x =
+      (S.k x y).re * Complex.normSq (f x) * S.μ x * S.μ y -
+      (S.k x y).re * (starRingEnd ℂ (f x) * f y).re * S.μ x * S.μ y :=
+    fun x y => by ring
+  simp_rw [lhs_reorder, key2]
+  simp_rw [sub_eq_add_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib]
+  -- After sum splitting, the normSq(fy) sum appears. Replace with sym.
+  -- If rw [sym] can't find pattern, sorry with documented strategy.
   sorry
 
 /-- **Positive semi-definiteness (classical): Re⟨f, Lf⟩ ≥ 0.** -/
