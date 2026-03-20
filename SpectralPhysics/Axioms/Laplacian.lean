@@ -367,10 +367,12 @@ private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
       Complex.normSq (a - b) = Complex.normSq a + Complex.normSq b -
         2 * (starRingEnd ℂ a * b).re := by
     intro a b
-    simp only [Complex.normSq_apply, Complex.sub_re, Complex.sub_im,
-      Complex.mul_re, Complex.conj_re, Complex.conj_im]
-    nlinarith [sq_nonneg (a.re - b.re), sq_nonneg (a.im - b.im),
-      sq_nonneg a.re, sq_nonneg a.im, sq_nonneg b.re, sq_nonneg b.im]
+    have := Complex.normSq_apply (a - b)
+    have := Complex.normSq_apply a
+    have := Complex.normSq_apply b
+    have := Complex.mul_re (starRingEnd ℂ a) b
+    simp only [Complex.sub_re, Complex.sub_im, Complex.conj_re, Complex.conj_im] at *
+    nlinarith
   -- Rewrite both sides
   simp_rw [lhs_summand, normSq_expand]
   -- Split sums and apply sym
@@ -395,9 +397,19 @@ private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
     fun x y => by ring
   simp_rw [lhs_reorder, key2]
   simp_rw [sub_eq_add_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib]
-  -- After sum splitting, the normSq(fy) sum appears. Replace with sym.
-  -- If rw [sym] can't find pattern, sorry with documented strategy.
-  sorry
+  -- Pull ½ out of sums for the normSq(fy) term to expose sym's pattern
+  have key3 : ∑ x : S.X, ∑ x_1 : S.X,
+      1 / 2 * ((S.k x x_1).re * Complex.normSq (f x_1) * S.μ x * S.μ x_1) =
+    1 / 2 * ∑ x : S.X, ∑ x_1 : S.X,
+      (S.k x x_1).re * Complex.normSq (f x_1) * S.μ x * S.μ x_1 := by
+    rw [Finset.mul_sum]; congr 1; ext x; rw [Finset.mul_sum]
+  have key4 : ∑ x : S.X, ∑ x_1 : S.X,
+      1 / 2 * ((S.k x x_1).re * Complex.normSq (f x) * S.μ x * S.μ x_1) =
+    1 / 2 * ∑ x : S.X, ∑ x_1 : S.X,
+      (S.k x x_1).re * Complex.normSq (f x) * S.μ x * S.μ x_1 := by
+    rw [Finset.mul_sum]; congr 1; ext x; rw [Finset.mul_sum]
+  rw [key3, sym, ← key4]
+  linarith
 
 /-- **Positive semi-definiteness (classical): Re⟨f, Lf⟩ ≥ 0.** -/
 theorem pos_semidef (hc : S.isClassical) (f : S.X → ℂ) :
