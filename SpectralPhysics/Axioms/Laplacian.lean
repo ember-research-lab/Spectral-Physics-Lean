@@ -326,7 +326,26 @@ private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
   --   3. normSq_sub expansion
   --   4. Finset.sum_comm + classical k symmetry for the symmetrization
   --   5. Complex.normSq as Re(conj(a)*a)
-  -- Each step is individually straightforward but the full assembly is ~30 lines.
+  -- Step 1: Make LHS a double sum, pull Re inside
+  simp_rw [Finset.mul_sum, Finset.sum_mul]
+  rw [Complex.re_sum]
+  simp_rw [Complex.re_sum]
+  -- LHS = ∑ x ∑ y, Re(conj(fx) * ↑‖k‖ * (fx - fy) * ↑μy * ↑μx)
+  -- Step 2: For classical kernels, ‖k(x,y)‖ = k(x,y).re
+  have h_norm_eq_re : ∀ x y : S.X, ‖S.k x y‖ = (S.k x y).re := by
+    intro x y; have ⟨him, hre⟩ := hc x y
+    rw [Complex.norm_eq_sqrt_sq_add_sq, him, sq (0 : ℝ), mul_zero, add_zero,
+      Real.sqrt_sq hre]
+  -- Step 3: For classical, k(x,y).re = k(y,x).re (Hermitian + real)
+  have h_k_symm_re : ∀ x y : S.X, (S.k x y).re = (S.k y x).re := by
+    intro x y
+    have h := S.k_hermitian x y
+    simp [Complex.ext_iff] at h
+    exact h.1
+  -- Step 4: The per-summand identity and symmetrization
+  -- This is the core computation: show each Re(...) summand on the LHS
+  -- matches the corresponding term on the RHS after normSq expansion
+  -- and the normSq(fy) term cancels by Finset.sum_comm + k symmetry.
   sorry
 
 /-- **Positive semi-definiteness (classical): Re⟨f, Lf⟩ ≥ 0.** -/
