@@ -308,10 +308,15 @@ private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
   --   4. Complex.normSq_sub for |a-b|² expansion
   --   5. Complex.normSq_eq_abs for |a|² = normSq(a)
   --
-  -- FALLBACK: If this is too hard as one proof, split into:
-  --   (a) A lemma computing Re⟨f,Lf⟩ for classical L
-  --   (b) A lemma expanding ½·Q(f)
-  --   (c) Show they're equal
+  -- Use the fallback approach: compute each side separately, show equal.
+  -- Step 1: Expand LHS using ip_split with f = g, classical phase = 1
+  simp only [innerProduct, SpectralLaplacian, quadForm, weightFactor]
+  simp_rw [phaseFactor.classical_eq_one S hc, one_mul]
+  -- Now LHS: Re(Σ_x Σ_y ↑‖k‖ * conj(f x) * (f x - f y) * μy * μx)
+  -- RHS: ½ Σ_x Σ_y k.re * normSq(f x - f y) * μx * μy
+  -- For classical: ‖k(x,y)‖ = k(x,y).re (since k is real non-negative)
+  -- and conj(fx)*(fx - fy) contributes Re part = normSq(fx) - Re(conj(fx)*fy)
+  -- This is the symmetrization computation.
   sorry
 
 /-- **Positive semi-definiteness (classical): Re⟨f, Lf⟩ ≥ 0.** -/
