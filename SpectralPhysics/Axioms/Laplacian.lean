@@ -342,10 +342,17 @@ private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
     have h := S.k_hermitian x y
     simp [Complex.ext_iff] at h
     exact h.1
-  -- Step 4: The per-summand identity and symmetrization
-  -- This is the core computation: show each Re(...) summand on the LHS
-  -- matches the corresponding term on the RHS after normSq expansion
-  -- and the normSq(fy) term cancels by Finset.sum_comm + k symmetry.
+  simp_rw [h_norm_eq_re]
+  -- Lemma: Symmetry — swap x↔y in the normSq(fy) double sum
+  have sym : ∑ x : S.X, ∑ y : S.X, (S.k x y).re * Complex.normSq (f y) * S.μ x * S.μ y =
+             ∑ x : S.X, ∑ y : S.X, (S.k x y).re * Complex.normSq (f x) * S.μ x * S.μ y := by
+    conv_lhs => rw [Finset.sum_comm]
+    congr 1; ext a; congr 1; ext b
+    rw [h_k_symm_re b a]; ring
+  -- The full computation: both sides equal Σ k.re*(normSq(fx) - Re(conj(fx)*fy))*μx*μy.
+  -- LHS: Re(conj(fx)*(fx-fy)) = normSq(fx) - Re(conj(fx)*fy).
+  -- RHS: ½*normSq(fx-fy) = ½*(normSq(fx) + normSq(fy) - 2*Re(conj(fx)*fy)),
+  --   then sym swaps normSq(fy) → normSq(fx), giving normSq(fx) - Re(conj(fx)*fy).
   sorry
 
 /-- **Positive semi-definiteness (classical): Re⟨f, Lf⟩ ≥ 0.** -/
