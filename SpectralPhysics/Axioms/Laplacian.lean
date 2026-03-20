@@ -216,9 +216,17 @@ private theorem ip_split_rhs (f g : S.X → ℂ) :
   simp_rw [map_sum (starRingEnd ℂ), map_mul (starRingEnd ℂ), map_sub (starRingEnd ℂ),
     Complex.conj_ofReal]
   simp_rw [Finset.sum_mul]
-  -- After sum_mul, each summand has the sub inside products with g x and μ x.
-  -- Ring-split and then sum_sub_distrib.
-  sorry
+  -- Split conj(phase * f i) into conj(phase) * conj(f i)
+  simp_rw [map_mul (starRingEnd ℂ)]
+  -- Now ring-split each summand and distribute through sums
+  have key : ∀ x y : S.X,
+      ↑‖S.k x y‖ * (starRingEnd ℂ (f x) - starRingEnd ℂ (S.phaseFactor x y) *
+        starRingEnd ℂ (f y)) * ↑(S.μ y) * g x * ↑(S.μ x) =
+      starRingEnd ℂ (f x) * ↑‖S.k x y‖ * g x * ↑(S.μ y) * ↑(S.μ x) -
+      ↑‖S.k x y‖ * starRingEnd ℂ (S.phaseFactor x y) * starRingEnd ℂ (f y) *
+        g x * ↑(S.μ y) * ↑(S.μ x) :=
+    fun _ _ => by ring
+  simp_rw [key, sub_eq_add_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib]
 
 /-- ★ THE KEY LEMMA: crossPart = crossPartConj via the x↔y swap. -/
 private theorem cross_swap (f g : S.X → ℂ) :
