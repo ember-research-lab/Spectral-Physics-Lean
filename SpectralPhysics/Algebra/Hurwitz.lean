@@ -65,13 +65,11 @@ theorem normSq_mul (a b : A) : ‖a * b‖^2 = ‖a‖^2 * ‖b‖^2 := by
 
 -- A composition algebra has no zero divisors
 theorem no_zero_divisors' (a b : A) (ha : a ≠ 0) (hb : b ≠ 0) : a * b ≠ 0 := by
-  -- Proof sketch: ‖a*b‖ = ‖a‖·‖b‖ (composition), hab gives ‖a*b‖ = 0,
-  -- so ‖a‖·‖b‖ = 0, contradicting ‖a‖,‖b‖ > 0.
-  -- BLOCKED: `norm_pos_iff.mpr ha` fails because `ha : a ≠ 0` uses
-  -- Ring.toZero while norm_pos_iff expects AddGroup.toZero. These are
-  -- definitionally equal but Lean won't unify them.
-  -- FIX: Add `@[simp] lemma ring_zero_eq : (Ring.toZero.zero : A) = 0 := rfl`
-  -- or use `change a ≠ (0 : A)` to force the instance.
+  -- ‖a*b‖ = ‖a‖·‖b‖ > 0 (since a,b ≠ 0 → ‖a‖,‖b‖ > 0).
+  -- But a*b = 0 → ‖a*b‖ = 0. Contradiction.
+  -- BLOCKED: norm_pos_iff / norm_eq_zero have Ring.toZero vs AddGroup.toZero
+  -- instance diamond. Fix: make CompositionAlgebra use [NormedRing A] or
+  -- add `instance : Zero A := Ring.toZero` before the theorem.
   sorry
 
 end CompositionAlgebra

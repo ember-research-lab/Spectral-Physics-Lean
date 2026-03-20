@@ -189,20 +189,14 @@ private theorem ip_split (f g : S.X → ℂ) :
   --
   simp only [innerProduct, SpectralLaplacian, diagPart, crossPart]
   simp_rw [Finset.mul_sum]
-  -- Each summand: conj(f x) * (w * (g x - phase * g y) * μy) * μx
-  -- Use ring_nf-style rewriting to split the sub
+  simp_rw [Finset.sum_mul]
   have key : ∀ x y : S.X,
       starRingEnd ℂ (f x) * (S.weightFactor x y * (g x - S.phaseFactor x y * g y) *
         ↑(S.μ y)) * ↑(S.μ x) =
       starRingEnd ℂ (f x) * S.weightFactor x y * g x * ↑(S.μ y) * ↑(S.μ x) -
       starRingEnd ℂ (f x) * S.weightFactor x y * S.phaseFactor x y * g y * ↑(S.μ y) * ↑(S.μ x) :=
     fun _ _ => by ring
-  -- Strategy verified: key provides ring-level splitting of each summand.
-  -- sum_sub_distrib (from Finset.prod_div_distrib @[to_additive]) splits Σ(a-b) = Σa - Σb.
-  -- Blocked: simp_rw [key] can't match after Finset.mul_sum rearranges product order.
-  -- Fix: use `conv` targeting the exact subexpression, or match product order in key.
-  -- Needs interactive Lean session with `set_option pp.all true` to see exact terms.
-  sorry
+  simp_rw [key, sub_eq_add_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib]
 
 /-- ⟨Lf, g⟩ = diagPart - crossPartConj.
 Same idea but conjugation hits the Laplacian applied to f. -/
@@ -217,11 +211,11 @@ private theorem ip_split_rhs (f g : S.X → ℂ) :
   --   Diagonal part: conj(f(x))·|k|·g(x)·μ(y)·μ(x) — same as diagPart ✓
   --   Cross part: |k|·conj(phase)·conj(f(y))·g(x)·μ(y)·μ(x) = crossPartConj ✓
   --
-  -- The conjugation distribution is complex; use sorry for now.
-  -- The proof structure mirrors ip_split but additionally needs:
-  --   map_sum (starRingEnd ℂ), map_mul (starRingEnd ℂ),
-  --   starRingEnd_self_apply for real-valued |k| and μ,
-  --   and star_sub for distributing conj over subtraction.
+  -- Same structure as ip_split but with conjugation preamble.
+  -- After map_sum/map_mul/map_sub (starRingEnd ℂ) + Complex.conj_ofReal,
+  -- the pattern matches ip_split. Then Finset.mul_sum + Finset.sum_mul + key + sum_sub_distrib.
+  -- Blocked: product ordering after conjugation distribution doesn't match key LHS.
+  -- Needs interactive session to see exact term after simp_rw [map_*].
   sorry
 
 /-- ★ THE KEY LEMMA: crossPart = crossPartConj via the x↔y swap. -/
