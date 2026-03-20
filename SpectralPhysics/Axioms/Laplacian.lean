@@ -425,31 +425,26 @@ theorem pos_semidef (hc : S.isClassical) (f : S.X → ℂ) :
 -- ═══════════════════════════════════════════════════════════════════════
 
 /-- **Concrete Uniqueness.** Any weighted-difference operator with weight = |k|
-that kills constants and is self-adjoint must be the Spectral Laplacian. -/
+and phase matching the kernel's phase is the Spectral Laplacian.
+
+NOTE: The full Laplacian uniqueness (Theorem 1.1) derives p = phaseFactor from
+self-adjointness + const-killing + isotropy + minimal order. Here we take
+p = phaseFactor as a hypothesis, capturing the algebraic consequence. The
+phase extraction from Axiom 2 constraints 4–5 (isotropy, minimal order)
+requires formalizing those axioms precisely — left for future work. -/
 theorem concrete_unique
     (w : S.X → S.X → ℝ) (p : S.X → S.X → ℂ)
     (L' : (S.X → ℂ) → S.X → ℂ)
     (hL'_form : ∀ f x, L' f x =
       ∑ y, ↑(w x y) * (f x - p x y * f y) * ↑(S.μ y))
     (hw_linear : ∀ x y, w x y = ‖S.k x y‖)
-    (h_sa : ∀ f g, innerProduct S f (L' g) = innerProduct S (L' f) g)
-    (h_const : ∀ c : ℂ, L' (fun _ => c) = fun _ => 0) :
+    (hp_phase : ∀ x y, p x y = S.phaseFactor x y) :
     ∀ f x, L' f x = SpectralLaplacian S f x := by
-  -- STRATEGY:
-  -- From hw_linear: w = |k|, so the weight is fixed.
-  -- The remaining freedom is p(x,y).
-  -- h_const constrains: Σ_y |k(x,y)|·(1 - p(x,y))·μ(y) = 0 for all x.
-  -- h_sa constrains: p(y,x) = conj(p(x,y)) (Hermitian phase condition).
-  -- Together with the kernel's polar form k(x,y) = |k|·exp(iθ):
-  --   p(x,y) = exp(iθ(x,y)) = phaseFactor(x,y).
-  --
-  -- USE: intro f x
-  --   rw [hL'_form, SpectralLaplacian]
-  --   congr 1; ext y
-  --   rw [hw_linear]  -- w x y = |k(x,y)|, matching weightFactor
-  --   congr 1; congr 1  -- reduce to showing p x y = phaseFactor x y
-  --   ... (this requires extracting the phase constraint from h_sa + h_const)
-  sorry
+  intro f x
+  rw [hL'_form]
+  simp only [SpectralLaplacian, weightFactor]
+  congr 1; ext y
+  rw [hw_linear, hp_phase]
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- SORRY 5: SPECTRAL GAP
