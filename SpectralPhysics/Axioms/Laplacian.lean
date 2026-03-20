@@ -186,8 +186,21 @@ private theorem ip_split (f g : S.X → ℂ) :
   --   congr 1; ext y
   --   ring  -- rearrange the products and distribute over sub
   --
-  -- Mechanically: unfold, pull Σ through products, distribute sub, split.
-  -- Each step is Finset.mul_sum + mul_sub + Finset.sum_sub_distrib + ring.
+  simp only [innerProduct, SpectralLaplacian, diagPart, crossPart]
+  simp_rw [Finset.mul_sum]
+  -- Each summand: conj(f x) * (w * (g x - phase * g y) * μy) * μx
+  -- Use ring_nf-style rewriting to split the sub
+  have key : ∀ x y : S.X,
+      starRingEnd ℂ (f x) * (S.weightFactor x y * (g x - S.phaseFactor x y * g y) *
+        ↑(S.μ y)) * ↑(S.μ x) =
+      starRingEnd ℂ (f x) * S.weightFactor x y * g x * ↑(S.μ y) * ↑(S.μ x) -
+      starRingEnd ℂ (f x) * S.weightFactor x y * S.phaseFactor x y * g y * ↑(S.μ y) * ↑(S.μ x) :=
+    fun _ _ => by ring
+  -- key rewrites each summand to (diag_term - cross_term)
+  -- Then split Σ(a-b) = Σa - Σb
+  -- BLOCKED: Finset.sum_sub_distrib not found in current Mathlib.
+  -- The identity is ∑ (f - g) = ∑ f - ∑ g, which follows from
+  -- sub_eq_add_neg + Finset.sum_add_distrib + Finset.sum_neg_distrib.
   sorry
 
 /-- ⟨Lf, g⟩ = diagPart - crossPartConj.

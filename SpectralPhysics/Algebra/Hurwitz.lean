@@ -65,9 +65,11 @@ theorem normSq_mul (a b : A) : ‖a * b‖^2 = ‖a‖^2 * ‖b‖^2 := by
 
 -- A composition algebra has no zero divisors
 theorem no_zero_divisors' (a b : A) (ha : a ≠ 0) (hb : b ≠ 0) : a * b ≠ 0 := by
-  -- ‖a*b‖ = ‖a‖·‖b‖ by composition. hab : a*b = 0 gives ‖a*b‖ = 0.
-  -- So ‖a‖·‖b‖ = 0, contradicting ‖a‖,‖b‖ > 0.
-  -- Blocked by norm_zero typeclass resolution on abstract A.
+  -- Proof: ‖a*b‖ = ‖a‖·‖b‖ (composition). hab : a*b = 0 gives ‖a*b‖ = 0.
+  -- So ‖a‖·‖b‖ = 0, but ‖a‖,‖b‖ > 0 since a,b ≠ 0. Contradiction.
+  -- BLOCKED: norm_zero typeclass diamond between NormedAddCommGroup and
+  -- CompositionAlgebra. Needs explicit instance threading or the clean fix
+  -- (make CompositionAlgebra extend NormedRing).
   sorry
 
 end CompositionAlgebra
