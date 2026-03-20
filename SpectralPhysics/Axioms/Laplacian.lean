@@ -312,11 +312,21 @@ private theorem quadratic_form_identity (hc : S.isClassical) (f : S.X → ℂ) :
   -- Step 1: Expand LHS using ip_split with f = g, classical phase = 1
   simp only [innerProduct, SpectralLaplacian, quadForm, weightFactor]
   simp_rw [phaseFactor.classical_eq_one S hc, one_mul]
-  -- Now LHS: Re(Σ_x Σ_y ↑‖k‖ * conj(f x) * (f x - f y) * μy * μx)
-  -- RHS: ½ Σ_x Σ_y k.re * normSq(f x - f y) * μx * μy
-  -- For classical: ‖k(x,y)‖ = k(x,y).re (since k is real non-negative)
-  -- and conj(fx)*(fx - fy) contributes Re part = normSq(fx) - Re(conj(fx)*fy)
-  -- This is the symmetrization computation.
+  -- For classical: ‖k(x,y)‖ = k(x,y).re (real non-negative)
+  -- Both sides equal A - B where:
+  --   A = Σ k.re * normSq(fx) * μx * μy
+  --   B = Σ k.re * Re(conj(fx)*fy) * μx * μy
+  -- LHS: Re(conj(fx)*(fx-fy)) = normSq(fx) - Re(conj(fx)*fy) → gives A - B
+  -- RHS: ½ * normSq(fx-fy) = ½*(normSq(fx) - 2*Re(conj(fx)*fy) + normSq(fy))
+  --       with symmetrization Σ normSq(fy) = Σ normSq(fx) → gives ½*2A - B = A - B
+  --
+  -- This computation requires:
+  --   1. Classical norm identity: ‖k‖ = k.re for classical kernels
+  --   2. Re distributing through Σ and real factors
+  --   3. normSq_sub expansion
+  --   4. Finset.sum_comm + classical k symmetry for the symmetrization
+  --   5. Complex.normSq as Re(conj(a)*a)
+  -- Each step is individually straightforward but the full assembly is ~30 lines.
   sorry
 
 /-- **Positive semi-definiteness (classical): Re⟨f, Lf⟩ ≥ 0.** -/

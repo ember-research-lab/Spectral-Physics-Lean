@@ -65,11 +65,12 @@ theorem normSq_mul (a b : A) : ‖a * b‖^2 = ‖a‖^2 * ‖b‖^2 := by
 
 -- A composition algebra has no zero divisors
 theorem no_zero_divisors' (a b : A) (ha : a ≠ 0) (hb : b ≠ 0) : a * b ≠ 0 := by
-  -- ‖a*b‖ = ‖a‖·‖b‖ > 0 (since a,b ≠ 0 → ‖a‖,‖b‖ > 0).
-  -- But a*b = 0 → ‖a*b‖ = 0. Contradiction.
-  -- BLOCKED: norm_pos_iff / norm_eq_zero have Ring.toZero vs AddGroup.toZero
-  -- instance diamond. Fix: make CompositionAlgebra use [NormedRing A] or
-  -- add `instance : Zero A := Ring.toZero` before the theorem.
+  -- The goal `a * b ≠ 0` has `0` from Ring A.
+  -- But norm_eq_zero / norm_pos_iff use `0` from NormedAddCommGroup A.
+  -- These are SEPARATE instances creating a diamond that blocks all norm lemmas.
+  -- FIX NEEDED: Ensure Ring A and NormedAddCommGroup A share the same AddGroup.
+  -- This requires either [NormedRing A] or an explicit compatibility assumption.
+  -- The math: ‖a*b‖ = ‖a‖·‖b‖ > 0 but ‖a*b‖ = ‖0‖ = 0. Contradiction.
   sorry
 
 end CompositionAlgebra
