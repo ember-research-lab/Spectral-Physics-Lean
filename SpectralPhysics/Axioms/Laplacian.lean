@@ -186,9 +186,8 @@ private theorem ip_split (f g : S.X → ℂ) :
   --   congr 1; ext y
   --   ring  -- rearrange the products and distribute over sub
   --
-  -- Expand ⟨f, Lg⟩ = Σ_x conj(f(x))·(Σ_y w·(g(x)-phase·g(y))·μ(y))·μ(x)
-  -- Pull outer factors inside, distribute mul_sub, split into diag - cross.
-  -- Needs: Finset.mul_sum, mul_sub distributing, Finset.sum_sub_distrib, ring
+  -- Mechanically: unfold, pull Σ through products, distribute sub, split.
+  -- Each step is Finset.mul_sum + mul_sub + Finset.sum_sub_distrib + ring.
   sorry
 
 /-- ⟨Lf, g⟩ = diagPart - crossPartConj.
