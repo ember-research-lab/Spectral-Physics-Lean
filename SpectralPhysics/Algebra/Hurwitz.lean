@@ -48,14 +48,14 @@ satisfying `q(a * b) = q(a) * q(b)`.
 
 -- A composition algebra over ℝ: a finite-dimensional ℝ-algebra with identity,
 -- equipped with a positive-definite quadratic form that is multiplicative.
-class CompositionAlgebra (A : Type*) [Ring A] [Algebra ℝ A]
-    [NormedAddCommGroup A] [InnerProductSpace ℝ A] where
+class CompositionAlgebra (A : Type*) [NormedRing A] [Algebra ℝ A]
+    [InnerProductSpace ℝ A] where
   /-- The norm is multiplicative: ‖ab‖ = ‖a‖ · ‖b‖ -/
   norm_mul : ∀ a b : A, ‖a * b‖ = ‖a‖ * ‖b‖
 
 namespace CompositionAlgebra
 
-variable {A : Type*} [Ring A] [Algebra ℝ A] [NormedAddCommGroup A] [InnerProductSpace ℝ A]
+variable {A : Type*} [NormedRing A] [Algebra ℝ A] [InnerProductSpace ℝ A]
   [CompositionAlgebra A]
 
 -- In a composition algebra, ‖a‖² is multiplicative
@@ -65,13 +65,11 @@ theorem normSq_mul (a b : A) : ‖a * b‖^2 = ‖a‖^2 * ‖b‖^2 := by
 
 -- A composition algebra has no zero divisors
 theorem no_zero_divisors' (a b : A) (ha : a ≠ 0) (hb : b ≠ 0) : a * b ≠ 0 := by
-  -- The goal `a * b ≠ 0` has `0` from Ring A.
-  -- But norm_eq_zero / norm_pos_iff use `0` from NormedAddCommGroup A.
-  -- These are SEPARATE instances creating a diamond that blocks all norm lemmas.
-  -- FIX NEEDED: Ensure Ring A and NormedAddCommGroup A share the same AddGroup.
-  -- This requires either [NormedRing A] or an explicit compatibility assumption.
-  -- The math: ‖a*b‖ = ‖a‖·‖b‖ > 0 but ‖a*b‖ = ‖0‖ = 0. Contradiction.
-  sorry
+  intro hab
+  have : 0 < ‖a * b‖ := by
+    rw [CompositionAlgebra.norm_mul]
+    exact mul_pos (norm_pos_iff.mpr ha) (norm_pos_iff.mpr hb)
+  simp [hab] at this
 
 end CompositionAlgebra
 
@@ -83,7 +81,7 @@ Every composition algebra has a canonical involution (conjugation).
 
 namespace CompositionAlgebra
 
-variable {A : Type*} [Ring A] [Algebra ℝ A] [NormedAddCommGroup A] [InnerProductSpace ℝ A]
+variable {A : Type*} [NormedRing A] [Algebra ℝ A] [InnerProductSpace ℝ A]
   [CompositionAlgebra A]
 
 -- The conjugation map in a composition algebra satisfies `a * star a = ‖a‖² • 1`.
