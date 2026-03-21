@@ -139,6 +139,81 @@ theorem cd_mul_one (x : CayleyDickson A) : x * (1 : CayleyDickson A) = x := by
   change (x.1 * 1 - star 0 * x.2, 0 * x.1 + x.2 * star 1) = (x.1, x.2)
   simp [star_one]
 
+/-- Subtraction (componentwise) -/
+instance [Sub A] : Sub (CayleyDickson A) where
+  sub x y := (x.1 - y.1, x.2 - y.2)
+
+/-- Left distributivity: x * (y + z) = x * y + x * z -/
+theorem cd_left_distrib (x y z : CayleyDickson A) :
+    x * (y + z) = x * y + x * z := by
+  show (x.1 * (y.1 + z.1) - star (y.2 + z.2) * x.2,
+        (y.2 + z.2) * x.1 + x.2 * star (y.1 + z.1)) =
+    (x.1 * y.1 - star y.2 * x.2 + (x.1 * z.1 - star z.2 * x.2),
+     y.2 * x.1 + x.2 * star y.1 + (z.2 * x.1 + x.2 * star z.1))
+  simp [mul_add, add_mul, star_add]
+  constructor <;> abel
+
+/-- Right distributivity: (x + y) * z = x * z + y * z -/
+theorem cd_right_distrib (x y z : CayleyDickson A) :
+    (x + y) * z = x * z + y * z := by
+  show ((x.1 + y.1) * z.1 - star z.2 * (x.2 + y.2),
+        z.2 * (x.1 + y.1) + (x.2 + y.2) * star z.1) =
+    (x.1 * z.1 - star z.2 * x.2 + (y.1 * z.1 - star z.2 * y.2),
+     z.2 * x.1 + x.2 * star z.1 + (z.2 * y.1 + y.2 * star z.1))
+  simp [mul_add, add_mul]
+  constructor <;> abel
+
+/-- Zero * x = 0 -/
+theorem cd_zero_mul (x : CayleyDickson A) :
+    (0 : CayleyDickson A) * x = 0 := by
+  show (0 * x.1 - star x.2 * 0, x.2 * 0 + 0 * star x.1) = (0, 0)
+  simp
+
+/-- x * 0 = 0 -/
+theorem cd_mul_zero (x : CayleyDickson A) :
+    x * (0 : CayleyDickson A) = 0 := by
+  show (x.1 * 0 - star 0 * x.2, 0 * x.1 + x.2 * star 0) = (0, 0)
+  simp [star_zero]
+
+/-- neg * x = -(x * y) ... actually -(x) * y = -(x * y) -/
+theorem cd_neg_mul (x y : CayleyDickson A) :
+    (-x) * y = -(x * y) := by
+  show ((-x.1) * y.1 - star y.2 * (-x.2), y.2 * (-x.1) + (-x.2) * star y.1) =
+    (-(x.1 * y.1 - star y.2 * x.2), -(y.2 * x.1 + x.2 * star y.1))
+  simp [neg_mul, mul_neg]
+  constructor <;> abel
+
+/-- x * (-y) = -(x * y) -/
+theorem cd_mul_neg (x y : CayleyDickson A) :
+    x * (-y) = -(x * y) := by
+  show (x.1 * (-y.1) - star (-y.2) * x.2, (-y.2) * x.1 + x.2 * star (-y.1)) =
+    (-(x.1 * y.1 - star y.2 * x.2), -(y.2 * x.1 + x.2 * star y.1))
+  simp [mul_neg, neg_mul, star_neg]
+  constructor <;> abel
+
+/-- The NonAssocRing instance for CayleyDickson. -/
+instance instNonAssocRing : NonAssocRing (CayleyDickson A) where
+  add_assoc a b c := Prod.ext (add_assoc _ _ _) (add_assoc _ _ _)
+  zero_add a := Prod.ext (zero_add _) (zero_add _)
+  add_zero a := Prod.ext (add_zero _) (add_zero _)
+  add_comm a b := Prod.ext (add_comm _ _) (add_comm _ _)
+  neg_add_cancel a := Prod.ext (neg_add_cancel _) (neg_add_cancel _)
+  sub_eq_add_neg a b := Prod.ext (sub_eq_add_neg _ _) (sub_eq_add_neg _ _)
+  nsmul := nsmulRec
+  zsmul := zsmulRec
+  left_distrib := cd_left_distrib
+  right_distrib := cd_right_distrib
+  zero_mul := cd_zero_mul
+  mul_zero := cd_mul_zero
+  one_mul := cd_one_mul
+  mul_one := cd_mul_one
+  natCast n := (n, 0)
+  natCast_zero := Prod.ext Nat.cast_zero rfl
+  natCast_succ n := Prod.ext (Nat.cast_succ n) (add_zero 0).symm
+  intCast n := (n, 0)
+  intCast_ofNat n := Prod.ext (Int.cast_natCast n) rfl
+  intCast_negSucc n := Prod.ext (Int.cast_negSucc n) neg_zero.symm
+
 end Ring
 
 section NormSquared
