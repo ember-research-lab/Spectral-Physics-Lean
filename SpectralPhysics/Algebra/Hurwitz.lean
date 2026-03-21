@@ -333,10 +333,20 @@ theorem moreno_b_ne_zero : moreno_b ≠ 0 := by
 theorem zero_divisor_exists :
     ∃ a b : Sedenion, a ≠ 0 ∧ b ≠ 0 ∧ a * b = 0 := by
   refine ⟨moreno_a, moreno_b, moreno_a_ne_zero, moreno_b_ne_zero, ?_⟩
-  -- Concrete quaternion arithmetic: expand CD mul twice, verify each of 4
-  -- quaternion components is zero using ij=k, ik=-j, jk=i, etc.
-  -- With NonAssocRing + StarRing infrastructure now in place, this is
-  -- a mechanical computation. Needs QuaternionAlgebra mul/star simp lemmas.
-  sorry
+  -- Verify moreno_a * moreno_b = 0: unfold CD mul at both layers,
+  -- then check all 4 quaternion components are 0.
+  -- Unfold everything and use norm_num to close all 16 real-number goals
+  simp only [moreno_a, moreno_b, qj, qk, CayleyDickson.mul_def, CayleyDickson.star_def,
+    Prod.fst, Prod.snd, star_zero, star_neg, mul_zero, zero_mul, mul_neg, neg_mul,
+    sub_zero, add_zero, zero_sub, zero_add, neg_zero, neg_neg,
+    QuaternionAlgebra.star_mk, QuaternionAlgebra.mk_mul_mk]
+  -- Remaining: Prod of Prod of quaternion expressions = 0
+  -- The quaternion muls and stars are on concrete literals.
+  -- Reduce with norm_num after decomposing to 16 ℝ components.
+  refine Prod.ext (Prod.ext ?_ ?_) (Prod.ext ?_ ?_)
+  all_goals (
+    -- Change RHS from (0 : Sedenion).i.j to (0 : Quaternion ℝ)
+    change _ = (0 : Quaternion ℝ)
+    sorry )
 
 end Sedenion
