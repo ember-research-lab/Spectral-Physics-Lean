@@ -5,6 +5,9 @@ Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.Algebra.Hurwitz
 import SpectralPhysics.Algebra.CayleyDickson
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+import Mathlib.Algebra.Algebra.Bilinear
 
 /-!
 # The Division Algebra Forcing Theorem
@@ -45,16 +48,21 @@ hence surjective (finite-dimensional), hence a⁻¹ exists.
 This is Node 2.2 in the blueprint. The key insight: injectivity + finite
 dimension → surjectivity → invertibility. -/
 theorem no_zero_divisors_implies_division
-    {A : Type*} [Ring A] [Nontrivial A]
+    {A : Type*} [Ring A] [Nontrivial A] [Algebra ℝ A] [FiniteDimensional ℝ A]
     (h_no_zd : ∀ a b : A, a ≠ 0 → b ≠ 0 → a * b ≠ 0) :
     ∀ a : A, a ≠ 0 → ∀ b : A, ∃ x : A, a * x = b := by
-  -- L_a : A → A defined by L_a(x) = a * x is injective:
-  --   a * x = a * y → a * (x - y) = 0 → x - y = 0 (since a ≠ 0, no ZD) → x = y
-  -- Injective + finite-dimensional → surjective.
-  -- This requires [FiniteDimensional ℝ A] for the surjectivity step.
-  -- For now we state it without the finite-dimensional hypothesis
-  -- (the surjectivity step would use Module.finite_of_injective or similar).
-  sorry
+  intro a ha b
+  -- Left multiplication L_a : A →ₗ[ℝ] A is injective (no zero divisors)
+  have h_inj : Function.Injective (Algebra.lmul ℝ A a) := by
+    intro x y hxy
+    -- hxy : (Algebra.lmul ℝ A a) x = (Algebra.lmul ℝ A a) y, i.e., a * x = a * y
+    change a * x = a * y at hxy
+    have h : a * (x - y) = 0 := by rw [mul_sub, sub_eq_zero]; exact hxy
+    by_contra hne
+    exact h_no_zd a (x - y) ha (sub_ne_zero.mpr hne) h
+  -- Injective endomorphism on finite-dim space → surjective
+  have h_surj := LinearMap.surjective_of_injective h_inj
+  exact h_surj b
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART I: SELF-REFERENTIAL CLOSURE (Axiom 3, formalized)
@@ -115,18 +123,22 @@ theorem tower_terminates_at_octonions :
 -- ═══════════════════════════════════════════════════════════════════════
 
 /-- **Step 1**: ℝ is insufficient for self-referential closure.
-Meta-observation of a real-valued system requires complex structure
-(the propagator e^{-iLt} is complex). The minimal extension containing
-both A and an independent copy is CD(A) = ℂ when A = ℝ. -/
-theorem real_insufficient :
-    ¬ (∀ (f : ℂ →ₐ[ℝ] ℝ), Function.Surjective f) := by
-  -- ℂ has dimension 2 over ℝ, so there's no surjective algebra map ℂ → ℝ
-  -- (it would be a surjective ℝ-linear map from a 2-dim to 1-dim space,
-  -- but algebra maps preserve 1, so the kernel is a proper ideal of ℂ,
-  -- but ℂ is a field, so the kernel is {0}, making it injective,
-  -- contradicting dim 2 > dim 1).
-  intro h
-  sorry -- Needs FiniteDimensional ℝ ℂ + dimension argument
+ℂ does not embed into ℝ as an ℝ-algebra (dimension obstruction).
+Any ℝ-algebra hom ℂ → ℝ is injective (ℂ is a field), but an injective
+linear map from a 2-dimensional to a 1-dimensional space is impossible. -/
+theorem real_insufficient : IsEmpty (ℂ →ₐ[ℝ] ℝ) := by
+  rw [isEmpty_iff]
+  intro f
+  -- f is an ℝ-algebra hom ℂ → ℝ. As a ring hom from a field, f is injective.
+  have h_inj : Function.Injective f := f.toRingHom.injective
+  -- f is also ℝ-linear, injective, from dim 2 to dim 1 — impossible.
+  -- finrank ℝ ℂ = 2, finrank ℝ ℝ = 1, injective ℂ →ₗ ℝ gives 2 ≤ 1, contradiction
+  have h2 : Module.finrank ℝ ℂ = 2 := by simp
+  have h1 : Module.finrank ℝ ℝ = 1 := Module.finrank_self ℝ
+  have h_le : Module.finrank ℝ ℂ ≤ Module.finrank ℝ ℝ :=
+    LinearMap.finrank_le_finrank_of_injective (f := f.toLinearMap)
+      (show Function.Injective f.toLinearMap from h_inj)
+  linarith
 
 -- **Step 4**: The tower terminates because CD(𝕆) has zero divisors.
 -- This is the concrete computation that stops the chain.
