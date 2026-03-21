@@ -19,3 +19,5 @@ import SpectralPhysics.Triad.GoldenRatio
 import SpectralPhysics.Predictions.StrongCoupling
 import SpectralPhysics.Predictions.CabibboAngle
 import SpectralPhysics.Predictions.ElectroweakRatio
+import SpectralPhysics.Predictions.CPPhase
+import SpectralPhysics.Predictions.NeutrinoAngle
