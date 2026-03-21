@@ -356,16 +356,27 @@ theorem zero_divisor_exists :
   have hjj : qj * qj = (⟨-1, 0, 0, 0⟩ : Quaternion ℝ) := by
     ext <;> simp [qj, mul_comm] <;> ring
   have hsk : star qk = -qk := by ext <;> simp [qk, star]
-  have h3 : (-qk) * star qk = (⟨-1, 0, 0, 0⟩ : Quaternion ℝ) := by
+  have h3 : (-qk) * star qk = -(⟨1, 0, 0, 0⟩ : Quaternion ℝ) := by
     rw [show star qk = -qk from hsk, show (-qk) * (-qk) = qk * qk from neg_mul_neg _ _]
-    exact hkk
+    rw [hkk]; ext <;> norm_num
   have h4 : (-qj) * qj = (⟨1, 0, 0, 0⟩ : Quaternion ℝ) := by
     rw [show (-qj) * qj = -(qj * qj) from neg_mul _ _, hjj]
     ext <;> norm_num
+  rw [h1, h2, h3, h4]
+  -- Goal: ((0, i) - (0, i), (0, ⟨-1,...⟩) + (0, ⟨1,...⟩)) = 0
+  -- Decompose fully to quaternion components via CayleyDickson.ext
+  -- First pair: sub_self. Second pair: neg_add_cancel.
+  -- After rw, goal has: ((0, i)-(0, i), (0, -⟨1,...⟩) + (0, ⟨1,...⟩)) = 0
+  -- sub_self closes first pair, neg_add (on Octonion) closes second
+  -- h3 gives -(⟨1,...⟩), making the second pair (0, -⟨1,...⟩) + (0, ⟨1,...⟩)
+  -- This equals -(0, ⟨1,...⟩) + (0, ⟨1,...⟩) = 0 by neg_add_cancel
+  -- Need: (0, -x) = -(0, x) for CayleyDickson negation
+  -- Rewrite h3/h4 into the goal, then show the result is 0
   simp only [h1, h2, h3, h4, sub_self]
-  -- Remaining after sub_self on first octonion:
-  -- (0, (0, ⟨-1,0,0,0⟩) + (0, ⟨1,0,0,0⟩)) = 0
-  -- This is ⟨-1,...⟩ + ⟨1,...⟩ = 0 componentwise. Needs interactive session.
+  -- Remaining: (0, (0, -⟨1,...⟩) + (0, ⟨1,...⟩)) = 0
+  -- = (0, (0, 0)) = 0 since -1+1=0 componentwise
+  -- CayleyDickson Prod arithmetic blocks `change` and `neg_add_cancel`.
+  -- Needs interactive `set_option pp.all true` to see exact term.
   sorry
 
 end Sedenion
