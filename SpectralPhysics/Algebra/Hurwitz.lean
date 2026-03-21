@@ -296,86 +296,40 @@ namespace Sedenion
 -- Sedenion = CD(CD(CD(CD(ℝ))))
 -- An element is ((((a,b),(c,d)),((e,f),(g,h))), ...)
 
--- For now, we state the result and mark it for concrete verification:
+/-- **Sedenion Zero Divisor Theorem**: There exist nonzero elements
+a, b in the sedenions with a * b = 0.
 
--- **Sedenion Zero Divisor Theorem**: There exist nonzero elements
--- a, b in the sedenions with a * b = 0.
---
--- This is the concrete computation that terminates the Cayley-Dickson tower:
--- since the sedenions have zero divisors, they cannot be a division algebra,
--- and Hurwitz's theorem shows no other path to dimension > 8 exists.
---
--- theorem zero_divisor_exists :
---     ∃ a b : Sedenion, a ≠ 0 ∧ b ≠ 0 ∧ a * b = 0 := by
---   -- STRATEGY: Construct explicit zero-divisor pair from Moreno (1998).
---   --
---   -- The sedenion type unfolds as:
---   --   Sedenion = CayleyDickson Octonion
---   --           = CayleyDickson (CayleyDickson (Quaternion ℝ))
---   --           = (Quaternion ℝ × Quaternion ℝ) × (Quaternion ℝ × Quaternion ℝ)
---   --     outer layer:  (left_oct, right_oct) where each oct = (quat, quat)
---   --
---   -- Quaternion basis: 1, i, j, k where i²=j²=k²=-1, ij=k, etc.
---   -- In Mathlib: Quaternion.mk a b c d represents a + bi + cj + dk
---   --
---   -- Octonion basis via CD(ℍ): e₀..e₇ where
---   --   e₀ = ((1,0,0,0), (0,0,0,0))  -- real unit
---   --   e₁ = ((0,1,0,0), (0,0,0,0))  -- quaternion i, embedded
---   --   e₂ = ((0,0,1,0), (0,0,0,0))  -- quaternion j, embedded
---   --   e₃ = ((0,0,0,1), (0,0,0,0))  -- quaternion k, embedded
---   --   e₄ = ((0,0,0,0), (1,0,0,0))  -- CD imaginary unit
---   --   e₅ = ((0,0,0,0), (0,1,0,0))
---   --   e₆ = ((0,0,0,0), (0,0,1,0))
---   --   e₇ = ((0,0,0,0), (0,0,0,1))
---   --
---   -- Sedenion basis via CD(𝕆): e₀..e₁₅ where
---   --   e₀..e₇ = (oct, 0)   -- octonion embedded
---   --   e₈..e₁₅ = (0, oct)  -- CD second copy
---   --   Specifically:
---   --     e₃  = ((qk, 0), (0, 0))   where qk = Quaternion.mk 0 0 0 1
---   --     e₁₀ = ((0, 0), (0, qj))   where qj = Quaternion.mk 0 0 1 0
---   --     e₆  = ((0, qj), (0, 0))
---   --     e₁₅ = ((0, 0), (0, qk))
---   --
---   -- The Moreno pair: a = e₃ + e₁₀, b = e₆ - e₁₅
---   --
---   -- CONSTRUCTION in Lean types:
---   --   Let qk : Quaternion ℝ := ⟨0, 0, 0, 1⟩
---   --   Let qj : Quaternion ℝ := ⟨0, 0, 1, 0⟩
---   --   Let q0 : Quaternion ℝ := 0
---   --
---   --   e₃  as Sedenion: ((q0, q0), (qk, q0)), ((q0,q0),(q0,q0))
---   --   Hmm, the nesting is getting complicated. Let me think about this more carefully.
---   --
---   --   Sedenion = CD(Octonion) = Octonion × Octonion
---   --   Octonion = CD(Quaternion ℝ) = Quaternion ℝ × Quaternion ℝ
---   --   So Sedenion = (Quaternion ℝ × Quaternion ℝ) × (Quaternion ℝ × Quaternion ℝ)
---   --
---   --   e₃  = (oct_e₃, oct_0) where oct_e₃ = (qk, q0) : Octonion
---   --   e₁₀ = (oct_0, oct_e₂) where oct_e₂ = (qj, q0) : Octonion
---   --   Wait: e₁₀ = e_{8+2}. e₈ is the CD unit of the sedenion layer.
---   --   So e₁₀ = (0, e₂) where e₂ is octonion e₂ = (qj, q0).
---   --
---   --   Similarly: e₆ = (oct_e₆, oct_0) where oct_e₆ = (q0, qj) : Octonion
---   --   e₁₅ = (oct_0, oct_e₇) where oct_e₇ = (q0, qk) : Octonion
---   --
---   -- So concretely:
---   --   a = ((qk, q0), (q0, q0)) + ((q0, q0), (qj, q0))
---   --     = ((qk, q0), (qj, q0)) : Sedenion
---   --   b = ((q0, qj), (q0, q0)) - ((q0, q0), (q0, qk))
---   --     = ((q0, qj), (q0, -qk)) : Sedenion
---   --
---   -- VERIFICATION: compute a * b using CD multiplication twice (outer then inner)
---   -- and show all four quaternion components are zero.
---   -- This is tedious but each step is just quaternion arithmetic:
---   --   ij = k, ik = -j, jk = i, ji = -k, ki = j, kj = -i
---   --
---   -- USE: `decide` or `native_decide` may work if we can get concrete
---   -- rational arithmetic. Otherwise, expand mul_def at each CD level,
---   -- use Quaternion.ext_iff, and norm_num on each component.
---   --
---   -- For nonzero: a ≠ 0 because its first octonion component has qk ≠ 0.
---   -- b ≠ 0 because its first octonion component has qj ≠ 0.
---   sorry
+This is the concrete computation that terminates the Cayley-Dickson tower:
+since the sedenions have zero divisors, they cannot be a division algebra,
+and Hurwitz's theorem shows no other path to dimension > 8 exists. -/
+-- Moreno's zero-divisor pair (1998):
+-- a = e₃ + e₁₀ = ((qk, 0), (qj, 0)) where qk = ⟨0,0,0,1⟩, qj = ⟨0,0,1,0⟩
+-- b = e₆ - e₁₅ = ((0, qj), (0, -qk))
+-- Sedenion = (Quaternion ℝ × Quaternion ℝ) × (Quaternion ℝ × Quaternion ℝ)
+
+private def qj : Quaternion ℝ := ⟨0, 0, 1, 0⟩
+private def qk : Quaternion ℝ := ⟨0, 0, 0, 1⟩
+
+/-- The first element of the Moreno zero-divisor pair: e₃ + e₁₀ -/
+def moreno_a : Sedenion := ((qk, 0), ((qj, 0) : Octonion))
+
+/-- The second element of the Moreno zero-divisor pair: e₆ - e₁₅ -/
+def moreno_b : Sedenion := (((0, qj) : Octonion), ((0, -qk) : Octonion))
+
+-- These are nonzero because qk.imK = 1 ≠ 0 and qj.imJ = 1 ≠ 0.
+-- Blocked by CayleyDickson being a `def` not `structure`, so Prod.ext_iff
+-- doesn't apply directly. Needs `unfold CayleyDickson` at the right level
+-- or changing CayleyDickson to a structure/abbrev. Interactive session needed.
+theorem moreno_a_ne_zero : moreno_a ≠ 0 := by sorry
+theorem moreno_b_ne_zero : moreno_b ≠ 0 := by sorry
+
+theorem zero_divisor_exists :
+    ∃ a b : Sedenion, a ≠ 0 ∧ b ≠ 0 ∧ a * b = 0 := by
+  refine ⟨moreno_a, moreno_b, moreno_a_ne_zero, moreno_b_ne_zero, ?_⟩
+  -- Concrete quaternion arithmetic: expand CD mul twice, verify each of 4
+  -- quaternion components is zero using ij=k, ik=-j, jk=i, etc.
+  -- With NonAssocRing + StarRing infrastructure now in place, this is
+  -- a mechanical computation. Needs QuaternionAlgebra mul/star simp lemmas.
+  sorry
 
 end Sedenion

@@ -57,7 +57,7 @@ def CayleyDickson (A : Type u) : Type u := A × A
 
 namespace CayleyDickson
 
-variable [Ring A] [StarRing A]
+variable [NonAssocRing A] [StarRing A]
 
 /-- Constructor for Cayley-Dickson elements -/
 def mk (a b : A) : CayleyDickson A := (a, b)
@@ -226,7 +226,7 @@ end NormSquared
 
 section Properties
 
-variable [Ring A] [StarRing A]
+variable [NonAssocRing A] [StarRing A]
 
 /-- Conjugation is an anti-automorphism: `(x * y)* = y* * x*` -/
 theorem cd_star_mul (x y : CayleyDickson A) :
@@ -316,5 +316,17 @@ theorem not_assoc_of_not_comm [Nontrivial A]
   exact this.symm
 
 end Properties
+
+section StarRingInstance
+
+variable [NonAssocRing A] [StarRing A]
+
+/-- StarRing instance: star distributes over addition and is anti-multiplicative. -/
+instance instStarRing : StarRing (CayleyDickson A) where
+  star_involutive x := star_star' x
+  star_mul x y := cd_star_mul x y
+  star_add x y := Prod.ext (star_add x.1 y.1) (neg_add x.2 y.2)
+
+end StarRingInstance
 
 end CayleyDickson
