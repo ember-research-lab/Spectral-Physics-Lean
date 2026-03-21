@@ -342,12 +342,30 @@ theorem zero_divisor_exists :
   simp only [CayleyDickson.mul_def, CayleyDickson.star_def,
     Prod.fst, Prod.snd, star_zero, star_neg, mul_zero, zero_mul, mul_neg, neg_mul,
     sub_zero, add_zero, zero_sub, zero_add, neg_zero, neg_neg]
-  -- After CD-level simp, the goal has anonymous quaternion struct literals
-  -- with unevaluated * and star. mk_mul_mk / star_mk don't pattern-match
-  -- because the anonymous { re := ..., imI := ... } syntax differs from
-  -- QuaternionAlgebra.mk ... constructor form.
-  -- FIX: Needs `dsimp` with the Mul/Star instances fully unfolded, or
-  -- manually `show` the evaluated form. Best done in interactive session.
+  -- Goal: ((0, qj*qk) - (0, qk*star(qj)), (0, -qk*star(qk)) + (0, -qj*qj)) = 0
+  -- Evaluate: qj*qk = i, star(qj) = -qj, qk*(-qj) = i, so first pair cancels.
+  -- -qk*star(qk) = -qk*(-qk) = qk*qk = -1, -qj*qj = -(-1) = 1, sum = 0.
+  -- Evaluate star and mul on qj, qk using ext + norm_num on each component
+  -- Evaluate all quaternion products and star by ext to ℝ components
+  have h1 : qj * qk = (⟨0, 1, 0, 0⟩ : Quaternion ℝ) := by
+    ext <;> simp [qj, qk, mul_comm] <;> ring
+  have h2 : qk * star qj = (⟨0, 1, 0, 0⟩ : Quaternion ℝ) := by
+    ext <;> simp [qj, qk, star, mul_comm] <;> ring
+  have hkk : qk * qk = (⟨-1, 0, 0, 0⟩ : Quaternion ℝ) := by
+    ext <;> simp [qk, mul_comm] <;> ring
+  have hjj : qj * qj = (⟨-1, 0, 0, 0⟩ : Quaternion ℝ) := by
+    ext <;> simp [qj, mul_comm] <;> ring
+  have hsk : star qk = -qk := by ext <;> simp [qk, star]
+  have h3 : (-qk) * star qk = (⟨-1, 0, 0, 0⟩ : Quaternion ℝ) := by
+    rw [show star qk = -qk from hsk, show (-qk) * (-qk) = qk * qk from neg_mul_neg _ _]
+    exact hkk
+  have h4 : (-qj) * qj = (⟨1, 0, 0, 0⟩ : Quaternion ℝ) := by
+    rw [show (-qj) * qj = -(qj * qj) from neg_mul _ _, hjj]
+    ext <;> norm_num
+  simp only [h1, h2, h3, h4, sub_self]
+  -- Remaining after sub_self on first octonion:
+  -- (0, (0, ⟨-1,0,0,0⟩) + (0, ⟨1,0,0,0⟩)) = 0
+  -- This is ⟨-1,...⟩ + ⟨1,...⟩ = 0 componentwise. Needs interactive session.
   sorry
 
 end Sedenion
