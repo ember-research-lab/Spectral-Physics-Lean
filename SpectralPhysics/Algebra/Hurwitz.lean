@@ -316,12 +316,19 @@ def moreno_a : Sedenion := ((qk, 0), ((qj, 0) : Octonion))
 /-- The second element of the Moreno zero-divisor pair: e₆ - e₁₅ -/
 def moreno_b : Sedenion := (((0, qj) : Octonion), ((0, -qk) : Octonion))
 
--- These are nonzero because qk.imK = 1 ≠ 0 and qj.imJ = 1 ≠ 0.
--- Blocked by CayleyDickson being a `def` not `structure`, so Prod.ext_iff
--- doesn't apply directly. Needs `unfold CayleyDickson` at the right level
--- or changing CayleyDickson to a structure/abbrev. Interactive session needed.
-theorem moreno_a_ne_zero : moreno_a ≠ 0 := by sorry
-theorem moreno_b_ne_zero : moreno_b ≠ 0 := by sorry
+theorem moreno_a_ne_zero : moreno_a ≠ 0 := by
+  intro h
+  have := congr_arg (fun x => x.1.1.imK) h
+  -- LHS: moreno_a.1.1.imK = qk.imK = 1
+  -- RHS: (0 : Sedenion).1.1.imK = 0
+  change (1 : ℝ) = 0 at this
+  exact one_ne_zero this
+
+theorem moreno_b_ne_zero : moreno_b ≠ 0 := by
+  intro h
+  have := congr_arg (fun x => x.1.2.imJ) h
+  change (1 : ℝ) = 0 at this
+  exact one_ne_zero this
 
 theorem zero_divisor_exists :
     ∃ a b : Sedenion, a ≠ 0 ∧ b ≠ 0 ∧ a * b = 0 := by
