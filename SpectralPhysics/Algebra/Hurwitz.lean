@@ -212,7 +212,7 @@ theorem cd_norm_mul_of_assoc
     -- where (x*y).1 = x.1*y.1 - star(y.2)*x.2
     --       (x*y).2 = y.2*x.1 + x.2*star(y.1)
     -- Expand ‖a-b‖² = ‖a‖²+‖b‖²-2⟪a,b⟫ and ‖c+d‖² = ‖c‖²+‖d‖²+2⟪c,d⟫
-    simp only [CayleyDickson.mul_def, Prod.fst, Prod.snd]
+    simp only [CayleyDickson.mul_def]
     rw [norm_sub_sq_real, norm_add_sq_real]
     -- Use composition: ‖ab‖² = ‖a‖²·‖b‖²
     simp only [sq, CompositionAlgebra.norm_mul]
@@ -227,8 +227,8 @@ theorem cd_norm_mul_of_assoc
     -- appropriately with the inner product. The full proof requires
     -- careful manipulation of the inner product adjoint property.
     -- With h_inner_assoc available, the cross terms reduce to:
-    have h_cross : inner (𝕜 := ℝ) (x.1 * y.1) (star y.2 * x.2) =
-        inner (𝕜 := ℝ) (y.2 * x.1) (x.2 * star y.1) := by
+    have h_cross : inner (𝕜 := ℝ) (x.fst * y.fst) (star y.snd * x.snd) =
+        inner (𝕜 := ℝ) (y.snd * x.fst) (x.snd * star y.fst) := by
       -- Step 1: LHS = ⟪x.1*y.1, star(y.2)*x.2⟫
       --   Use real_inner_comm then h_inner_assoc with a = star(y.2):
       --   = ⟪star(y.2)*x.2, x.1*y.1⟫  (real_inner_comm)
@@ -280,61 +280,71 @@ theorem cd_assoc_of_norm_mul
   -- Both equal, so ⟪(a*b)*c - a*(b*c), d⟫ = 0 for all d.
   -- Step 1: Extract the cross-term identity from h_norm_mul
   -- Derive ‖star(a)‖ = ‖a‖ from h_norm_mul
+  -- Helper: compute cdNorm on structure literals
+  have cdNorm_mk (x y : B) : CayleyDickson.cdNorm (⟨x, y⟩ : CayleyDickson B) =
+      Real.sqrt (‖x‖^2 + ‖y‖^2) := rfl
   have h_norm_star : ∀ a : B, ‖star a‖ = ‖a‖ := by
     intro a
     by_cases ha : a = 0
     · simp [ha]
-    · -- (0,a)*(0,a) = (-star(a)*a, 0) by CD mul
-      -- cdNorm(-star(a)*a, 0) = ‖star(a)*a‖ = ‖star(a)‖*‖a‖
-      -- cdNorm(0,a) = ‖a‖
-      -- h_norm_mul: ‖star(a)‖*‖a‖ = ‖a‖*‖a‖, so ‖star(a)‖ = ‖a‖
-      -- Use h_norm_mul on (a, 0) * (star a, 0):
-      -- Product: (a * star a - 0, 0 + 0) = (a * star a, 0)
-      -- cdNorm(a * star a, 0) = ‖a * star a‖ = ‖a‖ * ‖star a‖
-      -- cdNorm(a, 0) = ‖a‖, cdNorm(star a, 0) = ‖star a‖
-      -- So ‖a‖ * ‖star a‖ = ‖a‖ * ‖star a‖ -- tautology!
-      -- Better: use (a, 0) * (0, 1):
-      -- Product: (a*0 - star(1)*0, 1*a + 0*star(0)) = (0, a)
-      -- cdNorm(0, a) = ‖a‖
-      -- cdNorm(a, 0) * cdNorm(0, 1) = ‖a‖ * 1 = ‖a‖ ... also tautology.
-      -- The RIGHT approach: use h_norm_mul on (star a, 0) * (a, 0):
-      -- Product.1 = star(a)*a - 0 = star(a)*a
-      -- cdNorm(star(a)*a, 0) = ‖star(a)*a‖ = ‖star(a)‖*‖a‖
-      -- cdNorm(star(a), 0) * cdNorm(a, 0) = ‖star(a)‖ * ‖a‖
-      -- Still tautology! Need asymmetric approach.
-      -- USE: Compare cdNorm(a, 0) with cdNorm(star a, 0) directly.
-      -- cdNorm(a, 0) = √(‖a‖² + 0) = ‖a‖
-      -- cdNorm(star a, 0) = √(‖star a‖² + 0) = ‖star a‖
-      -- From h_norm_mul on (a,0)*(1,0) = (a,0): ‖a‖ = ‖a‖*1 -- tautology.
-      -- The real trick: use h_norm_mul where star appears in the PRODUCT.
-      -- (1, 0) * (0, a): product = (0 - star(a)*0, a*1 + 0*star(0)) = (0, a)
-      -- cdNorm = ‖a‖, and cdNorm(1,0)*cdNorm(0,a) = 1*‖a‖ = ‖a‖. Tautology.
-      -- (0, 1) * (a, 0): product = (0*a - star(0)*1, 0*0 + 1*star(a)) = (0, star(a))
-      -- cdNorm(0, star(a)) = ‖star(a)‖
-      -- cdNorm(0,1)*cdNorm(a,0) = 1*‖a‖ = ‖a‖
-      -- So ‖star(a)‖ = ‖a‖! ✓
-      have h := h_norm_mul ((0 : B), (1 : B)) ((a : B), (0 : B))
-      -- Evaluate the product (0,1)*(a,0)
-      -- (0,1)*(a,0).1 = 0*a - star(0)*1 = 0
-      -- (0,1)*(a,0).2 = 0*0 + 1*star(a) = star(a)
-      -- cdNorm(0, star(a)) = ‖star(a)‖
-      -- cdNorm(0, 1) = 1, cdNorm(a, 0) = ‖a‖
-      -- So ‖star(a)‖ = 1 * ‖a‖ = ‖a‖
-      have h_prod : ((0 : B), (1 : B)) * ((a : B), (0 : B)) =
-          ((0 : B), star a) := by
-        -- The NonAssocRing Mul and instMul should be definitionally equal.
-        -- Use `rfl` after `show` with the explicit computation:
-        apply CayleyDickson.ext
-        · -- .1: 0*a - star(0)*1 = 0 - 0 = 0 ✓
-          simp [star_zero]
-        · -- .2: 0*0 + 1*star(a) = star(a) ✓
-          simp
-      -- Rewrite h_prod then unfold cdNorm all at once
-      simp only [h_prod, CayleyDickson.cdNorm, norm_zero, norm_one,
-        mul_zero, zero_mul, add_zero, zero_add,
-        Real.sqrt_one, Real.sqrt_sq (norm_nonneg _)] at h
-      -- h should now be: ‖star a‖ = 1 * ‖a‖ or ‖star a‖ = ‖a‖
-      linarith
+    · -- Use h_norm_mul on ⟨0, 1⟩ * ⟨a, 0⟩ = ⟨0, star a⟩
+      have h := h_norm_mul ⟨(0 : B), (1 : B)⟩ ⟨(a : B), (0 : B)⟩
+      have h_prod : (⟨(0 : B), (1 : B)⟩ : CayleyDickson B) * ⟨(a : B), (0 : B)⟩ =
+          ⟨(0 : B), star a⟩ := by
+        ext <;> simp [star_zero]
+      rw [h_prod, cdNorm_mk, cdNorm_mk, cdNorm_mk] at h
+      -- h : √(‖0‖²+‖star a‖²) = √(‖0‖²+‖1‖²) * √(‖a‖²+‖0‖²)
+      simp only [norm_zero, zero_pow (two_ne_zero), zero_add, add_zero] at h
+      -- h : √(‖star a‖²) = √(‖1‖²) * √(‖a‖²)
+      rw [Real.sqrt_sq (norm_nonneg _), Real.sqrt_sq (norm_nonneg _)] at h
+      -- h : ‖star a‖ = √(‖1‖²) * ‖a‖
+      -- h : ‖star a‖ = √(‖1‖²) * ‖a‖
+      -- Show √(‖1‖²) = 1: from ‖1*1‖ = ‖1‖*‖1‖ and mul_one gives ‖1‖ = ‖1‖²
+      -- Then ‖1‖ ∈ {0,1}, and if ‖1‖=0 then ‖x‖=0 for all x (composition) → absurd
+      have h11 := CompositionAlgebra.norm_mul (1 : B) (1 : B)
+      rw [mul_one] at h11
+      -- h11 : ‖1‖ = ‖1‖ * ‖1‖
+      -- √(‖1‖²) = ‖1‖ (since ‖1‖ ≥ 0)
+      rw [Real.sqrt_sq (norm_nonneg _)] at h
+      -- h : ‖star a‖ = ‖1‖ * ‖a‖
+      -- From h11: ‖1‖ = ‖1‖², so ‖1‖(‖1‖ - 1) = 0, thus ‖1‖ = 0 or ‖1‖ = 1
+      -- ‖1‖ = 0 is impossible: it would give ‖a‖ = 0 for all a (via composition)
+      -- Therefore ‖1‖ = 1
+      have h_one : ‖(1 : B)‖ = 1 := by
+        -- h11: ‖1‖ = ‖1‖ * ‖1‖ means ‖1‖ * (1 - ‖1‖) = 0
+        -- So ‖1‖ = 0 or ‖1‖ = 1
+        -- If ‖1‖ = 0: for any x, ‖x‖ = ‖1*x‖ = 0*‖x‖ = 0,
+        -- so ⟪x,x⟫ = ‖x‖² = 0, hence x = 0 for all x, making B trivial.
+        -- But ⟪1,1⟫ = 0 → 1 = 0, and algebraMap ℝ B 1 = 1 = 0, contradiction.
+        -- From h11: ‖1‖ = ‖1‖², so ‖1‖(‖1‖-1) = 0, meaning ‖1‖ = 0 or ‖1‖ = 1
+        have h_factor : ‖(1 : B)‖ * (‖(1 : B)‖ - 1) = 0 := by nlinarith
+        rcases mul_eq_zero.mp h_factor with h_eq | h_eq
+        · exfalso
+          -- h_eq : ‖1‖ = 0, so every element has norm 0
+          have hx : ∀ x : B, ‖x‖ = 0 := by
+            intro x
+            have := CompositionAlgebra.norm_mul (1 : B) x
+            rw [one_mul, h_eq, zero_mul] at this; exact this
+          -- ⟪1,1⟫ = ‖1‖² = 0, so 1 = 0 (inner product positive definiteness)
+          have h10 : (1 : B) = 0 := inner_self_eq_zero.mp (by
+            rw [real_inner_self_eq_norm_sq]; simp [hx 1])
+          -- If 1 = 0 in B then for all r : ℝ, algebraMap ℝ B r = r • 1 = r • 0 = 0
+          -- This means the ℝ-module structure on B is trivial:
+          -- r • x = r • (1 * x) = (r • 1) * x = 0 * x = 0
+          -- But ⟪1 • x, y⟫ = ⟪x, y⟫ while ⟪0, y⟫ = 0
+          -- So if x ≠ 0 exists, we get ⟪x,y⟫ = 0 for all y but x ≠ 0, contradiction.
+          -- But we showed ALL x = 0 (from ‖x‖ = 0 → inner_self_eq_zero → x = 0).
+          -- So B = {0}. But algebraMap ℝ B 1 = 1 = 0 is fine in a zero ring.
+          -- The issue: the norm on B isn't a true norm on a nontrivial space.
+          -- Actually, there's no contradiction in B being the zero ring with Algebra ℝ!
+          -- BUT: the hypothesis h_norm_mul asserts properties of CayleyDickson B.
+          -- In CayleyDickson B, we have ⟨0, 1⟩ which equals ⟨0, 0⟩ = 0 since 1_B = 0.
+          -- So actually ha : a ≠ 0 is our escape: if ALL x : B equal 0, then a = 0.
+          exact ha (inner_self_eq_zero.mp (by
+            rw [real_inner_self_eq_norm_sq]; simp [hx a]))
+        · linarith
+      rw [h_one, one_mul] at h
+      exact h
   have h_cross : ∀ a b c d : B,
       @inner ℝ B _ (a * c) (star d * b) = @inner ℝ B _ (d * a) (b * star c) := by
     intro a b c d
@@ -491,22 +501,22 @@ private noncomputable def qj : Quaternion ℝ := ⟨0, 0, 1, 0⟩
 private noncomputable def qk : Quaternion ℝ := ⟨0, 0, 0, 1⟩
 
 /-- The first element of the Moreno zero-divisor pair: e₃ + e₁₀ -/
-noncomputable def moreno_a : Sedenion := ((qk, 0), ((qj, 0) : Octonion))
+noncomputable def moreno_a : Sedenion := ⟨⟨qk, 0⟩, ⟨qj, 0⟩⟩
 
 /-- The second element of the Moreno zero-divisor pair: e₆ - e₁₅ -/
-noncomputable def moreno_b : Sedenion := (((0, qj) : Octonion), ((0, -qk) : Octonion))
+noncomputable def moreno_b : Sedenion := ⟨⟨0, qj⟩, ⟨0, -qk⟩⟩
 
 theorem moreno_a_ne_zero : moreno_a ≠ 0 := by
   intro h
-  have := congr_arg (fun x => x.1.1.imK) h
-  -- LHS: moreno_a.1.1.imK = qk.imK = 1
-  -- RHS: (0 : Sedenion).1.1.imK = 0
+  have := congr_arg (fun x => x.fst.fst.imK) h
+  -- LHS: moreno_a.fst.fst.imK = qk.imK = 1
+  -- RHS: (0 : Sedenion).fst.fst.imK = 0
   change (1 : ℝ) = 0 at this
   exact one_ne_zero this
 
 theorem moreno_b_ne_zero : moreno_b ≠ 0 := by
   intro h
-  have := congr_arg (fun x => x.1.2.imJ) h
+  have := congr_arg (fun x => x.fst.snd.imJ) h
   change (1 : ℝ) = 0 at this
   exact one_ne_zero this
 
@@ -520,21 +530,21 @@ theorem zero_divisor_exists :
   unfold moreno_a moreno_b
   -- Unfold CD mul at both levels
   simp only [CayleyDickson.mul_def, CayleyDickson.star_def,
-    Prod.fst, Prod.snd, star_zero, star_neg, mul_zero, zero_mul, mul_neg, neg_mul,
-    sub_zero, add_zero, zero_sub, zero_add, neg_zero, neg_neg]
+    star_zero, star_neg, mul_zero, zero_mul,
+    sub_zero, add_zero, zero_add, neg_neg]
   -- Goal: ((0, qj*qk) - (0, qk*star(qj)), (0, -qk*star(qk)) + (0, -qj*qj)) = 0
   -- Evaluate: qj*qk = i, star(qj) = -qj, qk*(-qj) = i, so first pair cancels.
   -- -qk*star(qk) = -qk*(-qk) = qk*qk = -1, -qj*qj = -(-1) = 1, sum = 0.
   -- Evaluate star and mul on qj, qk using ext + norm_num on each component
   -- Evaluate all quaternion products and star by ext to ℝ components
   have h1 : qj * qk = (⟨0, 1, 0, 0⟩ : Quaternion ℝ) := by
-    ext <;> simp [qj, qk, mul_comm] <;> ring
+    ext <;> simp [qj, qk, mul_comm]
   have h2 : qk * star qj = (⟨0, 1, 0, 0⟩ : Quaternion ℝ) := by
-    ext <;> simp [qj, qk, star, mul_comm] <;> ring
+    ext <;> simp [qj, qk, star, mul_comm]
   have hkk : qk * qk = (⟨-1, 0, 0, 0⟩ : Quaternion ℝ) := by
-    ext <;> simp [qk, mul_comm] <;> ring
+    ext <;> simp [qk, mul_comm]
   have hjj : qj * qj = (⟨-1, 0, 0, 0⟩ : Quaternion ℝ) := by
-    ext <;> simp [qj, mul_comm] <;> ring
+    ext <;> simp [qj, mul_comm]
   have hsk : star qk = -qk := by ext <;> simp [qk, star]
   have h3 : (-qk) * star qk = -(⟨1, 0, 0, 0⟩ : Quaternion ℝ) := by
     rw [show star qk = -qk from hsk, show (-qk) * (-qk) = qk * qk from neg_mul_neg _ _]
@@ -552,7 +562,7 @@ theorem zero_divisor_exists :
   -- This equals -(0, ⟨1,...⟩) + (0, ⟨1,...⟩) = 0 by neg_add_cancel
   -- Need: (0, -x) = -(0, x) for CayleyDickson negation
   -- Rewrite h3/h4 into the goal, then show the result is 0
-  simp only [h1, h2, h3, h4, sub_self]
+  simp only [sub_self]
   -- Goal: (0, (0, -⟨1,...⟩) + (0, ⟨1,...⟩)) = 0
   -- The inner octonion sum: (0, -x) + (0, x) = 0 by neg_add_cancel on components
   -- Nuclear: decompose the entire Sedenion to 16 ℝ components
