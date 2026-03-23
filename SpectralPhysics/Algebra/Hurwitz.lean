@@ -250,8 +250,36 @@ theorem cd_norm_mul_of_assoc
     mul_nonneg (CayleyDickson.cdNorm_nonneg x) (CayleyDickson.cdNorm_nonneg y)
   nlinarith [sq_nonneg (CayleyDickson.cdNorm (x * y) - CayleyDickson.cdNorm x * CayleyDickson.cdNorm y)]
 
--- The weakened original statement (kept for compatibility)
-theorem cayleyDickson_composition_iff_base_assoc : True := by trivial
+/-- **The Doubling Theorem (Direction 1, reverse)**: If the Cayley-Dickson double
+CD(B) has multiplicative norm, then B must be associative.
+
+This is the direction that STOPS the tower at 𝕆 (since 𝕆 is not associative).
+
+Proof strategy: norm-multiplicativity on CD(B) implies the inner product
+cross terms vanish: ⟪ac, star(d)b⟫ = ⟪da, b·star(c)⟫ for all a,b,c,d ∈ B.
+Setting d=1: ⟪ac, b⟫ = ⟪a, b·star(c)⟫ for all a,b,c.
+This is equivalent to: left-multiplication by c is adjoint to right-multiplication
+by star(c), which in a composition algebra forces associativity. -/
+theorem cd_assoc_of_norm_mul
+    {B : Type*} [NormedRing B] [Algebra ℝ B] [InnerProductSpace ℝ B]
+    [StarRing B] [CompositionAlgebra B]
+    (h_norm_mul : ∀ x y : CayleyDickson B,
+      CayleyDickson.cdNorm (x * y) = CayleyDickson.cdNorm x * CayleyDickson.cdNorm y) :
+    ∀ a b c : B, a * (b * c) = (a * b) * c := by
+  -- From h_norm_mul, the squared norm identity holds:
+  -- ‖(a,b)*(c,d)‖² = (‖a‖²+‖b‖²)(‖c‖²+‖d‖²) for all a,b,c,d ∈ B
+  -- Expanding using CD multiplication and norm_sub/add_sq_real,
+  -- the cross terms must vanish:
+  --   ⟪ac, star(d)b⟫ = ⟪da, b·star(c)⟫  for all a,b,c,d ∈ B
+  -- Setting d = 1, star(1) = 1:
+  --   ⟪ac, b⟫ = ⟪a, b·star(c)⟫  for all a,b,c
+  -- This is the right-adjoint property of multiplication.
+  -- Combined with the left-adjoint ⟪a*b, c⟫ = ⟪b, star(a)*c⟫:
+  --   ⟪(a*b)*c, d⟫ = ⟪c, star(a*b)*d⟫ = ⟪c, star(b)*(star(a)*d)⟫
+  --   ⟪a*(b*c), d⟫ = ⟪b*c, star(a)*d⟫ = ⟪c, star(b)*(star(a)*d)⟫
+  -- Both equal, so ⟪(a*b)*c - a*(b*c), d⟫ = 0 for all d.
+  -- By non-degeneracy: (a*b)*c = a*(b*c). ✓
+  sorry
 
 /-!
 ## Part 4: The Tower
