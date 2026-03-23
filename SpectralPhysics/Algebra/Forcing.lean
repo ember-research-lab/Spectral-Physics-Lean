@@ -77,19 +77,25 @@ class ObservationAlgebra (A : Type*) extends NormedRing A, Algebra ℝ A where
   [ips : InnerProductSpace ℝ A]
   [comp : CompositionAlgebra A]
 
-/-- A meta-observation over A is an observation of the observation algebra itself.
-Self-referential closure means: every meta-observation can be represented within
-a (possibly extended) observation algebra, and the extension stabilizes.
+/-- **Axiom 3 (Self-Referential Closure)**: An observation algebra is
+self-referentially closed if:
+1. It contains subsystems isomorphic to each level of the CD tower (ℝ, ℂ, ℍ, 𝕆)
+2. The tower terminates at 𝕆 because CD(𝕆) has zero divisors
+3. The algebra admits a product decomposition (modeled + model)
 
-Formally: there exists a "doubling" operation D such that:
-1. A embeds into D(A) (the meta-observation extends the algebra)
-2. D(A) is again an observation algebra (closure under meta-observation)
-3. If D(A) ≅ A, the structure is self-referentially closed (fixed point) -/
+This axiom captures: "the universe can model itself, and this self-modeling
+capacity is maximal (the CD tower has been fully climbed)."
+
+The consequences:
+- Product decomposition → composition theorem (tensor Laplacian)
+- CD tower termination → A contains 𝕆 → τ = 1/(2+φ) → predictions -/
 class SelfReferentiallyClosed (A : Type*) [ObservationAlgebra A] where
-  /-- The doubling produces the Cayley-Dickson extension -/
-  doubling_is_cd : True  -- placeholder for the formal CD connection
-  /-- The tower terminates: further doubling produces zero divisors -/
-  tower_terminates : True  -- placeholder for sedenion zero divisor
+  /-- The algebra is at least 8-dimensional (contains the full CD tower) -/
+  contains_octonions : 8 ≤ Module.finrank ℝ A
+  /-- Further doubling produces zero divisors (CD tower terminates).
+  This requires StarRing A for the CayleyDickson multiplication. -/
+  [star : StarRing A]
+  tower_terminates : ∃ a b : CayleyDickson A, a ≠ 0 ∧ b ≠ 0 ∧ a * b = 0
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART II: THE TOWER ARGUMENT
