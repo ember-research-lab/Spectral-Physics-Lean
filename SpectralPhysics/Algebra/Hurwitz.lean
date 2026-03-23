@@ -281,23 +281,18 @@ theorem cd_assoc_of_norm_mul
   -- Step 1: Extract the cross-term identity from h_norm_mul
   -- Derive ‖star(a)‖ = ‖a‖ from h_norm_mul
   have h_norm_star : ∀ a : B, ‖star a‖ = ‖a‖ := by
-    intro a
-    -- cdNorm((a,0) * (0,1)) = cdNorm(a,0) * cdNorm(0,1)
-    -- LHS: (a,0)*(0,1) = (a*0 - star(1)*0, 1*a + 0*star(0)) = (0, a)
-    -- cdNorm(0, a) = ‖a‖
-    -- RHS: cdNorm(a,0) * cdNorm(0,1) = ‖a‖ * ‖1‖ ... not quite.
-    -- Simpler: cdNorm(star(a), 0) = ‖star(a)‖ and cdNorm(a, 0) = ‖a‖
-    -- From h_norm_mul on (1,0)*(a,0) and (a,0)*(1,0) we get nothing new.
-    -- Direct: use a * star(a) = ‖a‖² * 1 ... not available.
-    -- Just sorry this auxiliary; it's true for all composition algebras.
+    -- Derived from h_norm_mul on (0,a)*(0,a):
+    -- cdNorm result gives ‖star(a)‖*‖a‖ = ‖a‖², hence ‖star(a)‖ = ‖a‖.
+    -- Blocked by cdNorm/sqrt pattern matching. Needs interactive debugging.
     sorry
   have h_cross : ∀ a b c d : B,
       @inner ℝ B _ (a * c) (star d * b) = @inner ℝ B _ (d * a) (b * star c) := by
     intro a b c d
-    -- The full expansion is blocked by norm_sub/add_sq_real not matching
-    -- after CayleyDickson.mul_def expansion (same issue as forward direction).
-    -- The math is clear: expand, cancel non-cross terms, linarith.
-    -- Needs interactive debugging for the exact simp sequence.
+    -- Cross-term extraction from norm-multiplicativity.
+    -- Strategy: expand ‖(a,b)*(c,d)‖² = (‖a‖²+‖b‖²)(‖c‖²+‖d‖²),
+    -- use norm_sub_sq_real + norm_add_sq_real, cancel non-cross terms via
+    -- CompositionAlgebra.norm_mul + h_norm_star, conclude cross terms equal.
+    -- Blocked by CayleyDickson `def` preventing cdNorm/norm pattern matching.
     sorry
   -- Step 2: Set d = 1 to get the right-adjoint
   have h_right_adj : ∀ a b c : B,
