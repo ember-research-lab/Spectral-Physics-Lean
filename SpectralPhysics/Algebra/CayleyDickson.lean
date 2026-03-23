@@ -74,6 +74,11 @@ def fst (x : CayleyDickson A) : A := x.1
 /-- Second component (the "imaginary" part relative to the base) -/
 def snd (x : CayleyDickson A) : A := x.2
 
+@[simp] theorem mk_fst (a b : A) : (mk a b : CayleyDickson A).1 = a := rfl
+@[simp] theorem mk_snd (a b : A) : (mk a b : CayleyDickson A).2 = b := rfl
+@[simp] theorem pair_fst (a b : A) : ((a, b) : CayleyDickson A).1 = a := rfl
+@[simp] theorem pair_snd (a b : A) : ((a, b) : CayleyDickson A).2 = b := rfl
+
 /-- Embedding of the base algebra: a ↦ (a, 0) -/
 def embed (a : A) : CayleyDickson A := (a, 0)
 
@@ -90,6 +95,12 @@ instance : Mul (CayleyDickson A) where
 theorem mul_def (x y : CayleyDickson A) :
     x * y = (x.1 * y.1 - star y.2 * x.2, y.2 * x.1 + x.2 * star y.1) :=
   rfl
+
+@[simp] theorem mul_fst (x y : CayleyDickson A) :
+    (x * y).1 = x.1 * y.1 - star y.2 * x.2 := rfl
+
+@[simp] theorem mul_snd (x y : CayleyDickson A) :
+    (x * y).2 = y.2 * x.1 + x.2 * star y.1 := rfl
 
 /-- The embedding preserves multiplication -/
 theorem embed_mul (a b : A) : embed a * embed b = embed (a * b) := by

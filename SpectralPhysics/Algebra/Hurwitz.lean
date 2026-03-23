@@ -288,10 +288,12 @@ theorem cd_assoc_of_norm_mul
       -- cdNorm(-star(a)*a, 0) = ‖star(a)*a‖ = ‖star(a)‖*‖a‖
       -- cdNorm(0,a) = ‖a‖
       -- h_norm_mul: ‖star(a)‖*‖a‖ = ‖a‖*‖a‖, so ‖star(a)‖ = ‖a‖
-      have h := h_norm_mul ((0 : B), a) ((0 : B), a)
-      -- Simplify the CD product (0,a)*(0,a)
-      -- Unfold cdNorm and CD mul, simplify to ‖star(a)‖*‖a‖ = ‖a‖²
-      -- Needs interactive goal state after the first simp to match sqrt patterns.
+      -- From h_norm_mul on (0,a)*(0,a):
+      -- (0,a)*(0,a) = (-star(a)*a, 0), cdNorm = ‖star(a)*a‖ = ‖star(a)‖*‖a‖
+      -- cdNorm(0,a) = ‖a‖, so ‖star(a)‖*‖a‖ = ‖a‖², hence ‖star(a)‖ = ‖a‖.
+      -- Blocked by CayleyDickson `def` preventing mul_fst/cdNorm simp from
+      -- matching (NonAssocRing Mul may shadow instMul). Needs mul_fst/mul_snd
+      -- @[simp] lemmas to fire through the NonAssocRing Mul instance.
       sorry
   have h_cross : ∀ a b c d : B,
       @inner ℝ B _ (a * c) (star d * b) = @inner ℝ B _ (d * a) (b * star c) := by
