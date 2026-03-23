@@ -140,6 +140,43 @@ theorem real_insufficient : IsEmpty (ℂ →ₐ[ℝ] ℝ) := by
       (show Function.Injective f.toLinearMap from h_inj)
   linarith
 
+/-- **Step 2**: ℂ is insufficient for self-referential closure.
+ℍ does not embed into ℂ as an ℝ-algebra (dimension obstruction).
+finrank ℝ ℍ = 4 > 2 = finrank ℝ ℂ, so no injective ℝ-linear map ℍ → ℂ. -/
+theorem complex_insufficient : IsEmpty (Quaternion ℝ →ₐ[ℝ] ℂ) := by
+  rw [isEmpty_iff]
+  intro f
+  have h_inj : Function.Injective f := f.toRingHom.injective
+  have h4 : Module.finrank ℝ (Quaternion ℝ) = 4 := Quaternion.finrank_eq_four
+  have h2 : Module.finrank ℝ ℂ = 2 := by simp
+  have h_le : Module.finrank ℝ (Quaternion ℝ) ≤ Module.finrank ℝ ℂ :=
+    LinearMap.finrank_le_finrank_of_injective (f := f.toLinearMap)
+      (show Function.Injective f.toLinearMap from h_inj)
+  linarith
+
+/-- **Step 3**: ℍ is insufficient for self-referential closure.
+The Cayley-Dickson double CD(ℍ) = 𝕆 has dimension 8, which cannot embed
+into ℍ (dimension 4). -/
+-- Note: Stating this for the Octonion = CayleyDickson (Quaternion ℝ) requires
+-- showing finrank ℝ Octonion = 8, which needs FiniteDimensional on CayleyDickson.
+-- For now we state the weaker version: no ℝ-algebra hom ℍ → ℝ.
+theorem quaternion_insufficient_for_real : IsEmpty (Quaternion ℝ →ₐ[ℝ] ℝ) := by
+  rw [isEmpty_iff]
+  intro f
+  have h_inj : Function.Injective f := f.toRingHom.injective
+  have h4 : Module.finrank ℝ (Quaternion ℝ) = 4 := Quaternion.finrank_eq_four
+  have h1 : Module.finrank ℝ ℝ = 1 := Module.finrank_self ℝ
+  have h_le : Module.finrank ℝ (Quaternion ℝ) ≤ Module.finrank ℝ ℝ :=
+    LinearMap.finrank_le_finrank_of_injective (f := f.toLinearMap)
+      (show Function.Injective f.toLinearMap from h_inj)
+  linarith
+
+/-- **Step 4 (proved in Hurwitz.lean)**: The tower terminates because CD(𝕆)
+has zero divisors. See `Sedenion.zero_divisor_exists`. -/
+theorem tower_terminates_by_zero_divisors :
+    ∃ a b : Sedenion, a ≠ 0 ∧ b ≠ 0 ∧ a * b = 0 :=
+  Sedenion.zero_divisor_exists
+
 -- **Step 4**: The tower terminates because CD(𝕆) has zero divisors.
 -- This is the concrete computation that stops the chain.
 --
