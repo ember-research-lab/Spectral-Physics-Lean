@@ -269,10 +269,8 @@ instance : CompositionAlgebra ℂ where
   norm_mul := norm_mul
 
 -- Level 2: ℍ ≅ CD(ℂ) is a composition algebra
--- (Mathlib has Quaternion; we need to verify norm_mul)
--- instance : CompositionAlgebra ℍ where
---   norm_mul := Quaternion.norm_mul
--- TODO: verify Mathlib API for quaternion norms
+-- Proved in Forcing.lean using Mathlib.Analysis.Quaternion
+-- (import kept separate to avoid typeclass diamond with CayleyDickson)
 
 -- Level 3: 𝕆 ≅ CD(ℍ) is a composition algebra
 -- (Must be built from CD construction)
@@ -381,14 +379,14 @@ and Hurwitz's theorem shows no other path to dimension > 8 exists. -/
 -- b = e₆ - e₁₅ = ((0, qj), (0, -qk))
 -- Sedenion = (Quaternion ℝ × Quaternion ℝ) × (Quaternion ℝ × Quaternion ℝ)
 
-private def qj : Quaternion ℝ := ⟨0, 0, 1, 0⟩
-private def qk : Quaternion ℝ := ⟨0, 0, 0, 1⟩
+private noncomputable def qj : Quaternion ℝ := ⟨0, 0, 1, 0⟩
+private noncomputable def qk : Quaternion ℝ := ⟨0, 0, 0, 1⟩
 
 /-- The first element of the Moreno zero-divisor pair: e₃ + e₁₀ -/
-def moreno_a : Sedenion := ((qk, 0), ((qj, 0) : Octonion))
+noncomputable def moreno_a : Sedenion := ((qk, 0), ((qj, 0) : Octonion))
 
 /-- The second element of the Moreno zero-divisor pair: e₆ - e₁₅ -/
-def moreno_b : Sedenion := (((0, qj) : Octonion), ((0, -qk) : Octonion))
+noncomputable def moreno_b : Sedenion := (((0, qj) : Octonion), ((0, -qk) : Octonion))
 
 theorem moreno_a_ne_zero : moreno_a ≠ 0 := by
   intro h

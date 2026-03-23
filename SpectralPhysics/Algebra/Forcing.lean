@@ -8,6 +8,7 @@ import SpectralPhysics.Algebra.CayleyDickson
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.Algebra.Algebra.Bilinear
+import Mathlib.Analysis.Quaternion
 
 /-!
 # The Division Algebra Forcing Theorem
@@ -139,6 +140,10 @@ Proof:
 The obstruction: cayleyDickson_composition_iff_base_assoc shows that
 CD(A) is a composition algebra iff A is associative. The octonions
 are not associative, so the tower terminates. -/
+-- Level 2: ℍ is a composition algebra (from Mathlib.Analysis.Quaternion)
+noncomputable instance : CompositionAlgebra (Quaternion ℝ) where
+  norm_mul := norm_mul
+
 theorem tower_terminates_at_octonions :
     -- ℝ and ℂ are composition algebras (proved in Hurwitz.lean)
     CompositionAlgebra ℝ ∧ CompositionAlgebra ℂ := by
