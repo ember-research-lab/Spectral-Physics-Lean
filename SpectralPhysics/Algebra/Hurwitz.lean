@@ -373,10 +373,17 @@ theorem zero_divisor_exists :
   -- Need: (0, -x) = -(0, x) for CayleyDickson negation
   -- Rewrite h3/h4 into the goal, then show the result is 0
   simp only [h1, h2, h3, h4, sub_self]
-  -- Remaining: (0, (0, -⟨1,...⟩) + (0, ⟨1,...⟩)) = 0
-  -- = (0, (0, 0)) = 0 since -1+1=0 componentwise
-  -- CayleyDickson Prod arithmetic blocks `change` and `neg_add_cancel`.
-  -- Needs interactive `set_option pp.all true` to see exact term.
-  sorry
+  -- Goal: (0, (0, -⟨1,...⟩) + (0, ⟨1,...⟩)) = 0
+  -- The inner octonion sum: (0, -x) + (0, x) = 0 by neg_add_cancel on components
+  -- Nuclear: decompose the entire Sedenion to 16 ℝ components
+  refine CayleyDickson.ext ?_ ?_
+  · -- First octonion: 0 - 0 = 0 (already done by sub_self, should be rfl)
+    rfl
+  · -- Second octonion: (0,-x) + (0,x) = 0
+    refine CayleyDickson.ext ?_ ?_
+    · -- First quaternion component: 0 + 0 = 0
+      show (0 : Quaternion ℝ) + 0 = 0; simp
+    · -- Second quaternion component: -⟨1,...⟩ + ⟨1,...⟩ = 0
+      exact neg_add_cancel _
 
 end Sedenion
