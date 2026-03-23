@@ -288,13 +288,53 @@ theorem cd_assoc_of_norm_mul
       -- cdNorm(-star(a)*a, 0) = ‖star(a)*a‖ = ‖star(a)‖*‖a‖
       -- cdNorm(0,a) = ‖a‖
       -- h_norm_mul: ‖star(a)‖*‖a‖ = ‖a‖*‖a‖, so ‖star(a)‖ = ‖a‖
-      -- From h_norm_mul on (0,a)*(0,a):
-      -- (0,a)*(0,a) = (-star(a)*a, 0), cdNorm = ‖star(a)*a‖ = ‖star(a)‖*‖a‖
-      -- cdNorm(0,a) = ‖a‖, so ‖star(a)‖*‖a‖ = ‖a‖², hence ‖star(a)‖ = ‖a‖.
-      -- Blocked by CayleyDickson `def` preventing mul_fst/cdNorm simp from
-      -- matching (NonAssocRing Mul may shadow instMul). Needs mul_fst/mul_snd
-      -- @[simp] lemmas to fire through the NonAssocRing Mul instance.
-      sorry
+      -- Use h_norm_mul on (a, 0) * (star a, 0):
+      -- Product: (a * star a - 0, 0 + 0) = (a * star a, 0)
+      -- cdNorm(a * star a, 0) = ‖a * star a‖ = ‖a‖ * ‖star a‖
+      -- cdNorm(a, 0) = ‖a‖, cdNorm(star a, 0) = ‖star a‖
+      -- So ‖a‖ * ‖star a‖ = ‖a‖ * ‖star a‖ -- tautology!
+      -- Better: use (a, 0) * (0, 1):
+      -- Product: (a*0 - star(1)*0, 1*a + 0*star(0)) = (0, a)
+      -- cdNorm(0, a) = ‖a‖
+      -- cdNorm(a, 0) * cdNorm(0, 1) = ‖a‖ * 1 = ‖a‖ ... also tautology.
+      -- The RIGHT approach: use h_norm_mul on (star a, 0) * (a, 0):
+      -- Product.1 = star(a)*a - 0 = star(a)*a
+      -- cdNorm(star(a)*a, 0) = ‖star(a)*a‖ = ‖star(a)‖*‖a‖
+      -- cdNorm(star(a), 0) * cdNorm(a, 0) = ‖star(a)‖ * ‖a‖
+      -- Still tautology! Need asymmetric approach.
+      -- USE: Compare cdNorm(a, 0) with cdNorm(star a, 0) directly.
+      -- cdNorm(a, 0) = √(‖a‖² + 0) = ‖a‖
+      -- cdNorm(star a, 0) = √(‖star a‖² + 0) = ‖star a‖
+      -- From h_norm_mul on (a,0)*(1,0) = (a,0): ‖a‖ = ‖a‖*1 -- tautology.
+      -- The real trick: use h_norm_mul where star appears in the PRODUCT.
+      -- (1, 0) * (0, a): product = (0 - star(a)*0, a*1 + 0*star(0)) = (0, a)
+      -- cdNorm = ‖a‖, and cdNorm(1,0)*cdNorm(0,a) = 1*‖a‖ = ‖a‖. Tautology.
+      -- (0, 1) * (a, 0): product = (0*a - star(0)*1, 0*0 + 1*star(a)) = (0, star(a))
+      -- cdNorm(0, star(a)) = ‖star(a)‖
+      -- cdNorm(0,1)*cdNorm(a,0) = 1*‖a‖ = ‖a‖
+      -- So ‖star(a)‖ = ‖a‖! ✓
+      have h := h_norm_mul ((0 : B), (1 : B)) ((a : B), (0 : B))
+      -- Evaluate the product (0,1)*(a,0)
+      -- (0,1)*(a,0).1 = 0*a - star(0)*1 = 0
+      -- (0,1)*(a,0).2 = 0*0 + 1*star(a) = star(a)
+      -- cdNorm(0, star(a)) = ‖star(a)‖
+      -- cdNorm(0, 1) = 1, cdNorm(a, 0) = ‖a‖
+      -- So ‖star(a)‖ = 1 * ‖a‖ = ‖a‖
+      have h_prod : ((0 : B), (1 : B)) * ((a : B), (0 : B)) =
+          ((0 : B), star a) := by
+        -- The NonAssocRing Mul and instMul should be definitionally equal.
+        -- Use `rfl` after `show` with the explicit computation:
+        apply CayleyDickson.ext
+        · -- .1: 0*a - star(0)*1 = 0 - 0 = 0 ✓
+          simp [star_zero]
+        · -- .2: 0*0 + 1*star(a) = star(a) ✓
+          simp
+      -- Rewrite h_prod then unfold cdNorm all at once
+      simp only [h_prod, CayleyDickson.cdNorm, norm_zero, norm_one,
+        mul_zero, zero_mul, add_zero, zero_add,
+        Real.sqrt_one, Real.sqrt_sq (norm_nonneg _)] at h
+      -- h should now be: ‖star a‖ = 1 * ‖a‖ or ‖star a‖ = ‖a‖
+      linarith
   have h_cross : ∀ a b c d : B,
       @inner ℝ B _ (a * c) (star d * b) = @inner ℝ B _ (d * a) (b * star c) := by
     intro a b c d

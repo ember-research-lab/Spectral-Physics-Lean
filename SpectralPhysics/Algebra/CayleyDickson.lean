@@ -89,7 +89,7 @@ section Multiplication
 
 /-- Cayley-Dickson multiplication:
   `(a, b) * (c, d) = (a * c - star d * b, d * a + b * star c)` -/
-instance : Mul (CayleyDickson A) where
+instance (priority := 1000) : Mul (CayleyDickson A) where
   mul x y := (x.1 * y.1 - star y.2 * x.2, y.2 * x.1 + x.2 * star y.1)
 
 theorem mul_def (x y : CayleyDickson A) :
@@ -210,6 +210,8 @@ theorem cd_mul_neg (x y : CayleyDickson A) :
 
 /-- The NonAssocRing instance for CayleyDickson. -/
 instance instNonAssocRing : NonAssocRing (CayleyDickson A) where
+  mul x y := (x.1 * y.1 - star y.2 * x.2, y.2 * x.1 + x.2 * star y.1)
+  one := (1, 0)
   add_assoc a b c := Prod.ext (add_assoc _ _ _) (add_assoc _ _ _)
   zero_add a := Prod.ext (zero_add _) (zero_add _)
   add_zero a := Prod.ext (add_zero _) (add_zero _)
