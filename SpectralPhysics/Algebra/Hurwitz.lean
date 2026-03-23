@@ -177,6 +177,31 @@ Remaining: ‖a‖²‖c‖² + ‖d‖²‖b‖² + ‖d‖²‖a‖² + ‖b�
 USE: inner product properties, norm_mul on B, associativity hypothesis,
   then ring/linarith to close.
 -/
+/-- **The Doubling Theorem (Direction 2)**: If B is associative and has
+multiplicative norm, then the Cayley-Dickson double CD(B) also has
+multiplicative norm (in the Euclidean sense: ‖(a,b)‖² = ‖a‖² + ‖b‖²).
+
+This is the key step in building the CD tower: ℝ→ℂ→ℍ→𝕆.
+The converse (Direction 1: norm-multiplicative CD(B) → B associative)
+is what STOPS the tower at 𝕆. -/
+theorem cd_norm_mul_of_assoc
+    {B : Type*} [NormedRing B] [Algebra ℝ B] [InnerProductSpace ℝ B]
+    [StarRing B] [CompositionAlgebra B]
+    (h_assoc : ∀ a b c : B, a * (b * c) = (a * b) * c) :
+    ∀ x y : CayleyDickson B,
+      CayleyDickson.cdNorm (x * y) = CayleyDickson.cdNorm x * CayleyDickson.cdNorm y := by
+  -- STRATEGY: Show ‖xy‖² = ‖x‖²·‖y‖² where ‖(a,b)‖² = ‖a‖² + ‖b‖².
+  -- Expand LHS = ‖ac - star(d)b‖² + ‖da + b·star(c)‖²
+  -- = ‖ac‖² + ‖star(d)b‖² - 2Re⟨ac, star(d)b⟩ + ‖da‖² + ‖b·star(c)‖² + 2Re⟨da, b·star(c)⟩
+  -- The cross terms cancel by associativity (the KEY step):
+  --   Re⟨ac, star(d)b⟩ = Re⟨d(ac), b⟩ = Re⟨(da)c, b⟩  (using h_assoc)
+  --   Re⟨da, b·star(c)⟩ = Re⟨(da)c, b⟩                  (adjoint of right-star(c))
+  -- So -2Re⟨...⟩ + 2Re⟨...⟩ = 0.
+  -- Remaining: ‖a‖²‖c‖² + ‖d‖²‖b‖² + ‖d‖²‖a‖² + ‖b‖²‖c‖²
+  --          = (‖a‖²+‖b‖²)(‖c‖²+‖d‖²) = ‖x‖²·‖y‖²  ✓
+  sorry
+
+-- The weakened original statement (kept for compatibility)
 theorem cayleyDickson_composition_iff_base_assoc : True := by trivial
 
 /-!

@@ -228,6 +228,24 @@ section NormSquared
 noncomputable def normSq [NormedAddCommGroup A] (x : CayleyDickson A) : ℝ :=
   ‖x.1‖^2 + ‖x.2‖^2
 
+/-- The Euclidean norm on CayleyDickson: ‖(a,b)‖ = √(‖a‖² + ‖b‖²) -/
+noncomputable def cdNorm [NormedAddCommGroup A] (x : CayleyDickson A) : ℝ :=
+  Real.sqrt (‖x.1‖^2 + ‖x.2‖^2)
+
+theorem cdNorm_nonneg [NormedAddCommGroup A] (x : CayleyDickson A) :
+    0 ≤ cdNorm x :=
+  Real.sqrt_nonneg _
+
+-- cdNorm_zero, cdNorm_eq_zero_iff, and cdNorm_sq are straightforward
+-- but blocked by CayleyDickson being `def` (not abbrev): (0 : CayleyDickson A).1
+-- doesn't reduce to (0 : A) automatically. Each proof needs `change` or `show`
+-- to bridge the type alias. The math is trivial (norm of zero = 0, etc.).
+
+/-- cdNorm² = ‖a‖² + ‖b‖² (by definition + sqrt²) -/
+theorem cdNorm_sq [NormedAddCommGroup A] (x : CayleyDickson A) :
+    cdNorm x ^ 2 = ‖x.1‖^2 + ‖x.2‖^2 :=
+  Real.sq_sqrt (by positivity : 0 ≤ ‖x.1‖ ^ 2 + ‖x.2‖ ^ 2)
+
 end NormSquared
 
 section Properties
