@@ -281,10 +281,18 @@ theorem cd_assoc_of_norm_mul
   -- Step 1: Extract the cross-term identity from h_norm_mul
   -- Derive ‖star(a)‖ = ‖a‖ from h_norm_mul
   have h_norm_star : ∀ a : B, ‖star a‖ = ‖a‖ := by
-    -- Derived from h_norm_mul on (0,a)*(0,a):
-    -- cdNorm result gives ‖star(a)‖*‖a‖ = ‖a‖², hence ‖star(a)‖ = ‖a‖.
-    -- Blocked by cdNorm/sqrt pattern matching. Needs interactive debugging.
-    sorry
+    intro a
+    by_cases ha : a = 0
+    · simp [ha]
+    · -- (0,a)*(0,a) = (-star(a)*a, 0) by CD mul
+      -- cdNorm(-star(a)*a, 0) = ‖star(a)*a‖ = ‖star(a)‖*‖a‖
+      -- cdNorm(0,a) = ‖a‖
+      -- h_norm_mul: ‖star(a)‖*‖a‖ = ‖a‖*‖a‖, so ‖star(a)‖ = ‖a‖
+      have h := h_norm_mul ((0 : B), a) ((0 : B), a)
+      -- Simplify the CD product (0,a)*(0,a)
+      -- Unfold cdNorm and CD mul, simplify to ‖star(a)‖*‖a‖ = ‖a‖²
+      -- Needs interactive goal state after the first simp to match sqrt patterns.
+      sorry
   have h_cross : ∀ a b c d : B,
       @inner ℝ B _ (a * c) (star d * b) = @inner ℝ B _ (d * a) (b * star c) := by
     intro a b c d
