@@ -348,12 +348,22 @@ theorem cd_assoc_of_norm_mul
   have h_cross : ∀ a b c d : B,
       @inner ℝ B _ (a * c) (star d * b) = @inner ℝ B _ (d * a) (b * star c) := by
     intro a b c d
-    -- Cross-term extraction from norm-multiplicativity.
-    -- Strategy: expand ‖(a,b)*(c,d)‖² = (‖a‖²+‖b‖²)(‖c‖²+‖d‖²),
-    -- use norm_sub_sq_real + norm_add_sq_real, cancel non-cross terms via
-    -- CompositionAlgebra.norm_mul + h_norm_star, conclude cross terms equal.
-    -- Blocked by CayleyDickson `def` preventing cdNorm/norm pattern matching.
-    sorry
+    -- From h_norm_mul: cdNorm(⟨a,b⟩*⟨c,d⟩)² = cdNorm⟨a,b⟩² * cdNorm⟨c,d⟩²
+    have h := h_norm_mul (CayleyDickson.mk a b) (CayleyDickson.mk c d)
+    have hsq : CayleyDickson.cdNorm (CayleyDickson.mk a b * CayleyDickson.mk c d) ^ 2 =
+        CayleyDickson.cdNorm (CayleyDickson.mk a b) ^ 2 *
+        CayleyDickson.cdNorm (CayleyDickson.mk c d) ^ 2 := by
+      have := congr_arg (· ^ 2) h; simp only [mul_pow] at this; exact this
+    -- Expand cdNorm² to component norms
+    simp only [CayleyDickson.cdNorm_sq] at hsq
+    -- Expand mul components via structure simp lemmas
+    simp only [CayleyDickson.mul_fst, CayleyDickson.mul_snd,
+      CayleyDickson.mk_fst, CayleyDickson.mk_snd] at hsq
+    -- Expand ‖u-v‖² and ‖u+v‖²
+    rw [norm_sub_sq_real, norm_add_sq_real] at hsq
+    -- Use composition norm and norm_star
+    simp only [sq, CompositionAlgebra.norm_mul, h_norm_star] at hsq
+    linarith
   -- Step 2: Set d = 1 to get the right-adjoint
   have h_right_adj : ∀ a b c : B,
       @inner ℝ B _ (a * c) b = @inner ℝ B _ a (b * star c) := by
