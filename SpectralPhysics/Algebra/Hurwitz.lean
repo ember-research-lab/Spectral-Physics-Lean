@@ -278,7 +278,90 @@ theorem cd_assoc_of_norm_mul
   --   ⟪(a*b)*c, d⟫ = ⟪c, star(a*b)*d⟫ = ⟪c, star(b)*(star(a)*d)⟫
   --   ⟪a*(b*c), d⟫ = ⟪b*c, star(a)*d⟫ = ⟪c, star(b)*(star(a)*d)⟫
   -- Both equal, so ⟪(a*b)*c - a*(b*c), d⟫ = 0 for all d.
-  -- By non-degeneracy: (a*b)*c = a*(b*c). ✓
+  -- Step 1: Extract the cross-term identity from h_norm_mul
+  have h_cross : ∀ a b c d : B,
+      @inner ℝ B _ (a * c) (star d * b) = @inner ℝ B _ (d * a) (b * star c) := by
+    -- From h_norm_mul: expand ‖(a,b)*(c,d)‖² = (‖a‖²+‖b‖²)(‖c‖²+‖d‖²)
+    -- The non-cross terms match (by norm_mul on B + norm_star).
+    -- The cross terms must therefore be equal.
+    -- Full proof needs norm_sub/add_sq_real expansion + norm_star derivation.
+    sorry
+  -- Step 2: Set d = 1 to get the right-adjoint
+  have h_right_adj : ∀ a b c : B,
+      @inner ℝ B _ (a * c) b = @inner ℝ B _ a (b * star c) := by
+    intro a b c
+    have := h_cross a b c 1
+    simp [star_one] at this
+    exact this
+  -- Step 3: Combine with left-adjoint to prove associativity
+  -- ⟪(ab)c, d⟫ = ⟪ab, d·star(star(c))⟫ = ⟪ab, d·c⟫...
+  -- Actually: use h_right_adj on (ab) and c:
+  --   ⟪(ab)·c, d⟫ = ⟪ab, d·star(c)⟫  [h_right_adj]
+  -- And: ⟪a·(bc), d⟫ = ⟪a, d·star(bc)⟫ [h_right_adj]
+  -- Hmm, these don't match directly. Need left-adjoint too.
+  -- Actually: from h_cross with d=1 we get h_right_adj.
+  -- From h_cross with b=1 we get: ⟪ac, star(d)⟫ = ⟪da, star(c)⟫
+  -- These two together give associativity via polarization.
+  --
+  -- Simpler: ⟪(ab)c, d⟫ = ⟪c, star(ab)·d⟫ [left-adj with a→ab]
+  --                       = ⟪c, star(b)·(star(a)·d)⟫ [star_mul]
+  -- ⟪a(bc), d⟫ = ⟪bc, star(a)·d⟫ [left-adj with a→a]
+  --             = ⟪c, star(b)·(star(a)·d)⟫ [left-adj with a→b]
+  -- Both equal ⟪c, star(b)·(star(a)·d)⟫! So (ab)c = a(bc) by non-degeneracy.
+  -- But wait — we don't have the left-adjoint as a hypothesis here.
+  -- We need to DERIVE it from h_norm_mul too.
+  --
+  -- Actually h_right_adj IS enough:
+  -- ⟪(ab)c, d⟫ = ⟪ab, d·star(c)⟫  [h_right_adj]
+  --             = ⟪a, (d·star(c))·star(b)⟫  [h_right_adj again]
+  -- ⟪a(bc), d⟫ = ⟪a, d·star(bc)⟫  [h_right_adj]
+  --             = ⟪a, d·(star(c)·star(b))⟫  [star_mul]
+  -- So we need: (d·star(c))·star(b) = d·(star(c)·star(b)) i.e. associativity of B.
+  -- CIRCULAR! We're trying to prove associativity using itself.
+  --
+  -- The correct route: use BOTH h_cross specializations.
+  -- Set b=1 in h_cross: ⟪ac, star(d)⟫ = ⟪da, star(c)⟫
+  -- This is the LEFT-adjoint: ⟪ac, e⟫ = ⟪a, ?⟫ with e = star(d), so d = star(e):
+  --   ⟪ac, e⟫ = ⟪star(e)·a, star(c)⟫ ... not quite standard form.
+  --
+  -- Better approach: from h_right_adj: ⟪ac, b⟫ = ⟪a, b·star(c)⟫
+  -- Take a → a, c → bc, b → d:
+  --   ⟪a(bc), d⟫ = ⟪a, d·star(bc)⟫ = ⟪a, d·(star(c)·star(b))⟫  [star_mul]
+  -- Take a → ab, c → c, b → d:
+  --   ⟪(ab)c, d⟫ = ⟪ab, d·star(c)⟫
+  -- Now apply h_right_adj to ⟪ab, d·star(c)⟫ with a→a, c→b, b→d·star(c):
+  --   ⟪ab, d·star(c)⟫ = ⟪a, (d·star(c))·star(b)⟫
+  -- So: ⟪(ab)c, d⟫ = ⟪a, (d·star(c))·star(b)⟫
+  -- And: ⟪a(bc), d⟫ = ⟪a, d·(star(c)·star(b))⟫
+  -- Equal iff (d·star(c))·star(b) = d·(star(c)·star(b)) for all b,c,d.
+  -- This IS associativity (on star(b), star(c), d) — still circular!
+  --
+  -- The issue: h_right_adj alone can't prove associativity without a
+  -- non-degeneracy argument that avoids associativity in the manipulation.
+  -- Need the inner product to be non-degenerate (which it is, being an IPS).
+  -- The non-circular proof uses the BILINEARITY of inner product directly:
+  --   From ⟪ac, b⟫ = ⟪a, b·star(c)⟫ for ALL a,b,c:
+  --   Fix c. The map L_c : a ↦ ac satisfies ⟪L_c(a), b⟫ = ⟪a, R_{star(c)}(b)⟫
+  --   where R_{star(c)}(b) = b·star(c). So L_c† = R_{star(c)}.
+  --   Similarly L_{bc} has L_{bc}† = R_{star(bc)} = R_{star(c)·star(b)}.
+  --   But L_{bc} = L_b ∘ L_c (this IS what we want to prove!).
+  --   The key: L_{bc}† = (L_b ∘ L_c)† = L_c† ∘ L_b† = R_{star(c)} ∘ R_{star(b)}.
+  --   And R_{star(c)} ∘ R_{star(b)}(x) = (x·star(b))·star(c)
+  --   while R_{star(c)·star(b)}(x) = x·(star(c)·star(b)) = x·star(bc).
+  --   For these to be equal for all x: (x·star(b))·star(c) = x·(star(b)·star(c)).
+  --   This is associativity of B applied to (x, star(b), star(c)).
+  --   So the proof IS circular in this formulation.
+  --
+  -- THE CORRECT NON-CIRCULAR PROOF (Baez 2002):
+  -- Use h_cross with SPECIFIC choices of a,b,c,d to extract a(bc) = (ab)c directly,
+  -- without going through adjoint operators.
+  -- Set a arbitrary, b = e_i (basis), c arbitrary, d = e_j (basis):
+  --   ⟪a·c, star(e_j)·e_i⟫ = ⟪e_j·a, e_i·star(c)⟫
+  -- Varying i,j: this forces a·c to be determined, yielding associativity
+  -- through the non-degeneracy of the inner product.
+  --
+  -- This requires a basis, which we have (FiniteDimensional).
+  -- For now, sorry with the strategy fully documented.
   sorry
 
 /-!
