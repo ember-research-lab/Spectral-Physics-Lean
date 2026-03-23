@@ -228,9 +228,29 @@ theorem cd_norm_mul_of_assoc
     -- With h_inner_assoc available, the cross terms reduce to:
     have h_cross : inner (𝕜 := ℝ) (x.1 * y.1) (star y.2 * x.2) =
         inner (𝕜 := ℝ) (y.2 * x.1) (x.2 * star y.1) := by
-      -- ⟪ac, d̄b⟫ = ⟪c, ā·d̄b⟫ = ⟪c, (ā·d̄)b⟫  (h_inner_assoc + h_assoc)
-      -- ⟪da, bc̄⟫ = ⟪a, d̄·bc̄⟫ = ⟪a, (d̄·b)c̄⟫  (h_inner_assoc + h_assoc)
-      -- These are equal by real_inner_comm + associativity manipulation.
+      -- Step 1: LHS = ⟪x.1*y.1, star(y.2)*x.2⟫
+      --   Use real_inner_comm then h_inner_assoc with a = star(y.2):
+      --   = ⟪star(y.2)*x.2, x.1*y.1⟫  (real_inner_comm)
+      --   = ⟪x.2, star(star(y.2)) * (x.1*y.1)⟫  (h_inner_assoc)
+      --   = ⟪x.2, y.2 * (x.1*y.1)⟫  (star_star)
+      --   = ⟪x.2, (y.2*x.1)*y.1⟫  (h_assoc)
+      -- LHS: apply h_inner_assoc to get ⟪y.1, star(x.1)*(star(y.2)*x.2)⟫
+      --       then h_assoc: = ⟪y.1, (star(x.1)*star(y.2))*x.2⟫
+      -- RHS: apply h_inner_assoc to get ⟪x.1, star(y.2)*(x.2*star(y.1))⟫
+      --       then h_assoc: = ⟪x.1, (star(y.2)*x.2)*star(y.1)⟫
+      -- Both equal ⟪y.1, star(x.1*y.2)*x.2⟫ by star_mul + real_inner_comm
+      -- Transform LHS:
+      -- Both sides equal ⟪x.2, (y.2*x.1)*y.1⟫ via:
+      -- LHS: ⟪ac, d̄b⟫ →[comm]→ ⟪d̄b, ac⟫ →[h_inner_assoc]→ ⟪b, d(ac)⟫
+      --       →[h_assoc]→ ⟪b, (da)c⟫
+      -- RHS: ⟪da, bc̄⟫ →[comm]→ ⟪bc̄, da⟫ →[h_inner_assoc]→ ⟪c̄, star(b)(da)⟫
+      --       ... this route needs star(b) which is complex.
+      -- The cleanest route uses h_inner_assoc on BOTH arguments:
+      -- LHS = ⟪c, ā(d̄b)⟫ = ⟪c, (ād̄)b⟫ = ⟪c, star(da)b⟫ = ⟪(da)c, b⟫
+      -- RHS = ⟪a, d̄(bc̄)⟫ = ⟪a, (d̄b)c̄⟫ = ⟪a·star(c̄), d̄b⟫ = ⟪ac, d̄b⟫ = LHS!
+      -- So the identity is reflexive after the right chain. But each step
+      -- requires exact pattern matching that Lean's rw struggles with.
+      -- Needs interactive session with set_option pp.all true.
       sorry
     linarith [h_cross]
   -- From squared equality + nonnegativity, get equality
