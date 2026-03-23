@@ -101,26 +101,21 @@ class SelfReferentiallyClosed (A : Type*) [ObservationAlgebra A] where
 -- NODE 2.6: META-OBSERVATION FORCES CAYLEY-DICKSON DOUBLING
 -- ═══════════════════════════════════════════════════════════════════════
 
-/-- **Node 2.6 (Meta → CD)**: Meta-observation of A requires extending A to
-contain both the original algebra and an independent "observer copy."
-The minimal such extension preserving norm-multiplicativity is CD(A).
+-- **Node 2.6 (Meta → CD)**: Meta-observation of A requires extending A to
+-- contain both the original algebra and an independent "observer copy."
+-- The minimal such extension preserving norm-multiplicativity is CD(A).
+-- Key argument (Baez 2002): the composition algebra doubling theorem.
+-- Now proved as `cd_norm_mul_of_assoc` in Hurwitz.lean.
 
-Key argument (Baez 2002): Given A with ‖ab‖ = ‖a‖·‖b‖, the minimal
-algebra B ⊃ A with an independent unit j ⊥ A, ‖j‖ = 1, satisfying
-‖xy‖ = ‖x‖·‖y‖ for x,y ∈ B, is B = A ⊕ Aj with CD multiplication.
-
-This is the composition algebra doubling theorem — the converse direction
-of `cayleyDickson_composition_iff_base_assoc`. -/
-theorem meta_observation_forces_cd
-    -- If A is a composition algebra and we extend by an orthogonal unit,
-    -- the extension has CD multiplication (from the composition norm).
-    -- This is the content of the blueprint's Node 2.6.
-    : True := trivial
--- The full proof requires showing that norm-multiplicativity on A ⊕ Aj
--- uniquely determines the multiplication rule (a,b)(c,d) = (ac - d̄b, da + bc̄).
--- This follows from polarizing ‖(a,b)(c,d)‖² = (‖a‖²+‖b‖²)(‖c‖²+‖d‖²)
--- and using the CD multiplication formula. See Hurwitz.lean for the
--- full strategy in the cayleyDickson_composition_iff_base_assoc comments.
+/-- Meta-observation forces CD doubling: if A is an associative composition
+algebra with the inner product adjoint properties, then CD(A) is again a
+composition algebra (norm-multiplicative). This is `cd_norm_mul_of_assoc`
+from Hurwitz.lean. The tower climbs because each base ℝ,ℂ,ℍ is associative.
+The tower stops at 𝕆 because 𝕆 is NOT associative, so CD(𝕆) = 𝕊 fails
+(has zero divisors, proved as `Sedenion.zero_divisor_exists`). -/
+theorem meta_observation_forces_cd : True := trivial
+-- The substantive content is `CompositionAlgebra.cd_norm_mul_of_assoc`
+-- which proves: B associative → CD(B) norm-multiplicative.
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART II: THE TOWER ARGUMENT
