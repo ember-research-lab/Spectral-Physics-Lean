@@ -166,18 +166,6 @@ theorem trace_formula (a c : A) :
   have := inner_mul_exchange a c (1 : A)
   simp only [mul_one] at this; linarith
 
-/-- The "alternative law" specialized: (xy)y = x(yy) = x·‖y‖²·1 when y ⊥ 1.
-From inner_mul_exchange: ⟪(xy)y, z⟫ + ⟪(xz)y, y⟫ = 2⟪x,1⟫⟪y²,z⟩... actually
-we derive it more directly from the norm identity. -/
-theorem mul_self_orthogonal (x y : A) (hy : @inner ℝ A _ y (1 : A) = 0) :
-    (x * y) * y = -(‖y‖ ^ 2 : ℝ) • x := by
-  -- Show ⟪z, (xy)y + ‖y‖²·x⟫ = 0 for all z, then inner product non-degeneracy.
-  -- From double_polarization with c=d=y: ⟪xy, zy⟫ + ⟪xy, zy⟫ = 2⟪x,z⟫‖y‖²
-  -- i.e., 2⟪xy, zy⟫ = 2⟪x,z⟫‖y‖² — but this is just inner_mul_left_eq! Not helpful directly.
-  -- Use inner_mul_exchange: ⟪(xy)·y, z⟫ + ⟪(xy)·z, y⟫ = 2⟪xy, 1⟫⟪y, z⟫
-  -- And trace_formula: ⟪xy, 1⟫ = 2⟪x,1⟫⟪y,1⟫ - ⟪x,y⟫ = -⟪x,y⟫ (using y ⊥ 1)
-  sorry
-
 /-- In a composition algebra, if a ⊥ 1 then a² = -‖a‖² • 1.
 
 Proof sketch: Compute ‖(a+1)²‖² = ‖a+1‖⁴ via composition.
@@ -233,6 +221,45 @@ theorem sq_orthogonal_eq_neg (a : A) (ha : @inner ℝ A _ a (1 : A) = 0) :
   have h_zero := norm_eq_zero.mp (by nlinarith [sq_nonneg ‖a * a + (‖a‖ ^ 2 : ℝ) • (1 : A)‖] :
     ‖a * a + (‖a‖ ^ 2 : ℝ) • (1 : A)‖ = 0)
   exact eq_neg_of_add_eq_zero_left h_zero
+
+/-- **Right-alternative law**: `(xy)y = -‖y‖²·x` when `y ⊥ 1`.
+Proof: ⟪(xy)y + ‖y‖²·x, w⟫ = 0 for all w, via inner_mul_exchange +
+double_polarization + trace_formula. The nonlinear cross terms cancel. -/
+theorem mul_self_orthogonal (x y : A) (hy : @inner ℝ A _ y (1 : A) = 0) :
+    (x * y) * y = -(‖y‖ ^ 2 : ℝ) • x := by
+  have h_sq := sq_orthogonal_eq_neg y hy
+  have h_txy : @inner ℝ A _ (x * y) (1 : A) = -@inner ℝ A _ x y := by
+    have h := trace_formula x y; rw [hy] at h; linarith
+  have h_xyy : @inner ℝ A _ (x * y) y = @inner ℝ A _ x (1 : A) * ‖y‖ ^ 2 := by
+    have h := inner_mul_exchange x y y; rw [real_inner_self_eq_norm_sq] at h; linarith
+  -- Show ⟪(xy)y + ‖y‖²·x, w⟫ = 0 for all w, then non-degeneracy
+  suffices h_all : ∀ w : A, @inner ℝ A _ ((x * y) * y + (‖y‖ ^ 2 : ℝ) • x) w = 0 by
+    have h0 := h_all ((x * y) * y + (‖y‖ ^ 2 : ℝ) • x)
+    rw [real_inner_self_eq_norm_sq] at h0
+    have h_norm := norm_eq_zero.mp
+      (by nlinarith [sq_nonneg ‖(x * y) * y + (‖y‖ ^ 2 : ℝ) • x‖] :
+       ‖(x * y) * y + (‖y‖ ^ 2 : ℝ) • x‖ = 0)
+    rw [neg_smul]; exact eq_neg_of_add_eq_zero_left h_norm
+  intro w
+  -- Expand: ⟪(xy)y + c•x, w⟫ = ⟪(xy)y, w⟫ + c*⟪x, w⟫
+  have h_smul : @inner ℝ A _ ((‖y‖ ^ 2 : ℝ) • x) w = ‖y‖ ^ 2 * @inner ℝ A _ x w := by
+    rw [inner_smul_left, show (starRingEnd ℝ) (‖y‖ ^ 2) = ‖y‖ ^ 2 from star_trivial _]
+  rw [inner_add_left, h_smul]
+  -- Goal: ⟪(xy)y, w⟫ + ‖y‖²·⟪x, w⟫ = 0
+  -- (I): inner_mul_exchange on (xy, y, w)
+  have h1 := inner_mul_exchange (x * y) y w; rw [h_txy] at h1
+  -- (II): double_polarization on (x, y, y, w) using y²=-(‖y‖²·1)
+  have h2 := double_polarization x y y w
+  rw [h_sq, inner_neg_right, inner_smul_right] at h2
+  -- (III): double_polarization on (xy, y, w, 1)
+  have h3 := double_polarization (x * y) y w (1 : A)
+  simp only [mul_one] at h3; rw [h_xyy] at h3
+  -- (IV): trace_formula for xw, scaled by ‖y‖²
+  have h4 : ‖y‖ ^ 2 * @inner ℝ A _ (x * w) (1 : A) =
+      ‖y‖ ^ 2 * (2 * @inner ℝ A _ x (1 : A) * @inner ℝ A _ w (1 : A) -
+      @inner ℝ A _ x w) := by congr 1; exact trace_formula x w
+  -- h1 + h2 - h3 + h4 = goal (nonlinear terms cancel)
+  linarith
 
 end CompositionAlgebra
 
