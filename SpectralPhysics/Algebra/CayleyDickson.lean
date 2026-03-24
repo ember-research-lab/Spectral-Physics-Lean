@@ -7,6 +7,8 @@ import Mathlib.Algebra.Star.Basic
 import Mathlib.Algebra.Order.Ring.Defs
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.Dimension.Constructions
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 
 /-!
 # The Cayley-Dickson Construction
@@ -283,5 +285,51 @@ instance instStarRing : StarRing (CayleyDickson A) where
   star_add x y := CayleyDickson.ext (star_add x.fst y.fst) (neg_add x.snd y.snd)
 
 end StarRingInstance
+
+section ModuleStructure
+
+variable [NonAssocRing A] [StarRing A]
+
+omit [NonAssocRing A] in
+instance instSMul {R : Type*} [SMul R A] : SMul R (CayleyDickson A) where
+  smul r x := ⟨r • x.fst, r • x.snd⟩
+
+omit [NonAssocRing A] in
+@[simp] theorem smul_fst' {R : Type*} [SMul R A] (r : R) (x : CayleyDickson A) :
+    (r • x).fst = r • x.fst := rfl
+
+omit [NonAssocRing A] in
+@[simp] theorem smul_snd' {R : Type*} [SMul R A] (r : R) (x : CayleyDickson A) :
+    (r • x).snd = r • x.snd := rfl
+
+instance instModuleReal [Module ℝ A] : Module ℝ (CayleyDickson A) where
+  one_smul x := CayleyDickson.ext (one_smul ℝ _) (one_smul ℝ _)
+  mul_smul r s x := CayleyDickson.ext (mul_smul r s _) (mul_smul r s _)
+  smul_zero r := CayleyDickson.ext (smul_zero r) (smul_zero r)
+  zero_smul x := CayleyDickson.ext (zero_smul ℝ _) (zero_smul ℝ _)
+  smul_add r x y := CayleyDickson.ext (smul_add r _ _) (smul_add r _ _)
+  add_smul r s x := CayleyDickson.ext (add_smul r s _) (add_smul r s _)
+
+/-- Linear equivalence between CayleyDickson A and A × A -/
+def toProdLEquiv [Module ℝ A] : CayleyDickson A ≃ₗ[ℝ] A × A where
+  toFun x := (x.fst, x.snd)
+  invFun p := ⟨p.1, p.2⟩
+  left_inv x := by ext <;> rfl
+  right_inv p := by ext <;> rfl
+  map_add' x y := by ext <;> rfl
+  map_smul' r x := by ext <;> rfl
+
+instance instFiniteDimensional [Module ℝ A] [FiniteDimensional ℝ A] :
+    FiniteDimensional ℝ (CayleyDickson A) :=
+  FiniteDimensional.of_injective (toProdLEquiv (A := A)).toLinearMap
+    (toProdLEquiv (A := A)).injective
+
+theorem finrank_eq [Module ℝ A] [FiniteDimensional ℝ A] :
+    Module.finrank ℝ (CayleyDickson A) = 2 * Module.finrank ℝ A := by
+  have h := (toProdLEquiv (A := A)).finrank_eq
+  rw [h, Module.finrank_prod]
+  ring
+
+end ModuleStructure
 
 end CayleyDickson

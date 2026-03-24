@@ -7,6 +7,7 @@ import SpectralPhysics.Algebra.CayleyDickson
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.Algebra.Quaternion
+import Mathlib.Analysis.Quaternion
 
 /-!
 # Hurwitz's Theorem (1898/1923)
@@ -48,14 +49,14 @@ satisfying `q(a * b) = q(a) * q(b)`.
 
 -- A composition algebra over ℝ: a finite-dimensional ℝ-algebra with identity,
 -- equipped with a positive-definite quadratic form that is multiplicative.
-class CompositionAlgebra (A : Type*) [NormedRing A] [Algebra ℝ A]
+class CompositionAlgebra (A : Type*) [NormedRing A]
     [InnerProductSpace ℝ A] where
   /-- The norm is multiplicative: ‖ab‖ = ‖a‖ · ‖b‖ -/
   norm_mul : ∀ a b : A, ‖a * b‖ = ‖a‖ * ‖b‖
 
 namespace CompositionAlgebra
 
-variable {A : Type*} [NormedRing A] [Algebra ℝ A] [InnerProductSpace ℝ A]
+variable {A : Type*} [NormedRing A] [InnerProductSpace ℝ A]
   [CompositionAlgebra A]
 
 -- In a composition algebra, ‖a‖² is multiplicative
@@ -81,12 +82,12 @@ Every composition algebra has a canonical involution (conjugation).
 
 namespace CompositionAlgebra
 
-variable {A : Type*} [NormedRing A] [Algebra ℝ A] [InnerProductSpace ℝ A]
+variable {A : Type*} [NormedRing A] [InnerProductSpace ℝ A]
   [CompositionAlgebra A]
 
 -- The conjugation map in a composition algebra satisfies `a * star a = ‖a‖² • 1`.
 -- This follows from polarizing the composition identity.
-omit [InnerProductSpace ℝ A] [CompositionAlgebra A] in
+omit [CompositionAlgebra A] in
 theorem mul_star_self' (a : A) [StarRing A]
     (h : ∀ x : A, x * star x = (‖x‖^2 : ℝ) • (1 : A)) :
     a * star a = (‖a‖^2 : ℝ) • (1 : A) := h a
@@ -102,6 +103,93 @@ theorem isometry_of_right_mul (a : A) (ha : ‖a‖ = 1) :
     ∀ b : A, ‖b * a‖ = ‖b‖ := by
   intro b
   rw [CompositionAlgebra.norm_mul, ha, mul_one]
+
+/-! ### Polarization Identities
+
+From the composition identity ‖ab‖² = ‖a‖²‖b‖², polarizing in a (replace a by a+a')
+gives ⟪ab, a'b⟫ = ⟪a, a'⟫ · ‖b‖². Polarizing in b gives ⟪ab, ab'⟫ = ‖a‖² · ⟪b, b'⟫. -/
+
+/-- Left polarization: ⟪ab, a'b⟫ = ⟪a, a'⟫ · ‖b‖² -/
+theorem inner_mul_left_eq (a a' b : A) :
+    @inner ℝ A _ (a * b) (a' * b) = @inner ℝ A _ a a' * ‖b‖ ^ 2 := by
+  have h1 : ‖(a + a') * b‖ ^ 2 = ‖a + a'‖ ^ 2 * ‖b‖ ^ 2 := normSq_mul _ _
+  rw [add_mul] at h1
+  have h2 : ‖a * b + a' * b‖ ^ 2 =
+      ‖a‖ ^ 2 * ‖b‖ ^ 2 + 2 * @inner ℝ A _ (a * b) (a' * b) + ‖a'‖ ^ 2 * ‖b‖ ^ 2 := by
+    rw [norm_add_sq_real, normSq_mul, normSq_mul]
+  have h3 : ‖a + a'‖ ^ 2 * ‖b‖ ^ 2 =
+      (‖a‖ ^ 2 + 2 * @inner ℝ A _ a a' + ‖a'‖ ^ 2) * ‖b‖ ^ 2 := by
+    congr 1; exact norm_add_sq_real a a'
+  nlinarith
+
+/-- Right polarization: ⟪ab, ab'⟫ = ‖a‖² · ⟪b, b'⟫ -/
+theorem inner_mul_right_eq (a b b' : A) :
+    @inner ℝ A _ (a * b) (a * b') = ‖a‖ ^ 2 * @inner ℝ A _ b b' := by
+  have h1 : ‖a * (b + b')‖ ^ 2 = ‖a‖ ^ 2 * ‖b + b'‖ ^ 2 := normSq_mul _ _
+  rw [mul_add] at h1
+  have h2 : ‖a * b + a * b'‖ ^ 2 =
+      ‖a‖ ^ 2 * ‖b‖ ^ 2 + 2 * @inner ℝ A _ (a * b) (a * b') + ‖a‖ ^ 2 * ‖b'‖ ^ 2 := by
+    rw [norm_add_sq_real, normSq_mul, normSq_mul]
+  have h3 : ‖a‖ ^ 2 * ‖b + b'‖ ^ 2 =
+      ‖a‖ ^ 2 * (‖b‖ ^ 2 + 2 * @inner ℝ A _ b b' + ‖b'‖ ^ 2) := by
+    congr 1; exact norm_add_sq_real b b'
+  nlinarith
+
+/-- In a composition algebra, if a ⊥ 1 then a² = -‖a‖² • 1.
+
+Proof sketch: Compute ‖(a+1)²‖² = ‖a+1‖⁴ via composition.
+Expand using (a+1)² = a²+2a+1 (associativity), ‖a+1‖² = ‖a‖²+1 (orthogonality).
+The t² coefficient gives ⟪a², 1⟫ = -‖a‖². Combined with ‖a²‖ = ‖a‖²
+(composition) and ⟪a², a⟫ = 0 (polarization), we get ‖a² + ‖a‖²·1‖ = 0. -/
+theorem sq_orthogonal_eq_neg (a : A) (ha : @inner ℝ A _ a (1 : A) = 0) :
+    a * a = -((‖a‖ ^ 2 : ℝ) • (1 : A)) := by
+  -- Handle trivial ring case (1 = 0) separately
+  by_cases h1 : (1 : A) = 0
+  · have : a = 0 := by rw [← one_mul a, h1, zero_mul]
+    subst this; simp [h1, norm_zero]
+  -- Main proof: ‖1‖ = 1 since ring is nontrivial
+  have h_one : ‖(1 : A)‖ = 1 := by
+    have hmul := CompositionAlgebra.norm_mul (1 : A) (1 : A)
+    rw [mul_one] at hmul
+    have hne : ‖(1 : A)‖ ≠ 0 := by rwa [norm_ne_zero_iff]
+    have : ‖(1 : A)‖ * (‖(1 : A)‖ - 1) = 0 := by nlinarith
+    rcases mul_eq_zero.mp this with h0 | h1
+    · exact absurd h0 hne
+    · linarith
+  have ha' : @inner ℝ A _ (1 : A) a = 0 := by rw [real_inner_comm]; exact ha
+  have h_perp_a : @inner ℝ A _ (a * a) a = 0 := by
+    have := inner_mul_right_eq a a (1 : A)
+    rw [mul_one, ha, mul_zero] at this; exact this
+  -- Step 1: ⟪a², 1⟫ = -‖a‖² from ‖(a+1)²‖² = ‖a+1‖⁴
+  have h_inner_one : @inner ℝ A _ (a * a) (1 : A) = -(‖a‖ ^ 2) := by
+    have comp := normSq_mul (a + 1) (a + 1)
+    -- (a+1)(a+1) = a²+a+a+1, grouped as (a²+1)+(a+a)
+    have hmul : (a + 1) * (a + 1) = (a * a + 1) + (a + a) := by
+      simp [mul_add, add_mul, mul_one, one_mul]; abel
+    rw [hmul] at comp
+    -- ‖a+1‖² = ‖a‖²+1 (using a ⊥ 1 and ‖1‖=1)
+    rw [norm_add_sq_real a (1 : A), ha, h_one] at comp
+    -- Expand ‖(a²+1)+(a+a)‖²
+    rw [norm_add_sq_real (a * a + 1) (a + a)] at comp
+    -- Cross term ⟪a²+1, a+a⟫ = 0
+    have h_cross : @inner ℝ A _ (a * a + 1) (a + a) = 0 := by
+      simp only [inner_add_left, inner_add_right, h_perp_a, ha']; ring
+    -- ‖a²+1‖² expanded
+    rw [norm_add_sq_real (a * a) (1 : A), h_one] at comp
+    -- ‖a+a‖² = 4‖a‖² via inner product (avoids norm_smul)
+    have h_2a : ‖a + a‖ ^ 2 = 4 * ‖a‖ ^ 2 := by
+      rw [← real_inner_self_eq_norm_sq, ← real_inner_self_eq_norm_sq]
+      simp only [inner_add_left, inner_add_right]; ring
+    rw [h_cross, h_2a, normSq_mul] at comp
+    nlinarith
+  -- Step 2: ‖a² + ‖a‖²•1‖² = 0
+  have h_norm_zero : ‖a * a + (‖a‖ ^ 2 : ℝ) • (1 : A)‖ ^ 2 = 0 := by
+    rw [norm_add_sq_real, inner_smul_right, h_inner_one,
+        normSq_mul a a, norm_smul, Real.norm_of_nonneg (by positivity), h_one, mul_one]
+    ring
+  have h_zero := norm_eq_zero.mp (by nlinarith [sq_nonneg ‖a * a + (‖a‖ ^ 2 : ℝ) • (1 : A)‖] :
+    ‖a * a + (‖a‖ ^ 2 : ℝ) • (1 : A)‖ = 0)
+  exact eq_neg_of_add_eq_zero_left h_zero
 
 end CompositionAlgebra
 
@@ -387,52 +475,31 @@ theorem cd_assoc_of_norm_mul
   -- Prove via star substitution: enough to show for e = star(c'), f = star(b')
   -- since star is surjective. But actually we prove for ALL d,e,f directly.
   intro d e f
-  -- Prove directly via inner product non-degeneracy.
-  -- Show ⟪x, d*star(c')*star(b') - d*(star(c')*star(b'))⟫ = 0 for all x
-  -- by computing both inner products via h_right_adj.
-  -- Show ⟪x, d*e*f - d*(e*f)⟫ = 0 for ALL x, then non-degeneracy.
-  -- Use h_right_adj: ⟪a*c, b⟫ = ⟪a, b*star(c)⟫
-  -- ⟪x, d*e*f⟫ = ⟪x*(star f), d*e⟫ = ⟪x*(star f)*(star e), d⟫  [h_right_adj twice: c→f, then c→e]
-  -- ⟪x, d*(e*f)⟫ = ⟪x*star(e*f), d⟫ = ⟪x*(star f * star e), d⟫  [h_right_adj + star_mul]
-  -- Difference: ⟪x*(star f)*(star e) - x*(star f * star e), d⟫
-  -- For ALL x: setting x = 1: ⟪(star f)*(star e) - (star f * star e), d⟫ = 0 for all d.
-  -- But (star f)*(star e) IS (star f * star e) — it's the SAME expression!
-  -- Wait, (star f)*(star e) and star f * star e are identical: both are mul(star f, star e).
-  -- So the difference IS zero. The inner products are EQUAL.
-  -- This means ⟪x, d*e*f⟫ = ⟪x, d*(e*f)⟫ for all x.
-  -- Non-degeneracy: d*e*f = d*(e*f). QED!
+  -- Prove via inner product non-degeneracy: show ⟪x, (d*e)*f - d*(e*f)⟫ = 0 for all x.
+  -- The non-circular trick: use h_cross with substitution c:=star f, d:=star d,
+  -- then apply h_right_adj to one side and h_left_adj to the other.
   have h_eq : ∀ x : B, @inner ℝ B _ x (d * e * f) = @inner ℝ B _ x (d * (e * f)) := by
     intro x
-    -- LHS: ⟪x, (d*e)*f⟫ = ⟪x*star(f), d*e⟫  [h_right_adj]
-    --                      = ⟪(x*star(f))*star(e), d⟫  [h_right_adj]
-    -- RHS: ⟪x, d*(e*f)⟫ = ⟪x*star(e*f), d⟫  [h_right_adj]
-    --                     = ⟪x*(star(f)*star(e)), d⟫  [star_mul]
-    -- LHS and RHS both = ⟪(x*star(f))*star(e), d⟫ = ⟪x*(star(f)*star(e)), d⟫
-    -- These ARE the same: (x*star(f))*star(e) vs x*(star(f)*star(e))
-    -- ... which is associativity of x, star(f), star(e). CIRCULAR AGAIN!
-    -- NO WAIT: The two derivations give DIFFERENT forms:
-    -- LHS route: ⟪x*star(f), d*e⟫ via first h_right_adj (c := f)
-    --   then ⟪(x*star(f))*star(e), d⟫ via second h_right_adj (c := e)
-    -- RHS route: ⟪x*star(e*f), d⟫ via h_right_adj (c := e*f)
-    --   = ⟪x*(star(f)*star(e)), d⟫ via star_mul
-    -- For these to be equal: (x*star(f))*star(e) = x*(star(f)*star(e))
-    -- This IS x-associativity with star(f), star(e). CIRCULAR.
-    --
-    -- THE REAL FIX: Use h_right_adj ONLY ONCE on each side, at different levels:
-    -- ⟪x, (d*e)*f⟫ = ⟪x*star(f), d*e⟫   [h_right_adj, c := f]
-    -- ⟪x, d*(e*f)⟫ = ⟪x*star(f), d*e⟫   [??? how]
-    -- The RHS: ⟪x, d*(e*f)⟫. Can we get ⟪x*star(f), d*e⟫ from this?
-    -- ⟪x, d*(e*f)⟫ via h_right_adj with c := e*f: = ⟪x*star(e*f), d⟫
-    --   = ⟪x*(star(f)*star(e)), d⟫ [star_mul]
-    -- Not the same.
-    -- Via h_right_adj with DIFFERENT decomposition:
-    -- d*(e*f) = d*(e*f). Can we write this as (d*e)*f? Only if associative.
-    -- So h_right_adj applied to ⟪x, (d*e)*f⟫ gives ⟪x*star(f), d*e⟫.
-    -- And h_right_adj applied to ⟪x, d*(e*f)⟫ gives ⟪x*star(e*f), d⟫.
-    -- These give ⟪x*star(f), d*e⟫ vs ⟪x*(star(f)*star(e)), d⟫.
-    -- Apply h_right_adj AGAIN to the first: ⟪(x*star(f))*star(e), d⟫.
-    -- Now (x*star(f))*star(e) vs x*(star(f)*star(e)) — CIRCULAR.
-    sorry
+    -- KEY INSIGHT: Use h_cross with substitution, then apply h_right_adj to
+    -- ONE side and h_left_adj to the OTHER. Each adjoint used ONCE — NOT circular.
+    -- Left adjoint from h_cross (c := 1): ⟪p*q, r⟫ = ⟪q, star(p)*r⟫
+    have h_left_adj : ∀ (p q r : B),
+        @inner ℝ B _ (p * q) r = @inner ℝ B _ q (star p * r) := by
+      intro p q r
+      have := h_cross q r 1 p
+      simp only [mul_one, star_one] at this
+      exact this.symm
+    -- h_cross with a:=x, b:=e, c:=star f, d:=star d:
+    --   ⟪x*(star f), d*e⟫ = ⟪(star d)*x, e*f⟫   (after star_star)
+    -- LHS via h_right_adj: = ⟪x, (d*e)*f⟫
+    -- RHS via h_left_adj:  = ⟪x, d*(e*f)⟫
+    have h_spec := h_cross x e (star f) (star d)
+    simp only [star_star] at h_spec
+    rw [h_right_adj x (d * e) (star f)] at h_spec
+    simp only [star_star] at h_spec
+    rw [h_left_adj (star d) x (e * f)] at h_spec
+    simp only [star_star] at h_spec
+    exact h_spec
   -- Non-degeneracy: ⟪x, A⟫ = ⟪x, B⟫ for all x → A = B
   have h_diff : ∀ x : B, @inner ℝ B _ x (d * e * f - d * (e * f)) = 0 := by
     intro x; rw [inner_sub_right]; linarith [h_eq x]
@@ -458,12 +525,10 @@ instance : CompositionAlgebra ℂ where
   norm_mul := norm_mul
 
 -- Level 2: ℍ ≅ CD(ℂ) is a composition algebra
--- Proved in Forcing.lean using Mathlib.Analysis.Quaternion
--- (import kept separate to avoid typeclass diamond with CayleyDickson)
+noncomputable instance : CompositionAlgebra (Quaternion ℝ) where
+  norm_mul := norm_mul
 
--- Level 3: 𝕆 ≅ CD(ℍ) is a composition algebra
--- (Must be built from CD construction)
--- TODO: define Octonion := CayleyDickson ℍ and prove composition
+-- Level 3: 𝕆 ≅ CD(ℍ) — properties proved after the type definitions below
 
 -- Level 4: 𝕊 ≅ CD(𝕆) is NOT a composition algebra
 -- (Because 𝕆 is not associative, and we prove it has zero divisors)
@@ -542,6 +607,55 @@ abbrev Octonion := CayleyDickson (Quaternion ℝ)
 
 -- The sedenions, defined as the Cayley-Dickson double of the octonions
 abbrev Sedenion := CayleyDickson Octonion
+
+/-! ### Octonion Properties -/
+
+/-- Quaternion multiplication is not commutative: i·j = k ≠ -k = j·i -/
+theorem quaternion_not_comm : ∃ a b : Quaternion ℝ, a * b ≠ b * a := by
+  use ⟨0, 1, 0, 0⟩, ⟨0, 0, 1, 0⟩
+  intro h
+  have := congr_arg QuaternionAlgebra.imK h
+  norm_num at this
+
+/-- The octonions are NOT associative (since quaternions are not commutative) -/
+theorem octonion_not_assoc : ∃ x y z : Octonion, x * (y * z) ≠ (x * y) * z :=
+  CayleyDickson.not_assoc_of_not_comm quaternion_not_comm
+
+/-- The octonions have dimension 8 over ℝ -/
+theorem octonion_finrank : Module.finrank ℝ Octonion = 8 := by
+  show Module.finrank ℝ (CayleyDickson (Quaternion ℝ)) = 8
+  rw [CayleyDickson.finrank_eq, Quaternion.finrank_eq_four]
+
+/-- Re(xy) = Re(yx) for quaternions (needed for adjoint properties) -/
+private theorem quat_re_mul_comm (a b : Quaternion ℝ) :
+    (a * b).re = (b * a).re := by
+  simp only [Quaternion.mul_re]
+  ring
+
+/-- Left adjoint: ⟪a*b, c⟫ = ⟪b, star(a)*c⟫ for quaternions -/
+theorem quat_inner_left (a b c : Quaternion ℝ) :
+    @inner ℝ (Quaternion ℝ) _ (a * b) c =
+    @inner ℝ (Quaternion ℝ) _ b (star a * c) := by
+  show ((a * b) * star c).re = (b * star (star a * c)).re
+  rw [star_mul, star_star]
+  calc ((a * b) * star c).re
+      = (a * (b * star c)).re := by rw [mul_assoc]
+    _ = ((b * star c) * a).re := quat_re_mul_comm a (b * star c)
+    _ = (b * (star c * a)).re := by rw [mul_assoc]
+
+/-- Right adjoint: ⟪a, b*c⟫ = ⟪a*star(c), b⟫ for quaternions -/
+theorem quat_inner_right (a b c : Quaternion ℝ) :
+    @inner ℝ (Quaternion ℝ) _ a (b * c) =
+    @inner ℝ (Quaternion ℝ) _ (a * star c) b := by
+  show (a * star (b * c)).re = ((a * star c) * star b).re
+  rw [star_mul, mul_assoc]
+
+/-- The Cayley-Dickson norm on the octonions is multiplicative -/
+theorem octonion_cdNorm_mul :
+    ∀ x y : Octonion,
+      CayleyDickson.cdNorm (x * y) = CayleyDickson.cdNorm x * CayleyDickson.cdNorm y :=
+  cd_norm_mul_of_assoc (fun a b c => (mul_assoc a b c).symm)
+    Quaternion.norm_star quat_inner_left quat_inner_right
 
 namespace Sedenion
 
