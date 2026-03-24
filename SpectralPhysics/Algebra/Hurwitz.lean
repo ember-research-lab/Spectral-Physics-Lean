@@ -699,11 +699,41 @@ when j⊥B with ‖j‖=1. All the algebraic identities are proved
 these to the CayleyDickson structure and extracting the dimension constraint
 via Lean's typeclass system. -/
 theorem hurwitz_dim (A : Type*) [NormedRing A] [InnerProductSpace ℝ A]
-    [CompositionAlgebra A] [FiniteDimensional ℝ A] :
+    [CompositionAlgebra A] [FiniteDimensional ℝ A] [Nontrivial A] :
     Module.finrank ℝ A ∈ ({1, 2, 4, 8} : Set ℕ) := by
-  -- The proof requires connecting the abstract composition algebra to the
-  -- CD construction via orthogonal unit extraction + mul_self_orthogonal.
-  -- All mathematical content is proved; this is the connecting plumbing.
+  -- PROVED IDENTITIES available for this proof:
+  --   sq_orthogonal_eq_neg: j² = -‖j‖²·1 for j ⊥ 1
+  --   mul_self_orthogonal: (xj)j = -‖j‖²·x for j ⊥ 1
+  --   mul_self_orthogonal_left: j(jx) = -‖j‖²·x for j ⊥ 1
+  --   right_mul_anticommute: (xj)k + (xk)j = 0 for j⊥k⊥1
+  --   Setting x=1: jk + kj = 0 (imaginary units anti-commute)
+  --   cd_assoc_of_norm_mul: CD(B) norm-mult → B associative
+  --   octonion_not_assoc: 𝕆 is not associative
+  --
+  -- PROOF PLAN (all steps use proved lemmas + Mathlib orthogonal complements):
+  -- 1. If dim=1: done.
+  -- 2. If dim≥2: pick j₁∈(ℝ·1)⊥, ‖j₁‖=1 (Submodule.exists_mem_ne_zero_of_ne_bot).
+  --    j₁²=-1 (sq_orthogonal). R_{j₁}²=-Id ⇒ dim even (det argument).
+  -- 3. If dim≥4: pick j₂⊥{1,j₁}. Anti-comm gives quaternionic structure ⇒ 4|dim.
+  -- 4. If dim≥8: pick j₃⊥{1,j₁,j₂,j₁j₂}. Extend to octonionic structure ⇒ 8|dim.
+  -- 5. If dim≥16: the 8-dim subalgebra {1,j₁,...,j₁j₂j₃} is non-associative
+  --    (from right_mul_anticommute: (j₁j₂)j₃ ≠ j₁(j₂j₃) in general).
+  --    cd_assoc_of_norm_mul forces it to be associative ⇒ contradiction.
+  --
+  -- Step 0: dim ≥ 1 (from Nontrivial A)
+  have h_one_ne : (1 : A) ≠ 0 := one_ne_zero
+  have h_dim_pos : 0 < Module.finrank ℝ A :=
+    Module.finrank_pos_iff_exists_ne_zero.mpr ⟨1, h_one_ne⟩
+  -- ‖1‖ = 1
+  have h_one : ‖(1 : A)‖ = 1 := by
+    have h := CompositionAlgebra.norm_mul (1 : A) (1 : A); rw [mul_one] at h
+    have hne : ‖(1 : A)‖ ≠ 0 := norm_ne_zero_iff.mpr h_one_ne
+    -- ‖1‖ = ‖1‖² and ‖1‖ ≠ 0 → ‖1‖ = 1
+    have : ‖(1 : A)‖ * (‖(1 : A)‖ - 1) = 0 := by nlinarith
+    rcases mul_eq_zero.mp this with h0 | h1
+    · exact absurd h0 hne
+    · linarith
+  -- REMAINING: dim ∈ {1,2,4,8} via orthogonal complement iteration
   sorry
 
 /-!
