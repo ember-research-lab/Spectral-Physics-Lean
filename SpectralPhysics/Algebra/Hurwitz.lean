@@ -261,6 +261,51 @@ theorem mul_self_orthogonal (x y : A) (hy : @inner ℝ A _ y (1 : A) = 0) :
   -- h1 + h2 - h3 + h4 = goal (nonlinear terms cancel)
   linarith
 
+/-- **Left-alternative law**: `y(yx) = -‖y‖²·x` when `y ⊥ 1`.
+Simpler proof than the right version: just inner_mul_exchange + inner_mul_right_eq. -/
+theorem mul_self_orthogonal_left (x y : A) (hy : @inner ℝ A _ y (1 : A) = 0) :
+    y * (y * x) = -(‖y‖ ^ 2 : ℝ) • x := by
+  suffices h : ∀ w : A, @inner ℝ A _ (y * (y * x) + (‖y‖ ^ 2 : ℝ) • x) w = 0 by
+    have h0 := h (y * (y * x) + (‖y‖ ^ 2 : ℝ) • x)
+    rw [real_inner_self_eq_norm_sq] at h0
+    rw [neg_smul]
+    exact eq_neg_of_add_eq_zero_left
+      (norm_eq_zero.mp (by nlinarith [sq_nonneg ‖y * (y * x) + (‖y‖ ^ 2 : ℝ) • x‖]))
+  intro w
+  rw [inner_add_left, inner_smul_left, show (starRingEnd ℝ) (‖y‖ ^ 2) = ‖y‖ ^ 2 from star_trivial _]
+  -- Goal: ⟪y(yx), w⟫ + ‖y‖²·⟪x, w⟫ = 0
+  -- From inner_mul_exchange(y, yx, w): ⟪y(yx), w⟫ + ⟪yw, yx⟫ = 2⟪y,1⟫⟪yx,w⟫ = 0
+  have h1 := inner_mul_exchange y (y * x) w; rw [hy] at h1; simp at h1
+  -- h1: ⟪y(yx), w⟫ = -⟪yw, yx⟫
+  -- From inner_mul_right_eq: ⟪yw, yx⟫ = ‖y‖²·⟪w, x⟫
+  have h2 := inner_mul_right_eq y w x
+  -- ⟪w, x⟫ = ⟪x, w⟫ (real_inner_comm)
+  rw [show @inner ℝ A _ w x = @inner ℝ A _ x w from (real_inner_comm w x).symm] at h2
+  linarith
+
+/-- Anti-commutativity of right multiplication by orthogonal imaginary units:
+`(xj)k + (xk)j = 0` when j, k ⊥ 1 and j ⊥ k.
+Proof: expand `mul_self_orthogonal x (j+k)` and subtract the j,k cases. -/
+theorem right_mul_anticommute (x j k : A)
+    (hj : @inner ℝ A _ j (1 : A) = 0) (hk : @inner ℝ A _ k (1 : A) = 0)
+    (hjk : @inner ℝ A _ j k = 0) :
+    (x * j) * k + (x * k) * j = 0 := by
+  have hjk_perp : @inner ℝ A _ (j + k) (1 : A) = 0 := by rw [inner_add_left]; linarith
+  have h := mul_self_orthogonal x (j + k) hjk_perp
+  have hj' := mul_self_orthogonal x j hj
+  have hk' := mul_self_orthogonal x k hk
+  have h_norm : ‖j + k‖ ^ 2 = ‖j‖ ^ 2 + ‖k‖ ^ 2 := by rw [norm_add_sq_real]; simp [hjk]
+  simp only [mul_add, add_mul] at h; rw [h_norm, hj', hk'] at h
+  -- h: -(‖j‖²)•x + ((xj)k + ((xk)j + -(‖k‖²)•x)) = -(‖j‖²+‖k‖²)•x
+  -- h: smul_terms + cross_terms = smul_terms, so cross_terms = 0
+  rw [show -(‖j‖ ^ 2 + ‖k‖ ^ 2 : ℝ) • x = -(‖j‖ ^ 2 : ℝ) • x + -(‖k‖ ^ 2 : ℝ) • x from
+    by rw [neg_add, add_smul]] at h
+  -- Use abel to show (xj)k + (xk)j = LHS(h) - RHS(h), then sub_eq_zero
+  have : (x * j) * k + (x * k) * j =
+      -(‖j‖ ^ 2 : ℝ) • x + (x * k) * j + ((x * j) * k + -(‖k‖ ^ 2 : ℝ) • x) -
+      (-(‖j‖ ^ 2 : ℝ) • x + -(‖k‖ ^ 2 : ℝ) • x) := by abel
+  rw [this]; exact sub_eq_zero.mpr h
+
 end CompositionAlgebra
 
 /-!
