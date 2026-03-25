@@ -79,6 +79,29 @@ structure SelfModel (sys : SelfRefSystem) where
 def SelfModel.avgError {sys : SelfRefSystem} (m : SelfModel sys) : ℝ :=
   (∑ k : Fin m.I, m.errors k) / m.I
 
+/-! ### Cauchy-Schwarz for reciprocals (AM-HM inequality) -/
+
+/-- **AM-HM inequality**: For positive reals a_1,...,a_n:
+(Σ 1/a_k)(Σ a_k) ≥ n².
+
+This is Cauchy-Schwarz with f_k = 1/√a_k, g_k = √a_k.
+Equivalently: (Σ a_k)/n ≥ n/(Σ 1/a_k) (AM ≥ HM). -/
+theorem sum_inv_mul_sum_ge_sq {n : ℕ} (a : Fin n → ℝ) (ha : ∀ k, 0 < a k)
+    (hn : 0 < n) :
+    (n : ℝ) ^ 2 ≤ (∑ k : Fin n, 1 / a k) * (∑ k : Fin n, a k) := by
+  -- Mathlib CS: (Σ f_k · g_k)² ≤ (Σ f_k²)(Σ g_k²)
+  -- Set f_k = √(1/a_k), g_k = √(a_k). Then f·g = 1, f² = 1/a_k, g² = a_k.
+  -- So n² = (Σ 1)² ≤ (Σ 1/a_k)(Σ a_k).
+  -- Direct proof avoiding sqrt: multiply out and use individual AM-GM.
+  -- For each pair (i,j): (1/a_i)·a_j + (1/a_j)·a_i ≥ 2 (AM-GM).
+  -- Summing: (Σ 1/a_k)(Σ a_k) = Σ_i Σ_j (1/a_i)·a_j ≥ Σ_i 1 + Σ_{i≠j} 1 ≥ n².
+  -- Actually: (Σ 1/a_k)(Σ a_k) = n + Σ_{i≠j}(a_j/a_i) ≥ n + n(n-1) = n².
+  -- Wait that's wrong. Σ_i (a_i/a_i) = n. Σ_{i≠j}(a_j/a_i) ≥ n(n-1) needs AM-GM.
+  -- Simplest: (Σ 1/a_k)(Σ a_k) ≥ n² by Cauchy-Schwarz (with the 1·1 pairing).
+  -- This IS sum_mul_sq_le_sq_mul_sq with f_k = √(1/a_k), g_k = √(a_k).
+  -- But we need the statement about the reciprocal form.
+  sorry
+
 /-! ### The Accuracy-Integration Tradeoff -/
 
 /-- **Accuracy-Integration Tradeoff** (Theorem 9.5 in manuscript):
