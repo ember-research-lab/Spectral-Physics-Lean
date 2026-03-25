@@ -45,7 +45,9 @@ theorem propagator_no_distance {n : ℕ} (sd : SpectralDecomp S n) (t : ℝ) :
       ∑ k : Fin n, Complex.normSq (QuantumMechanics.propagatorCoeff S sd t k) *
         sd.coeffSq f k =
       ∑ k : Fin n, sd.coeffSq f k := by
-  sorry
+  intro f
+  congr 1; ext k
+  rw [QuantumMechanics.propagator_norm_sq, one_mul]
 
 /-- **Unitary evolution is an isometry** (Theorem 7.2):
 |e^{-i lambda t}|^2 = 1 for all real lambda and t, so

@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.Analysis.HeatSemigroup
+import SpectralPhysics.Analysis.ComplexExp
 
 /-!
 # Quantum Mechanics from Waves (Ch 6)
@@ -102,10 +103,7 @@ theorem propagator_norm_sq {n : ℕ} (sd : SpectralDecomp S n)
     push_cast; ring
   -- normSq z = ‖z‖² (by definition). ‖exp(θI)‖ = 1, so normSq = 1² = 1.
   rw [h]
-  -- normSq(exp(θI)) = 1 for real θ
-  -- This follows from |exp(θI)| = 1 (norm_exp_ofReal_mul_I)
-  -- and normSq = ‖·‖²
-  sorry
+  exact SpectralPhysics.ComplexExp.normSq_exp_pure_imaginary _
 
 /-- **Reversibility**: U_t · U_{-t} = Id.
 In spectral form: e^{-iλt} · e^{iλt} = 1. -/
