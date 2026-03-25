@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.Axioms.SelfRefClosure
+import SpectralPhysics.Analysis.AMHM
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 
@@ -88,19 +89,8 @@ This is Cauchy-Schwarz with f_k = 1/√a_k, g_k = √a_k.
 Equivalently: (Σ a_k)/n ≥ n/(Σ 1/a_k) (AM ≥ HM). -/
 theorem sum_inv_mul_sum_ge_sq {n : ℕ} (a : Fin n → ℝ) (ha : ∀ k, 0 < a k)
     (hn : 0 < n) :
-    (n : ℝ) ^ 2 ≤ (∑ k : Fin n, 1 / a k) * (∑ k : Fin n, a k) := by
-  -- Mathlib CS: (Σ f_k · g_k)² ≤ (Σ f_k²)(Σ g_k²)
-  -- Set f_k = √(1/a_k), g_k = √(a_k). Then f·g = 1, f² = 1/a_k, g² = a_k.
-  -- So n² = (Σ 1)² ≤ (Σ 1/a_k)(Σ a_k).
-  -- Direct proof avoiding sqrt: multiply out and use individual AM-GM.
-  -- For each pair (i,j): (1/a_i)·a_j + (1/a_j)·a_i ≥ 2 (AM-GM).
-  -- Summing: (Σ 1/a_k)(Σ a_k) = Σ_i Σ_j (1/a_i)·a_j ≥ Σ_i 1 + Σ_{i≠j} 1 ≥ n².
-  -- Actually: (Σ 1/a_k)(Σ a_k) = n + Σ_{i≠j}(a_j/a_i) ≥ n + n(n-1) = n².
-  -- Wait that's wrong. Σ_i (a_i/a_i) = n. Σ_{i≠j}(a_j/a_i) ≥ n(n-1) needs AM-GM.
-  -- Simplest: (Σ 1/a_k)(Σ a_k) ≥ n² by Cauchy-Schwarz (with the 1·1 pairing).
-  -- This IS sum_mul_sq_le_sq_mul_sq with f_k = √(1/a_k), g_k = √(a_k).
-  -- But we need the statement about the reciprocal form.
-  sorry
+    (n : ℝ) ^ 2 ≤ (∑ k : Fin n, 1 / a k) * (∑ k : Fin n, a k) :=
+  SpectralPhysics.AMHM.sum_inv_mul_sum_ge_sq a ha hn
 
 /-! ### The Accuracy-Integration Tradeoff -/
 
@@ -121,17 +111,47 @@ theorem accuracy_integration_tradeoff (sys : SelfRefSystem) (m : SelfModel sys) 
   -- Rearranging: avgError ≥ I · C_min / τ.
   --
   -- The formal Cauchy-Schwarz proof:
+  -- Goal: C_min * I / τ ≤ avgError = (Σε)/I
+  -- Equivalently: C_min * I² / τ ≤ Σε (multiply by I)
+  -- From AM-HM: I² ≤ (Σ 1/ε)(Σε) and Σ C_min/ε ≤ τ
   unfold SelfModel.avgError
   rw [le_div_iff₀ (by exact_mod_cast m.hI : (0:ℝ) < m.I)]
   -- Goal: C_min * I / τ * I ≤ Σ ε_k
-  -- Equivalently: C_min * I² / τ ≤ Σ ε_k
-  -- From info_constraint: Σ C_min/ε_k ≤ τ
-  -- From Cauchy-Schwarz applied in Fin I:
-  -- (Σ 1)² ≤ (Σ C_min/ε_k)(Σ ε_k/C_min) (with weights C_min/ε_k and ε_k/C_min)
-  -- Actually: I² = (Σ 1)² ≤ (Σ 1/ε_k)(Σ ε_k) by Cauchy-Schwarz
-  -- Combined with Σ 1/ε_k ≤ τ/C_min: I² ≤ (τ/C_min)(Σ ε_k)
-  -- So Σ ε_k ≥ C_min · I² / τ = C_min * I / τ * I
-  sorry
+  have h_amhm := sum_inv_mul_sum_ge_sq m.errors m.errors_pos m.hI
+  -- info constraint: Σ C_min/ε ≤ τ, so (Σ 1/ε) · C_min ≤ τ
+  have h_inv_C : (∑ k, 1 / m.errors k) * sys.C_min ≤ sys.tau := by
+    calc (∑ k, 1 / m.errors k) * sys.C_min
+        = ∑ k, sys.C_min / m.errors k := by rw [Finset.sum_mul]; congr 1; ext k; ring
+      _ ≤ sys.tau := m.info_constraint
+  -- From h_amhm: I² ≤ (Σ 1/ε)(Σε)
+  -- From h_inv_C: (Σ 1/ε) ≤ τ/C_min, so (Σ 1/ε)·C_min ≤ τ
+  -- Multiply h_amhm by C_min: I²·C_min ≤ (Σ 1/ε)·C_min · (Σε) ≤ τ · (Σε)
+  have h_sum_pos : 0 < ∑ k : Fin m.I, m.errors k :=
+    Finset.sum_pos (fun k _ => m.errors_pos k) ⟨⟨0, m.hI⟩, Finset.mem_univ _⟩
+  have h_inv_nn : 0 ≤ ∑ k : Fin m.I, 1 / m.errors k :=
+    Finset.sum_nonneg (fun k _ => le_of_lt (div_pos one_pos (m.errors_pos k)))
+  -- C_min · I² ≤ (Σ 1/ε · C_min) · Σε ≤ τ · Σε
+  -- Chain: C·I²/τ·I ≤ Σε
+  -- i.e., C·I²/τ ≤ (Σε)/1 = Σε... actually goal is C*I/τ*I ≤ Σε.
+  -- From step chain: C·I² ≤ τ·(Σε), rearrange.
+  -- Step 1: C·I² ≤ C·(Σ1/ε)·(Σε) (multiply h_amhm by C ≥ 0)
+  -- Step 2: C·(Σ1/ε)·(Σε) = ((Σ1/ε)·C)·(Σε) ≤ τ·(Σε) (h_inv_C · (Σε))
+  -- Combined: C·I² ≤ τ·(Σε)
+  -- Goal: C*I/τ*I ≤ Σε, i.e., C*I²/τ ≤ Σε
+  -- From C·I² ≤ τ·(Σε) and τ > 0: C·I²/τ ≤ Σε ✓
+  have h_final : sys.C_min * (m.I : ℝ) ^ 2 ≤ sys.tau * (∑ k, m.errors k) := by
+    calc sys.C_min * (m.I : ℝ) ^ 2
+        ≤ sys.C_min * ((∑ k, 1 / m.errors k) * ∑ k, m.errors k) :=
+          mul_le_mul_of_nonneg_left h_amhm (le_of_lt sys.h_C_pos)
+      _ = ((∑ k, 1 / m.errors k) * sys.C_min) * ∑ k, m.errors k := by ring
+      _ ≤ sys.tau * ∑ k, m.errors k :=
+          mul_le_mul_of_nonneg_right h_inv_C (le_of_lt h_sum_pos)
+  -- From C*I² ≤ τ*(Σε) and τ > 0: C*I²/τ ≤ Σε
+  -- Goal is C*I/τ*I ≤ Σε, which equals C*I²/τ ≤ Σε
+  have : sys.C_min * ↑m.I / sys.tau * ↑m.I = sys.C_min * (↑m.I) ^ 2 / sys.tau := by ring
+  rw [this]
+  rw [mul_comm sys.tau] at h_final
+  exact div_le_of_le_mul₀ (le_of_lt sys.h_tau_pos) (le_of_lt h_sum_pos) h_final
 
 /-! ### The Complexity Threshold -/
 
@@ -144,32 +164,22 @@ and systems where self-modeling breaks down. -/
 theorem complexity_threshold (sys : SelfRefSystem) (m : SelfModel sys)
     (eps_0 : ℝ) (h_eps : 0 < eps_0)
     (h_above : sys.tau / (eps_0 * sys.C_min) < m.I) :
-    eps_0 < m.avgError := by
-  -- From accuracy_integration_tradeoff: avgError ≥ I·C_min/τ
-  -- If I > τ/(ε₀·C_min) then I·C_min/τ > 1/ε₀ · C_min/τ · τ/C_min = 1
-  -- Wait: I > τ/(ε₀·C_min) means I·C_min/τ > 1/ε₀, so avgError > 1/ε₀... no.
-  -- I·C_min/τ > (τ/(ε₀·C_min))·C_min/τ = 1/ε₀. Hmm.
-  -- Actually: I > τ/(ε₀·C_min) → I·C_min > τ/ε₀ → I·C_min/τ > 1/ε₀.
-  -- But we want avgError > ε₀, not > 1/ε₀.
-  -- Correction: from the tradeoff, avgError ≥ I·C_min/τ.
-  -- h_above: I > τ/(ε₀·C_min), so I·C_min/τ > ε₀·C_min·C_min/(C_min·τ)... no.
-  -- Let me redo: I > τ/(ε₀·C_min) means I·ε₀·C_min > τ means ε₀ < I·C_min/τ.
-  -- Wait: τ/(ε₀·C_min) < I means τ < I·ε₀·C_min means ε₀ > τ/(I·C_min)...
-  -- That's the wrong direction. Let me re-read the manuscript.
-  -- Manuscript: ε̄ ≥ I·C_min/τ. Threshold: I* = τ/(ε₀·C_min).
-  -- If I > I*, then I·C_min/τ > I*·C_min/τ = 1/ε₀... that gives ε̄ > 1/ε₀.
-  -- Hmm, the manuscript says ε̄ ≥ I·C_min/τ, and at I = I* = τ/(ε₀·C_min):
-  -- ε̄ ≥ τ/(ε₀·C_min) · C_min/τ = 1/ε₀. Not ε₀.
-  -- So the threshold gives ε̄ ≥ 1/ε₀, not ε̄ ≥ ε₀.
-  -- Unless C_min is normalized differently. In the manuscript:
-  -- ε̄ ≥ I/τ · C_min. With I* = τ/(ε₀ · C_min):
-  -- ε̄ ≥ I*/τ · C_min = C_min/(ε₀·C_min) = 1/ε₀. Still 1/ε₀.
-  -- The statement should be: I > τ/ε₀ → ε̄ > ε₀ (with C_min = 1).
-  -- OR: ε̄ ≥ I/(τ/C_min), threshold I* = τ/(ε₀ · C_min), gives ε̄ ≥ ε₀.
-  -- With our normalization: tradeoff says ε̄ ≥ I · C_min / τ.
-  -- At I > τ/(ε₀ · C_min): I · C_min / τ > 1/ε₀. So ε̄ > 1/ε₀, not ε₀.
-  -- For the LEAN proof, just state it correctly:
-  sorry
+    -- When I > τ/(ε₀·C_min), the average error exceeds 1/ε₀
+    -- (from accuracy_integration_tradeoff: avgError ≥ I·C_min/τ > 1/ε₀)
+    1 / eps_0 < m.avgError := by
+  -- From accuracy_integration_tradeoff: avgError ≥ I·C_min/τ.
+  -- h_above: I > τ/(ε₀·C_min), so I·C_min/τ > 1/ε₀.
+  -- Therefore avgError ≥ I·C_min/τ > 1/ε₀.
+  have h_tradeoff := accuracy_integration_tradeoff sys m
+  -- h_above gives: I·(ε₀·C_min) > τ, so I·C_min/τ > 1/ε₀
+  have h_I_pos : (0 : ℝ) < m.I := by exact_mod_cast m.hI
+  have h_bound : 1 / eps_0 < sys.C_min * m.I / sys.tau := by
+    rw [div_lt_div_iff₀ h_eps sys.h_tau_pos]
+    rw [one_mul]
+    calc sys.tau < ↑m.I * (eps_0 * sys.C_min) := by
+          rwa [div_lt_iff₀ (mul_pos h_eps sys.h_C_pos)] at h_above
+      _ = sys.C_min * ↑m.I * eps_0 := by ring
+  linarith
 
 /-! ### Gödel Incompleteness of the Trace -/
 
