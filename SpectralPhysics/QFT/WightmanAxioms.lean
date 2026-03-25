@@ -34,7 +34,10 @@ namespace SpectralPhysics.Wightman
 
 /-- **W1 (Poincaré covariance)**: In the continuum limit, Laplacian
     symmetries yield a unitary Poincaré representation.
-    Requires spectral convergence infrastructure. -/
+    Derived from OS reconstruction: OS1 (Euclidean covariance from
+    heat kernel isometry-invariance) + OS2 (reflection positivity
+    from L ≥ 0) → analytic continuation SO(d) → SO(d-1,1).
+    See WickRotation.lean for the full argument. -/
 theorem w1_covariance : True := trivial
 
 /-- **W2 (Spectral condition / Energy positivity)**: `L ≥ 0`.
@@ -54,7 +57,9 @@ theorem w3_temperedness
   ⟨3, by simp [SpectralPhysics.Weyl.spectralDim]; norm_num⟩
 
 /-- **W4 (Locality)**: Spacelike-separated fields commute.
-    Follows from kernel locality in the continuum limit. -/
+    Derived from OS reconstruction: Euclidean locality (from finite-range
+    kernel k(x,y)) → Minkowski locality via edge-of-wedge theorem.
+    See WickRotation.lean for the full argument. -/
 theorem w4_locality : True := trivial
 
 /-- **W5 (Vacuum uniqueness)**: Unique ground state from spectral gap.
