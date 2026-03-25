@@ -97,8 +97,21 @@ theorem correlator_decay {n : ℕ} (sd : SpectralDecomp S n)
       Real.exp (-t * sd.eigenval ⟨1, hn⟩) * (S.innerProduct f f).re := by
   rw [sd.parseval f]
   unfold heatInner
-  -- The k=0 term vanishes (hf), remaining terms have e^{-tλ_k} ≤ e^{-tλ₁}
-  sorry
+  -- Goal: Σ e^{-tλ_k} c_k ≤ e^{-tλ₁} · Σ c_k
+  -- Factor: e^{-tλ₁} · Σ c_k = Σ e^{-tλ₁} · c_k
+  rw [Finset.mul_sum]
+  apply Finset.sum_le_sum
+  intro k _
+  by_cases hk : (k : ℕ) = 0
+  · -- k = 0: coefficient vanishes
+    have : k = ⟨0, by omega⟩ := Fin.ext (by omega)
+    rw [this, hf, mul_zero, mul_zero]
+  · -- k ≥ 1: e^{-tλ_k} ≤ e^{-tλ₁} since λ_k ≥ λ₁ and t ≥ 0
+    apply mul_le_mul_of_nonneg_right _ (sd.coeffSq_nonneg f k)
+    apply Real.exp_le_exp.mpr
+    have hle : sd.eigenval ⟨1, hn⟩ ≤ sd.eigenval k :=
+      sd.eigenval_sorted ⟨1, hn⟩ k (Nat.one_le_iff_ne_zero.mpr hk)
+    nlinarith
 
 /-- The spectral gap gives a mass: `m = √λ₁ > 0`. -/
 theorem mass_from_gap {n : ℕ} (sd : SpectralDecomp S n)

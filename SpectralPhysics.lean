@@ -31,6 +31,7 @@ import SpectralPhysics.Analysis.WeylAsymptotics
 import SpectralPhysics.Analysis.SpectralConvergence
 import SpectralPhysics.Analysis.SpectralPerturbation
 import SpectralPhysics.Analysis.CheegerInequality
+import SpectralPhysics.Analysis.DavisKahan
 
 -- ═══ QFT / WIGHTMAN CHAIN (scaffolding) ═══
 import SpectralPhysics.QFT.ReflectionPositivity

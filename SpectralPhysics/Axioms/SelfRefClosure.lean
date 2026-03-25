@@ -8,6 +8,7 @@ import Mathlib.Algebra.Star.Basic
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.LinearAlgebra.TensorProduct.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Order.Interval.Finset.Fin
 
 /-
   Axioms/SelfRefClosure.lean — Abstract Axiom 3 (Self-Referential Closure)
@@ -219,14 +220,86 @@ class SelfRefClosure
 -- SECTION 6: SPECTRAL PHYSICS INSTANCE
 -- ============================================================================
 
-/-- In finite dimensions, determination is a theorem (Newton's identities). -/
+/-- **Sorted sequences with equal counting functions are equal.**
+For f, g : Fin n → ℝ both sorted (monotone), if for all a ∈ ℝ
+the number of indices k with f(k) ≤ a equals the number with g(k) ≤ a,
+then f = g pointwise.
+
+Proof: by contradiction. If f(i) ≠ g(i) at some i, WLOG f(i) < g(i).
+Take a = f(i). Then #{k : f(k) ≤ a} ≥ i+1 (sorted: k ≤ i ⟹ f(k) ≤ f(i) = a).
+But #{k : g(k) ≤ a} ≤ i (sorted: k ≥ i ⟹ g(k) ≥ g(i) > a). Contradiction. -/
+private theorem sorted_eq_of_count_eq
+    (f g : Fin n → ℝ)
+    (hf : ∀ i j : Fin n, i ≤ j → f i ≤ f j)
+    (hg : ∀ i j : Fin n, i ≤ j → g i ≤ g j)
+    (h_count : ∀ a : ℝ,
+      Finset.card (Finset.univ.filter (fun k : Fin n => f k ≤ a)) =
+      Finset.card (Finset.univ.filter (fun k : Fin n => g k ≤ a))) :
+    f = g := by
+  ext i
+  by_contra h_ne
+  rcases lt_or_gt_of_ne h_ne with h_lt | h_gt
+  · -- f(i) < g(i): take a = f(i)
+    have h := h_count (f i)
+    -- Lower bound on #{k : f(k) ≤ f(i)}: contains all k ≤ i (sorted)
+    have h_sub : Finset.Iic i ⊆
+        Finset.univ.filter (fun k : Fin n => f k ≤ f i) := by
+      intro k hk
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      exact hf k i (Finset.mem_Iic.mp hk)
+    -- Upper bound on #{k : g(k) ≤ f(i)}: excludes all k ≥ i (sorted + g(i) > f(i))
+    have h_sub' : Finset.univ.filter (fun k : Fin n => g k ≤ f i) ⊆
+        Finset.Iio i := by
+      intro k hk
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk
+      simp only [Finset.mem_Iio]
+      by_contra h_ge
+      push_neg at h_ge
+      exact not_le.mpr h_lt (le_trans (hg i k h_ge) hk)
+    have h1 := Finset.card_le_card h_sub
+    have h2 := Finset.card_le_card h_sub'
+    simp only [Fin.card_Iic, Fin.card_Iio] at h1 h2
+    omega
+  · -- g(i) < f(i): symmetric
+    have h := h_count (g i)
+    have h_sub : Finset.Iic i ⊆
+        Finset.univ.filter (fun k : Fin n => g k ≤ g i) := by
+      intro k hk
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      exact hg k i (Finset.mem_Iic.mp hk)
+    have h_sub' : Finset.univ.filter (fun k : Fin n => f k ≤ g i) ⊆
+        Finset.Iio i := by
+      intro k hk
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk
+      simp only [Finset.mem_Iio]
+      by_contra h_ge
+      push_neg at h_ge
+      exact not_le.mpr h_gt (le_trans (hf i k h_ge) hk)
+    have h1 := Finset.card_le_card h_sub
+    have h2 := Finset.card_le_card h_sub'
+    simp only [Fin.card_Iic, Fin.card_Iio] at h1 h2
+    omega
+
+/-- In finite dimensions, determination is a theorem.
+
+The hypothesis `∀ g, Σ g(λ_k) = Σ g(λ'_k)` for ALL g : ℝ → ℝ is very strong.
+Specializing to `g(x) = (x - c)^2` and setting `c = S.eigenvalues i` gives
+`Σ_k (S.eigenvalues k - S.eigenvalues i)^2 = Σ_k (S'.eigenvalues k - S.eigenvalues i)^2`.
+The k = i term on the LHS is 0. Combined with non-negativity and sorting,
+this forces `S'.eigenvalues i = S.eigenvalues i`. -/
 theorem spectral_determination_finite (S : SpectralData n) :
     SpectralDetermination S := by
   constructor
   intro S' hg
-  -- Newton's identities: {sum lambda^m | m = 1..n} determine {lambda_k}.
-  -- Hypothesis is strictly stronger (all g, not just power functions).
-  sorry -- Requires Mathlib polynomial / Vandermonde machinery
+  -- Use sorted_eq_of_count_eq: sorted sequences with equal counting functions are equal.
+  -- Get counting function equality from hg with indicator functions.
+  apply sorted_eq_of_count_eq S.eigenvalues S'.eigenvalues
+    S.eigenvalues_sorted S'.eigenvalues_sorted
+  intro a
+  -- Specialize hg to g(x) = if x ≤ a then 1 else 0
+  have h := hg (fun x => if x ≤ a then 1 else 0)
+  simp only [spectralTrace, Finset.sum_boole] at h
+  exact_mod_cast h
 
 /-- Gap inheritance: sector faithfulness propagates individual sector gaps. -/
 theorem gap_inheritance

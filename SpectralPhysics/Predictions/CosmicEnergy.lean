@@ -57,21 +57,46 @@ theorem cosmic_sum_rule :
 theorem visible_approx :
     |visibleFraction - 0.276| < 0.001 := by
   simp only [visibleFraction]
-  sorry
+  rw [tau_closed_form]
+  have h_lower : (2.236 : ℝ) < Real.sqrt 5 := by
+    rw [show (2.236 : ℝ) = Real.sqrt (2.236 ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2.236)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  have h_upper : Real.sqrt 5 < (2.237 : ℝ) := by
+    rw [show (2.237 : ℝ) = Real.sqrt (2.237 ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2.237)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  rw [abs_lt]; constructor <;> linarith
 
 /-- **Dark matter fraction** ~ 0.171 -/
 theorem dark_matter_approx :
     |darkMatterFraction - 0.171| < 0.003 := by
   simp only [darkMatterFraction]
   rw [tau_closed_form]
-  sorry
+  have h_lower : (2.236 : ℝ) < Real.sqrt 5 := by
+    rw [show (2.236 : ℝ) = Real.sqrt (2.236 ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2.236)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  have h_upper : Real.sqrt 5 < (2.237 : ℝ) := by
+    rw [show (2.237 : ℝ) = Real.sqrt (2.237 ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2.237)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  rw [abs_lt]; constructor <;> linarith
 
 /-- **Dark energy fraction** ~ 0.553 -/
 theorem dark_energy_approx :
     |darkEnergyFraction - 0.553| < 0.001 := by
   simp only [darkEnergyFraction]
   rw [tau_closed_form]
-  sorry
+  have h_lower : (2.236 : ℝ) < Real.sqrt 5 := by
+    rw [show (2.236 : ℝ) = Real.sqrt (2.236 ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2.236)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  have h_upper : Real.sqrt 5 < (2.237 : ℝ) := by
+    rw [show (2.237 : ℝ) = Real.sqrt (2.237 ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2.237)).symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  rw [abs_lt]; constructor <;> linarith
 
 end SpectralPhysics.CosmicEnergy
 

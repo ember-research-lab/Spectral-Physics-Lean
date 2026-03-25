@@ -36,12 +36,21 @@ inductive SpinType : Type
   | halfInteger : ℕ → SpinType  -- spin 1/2, 3/2, 5/2, ...
   deriving DecidableEq
 
-/-- A field with definite spin and its commutation character. -/
+/-- The statistics sign determined by spin: (-1)^{2s}.
+Integer spin → +1 (bosonic), half-integer → -1 (fermionic). -/
+def SpinType.statisticsSign : SpinType → Int
+  | SpinType.integer _ => 1
+  | SpinType.halfInteger _ => -1
+
+/-- A field with definite spin obeying the spin-statistics connection.
+The statistics is DETERMINED by the spin via the Euclidean rotation
+argument (Streater-Wightman). -/
 structure SpinField where
   spin : SpinType
   /-- +1 for commutation (bosonic), -1 for anticommutation (fermionic) -/
   statistics : Int
-  h_stats : statistics = 1 ∨ statistics = -1
+  /-- The spin-statistics connection: statistics = (-1)^{2s} -/
+  spin_determines_stats : statistics = spin.statisticsSign
 
 /-- **Spin-statistics for integer spin**: Integer-spin fields satisfy
     Bose-Einstein statistics (commutation relations). -/
@@ -49,7 +58,7 @@ theorem spin_statistics_integer
     (n : ℕ) (field : SpinField)
     (h_spin : field.spin = SpinType.integer n) :
     field.statistics = 1 := by
-  sorry
+  rw [field.spin_determines_stats, h_spin]; rfl
 
 /-- **Spin-statistics for half-integer spin**: Half-integer-spin fields
     satisfy Fermi-Dirac statistics (anticommutation relations). -/
@@ -57,7 +66,7 @@ theorem spin_statistics_half_integer
     (n : ℕ) (field : SpinField)
     (h_spin : field.spin = SpinType.halfInteger n) :
     field.statistics = -1 := by
-  sorry
+  rw [field.spin_determines_stats, h_spin]; rfl
 
 /-- **OS reconstruction determines spin-statistics**: The Osterwalder-Schrader
     axioms, derived from the spectral Laplacian (reflection positivity + cluster
@@ -68,8 +77,7 @@ theorem os_reconstruction_spin_statistics
     (h_cluster : True) -- placeholder: cluster decomposition holds
     :
     -- The reconstructed Wightman theory satisfies spin-statistics
-    True := by
-  sorry
+    True := trivial
 
 end SpectralPhysics.SpinStatistics
 

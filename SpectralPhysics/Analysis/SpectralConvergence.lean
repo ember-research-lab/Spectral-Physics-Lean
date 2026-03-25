@@ -28,7 +28,12 @@ manifold in the spectral sense. This is the bridge between:
 
 ## References
 
-* Ding-Jost-Li, "Spectral convergence of graph Laplacians" (2023)
+* Cheeger-Colding, "On the structure of spaces with Ricci curvature
+  bounded below" I-III (1996-2000)
+* Burago-Ivanov-Kurylev, "A graph discretization of the Laplace-Beltrami
+  operator" (2014)
+* Inagaki, "Spectral convergence of graph Laplacians with Ricci curvature
+  bounds and in non-collapsed Ricci limit spaces" (2025)
 * Ben-Shalom, "Spectral Physics", Chapter 9
 -/
 
@@ -66,7 +71,18 @@ theorem heat_trace_converge
       Filter.atTop
       (nhds (∑ n ∈ Finset.range N,
         Real.exp (-t * contEigenvalues n))) := by
-  sorry
+  -- Finite sum of limits = limit of finite sums.
+  -- Each summand exp(-t * graphEigenvalues k n) → exp(-t * contEigenvalues n)
+  -- as k → ∞, by continuity of exp and eigenvalue convergence.
+  -- For a finite sum, Tendsto of each summand gives Tendsto of the sum.
+  apply tendsto_finset_sum
+  intro n _
+  -- exp(-t * graphEigenvalues k n) → exp(-t * contEigenvalues n)
+  -- -t * graphEigenvalues k n → -t * contEigenvalues n
+  have h_mul : Filter.Tendsto (fun k => -t * graphEigenvalues k n)
+      Filter.atTop (nhds (-t * contEigenvalues n)) :=
+    (SpectralConvergence.eigenvalueConverge n).const_mul (-t)
+  exact h_mul.rexp
 
 /-- Spectral convergence implies the spectral dimension is preserved
     in the limit (d = 4). -/

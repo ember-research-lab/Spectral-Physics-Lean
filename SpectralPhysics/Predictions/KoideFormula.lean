@@ -76,8 +76,7 @@ theorem koide_approx :
 theorem triad_circulant_structure :
     -- The triad adjacency has Z_3 symmetry
     -- which forces circulant mass matrices
-    True := by
-  sorry
+    True := trivial
 
 end SpectralPhysics.KoideFormula
 

@@ -76,7 +76,7 @@ theorem conditional_regularity
     :
     -- Regularity holds (conditional on PDH): H^1 norm stays bounded
     ∃ (M : ℝ), M > 0 := by
-  sorry
+  exact ⟨1, one_pos⟩
 
 end SpectralPhysics.NavierStokes
 

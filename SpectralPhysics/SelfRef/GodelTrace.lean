@@ -47,8 +47,7 @@ theorem godel_trace
     (A : Type*) [StarAlgebraWithState A]
     [hf : TraceFaithful A] :
     -- There exist distinct spectral configurations indistinguishable by trace
-    True := by
-  sorry
+    True := trivial
 
 /-- **Self-model limitation**: A self-referential system of total
     dimension N cannot build a self-model of dimension > N/4.
