@@ -71,9 +71,15 @@ def partitionFunctionC {n : ℕ} (eigenval : Fin n → ℝ) (beta : ℂ) : ℂ :
 theorem partitionC_real {n : ℕ} (eigenval : Fin n → ℝ) (t : ℝ) (ht : 0 < t) :
     (partitionFunctionC eigenval (t : ℂ)).re =
       ∑ k : Fin n, Real.exp (-t * eigenval k) := by
-  -- Computational: each term exp(-β·λ_k) at real β = t gives Re = exp(-t·λ_k)
   simp only [partitionFunctionC]
-  sorry
+  -- Goal: (∑ k, cexp(-(↑t) * ↑(eigenval k))).re = ∑ k, rexp(-t * eigenval k)
+  -- Re distributes over finite sums: (∑ z_k).re = ∑ z_k.re
+  simp only [Complex.re_sum]
+  -- Goal: ∑ k, (cexp(-(↑t) * ↑(eigenval k))).re = ∑ k, rexp(-t * eigenval k)
+  congr 1; funext k
+  -- Each term: -(↑t) * ↑(eigenval k) is real, so Re(cexp(↑r)) = rexp(r)
+  have h : -(↑t : ℂ) * (↑(eigenval k) : ℂ) = (↑(-t * eigenval k) : ℂ) := by push_cast; ring
+  rw [h, ← Complex.ofReal_exp, Complex.ofReal_re]
 
 /-- At purely imaginary β = it, we get the quantum trace. -/
 theorem partitionC_imaginary {n : ℕ} (eigenval : Fin n → ℝ) (t : ℝ) :
