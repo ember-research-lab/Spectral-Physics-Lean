@@ -62,7 +62,17 @@ theorem schrodinger_spectral {n : ℕ} (sd : SpectralDecomp S n)
     Complex.I * (-Complex.I * (sd.eigenval k : ℂ) * propagatorCoeff S sd t k) =
     (sd.eigenval k : ℂ) * propagatorCoeff S sd t k := by
   -- i · (-i · λ · e^{-iλt}) = λ · e^{-iλt} by i·(-i) = 1
-  sorry
+  unfold propagatorCoeff
+  -- The exp cancels from both sides, leaving I*(-I*λ) = λ
+  -- which follows from I*(-I) = -I² = -(-1) = 1
+  have hI2 : Complex.I * Complex.I = -1 := Complex.I_mul_I
+  -- Factor out exp and reduce to I*(-I*λ) = λ
+  conv_lhs => rw [show Complex.I * (-Complex.I * ↑(sd.eigenval k) *
+    Complex.exp (-Complex.I * ↑(sd.eigenval k) * ↑t)) =
+    (Complex.I * (-Complex.I)) * ↑(sd.eigenval k) *
+    Complex.exp (-Complex.I * ↑(sd.eigenval k) * ↑t) from by ring]
+  rw [show Complex.I * (-Complex.I) = 1 from by rw [mul_neg, hI2, neg_neg]]
+  ring
 
 /-! ### Properties of Unitary Evolution -/
 
@@ -81,8 +91,20 @@ So ‖U_t ψ‖² = Σ |c_k|² = ‖ψ‖² (Parseval). -/
 theorem propagator_norm_sq {n : ℕ} (sd : SpectralDecomp S n)
     (t : ℝ) (k : Fin n) :
     Complex.normSq (propagatorCoeff S sd t k) = 1 := by
-  -- |e^{-iλt}|² = e^{2·Re(-iλt)} = e^0 = 1 (purely imaginary exponent)
-  -- Re(-i·λ·t) = 0 since the exponent is purely imaginary
+  -- |e^z|² = |e^z| · |e^z̄| = e^z · e^z̄ = e^{z+z̄} = e^{2Re(z)}
+  -- For z = -iλt: Re(z) = 0, so |e^z|² = 1.
+  -- Equivalently: e^z · conj(e^z) = e^z · e^{conj z} = e^{z + conj z}
+  -- For purely imaginary z: z + conj z = 0, so e^0 = 1.
+  -- Use: normSq(e^z) = (e^z * conj(e^z)).re = (e^z * e^{conj z}).re = (e^{z+conj z}).re
+  unfold propagatorCoeff
+  -- normSq = ‖·‖², and ‖exp(θ·I)‖ = 1 for real θ
+  have h : -Complex.I * (sd.eigenval k : ℂ) * (t : ℂ) = (↑(-(sd.eigenval k * t)) : ℂ) * Complex.I := by
+    push_cast; ring
+  -- normSq z = ‖z‖² (by definition). ‖exp(θI)‖ = 1, so normSq = 1² = 1.
+  rw [h]
+  -- normSq(exp(θI)) = 1 for real θ
+  -- This follows from |exp(θI)| = 1 (norm_exp_ofReal_mul_I)
+  -- and normSq = ‖·‖²
   sorry
 
 /-- **Reversibility**: U_t · U_{-t} = Id.
@@ -90,13 +112,16 @@ In spectral form: e^{-iλt} · e^{iλt} = 1. -/
 theorem propagator_reversible {n : ℕ} (sd : SpectralDecomp S n)
     (t : ℝ) (k : Fin n) :
     propagatorCoeff S sd t k * propagatorCoeff S sd (-t) k = 1 := by
-  -- e^{-iλt} · e^{iλt} = e^{-iλ(t+(-t))} = e^0 = 1
-  sorry
+  rw [propagator_group]
+  show propagatorCoeff S sd (t + -t) k = 1
+  rw [add_neg_cancel]
+  unfold propagatorCoeff; simp [Complex.ofReal_zero]
 
 /-- **U_0 = Id**: At t = 0, the propagator is the identity. -/
 theorem propagator_zero {n : ℕ} (sd : SpectralDecomp S n) (k : Fin n) :
     propagatorCoeff S sd 0 k = 1 := by
-  sorry
+  unfold propagatorCoeff
+  simp [Complex.ofReal_zero]
 
 /-! ### Contrast: Real vs Imaginary Projection -/
 
