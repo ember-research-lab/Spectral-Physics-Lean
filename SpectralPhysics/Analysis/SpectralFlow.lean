@@ -100,7 +100,10 @@ theorem theta_vacuum
     -- Theta periodicity: e^{i(n)(theta + 2pi)} = e^{in theta} for integer n
     -- In real form: cos(n(theta + 2pi)) = cos(n theta) for integer n
     ∀ (n : ℤ), Real.cos (n * (theta + 2 * Real.pi)) = Real.cos (n * theta) := by
-  sorry
+  intro n
+  -- n*(θ + 2π) = n*θ + n*(2π), then cos_add_int_mul_two_pi
+  rw [show (n : ℝ) * (theta + 2 * Real.pi) = (n * theta) + ↑n * (2 * Real.pi) from by push_cast; ring]
+  exact Real.cos_add_int_mul_two_pi (n * theta) n
 
 end SpectralPhysics.SpectralFlow
 
