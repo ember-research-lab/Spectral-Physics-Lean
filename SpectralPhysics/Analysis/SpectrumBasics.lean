@@ -5,6 +5,7 @@ Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.Axioms.Laplacian
 import SpectralPhysics.Analysis.HeatSemigroup
+import SpectralPhysics.Analysis.SignChange
 
 /-!
 # The Spectrum (Ch 3)
@@ -68,8 +69,8 @@ theorem fiedler_sign_change
     (f : S.X -> ℝ)
     (h_nonzero : ∃ x : S.X, f x ≠ 0)
     (h_ortho : ∑ x : S.X, f x * S.μ x = 0) :
-    (∃ x : S.X, f x > 0) ∧ (∃ y : S.X, f y < 0) := by
-  sorry
+    (∃ x : S.X, f x > 0) ∧ (∃ y : S.X, f y < 0) :=
+  SignChange.sign_change S f h_nonzero h_ortho
 
 /-- **Spectral gap as health diagnostic** (Theorem 3.7):
 The spectral gap lambda_1 controls the rate of correlator decay.
