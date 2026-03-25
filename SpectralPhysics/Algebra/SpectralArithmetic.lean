@@ -40,7 +40,7 @@ namespace SpectralPhysics.SpectralArithmetic
 /-- **Vandermonde determinant for distinct reals**: If λ_0 < λ_1 < ... < λ_{n-1}
 (strictly sorted), the Vandermonde matrix V_{ij} = λ_i^j has nonzero determinant.
 
-This is a classical result: det(V) = Π_{i<j} (λ_j - λ_i) ≠ 0
+This is a classical result: det(V) = Π (λ_j - λ_i) over pairs i less than j, ≠ 0
 when all λ_i are distinct.
 
 Used by: Hodge.lean (cycle coordinate independence). -/
@@ -50,7 +50,11 @@ theorem vandermonde_det_ne_zero {n : ℕ}
     Matrix.det (Matrix.vandermonde (fun i => (lam i : ℝ))) ≠ 0 := by
   -- det(V) = Π_{i<j} (λ_j - λ_i). Each factor > 0 (since λ_j > λ_i).
   -- Product of positive reals is positive, hence nonzero.
-  sorry -- needs det_vandermonde + product of positive differences ≠ 0
+  rw [Ne, Matrix.det_vandermonde_eq_zero_iff]
+  rintro ⟨i, j, h_eq, h_ne⟩
+  rcases lt_or_gt_of_ne h_ne with h | h
+  · exact absurd h_eq (ne_of_lt (h_distinct i j h))
+  · exact absurd h_eq.symm (ne_of_lt (h_distinct j i h))
 
 /-! ### Power Sum Determines Spectrum -/
 
