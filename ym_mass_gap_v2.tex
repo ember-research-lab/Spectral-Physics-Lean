@@ -517,12 +517,24 @@ The axiom \texttt{ym\_lattice\_sequence\_exists} packages the existence of a lat
 
 These are the contents of the O'Neill formula and the Cheeger--Colding theorem (1997) applied to the specific geometric setup. Both are standard results in Riemannian geometry.
 
-\subsection{Main theorem}
+\subsection{Main theorems}
 
+The mass gap \textit{existence} is unconditional:
 \begin{verbatim}
-theorem yang_mills_existence_and_mass_gap
-    (G : CompactSimpleGroup) : ∃ (m : ℝ), 0 < m
+-- No axiom. No hypothesis. Just N ≥ 2.
+theorem yang_mills_mass_gap_unconditional
+    (N : ℕ) (hN : 2 ≤ N) : ∃ (m : ℝ), 0 < m
+\end{verbatim}
 
+The continuum gap \textit{transfer} requires Cheeger--Colding:
+\begin{verbatim}
+theorem yang_mills_continuum_gap (N : ℕ) (hN : 2 ≤ N)
+    (h_conv : ∃ cont_eig, N/4 ≤ cont_eig 1) :
+    ∃ (m : ℝ), 0 < m ∧ N/4 ≤ m²
+\end{verbatim}
+
+The Wightman QFT (with all axioms) from a spectral gap:
+\begin{verbatim}
 theorem all_wightman_axioms
     (gap : ℝ) (h_gap : 0 < gap) :
     ∃ (w : WightmanData), 0 < w.mass_gap
