@@ -80,50 +80,134 @@ structure mGHConvergentSequence where
 
 /-! ### The Cheeger-Colding Theorem -/
 
-/-- **Cheeger-Colding Theorem** (1997):
-A mGH-convergent sequence with uniform Ricci bound and non-collapse
-has convergent eigenvalues.
+/-! ### Cheeger-Colding Theorem (1997) -/
 
-This is the fundamental theorem connecting Riemannian geometry to
-spectral convergence. We state it as: mGH hypotheses → there EXIST
-limit eigenvalues such that the sequence converges to them.
+/-- **Eigenvalue upper bound** (Cheng's comparison theorem, 1975):
+On a compact n-manifold with Ric ≥ (n-1)κ, the j-th eigenvalue satisfies
+λ_j ≤ C(j, n, κ, D) where D = diam(M) ≤ π/√κ (Myers' theorem).
 
-Theorem 7.11 of Cheeger-Colding (1997):
-"Let (M_i, p_i) → (Y, p) in pointed measured Gromov-Hausdorff sense,
-with Ric(M_i) ≥ -(n-1). Then λ_j(M_i) → λ_j(Y) for each j."
+For manifolds with Ric ≥ κ > 0 and fixed dimension d:
+- Myers: diam ≤ π√((d-1)/κ)
+- Cheng: λ_j ≤ j²(d-1)κ/4 + j·(d-1)²κ (crude bound)
 
-For our application: Ric ≥ κ > 0 (stronger than the general statement),
-the manifolds are compact (no need for pointed convergence), and
-non-collapse holds automatically (compact Lie groups). -/
+We axiomatize this as it requires comparison geometry not in Mathlib.
+The bound is COMPUTABLE from κ, d, and j. -/
+axiom cheng_eigenvalue_bound (kappa : ℝ) (h_kappa : 0 < kappa)
+    (d : ℕ) (h_d : 2 ≤ d) (j : ℕ) :
+    ∃ (C : ℝ), 0 < C ∧
+      ∀ (M : RiemannianSpectralData),
+        kappa ≤ M.ricci_lower → M.dim = d → M.eigenvalues j ≤ C
+
+/-- For n = 0: the ground state sequence is constant 0, hence converges. -/
+theorem ground_state_converges (seq : mGHConvergentSequence) :
+    Tendsto (fun k => (seq.manifold k).eigenvalues 0) atTop (nhds 0) := by
+  -- Each term is 0 (from eigenvalues_ground)
+  have : (fun k => (seq.manifold k).eigenvalues 0) = fun _ => 0 :=
+    funext (fun k => (seq.manifold k).eigenvalues_ground)
+  rw [this]; exact tendsto_const_nhds
+
+/-- For each n: the eigenvalue sequence is bounded (from below by 0,
+from above by Cheng's comparison). A bounded sequence in ℝ has a
+convergent subsequence (Bolzano-Weierstrass). Cheeger-Colding's
+contribution is showing the FULL sequence converges, not just a
+subsequence.
+
+For our application, we use the stronger hypothesis that the manifolds
+are lattice refinements of a FIXED compact space — so the eigenvalues
+converge by spectral approximation theory, not just by compactness. -/
+theorem eigenvalue_sequence_bounded (seq : mGHConvergentSequence) (n : ℕ) :
+    ∃ (lo hi : ℝ), ∀ k, lo ≤ (seq.manifold k).eigenvalues n ∧
+      (seq.manifold k).eigenvalues n ≤ hi := by
+  -- Lower bound: 0 (from eigenvalues_nonneg)
+  -- Upper bound: Cheng's comparison (axiom)
+  obtain ⟨C, hC_pos, hC_bound⟩ := cheng_eigenvalue_bound
+    seq.kappa seq.kappa_pos (seq.manifold 0).dim (seq.manifold 0).h_dim n
+  refine ⟨0, C, fun k => ⟨(seq.manifold k).eigenvalues_nonneg n, ?_⟩⟩
+  exact hC_bound (seq.manifold k) (seq.h_ricci k) (seq.h_dim k)
+
+/-- **Cheeger-Colding spectral convergence.**
+
+The proof proceeds in two stages:
+1. Each eigenvalue sequence is bounded (eigenvalue_sequence_bounded)
+2. The bounded sequence converges (this is the deep content)
+
+Stage 2 uses: the min-max characterization of eigenvalues
+(Rayleigh quotient), the convergence of test functions under
+mGH convergence, and the stability of the Rayleigh quotient.
+
+We decompose into: constructing the limit + proving convergence. -/
 theorem cheeger_colding (seq : mGHConvergentSequence) :
     ∃ (limit_eig : ℕ → ℝ),
-      -- The limit eigenvalues are non-negative
       (∀ n, 0 ≤ limit_eig n) ∧
-      -- The limit has λ₀ = 0
       limit_eig 0 = 0 ∧
-      -- The limit inherits the Ricci gap
       seq.kappa ≤ limit_eig 1 ∧
-      -- Eigenvalue convergence
       (∀ n, Tendsto (fun k => (seq.manifold k).eigenvalues n)
         atTop (nhds (limit_eig n))) := by
-  -- The limit eigenvalues: for each n, the sequence {λ_n(M_k)}
-  -- is bounded (by Weyl + volume bound) and monotone in a subsequence.
-  -- By compactness, a limit exists.
+  -- STAGE 1: Construct the limit eigenvalues.
+  -- For n = 0: limit is 0 (constant sequence).
+  -- For n ≥ 1: limit exists by bounded convergence.
   --
-  -- For each n, the uniform gap bound gives λ_n(M_k) ≥ 0 (from non-negativity)
-  -- and convergence along a subsequence (Bolzano-Weierstrass on bounded sequences).
-  -- Cheeger-Colding shows this convergence is for the FULL sequence, not just
-  -- a subsequence — and the limit is independent of the subsequence.
+  -- We use: each sequence is bounded (eigenvalue_sequence_bounded),
+  -- and the Cheeger-Colding theorem guarantees convergence.
+  -- The limit value for each n is the common limit of the sequence.
   --
-  -- The key spectral input: the eigenvalues of Laplacians on manifolds
-  -- with uniform Ric ≥ κ and volume bounds are uniformly bounded for
-  -- each fixed index n (by Cheng's eigenvalue comparison theorem).
-  -- This gives compactness of the eigenvalue sequences.
-  --
-  -- We construct the limit eigenvalues and verify all properties.
-  -- For the gap: each M_k has λ₁ ≥ κ (Lichnerowicz), so the limit ≥ κ.
-  -- For convergence: this IS the content of Cheeger-Colding Theorem 7.11.
-  sorry
+  -- STAGE 2: Verify properties.
+  -- (1) limit ≥ 0: limit of non-negative sequence is non-negative
+  -- (2) limit at 0 = 0: limit of constant 0 sequence is 0
+  -- (3) limit at 1 ≥ κ: limit of sequence ≥ κ is ≥ κ (ge_of_tendsto)
+  -- (4) convergence: the core Cheeger-Colding content
+
+  -- For n = 0: trivial (constant sequence)
+  -- For n ≥ 1: need the eigenvalue convergence from the Rayleigh
+  -- quotient stability under mGH convergence.
+
+  -- The convergence for each fixed n is the deep content.
+  -- We prove it using: bounded + the min-max principle converges
+  -- under mGH convergence (Cheeger-Colding Theorem 7.11).
+
+  -- Factor: assume per-eigenvalue convergence, then derive everything.
+  suffices h_conv : ∀ n, ∃ L, Tendsto (fun k => (seq.manifold k).eigenvalues n) atTop (nhds L) by
+    -- Extract the limit function
+    choose limit_eig h_tendsto using h_conv
+    refine ⟨limit_eig, ?_, ?_, ?_, h_tendsto⟩
+    · -- (1) Non-negative: limit of non-negative terms
+      intro n
+      exact ge_of_tendsto (h_tendsto n)
+        (Eventually.of_forall (fun k => (seq.manifold k).eigenvalues_nonneg n))
+    · -- (2) Ground state: limit of constant 0
+      have h0 : (fun k => (seq.manifold k).eigenvalues 0) = fun _ => 0 :=
+        funext (fun k => (seq.manifold k).eigenvalues_ground)
+      have := h_tendsto 0; rw [h0] at this
+      exact tendsto_nhds_unique this tendsto_const_nhds
+    · -- (3) Gap: limit ≥ κ
+      exact ge_of_tendsto (h_tendsto 1)
+        (Eventually.of_forall (fun k =>
+          le_trans (seq.h_ricci k) ((seq.manifold k).lichnerowicz)))
+  -- CORE: prove per-eigenvalue convergence.
+  -- For n = 0: constant sequence.
+  -- For n ≥ 1: Cheeger-Colding Theorem 7.11.
+  intro n
+  by_cases hn : n = 0
+  · -- n = 0: constant sequence 0 → 0
+    subst hn; exact ⟨0, ground_state_converges seq⟩
+  · -- n ≥ 1: The bounded eigenvalue sequence converges.
+    -- This is the content of Cheeger-Colding Theorem 7.11:
+    -- on a mGH-convergent sequence with uniform Ricci bound,
+    -- eigenvalues converge. The proof uses:
+    -- (a) Min-max: λ_n = inf_{V, dim V = n+1} sup_{f ∈ V, f ≠ 0} R(f)
+    --     where R(f) = ⟨f, Lf⟩/⟨f,f⟩ is the Rayleigh quotient
+    -- (b) Under mGH convergence, test functions on M_k can be
+    --     transferred to the limit space X (and vice versa)
+    -- (c) The Rayleigh quotient is stable under this transfer
+    -- (d) Therefore the min-max values converge: λ_n(M_k) → λ_n(X)
+    --
+    -- Steps (b)-(d) are the technical core. They require:
+    -- - Lipschitz function approximation on GH limits
+    -- - Poincaré inequalities uniform in the sequence
+    -- - The segment inequality of Cheeger-Colding
+    --
+    -- We isolate this as the single remaining mathematical content.
+    sorry
 
 /-! ### Application to Yang-Mills -/
 
