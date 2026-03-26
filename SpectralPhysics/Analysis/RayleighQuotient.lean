@@ -154,10 +154,26 @@ theorem eigenvalue_converges_from_rayleigh
     : Filter.Tendsto eigenval_seq Filter.atTop (nhds L) := by
   -- The sequence is sandwiched between L - 1/(k+1) and L + 1/(k+1).
   -- Since 1/(k+1) → 0, the squeeze theorem gives convergence to L.
-  -- Sandwich: |eigenval_seq k - L| ≤ 1/(k+1) → 0
-  -- This is a direct ε-δ argument using 1/(k+1) → 0.
-  -- The proof is standard real analysis (Archimedean + squeeze).
-  sorry
+  -- |eigenval_seq k - L| ≤ 1/(k+1) from the two bounds.
+  -- Squeeze with 1/(k+1) → 0 gives the result.
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  refine ⟨Nat.ceil (1 / ε) + 1, fun k hk => ?_⟩
+  rw [Real.dist_eq]
+  -- |eigenval_seq k - L| ≤ 1/(k+1)
+  have h_abs : |eigenval_seq k - L| ≤ 1 / ((k : ℝ) + 1) := by
+    rw [abs_le]; constructor <;> linarith [h_above k, h_below k]
+  -- 1/(k+1) < ε because k ≥ ⌈1/ε⌉ + 1 > 1/ε
+  have hk_large : 1 / ε < (k : ℝ) := by
+    calc 1 / ε ≤ Nat.ceil (1 / ε) := Nat.le_ceil _
+      _ < Nat.ceil (1 / ε) + 1 := by linarith
+      _ ≤ (k : ℝ) := by exact_mod_cast hk
+  have hk1_pos : (0 : ℝ) < (k : ℝ) + 1 := by linarith
+  calc |eigenval_seq k - L|
+      ≤ 1 / ((k : ℝ) + 1) := h_abs
+    _ < 1 / (1 / ε) := by
+        apply div_lt_div_of_pos_left one_pos (by positivity) (by linarith)
+    _ = ε := one_div_one_div ε
 
 end SpectralPhysics.RayleighQuotient
 
