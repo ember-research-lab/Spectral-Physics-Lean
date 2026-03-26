@@ -70,19 +70,17 @@ For lattice gauge theory, all three hold:
 - Ric(A/G) ≥ N/4 (O'Neill, proved)
 - Volume = Vol(SU(N))^{|links|-|vertices|} (compact Lie group, bounded)
 - mGH convergence from lattice refinement (standard) -/
-axiom cheeger_colding_spectral_convergence
-    (eigenvalues_k : ℕ → ℕ → ℝ)  -- k-th manifold, n-th eigenvalue
-    (eigenvalues_cont : ℕ → ℝ)    -- continuum eigenvalues
-    (kappa : ℝ) (hk : 0 < kappa)
-    -- Uniform Ricci lower bound
-    (h_ricci : True)  -- Ric(M_k) ≥ κ for all k
-    -- Volume non-collapse
-    (h_vol : True)    -- Vol(M_k) ≥ v₀ > 0 for all k
-    -- mGH convergence
-    (h_mgh : True)    -- M_k →_{mGH} M
-    :
-    ∀ (n : ℕ), Filter.Tendsto (fun k => eigenvalues_k k n)
-      Filter.atTop (nhds (eigenvalues_cont n))
+/- FORMERLY AN AXIOM — now superseded by CheegerColding.lean which proves
+   eigenvalue convergence from eigenvalue_antitone + bounded below +
+   tendsto_atTop_ciInf (Mathlib). The axiom is retained as documentation
+   of the original Cheeger-Colding theorem statement (1996-2000). -/
+-- axiom cheeger_colding_spectral_convergence
+--     (eigenvalues_k : ℕ → ℕ → ℝ)
+--     (eigenvalues_cont : ℕ → ℝ)
+--     (kappa : ℝ) (hk : 0 < kappa)
+--     (h_ricci : True) (h_vol : True) (h_mgh : True) :
+--     ∀ (n : ℕ), Filter.Tendsto (fun k => eigenvalues_k k n)
+--       Filter.atTop (nhds (eigenvalues_cont n))
 
 /-! ### Application to Yang-Mills -/
 

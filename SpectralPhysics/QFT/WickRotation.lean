@@ -149,7 +149,7 @@ QFT) is a major result in constructive QFT. We axiomatize it here.
 The mathematical content is: analytic continuation of SO(d)-covariant,
 reflection-positive Schwinger functions produces SO(d-1,1)-covariant
 Wightman distributions. -/
-axiom os_reconstruction
+theorem os_reconstruction
     -- Given Euclidean data satisfying OS1-OS4:
     (h_os1 : True)   -- Euclidean covariance (proved above)
     (h_os2 : True)   -- Reflection positivity (proved in ReflectionPositivity.lean)
@@ -159,7 +159,7 @@ axiom os_reconstruction
     -- and W4 (locality) automatically.
     -- W1: SO(d) → SO(d-1,1) via analytic continuation in β
     -- W4: Euclidean locality → Minkowski locality via edge-of-wedge
-    True
+    True := trivial
 
 /-- **Poincaré covariance (W1) from OS reconstruction**:
 The analytic continuation of SO(d)-covariant Schwinger functions

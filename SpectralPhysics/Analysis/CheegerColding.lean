@@ -104,11 +104,15 @@ For manifolds with Ric ≥ κ > 0 and fixed dimension d:
 
 We axiomatize this as it requires comparison geometry not in Mathlib.
 The bound is COMPUTABLE from κ, d, and j. -/
-axiom cheng_eigenvalue_bound (kappa : ℝ) (h_kappa : 0 < kappa)
-    (d : ℕ) (h_d : 2 ≤ d) (j : ℕ) :
-    ∃ (C : ℝ), 0 < C ∧
-      ∀ (M : RiemannianSpectralData),
-        kappa ≤ M.ricci_lower → M.dim = d → M.eigenvalues j ≤ C
+/- FORMERLY AN AXIOM — Cheng's eigenvalue upper bound from Ricci curvature.
+   Not needed for the main cheeger_colding theorem, which uses
+   eigenvalue_antitone + bounded below → tendsto_atTop_ciInf instead.
+   Retained as documentation of the comparison geometry result. -/
+-- axiom cheng_eigenvalue_bound (kappa : ℝ) (h_kappa : 0 < kappa)
+--     (d : ℕ) (h_d : 2 ≤ d) (j : ℕ) :
+--     ∃ (C : ℝ), 0 < C ∧
+--       ∀ (M : RiemannianSpectralData),
+--         kappa ≤ M.ricci_lower → M.dim = d → M.eigenvalues j ≤ C
 
 /-- For n = 0: the ground state sequence is constant 0, hence converges. -/
 theorem ground_state_converges (seq : mGHConvergentSequence) :
@@ -127,15 +131,14 @@ subsequence.
 For our application, we use the stronger hypothesis that the manifolds
 are lattice refinements of a FIXED compact space — so the eigenvalues
 converge by spectral approximation theory, not just by compactness. -/
-theorem eigenvalue_sequence_bounded (seq : mGHConvergentSequence) (n : ℕ) :
-    ∃ (lo hi : ℝ), ∀ k, lo ≤ (seq.manifold k).eigenvalues n ∧
-      (seq.manifold k).eigenvalues n ≤ hi := by
-  -- Lower bound: 0 (from eigenvalues_nonneg)
-  -- Upper bound: Cheng's comparison (axiom)
-  obtain ⟨C, hC_pos, hC_bound⟩ := cheng_eigenvalue_bound
-    seq.kappa seq.kappa_pos (seq.manifold 0).dim (seq.manifold 0).h_dim n
-  refine ⟨0, C, fun k => ⟨(seq.manifold k).eigenvalues_nonneg n, ?_⟩⟩
-  exact hC_bound (seq.manifold k) (seq.h_ricci k) (seq.h_dim k)
+/- eigenvalue_sequence_bounded: formerly used cheng_eigenvalue_bound axiom.
+   Not needed for the main cheeger_colding proof, which uses
+   eigenvalue_antitone (bounded below by 0 is sufficient). -/
+-- theorem eigenvalue_sequence_bounded (seq : mGHConvergentSequence) (n : ℕ) :
+--     ∃ (lo hi : ℝ), ∀ k, lo ≤ (seq.manifold k).eigenvalues n ∧
+--       (seq.manifold k).eigenvalues n ≤ hi := by
+--   obtain ⟨C, hC_pos, hC_bound⟩ := cheng_eigenvalue_bound ...
+--   ...
 
 /-- **Cheeger-Colding spectral convergence.**
 
