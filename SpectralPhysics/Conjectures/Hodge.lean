@@ -6,6 +6,7 @@ Authors: Aaron Ben-Shalom
 import SpectralPhysics.Axioms.SelfRefClosure
 import Mathlib.Algebra.Star.Basic
 import Mathlib.Algebra.Order.Field.Basic
+import Mathlib.LinearAlgebra.Dimension.Finrank
 
 /-
   Conjectures/Hodge.lean — The Hodge Conjecture as a Completeness Instance
@@ -230,6 +231,9 @@ class ProjectiveAlgClosure (p dim : ℕ) : Prop where
 
 /-- If we have spanning cycles, then every Hodge class IS algebraic.
     This is the easy direction: spanning => surjectivity. -/
+/-- If we have spanning cycles, then every Hodge class IS algebraic.
+    Uses LinearMap.surjective_of_injective: the cycle coordinate map
+    is an injective endomorphism of ℚ^dim, hence surjective. -/
 theorem hodge_from_spanning
     {p dim : ℕ}
     (cycles : Fin dim → AlgCycleClass p dim)
@@ -241,22 +245,82 @@ theorem hodge_from_spanning
     ∃ (c : Fin dim → ℚ),
       ∀ i, α.coords i = Finset.sum Finset.univ
         (fun j => c j * (cycles j).toHodge.coords i) := by
-  -- The cycle classes form a basis for Q^dim.
-  -- alpha has coordinates in Q^dim.
-  -- Therefore alpha is a Q-linear combination of the cycle classes.
-  sorry -- Requires: invertibility of the matrix formed by cycle coordinates
+  -- The map f(c)_i = Σ_j c_j · M_ij is an endomorphism of ℚ^dim.
+  -- Injective (from hind) → surjective (LinearMap.surjective_of_injective).
+  let f : (Fin dim → ℚ) →ₗ[ℚ] (Fin dim → ℚ) :=
+    { toFun := fun c i => Finset.sum Finset.univ (fun j => c j * (cycles j).toHodge.coords i)
+      map_add' := fun x y => funext fun i => by
+        simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
+      map_smul' := fun r x => funext fun i => by
+        simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc, mul_left_comm,
+          RingHom.id_apply] }
+  -- f is injective: f c = 0 → hind gives c = 0
+  have hf_inj : Function.Injective f := by
+    intro x y hxy
+    have h_zero : f (x - y) = 0 := by rw [map_sub]; exact sub_eq_zero.mpr hxy
+    have h_ind := hind (x - y) (fun i => congr_fun h_zero i)
+    exact funext (fun j => sub_eq_zero.mp (h_ind j))
+  -- f is surjective (finite-dimensional injective endomorphism)
+  have hf_surj : Function.Surjective f := f.surjective_of_injective hf_inj
+  obtain ⟨c, hc⟩ := hf_surj α.coords
+  exact ⟨c, fun i => (congr_fun hc i).symm⟩
 
-/-- Spanning implies faithfulness (and hence Hodge). -/
+/-- Spanning implies faithfulness (and hence Hodge).
+
+    If all pairings with spanning cycles vanish, then surjectivity of
+    the cycle coordinate map forces α = 0. Contrapositive: nonzero α
+    must pair nontrivially with some spanning cycle. -/
 theorem faithful_from_spanning
     {p dim : ℕ}
     [pac : ProjectiveAlgClosure p dim] :
     HodgeFaithful p dim := by
   constructor
   intro α hα
-  -- alpha is nonzero, so some coordinate alpha_i != 0.
-  -- The spanning cycles form a basis.
-  -- At least one basis vector has nonzero pairing with alpha.
-  sorry -- Requires the linear algebra argument
+  obtain ⟨cycles, hind⟩ := pac.spanning_cycles
+  -- By contradiction: if no cycle pairs nontrivially, α = 0
+  by_contra h_none
+  push_neg at h_none
+  -- h_none : ∀ Z, integrationPairing Z α = 0
+  -- For each spanning cycle j: Σ_i M_ij · α_i = 0
+  have h_pairing : ∀ j : Fin dim,
+      Finset.sum Finset.univ (fun i => (cycles j).toHodge.coords i * α.coords i) = 0 :=
+    fun j => h_none (cycles j)
+  -- Build the same linear map f(c)_i = Σ_j c_j · M_ij
+  let f : (Fin dim → ℚ) →ₗ[ℚ] (Fin dim → ℚ) :=
+    { toFun := fun c i => Finset.sum Finset.univ (fun j => c j * (cycles j).toHodge.coords i)
+      map_add' := fun x y => funext fun i => by
+        simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
+      map_smul' := fun r x => funext fun i => by
+        simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc, mul_left_comm,
+          RingHom.id_apply] }
+  have hf_inj : Function.Injective f := by
+    intro x y hxy
+    have h_zero : f (x - y) = 0 := by rw [map_sub]; exact sub_eq_zero.mpr hxy
+    exact funext (fun j => sub_eq_zero.mp (hind (x - y) (fun i => congr_fun h_zero i) j))
+  have hf_surj : Function.Surjective f := f.surjective_of_injective hf_inj
+  -- For any vector v: Σ_i v_i · α_i = 0 (using surjectivity + vanishing pairings)
+  apply hα; intro i
+  -- Take v = standard basis vector e_i. Then Σ_k v_k · α_k = α_i.
+  -- Since f is surjective, ∃ c with f(c) = e_i.
+  -- Then α_i = Σ_k (f c)_k · α_k = Σ_k (Σ_j c_j M_jk) · α_k
+  --         = Σ_j c_j · (Σ_k M_jk · α_k) = Σ_j c_j · 0 = 0
+  obtain ⟨c, hc⟩ := hf_surj (fun k => if k = i then 1 else 0)
+  have h_val : (fun k => if k = i then (1 : ℚ) else 0) i = 1 := if_pos rfl
+  have h_expand : α.coords i = Finset.sum Finset.univ
+      (fun j => c j * Finset.sum Finset.univ
+        (fun k => (cycles j).toHodge.coords k * α.coords k)) := by
+    rw [show α.coords i = Finset.sum Finset.univ
+        (fun k => (if k = i then 1 else 0) * α.coords k) from by
+      simp [Finset.sum_ite_eq', Finset.mem_univ]]
+    rw [show (fun k => (if k = i then (1 : ℚ) else 0) * α.coords k) =
+        (fun k => (f c) k * α.coords k) from by
+      ext k; rw [congr_fun hc k]]
+    simp only [f, LinearMap.coe_mk, AddHom.coe_mk]
+    rw [Finset.sum_comm]
+    congr 1; ext k
+    rw [Finset.sum_mul]; congr 1; ext j; ring
+  rw [h_expand]
+  simp only [h_pairing, mul_zero, Finset.sum_const_zero]
 
 -- ============================================================================
 -- SECTION 5: KNOWN RESULTS

@@ -61,6 +61,20 @@ theorem circulant_implies_koide
 /-- **Koide ratio numerical check**: Using measured lepton masses
     m_e = 0.511 MeV, m_mu = 105.66 MeV, m_tau = 1776.86 MeV,
     the Koide ratio is approximately 2/3. -/
+/-- **Koide ratio numerical check**: Using measured lepton masses
+    m_e = 0.511 MeV, m_mu = 105.66 MeV, m_tau = 1776.86 MeV,
+    the Koide ratio is approximately 2/3.
+
+    Proof: bound each √m between rationals using Real.sqrt_le_sqrt + Real.sqrt_sq,
+    then chain the arithmetic to show |K - 2/3| is within 0.001.
+
+    Bounds used:
+    - √0.511 ∈ [714/1000, 716/1000] (verified: 0.714² = 0.509796 and 0.716² = 0.512656)
+    - √105.66 ∈ [10278/1000, 10280/1000] (verified: 10.278² = 105.638... and 10.280² = 105.678...)
+    - √1776.86 ∈ [42152/1000, 42154/1000] (verified: 42.152² = 1776.791... and 42.154² = 1776.960...)
+
+    Sum range: [53144/1000, 53150/1000], sum²: [2824284736/10⁶, 2824922500/10⁶]
+    Ratio range: ⊂ (1997/3000, 2003/3000) = (2/3 - 1/1000, 2/3 + 1/1000) -/
 theorem koide_approx :
     let m_e := (0.511 : ℝ)
     let m_mu := (105.66 : ℝ)
@@ -68,7 +82,58 @@ theorem koide_approx :
     let sum_m := m_e + m_mu + m_tau
     let sum_sqrt := Real.sqrt m_e + Real.sqrt m_mu + Real.sqrt m_tau
     |sum_m / sum_sqrt ^ 2 - 2 / 3| < 0.001 := by
-  sorry
+  -- Bound √m_e from below and above
+  have h_e_lo : (714 : ℝ) / 1000 ≤ Real.sqrt 0.511 := by
+    rw [show (714 : ℝ) / 1000 = Real.sqrt ((714 / 1000) ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 714/1000)).symm]
+    exact Real.sqrt_le_sqrt (by norm_num)
+  have h_e_hi : Real.sqrt 0.511 ≤ 716 / 1000 := by
+    rw [show (716 : ℝ) / 1000 = Real.sqrt ((716 / 1000) ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 716/1000)).symm]
+    exact Real.sqrt_le_sqrt (by norm_num)
+  -- Bound √m_mu
+  have h_mu_lo : (10278 : ℝ) / 1000 ≤ Real.sqrt 105.66 := by
+    rw [show (10278 : ℝ) / 1000 = Real.sqrt ((10278 / 1000) ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 10278/1000)).symm]
+    exact Real.sqrt_le_sqrt (by norm_num)
+  have h_mu_hi : Real.sqrt 105.66 ≤ 10280 / 1000 := by
+    rw [show (10280 : ℝ) / 1000 = Real.sqrt ((10280 / 1000) ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 10280/1000)).symm]
+    exact Real.sqrt_le_sqrt (by norm_num)
+  -- Bound √m_tau
+  have h_tau_lo : (42152 : ℝ) / 1000 ≤ Real.sqrt 1776.86 := by
+    rw [show (42152 : ℝ) / 1000 = Real.sqrt ((42152 / 1000) ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 42152/1000)).symm]
+    exact Real.sqrt_le_sqrt (by norm_num)
+  have h_tau_hi : Real.sqrt 1776.86 ≤ 42154 / 1000 := by
+    rw [show (42154 : ℝ) / 1000 = Real.sqrt ((42154 / 1000) ^ 2) from
+      (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 42154/1000)).symm]
+    exact Real.sqrt_le_sqrt (by norm_num)
+  -- Bound sum_sqrt ∈ [53144/1000, 53150/1000]
+  have h_sum_lo : (53144 : ℝ) / 1000 ≤ Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86 := by
+    linarith
+  have h_sum_hi : Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86 ≤ 53150 / 1000 := by
+    linarith
+  -- The sum_sqrt is positive
+  have h_sum_pos : (0 : ℝ) < Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86 := by
+    linarith
+  -- sum_sqrt² ∈ [53144²/10⁶, 53150²/10⁶]
+  have h_sq_lo : (53144 : ℝ)^2 / 1000^2 ≤
+      (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86)^2 := by
+    exact sq_le_sq' (by linarith) h_sum_lo
+  have h_sq_hi :
+      (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86)^2 ≤ (53150 : ℝ)^2 / 1000^2 := by
+    exact sq_le_sq' (by linarith) h_sum_hi
+  -- The result follows from the bounds:
+  -- 1997/3000 < 1883.031 / (53150²/10⁶) ≤ K ≤ 1883.031 / (53144²/10⁶) < 2003/3000
+  -- Which is verified by norm_num on the rational arithmetic.
+  -- We use abs_sub_lt to split into two inequalities.
+  simp only
+  rw [abs_sub_lt]
+  constructor <;> {
+    rw [div_sub_div_eq_sub_div, lt_div_iff (by positivity)]
+    nlinarith [sq_nonneg (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86)]
+  }
 
 /-- **Triad circulant structure**: The Z_3 symmetry of the triad
     (cyclic permutation O -> S -> R -> O) forces the mass matrix

@@ -140,7 +140,11 @@ theorem cpf_product {n m : ℕ} (eig_M : Fin n → ℝ) (eig_F : Fin m → ℝ) 
 /-- **Resonance counting function**: r_d(m) = #{(n₁,...,n_d) ∈ ℤ^d : n₁²+...+n_d² = m}.
 This counts the number of ways to write m as a sum of d squares.
 For d=2: r₂(m) = 4 Σ_{d|m} χ(d) (Jacobi). -/
-def resonanceCount (d m : ℕ) : ℕ := sorry
+def resonanceCount (d m : ℕ) : ℕ :=
+  -- Count #{(n₁,...,n_d) ∈ ℤ^d : Σ nᵢ² = m, each |nᵢ| ≤ m}
+  -- Encode: Fin d → Fin (2*m+1) where value k represents integer k - m
+  (Finset.univ.filter (fun f : Fin d → Fin (2 * m + 1) =>
+    (∑ i : Fin d, ((f i : ℤ) - ↑m) ^ 2 : ℤ) = ↑m)).card
 
 /-- **Gauss circle problem bound** (Monograph Thm 1.7):
 Σ_{m≤N} r_d(m) = C_d N^{d/2} + O(N^{(d-1)/2+ε}).
