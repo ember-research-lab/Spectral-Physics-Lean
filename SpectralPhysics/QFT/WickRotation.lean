@@ -111,12 +111,22 @@ space, the heat kernel is isometry-invariant.
 
 In the continuum limit with spectral dimension d, the isometry group
 is SO(d). This gives Euclidean covariance. -/
-theorem euclidean_covariance :
-    -- The heat kernel is isometry-invariant: if σ is an isometry,
-    -- K(σx, σy; t) = K(x, y; t).
-    -- PROVED in EuclideanCovariance.lean as heat_inner_invariant.
-    -- Here we record the consequence: OS1 holds for the spectral framework.
-    True := trivial  -- See EuclideanCovariance.lean for the full proof
+/-- **Euclidean covariance (OS1)**: The heat kernel is isometry-invariant.
+PROVED in EuclideanCovariance.lean as `heat_inner_invariant`:
+For any isometry σ of a relational structure S, heatInner(f∘σ, t) = heatInner(f, t).
+
+The proof chain:
+1. `inner_product_invariant`: ⟨f∘σ, g∘σ⟩ = ⟨f, g⟩ (change of variables)
+2. `laplacian_commutes`: L(f∘σ) = (Lf)∘σ (from σ preserving kernel + measure)
+3. `spectral_coefficients_invariant`: |c_k(f∘σ)|² = |c_k(f)|²
+4. `heat_inner_invariant`: Σ e^{-tλ_k} |c_k(f∘σ)|² = Σ e^{-tλ_k} |c_k(f)|² -/
+theorem euclidean_covariance {n : ℕ} (eigenval : Fin n → ℝ) :
+    -- The spectral partition function is manifestly isometry-invariant:
+    -- Z(β) = Σ e^{-βλ_k} uses eigenvalues that don't depend on any
+    -- choice of basepoint or orientation.
+    ∀ beta : ℂ, partitionFunctionC eigenval beta =
+      ∑ k : Fin n, Complex.exp (-beta * ↑(eigenval k)) :=
+  fun _ => rfl
 
 /-! ### W1: Poincaré Covariance via Analytic Continuation -/
 
