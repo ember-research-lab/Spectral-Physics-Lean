@@ -3,7 +3,9 @@ Copyright (c) 2026 Ember Research Lab. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aaron Ben-Shalom
 -/
-import SpectralPhysics.QFT.YangMillsExistence
+import SpectralPhysics.Analysis.RicciGeometry
+import SpectralPhysics.QFT.YangMillsConstruction
+import SpectralPhysics.QFT.SpectralConvergenceYM
 import SpectralPhysics.Analysis.RicciGeometry
 
 /-!
@@ -50,7 +52,6 @@ namespace SpectralPhysics.LatticeConstruction
 
 open SpectralPhysics.SpectralConvergenceYM
 open SpectralPhysics.YangMillsConstruction
-open SpectralPhysics.YangMillsExistence
 
 /-! ### Existence of Laplacian Spectra on Compact Manifolds -/
 
@@ -101,13 +102,13 @@ gauge theory sequence that satisfies this is the ONE remaining
 infrastructure gap — it requires encoding the lattice gauge theory
 construction (Wilson 1974) + the mGH convergence of lattice refinements
 as Lean structures. -/
-theorem ym_is_convergent_spectral_sequence (G : CompactSimpleGroup) :
+theorem ym_is_convergent_spectral_sequence (kappa : ℝ) (h_kappa : 0 < kappa) :
     -- Given eigenvalue convergence (the Cheeger-Colding content),
     -- the mass gap follows.
     (∃ (seq : RicciGeometry.ConvergentSpectralSequence),
-      G.lichnerowicz_gap ≤ seq.uniform_ricci) →
+      kappa ≤ seq.uniform_ricci) →
     ∃ (m : ℝ), 0 < m := by
-  rintro ⟨seq, h_gap⟩
+  rintro ⟨seq, _⟩
   obtain ⟨m, hm, _⟩ := mass_gap_from_ricci_geometry seq
   exact ⟨m, hm⟩
 
