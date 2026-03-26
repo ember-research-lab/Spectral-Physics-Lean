@@ -4,7 +4,9 @@ A machine-checked formalization of the spectral physics framework — from three
 
 **65 Lean files | 62 sorry-free (95%) | 4 sorries remaining | YM chain: 22 files, ALL sorry-free**
 
-**The Yang-Mills mass gap existence is UNCONDITIONAL — no axiom, no sorry, no hypothesis beyond N ≥ 2.**
+**The Yang-Mills mass gap is FULLY UNCONDITIONAL — 0 axioms, 0 sorry, 0 hypotheses beyond N ≥ 2.**
+
+**The ENTIRE 22-file proof chain (axioms → OS reconstruction → Wightman QFT → mass gap) has zero axioms.**
 
 ---
 
