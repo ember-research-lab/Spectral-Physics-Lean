@@ -230,8 +230,6 @@ class ProjectiveAlgClosure (p dim : ℕ) : Prop where
       (∀ j, c j = 0)
 
 /-- If we have spanning cycles, then every Hodge class IS algebraic.
-    This is the easy direction: spanning => surjectivity. -/
-/-- If we have spanning cycles, then every Hodge class IS algebraic.
     Uses LinearMap.surjective_of_injective: the cycle coordinate map
     is an injective endomorphism of ℚ^dim, hence surjective. -/
 theorem hodge_from_spanning
@@ -316,9 +314,10 @@ theorem faithful_from_spanning
         (fun k => (f c) k * α.coords k) from by
       ext k; rw [congr_fun hc k]]
     simp only [f, LinearMap.coe_mk, AddHom.coe_mk]
+    simp_rw [Finset.sum_mul, mul_assoc]
     rw [Finset.sum_comm]
-    congr 1; ext k
-    rw [Finset.sum_mul]; congr 1; ext j; ring
+    congr 1; ext j
+    rw [← Finset.mul_sum]
   rw [h_expand]
   simp only [h_pairing, mul_zero, Finset.sum_const_zero]
 

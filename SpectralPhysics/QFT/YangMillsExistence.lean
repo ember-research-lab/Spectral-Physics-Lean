@@ -155,62 +155,57 @@ theorem ym_nontrivial (G : CompactSimpleGroup) :
 
 /-! ### The Main Theorem -/
 
-/-- **YANG-MILLS EXISTENCE AND MASS GAP — UNCONDITIONAL**
+/-- **Lattice spectral gap for any compact simple G** (Tier 1).
 
-For any compact simple gauge group G, a non-trivial quantum Yang-Mills
-theory exists on ℝ⁴ and has a mass gap Δ > 0.
+For any compact simple gauge group G, the Lichnerowicz gap is positive.
+This witnesses a spectral gap on every FINITE LATTICE gauge theory with
+gauge group G.
 
-Specifically: Δ ≥ √(Lichnerowicz gap of G) > 0.
+**What this proves**: √(lichnerowicz_gap(G)) > 0
+**What this does NOT prove**: existence of a continuum QFT on ℝ⁴
 
-For SU(2): Δ ≥ √(3/4) ≈ 0.866
-For SU(3): Δ ≥ √(6/7) ≈ 0.926
+The `CompactSimpleGroup` structure carries the Lichnerowicz gap as DATA
+(a user-supplied positive real). The O'Neill formula and Lichnerowicz
+theorem that JUSTIFY these values are not formalized in Lean — they are
+standard results in Riemannian geometry (see manuscript §38).
 
-**NO AXIOM. NO HYPOTHESIS. Just the CompactSimpleGroup data.**
-
-The proof:
-1. Ric(A/G) ≥ κ_G > 0 (O'Neill + bi-invariant metric)
-2. Lichnerowicz: λ₁ ≥ κ_G > 0 on each lattice (lattice-independent)
-3. m = √(Lichnerowicz gap) > 0 from positive Ricci curvature
-4. Non-trivial: κ > 0 implies a₂ ≠ 0 (not free)
-5. OS1-OS4 satisfied: OS reconstruction gives Wightman (proved)
-6. Cheeger-Colding continuum transfer: proved in CheegerColding.lean
-   (eigenvalue antitone + bounded → converges, gap passes to limit)
-
-The continuum gap transfer (ym_mass_gap_from_cheeger_colding in
-CheegerColding.lean) requires lattice spectral data as hypotheses
-but uses NO axioms — the convergence is proved via
-tendsto_atTop_ciInf + ge_of_tendsto. -/
-theorem yang_mills_existence_and_mass_gap (G : CompactSimpleGroup) :
+**Clay gap analysis (Tier 2/3 requirements not met here)**:
+- Continuum limit construction (OS axioms on ℝ⁴): requires Tier 2
+- Wightman axiom verification: requires distributional QFT infrastructure
+- Cheeger-Colding spectral convergence: assumed as structure field
+- BBD multiscale log-Sobolev for gauge fields: Tier 3 (open) -/
+theorem yang_mills_lattice_gap_general (G : CompactSimpleGroup) :
     ∃ (m : ℝ), 0 < m :=
   ⟨Real.sqrt G.lichnerowicz_gap, Real.sqrt_pos_of_pos G.h_lichnerowicz⟩
 
-/-- The mass gap has a computable lower bound depending on G. -/
-theorem yang_mills_mass_gap_bound (G : CompactSimpleGroup) :
-    ∃ (m : ℝ), Real.sqrt G.lichnerowicz_gap ≤ m :=
-  ⟨Real.sqrt G.lichnerowicz_gap, le_refl _⟩
+/- Backward compatibility aliases -/
+abbrev yang_mills_existence_and_mass_gap := @yang_mills_lattice_gap_general
 
-/-- **Instantiation: SU(2) mass gap ≥ √(3/4).** -/
-theorem su2_mass_gap : ∃ (m : ℝ), 0 < m :=
-  yang_mills_existence_and_mass_gap SU2
+/-- SU(2) lattice spectral gap ≥ √(3/4). -/
+theorem su2_lattice_gap : ∃ (m : ℝ), 0 < m :=
+  yang_mills_lattice_gap_general SU2
 
-/-- **Instantiation: SU(3) mass gap ≥ √(6/7).** -/
-theorem su3_mass_gap : ∃ (m : ℝ), 0 < m :=
-  yang_mills_existence_and_mass_gap SU3
+/-- SU(3) lattice spectral gap ≥ √(6/7). -/
+theorem su3_lattice_gap : ∃ (m : ℝ), 0 < m :=
+  yang_mills_lattice_gap_general SU3
 
-/-- **Instantiation: SU(N) mass gap for any N ≥ 2.** -/
-theorem suN_mass_gap (N : ℕ) (hN : 2 ≤ N) : ∃ (m : ℝ), 0 < m :=
-  yang_mills_existence_and_mass_gap (SU N hN)
+/-- SU(N) lattice spectral gap for any N ≥ 2. -/
+theorem suN_lattice_gap (N : ℕ) (hN : 2 ≤ N) : ∃ (m : ℝ), 0 < m :=
+  yang_mills_lattice_gap_general (SU N hN)
 
-/-- **UNCONDITIONAL YM mass gap — NO AXIOM.**
+/- Backward compatibility aliases -/
+abbrev su2_mass_gap := @su2_lattice_gap
+abbrev su3_mass_gap := @su3_lattice_gap
+abbrev suN_mass_gap := @suN_lattice_gap
 
-For any N ≥ 2 (SU(N) gauge group), ∃ m > 0.
-This is yang_mills_mass_gap_unconditional from WilsonLattice.lean.
-
-The value m = √(N/4) comes from O'Neill (Ric ≥ N/4) + Lichnerowicz.
-It is lattice-independent and requires NO convergence hypothesis. -/
-theorem yang_mills_mass_gap_unconditional (N : ℕ) (hN : 2 ≤ N) :
+/-- **Lattice gap from Wilson construction** (Tier 1).
+Delegates to WilsonLattice.yang_mills_lattice_gap. -/
+theorem yang_mills_lattice_gap_from_wilson (N : ℕ) (hN : 2 ≤ N) :
     ∃ (m : ℝ), 0 < m :=
-  SpectralPhysics.WilsonLattice.yang_mills_mass_gap_unconditional N hN
+  SpectralPhysics.WilsonLattice.yang_mills_lattice_gap N hN
+
+/- Backward compatibility alias -/
+abbrev yang_mills_mass_gap_unconditional := @yang_mills_lattice_gap_from_wilson
 
 end SpectralPhysics.YangMillsExistence
 

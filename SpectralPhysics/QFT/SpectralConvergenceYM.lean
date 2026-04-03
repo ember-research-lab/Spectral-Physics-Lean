@@ -54,7 +54,7 @@ namespace SpectralPhysics.SpectralConvergenceYM
 
 /-! ### The Cheeger-Colding Spectral Convergence Theorem -/
 
-/-- **Cheeger-Colding spectral convergence** (axiomatized):
+/- **Cheeger-Colding spectral convergence** (formerly axiomatized):
 For a sequence of compact Riemannian manifolds M_k with uniform
 Ric ≥ κ and volume non-collapse, converging in measured
 Gromov-Hausdorff sense to a limit M:
@@ -69,8 +69,9 @@ Fukaya 1987, Ding 2002). It requires:
 For lattice gauge theory, all three hold:
 - Ric(A/G) ≥ N/4 (O'Neill, proved)
 - Volume = Vol(SU(N))^{|links|-|vertices|} (compact Lie group, bounded)
-- mGH convergence from lattice refinement (standard) -/
-/- FORMERLY AN AXIOM — now superseded by CheegerColding.lean which proves
+- mGH convergence from lattice refinement (standard)
+
+FORMERLY AN AXIOM — now superseded by CheegerColding.lean which proves
    eigenvalue convergence from eigenvalue_antitone + bounded below +
    tendsto_atTop_ciInf (Mathlib). The axiom is retained as documentation
    of the original Cheeger-Colding theorem statement (1996-2000). -/

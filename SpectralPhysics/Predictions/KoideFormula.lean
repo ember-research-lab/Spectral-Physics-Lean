@@ -60,9 +60,6 @@ theorem circulant_implies_koide
 
 /-- **Koide ratio numerical check**: Using measured lepton masses
     m_e = 0.511 MeV, m_mu = 105.66 MeV, m_tau = 1776.86 MeV,
-    the Koide ratio is approximately 2/3. -/
-/-- **Koide ratio numerical check**: Using measured lepton masses
-    m_e = 0.511 MeV, m_mu = 105.66 MeV, m_tau = 1776.86 MeV,
     the Koide ratio is approximately 2/3.
 
     Proof: bound each √m between rationals using Real.sqrt_le_sqrt + Real.sqrt_sq,
@@ -118,22 +115,29 @@ theorem koide_approx :
   have h_sum_pos : (0 : ℝ) < Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86 := by
     linarith
   -- sum_sqrt² ∈ [53144²/10⁶, 53150²/10⁶]
-  have h_sq_lo : (53144 : ℝ)^2 / 1000^2 ≤
+  have h_sq_lo : ((53144 : ℝ) / 1000)^2 ≤
       (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86)^2 := by
     exact sq_le_sq' (by linarith) h_sum_lo
   have h_sq_hi :
-      (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86)^2 ≤ (53150 : ℝ)^2 / 1000^2 := by
+      (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86)^2 ≤ ((53150 : ℝ) / 1000)^2 := by
     exact sq_le_sq' (by linarith) h_sum_hi
   -- The result follows from the bounds:
   -- 1997/3000 < 1883.031 / (53150²/10⁶) ≤ K ≤ 1883.031 / (53144²/10⁶) < 2003/3000
   -- Which is verified by norm_num on the rational arithmetic.
   -- We use abs_sub_lt to split into two inequalities.
   simp only
-  rw [abs_sub_lt]
-  constructor <;> {
-    rw [div_sub_div_eq_sub_div, lt_div_iff (by positivity)]
-    nlinarith [sq_nonneg (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86)]
-  }
+  have h_sq_pos : (0 : ℝ) < (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86) ^ 2 :=
+    by positivity
+  -- Establish multiplicative bounds (avoids division rewrites)
+  have h_lo : (2 / 3 - 0.001) *
+      (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86) ^ 2 <
+      0.511 + 105.66 + 1776.86 := by nlinarith [h_sq_hi]
+  have h_hi : 0.511 + 105.66 + 1776.86 <
+      (2 / 3 + 0.001) *
+      (Real.sqrt 0.511 + Real.sqrt 105.66 + Real.sqrt 1776.86) ^ 2 := by nlinarith [h_sq_lo]
+  rw [abs_lt]
+  exact ⟨by linarith [(lt_div_iff₀ h_sq_pos).mpr h_lo],
+         by linarith [(div_lt_iff₀ h_sq_pos).mpr h_hi]⟩
 
 /-- **Triad circulant structure**: The Z_3 symmetry of the triad
     (cyclic permutation O -> S -> R -> O) forces the mass matrix

@@ -108,10 +108,15 @@ theorem ym_positive_ricci (cfg : YMConfigSpace) :
 
 /-- The Cheeger constant of A/G is positive because A/G is compact and
 connected with positive Ricci curvature. By the Cheeger-Buser theorem
-on manifolds with Ric ≥ κ > 0: h ≥ c(κ, dim) > 0. -/
+on manifolds with Ric ≥ κ > 0: h ≥ c(κ, dim) > 0.
+
+**Status**: The Cheeger-Buser theorem is standard but not formalized.
+The witness `1` is a placeholder — the actual value depends on N, dim,
+and the lattice. The important content is the EXISTENCE (which follows
+from Ric > 0 + compactness), not the specific value. -/
 theorem ym_cheeger_positive (cfg : YMConfigSpace) :
     ∃ (h_val : ℝ), 0 < h_val := by
-  exact ⟨1, one_pos⟩  -- existence; actual value depends on N and lattice
+  exact ⟨1, one_pos⟩  -- placeholder witness; see Cheeger-Buser for actual bound
 
 /-- **The Yang-Mills spectral gap**: λ₁ > 0 on A/G.
 Follows from positive Cheeger constant via the Cheeger inequality. -/
@@ -122,13 +127,18 @@ theorem ym_spectral_gap (cfg : YMConfigSpace) :
 
 /-! ### Uniform Gap Across Lattice Refinements -/
 
-/-- **Bakry-Émery uniform bound** (Theorem 38.6 in manuscript):
+/-- **Bakry-Émery uniform bound** (Theorem 38.6 / Theorem 13.32 in manuscript):
 The conditional log-Sobolev constant for a single link in SU(2)
 lattice gauge theory satisfies ρ₀ ≥ 12/7 uniformly over all
-boundary conditions and all couplings β > 0. -/
+boundary conditions and all couplings β > 0.
+
+**Status**: The bound ρ₀ ≥ 2κλ₁/(2κ+λ₁) = 12/7 for S³ (κ=2, λ₁=3)
+follows from Bakry-Émery theory on positively curved manifolds.
+This is Tier 1 in the manuscript (standard Riemannian geometry)
+but not formalized in Lean. The witness is exact (not a placeholder). -/
 theorem ym_bakry_emery_bound :
     ∃ (rho : ℝ), (12 : ℝ) / 7 ≤ rho := by
-  exact ⟨12 / 7, le_refl _⟩
+  exact ⟨12 / 7, le_refl _⟩  -- exact value from Bakry-Émery (not formalized)
 
 /-- **Uniform spectral gap**: The spectral gap is bounded below
 uniformly as the lattice is refined. This is the key result that
@@ -154,17 +164,17 @@ Conclusion: The continuum Yang-Mills theory has mass gap m ≥ √δ > 0.
 This follows from mass_gap_continuum in YangMillsGap.lean:
 spectral convergence + Weyl asymptotics + uniform gap → mass gap.
 
-**Clay status**: The construction of A/G and the Cheeger/Bakry-Émery
-bounds are well-established in the lattice gauge theory literature.
-The novel content of the spectral physics framework is showing that
-these are SUFFICIENT: the mass gap is a topological consequence of
-connectivity + positive curvature, with no dynamical argument needed.
+**Clay gap analysis**:
+The following are NOT formalized in Lean (required for Clay):
+(a) O'Neill formula and Lichnerowicz theorem (Riemannian geometry)
+(b) Lattice → continuum spectral convergence (Cheeger-Colding)
+(c) Construction of Wightman distributions on ℝ⁴
+(d) Verification of W1-W5 for the continuum theory
+(e) BBD multiscale log-Sobolev for SU(N) gauge fields (Tier 3: open)
 
-The remaining gap to Clay is:
-(a) Formalizing the lattice → continuum spectral convergence
-(b) Proving W1 (Poincaré covariance) and W4 (locality) for the
-    reconstructed Wightman theory
-Both are analysis infrastructure, not new mathematical insights. -/
+What IS formalized: given a spectral gap δ > 0 as input,
+the downstream chain (correlator decay, OS reconstruction
+structure, gap persistence) follows by real analysis. -/
 theorem ym_mass_gap
     (eigenvalues : ℕ → ℝ) [SpectralPhysics.Weyl.WeylAsymptotics eigenvalues]
     (h_gap_uniform : eigenvalues 1 ≥ 6 / 7) :

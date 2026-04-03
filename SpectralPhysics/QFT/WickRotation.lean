@@ -104,13 +104,6 @@ theorem wick_rotation_path {n : ℕ} (eigenval : Fin n → ℝ) (t : ℝ) (ht : 
 
 /-! ### Euclidean Covariance (OS1) -/
 
-/-- **Euclidean covariance (OS1)**: The heat kernel K(x,y;t) depends on
-the spectral data {λ_k, v_k(x)} which is determined by the Laplacian L.
-Since L is self-adjoint and commutes with isometries of the underlying
-space, the heat kernel is isometry-invariant.
-
-In the continuum limit with spectral dimension d, the isometry group
-is SO(d). This gives Euclidean covariance. -/
 /-- **Euclidean covariance (OS1)**: The heat kernel is isometry-invariant.
 PROVED in EuclideanCovariance.lean as `heat_inner_invariant`:
 For any isometry σ of a relational structure S, heatInner(f∘σ, t) = heatInner(f, t).
@@ -155,7 +148,7 @@ theorem propagator_unitary {n : ℕ} (eigenval : Fin n → ℝ) (t : ℝ) (k : F
     Complex.normSq (Complex.exp (-(↑t * Complex.I) * ↑(eigenval k))) = 1 := by
   rw [show -(↑t * Complex.I) * ↑(eigenval k) = ↑(-(t * eigenval k)) * Complex.I from by
     push_cast; ring]
-  rw [Complex.normSq_exp_ofReal_mul_I]
+  rw [Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I, one_pow]
 
 /-- **W1 (Poincaré covariance) from the spectral framework.**
 

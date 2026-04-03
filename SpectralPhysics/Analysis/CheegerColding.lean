@@ -94,7 +94,7 @@ structure mGHConvergentSequence where
 
 /-! ### Cheeger-Colding Theorem (1997) -/
 
-/-- **Eigenvalue upper bound** (Cheng's comparison theorem, 1975):
+/- **Eigenvalue upper bound** (Cheng's comparison theorem, 1975):
 On a compact n-manifold with Ric ≥ (n-1)κ, the j-th eigenvalue satisfies
 λ_j ≤ C(j, n, κ, D) where D = diam(M) ≤ π/√κ (Myers' theorem).
 
@@ -103,8 +103,9 @@ For manifolds with Ric ≥ κ > 0 and fixed dimension d:
 - Cheng: λ_j ≤ j²(d-1)κ/4 + j·(d-1)²κ (crude bound)
 
 We axiomatize this as it requires comparison geometry not in Mathlib.
-The bound is COMPUTABLE from κ, d, and j. -/
-/- FORMERLY AN AXIOM — Cheng's eigenvalue upper bound from Ricci curvature.
+The bound is COMPUTABLE from κ, d, and j.
+
+FORMERLY AN AXIOM — Cheng's eigenvalue upper bound from Ricci curvature.
    Not needed for the main cheeger_colding theorem, which uses
    eigenvalue_antitone + bounded below → tendsto_atTop_ciInf instead.
    Retained as documentation of the comparison geometry result. -/
@@ -122,7 +123,7 @@ theorem ground_state_converges (seq : mGHConvergentSequence) :
     funext (fun k => (seq.manifold k).eigenvalues_ground)
   rw [this]; exact tendsto_const_nhds
 
-/-- For each n: the eigenvalue sequence is bounded (from below by 0,
+/- For each n: the eigenvalue sequence is bounded (from below by 0,
 from above by Cheng's comparison). A bounded sequence in ℝ has a
 convergent subsequence (Bolzano-Weierstrass). Cheeger-Colding's
 contribution is showing the FULL sequence converges, not just a
@@ -130,8 +131,9 @@ subsequence.
 
 For our application, we use the stronger hypothesis that the manifolds
 are lattice refinements of a FIXED compact space — so the eigenvalues
-converge by spectral approximation theory, not just by compactness. -/
-/- eigenvalue_sequence_bounded: formerly used cheng_eigenvalue_bound axiom.
+converge by spectral approximation theory, not just by compactness.
+
+eigenvalue_sequence_bounded: formerly used cheng_eigenvalue_bound axiom.
    Not needed for the main cheeger_colding proof, which uses
    eigenvalue_antitone (bounded below by 0 is sufficient). -/
 -- theorem eigenvalue_sequence_bounded (seq : mGHConvergentSequence) (n : ℕ) :

@@ -14,12 +14,13 @@ of the graph Laplacian under bounded perturbations.
 
 ## Main results
 
-* `weyl_perturbation_bound` : |eigenval_k(L') - eigenval_k(L)| <= ||perturbation||
-  (axiomatized; requires operator norm infrastructure)
-* `quantitative_gap_stability` : |gap' - gap| <= 2 * eps from Weyl
+* `quantitative_gap_stability` : |gap' - gap| <= 2 * eps (from Weyl hypothesis)
 * `gap_persistence` : gap - 2 * eps > 0 when eps < gap / 2
 * `gap_lifetime` : gap_0 - 2 * v * t > 0 when t < gap_0 / (2 * v)
-* `sin_theta_bound` : sin(theta) <= eps / gap (axiomatized geometric statement)
+
+Note: Weyl's perturbation bound and Davis-Kahan sin(θ) bound are used as
+hypotheses in the theorems above, not axiomatized. The downstream results
+are fully proved given these standard perturbation-theory inputs.
 
 ## References
 
@@ -67,7 +68,7 @@ theorem SpectralGapData.gap_nonneg (d : SpectralGapData) : 0 ≤ d.gap :=
 -- WEYL PERTURBATION BOUND (axiomatized)
 -- ═══════════════════════════════════════════════════════════════════════
 
-/-- **Weyl's Perturbation Bound** (axiomatized):
+/- **Weyl's Perturbation Bound**:
 For self-adjoint operators L and L' = L + E with ||E|| <= eps,
 the k-th eigenvalue satisfies |eigenval_k(L') - eigenval_k(L)| <= eps.
 
@@ -75,11 +76,14 @@ This is a fundamental result in matrix perturbation theory. The proof
 requires operator norm and min-max characterization of eigenvalues
 (Courant-Fischer), which are not yet available in our formalization.
 
-Manuscript: implicit in Theorem 33.3 (line 11563). -/
-axiom weyl_perturbation_bound
-    (lam lam' eps : ℝ) (he : 0 ≤ eps)
-    (h_weyl : abs (lam' - lam) ≤ eps) :
-    abs (lam' - lam) ≤ eps
+Manuscript: implicit in Theorem 33.3 (line 11563).
+
+Note: Weyl's perturbation bound is used as a HYPOTHESIS (not an axiom)
+   in the theorems below. The bound |λ'_k - λ_k| ≤ ‖E‖ follows from
+   the Courant-Fischer min-max characterization; proving it in Lean would
+   require the min-max theorem for self-adjoint operators, which is not
+   yet available in Mathlib. The downstream theorems (gap_stability,
+   gap_persistence, gap_lifetime) are fully proved given this hypothesis. -/
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- QUANTITATIVE GAP STABILITY
@@ -178,7 +182,7 @@ theorem gap_lifetime_nonneg
 -- DAVIS-KAHAN SIN(THETA) BOUND
 -- ═══════════════════════════════════════════════════════════════════════
 
-/-- **Davis-Kahan Sin(Theta) Theorem** (axiomatized):
+/- **Davis-Kahan Sin(Theta) Theorem**:
 For self-adjoint L with simple eigenvalue eigenval and eigenvector v,
 and perturbation L' = L + E with ||E|| <= eps, let v' be the
 corresponding eigenvector of L'. If the spectral gap around eigenval
@@ -192,14 +196,12 @@ eigenvectors by at most eps/delta radians (for small angles).
 The proof requires the resolvent representation and contour integral
 techniques not yet available in our formalization.
 
-Manuscript: Theorem 33.3 (thm:davis-kahan, line 11563). -/
-axiom sin_theta_bound
-    (eps delta sin_angle : ℝ)
-    (hd : 0 < delta)
-    (he : 0 ≤ eps)
-    (h_sin : 0 ≤ sin_angle)
-    (h_davis_kahan : sin_angle ≤ eps / delta) :
-    sin_angle ≤ eps / delta
+Manuscript: Theorem 33.3 (thm:davis-kahan, line 11563).
+
+Note: The Davis-Kahan sin(θ) bound is used as a HYPOTHESIS in theorems
+   that need eigenvector stability. The bound sin(θ) ≤ ε/δ follows from
+   the resolvent representation; proving it requires contour integral
+   techniques not yet in Mathlib. -/
 
 /-- The Davis-Kahan bound implies that the angle is small when
 eps << delta. In particular, sin(theta) < 1 when eps < delta,
