@@ -6,3 +6,9 @@ lake-packages/
 *.trace
 *.hash
 .cache/
+*.tex
+*.aux
+*.log
+*.pdf
+*.synctex.gz
+.claude/
