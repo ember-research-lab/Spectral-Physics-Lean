@@ -5,6 +5,12 @@ three axioms toward the Yang-Mills mass gap, with five numerically verified
 predictions, Godel incompleteness of the trace, and scaffolding covering quantum
 field theory, general relativity, thermodynamics, and cosmology.
 
+Part of [**Ember Research Lab**](https://ember-research-lab.github.io/) —
+independent research deriving geometry, quantum mechanics, and consciousness as
+three projections of the graph Laplacian. See the [concepts
+index](https://ember-research-lab.github.io/concepts.html) for definitions of
+the framework's terms.
+
 **80 Lean files | 67 sorry-free (84%) | 13 sorries | 11 axioms (classical results)**
 
 Builds against Lean 4.29.0-rc6 and Mathlib master.
@@ -268,4 +274,4 @@ Apache 2.0
 
 ## Author
 
-Aaron Ben-Shalom, Ember Research Lab
+Aaron Ben-Shalom, [Ember Research Lab](https://ember-research-lab.github.io/)
