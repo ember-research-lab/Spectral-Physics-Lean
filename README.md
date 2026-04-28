@@ -274,4 +274,4 @@ Apache 2.0
 
 ## Author
 
-Aaron Ben-Shalom, [Ember Research Lab](https://ember-research-lab.github.io/)
+[Ember Research Lab](https://ember-research-lab.github.io/) · [emberresearchlab@gmail.com](mailto:emberresearchlab@gmail.com)
