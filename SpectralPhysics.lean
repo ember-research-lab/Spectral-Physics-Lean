@@ -111,3 +111,23 @@ import SpectralPhysics.SelfRef.Consciousness
 
 -- ═══ CONJECTURES ═══
 import SpectralPhysics.Conjectures.Hodge
+
+-- ═══ YUKAWA HIERARCHY (toward rigorous 3/16 derivation) ═══
+import SpectralPhysics.YukawaHierarchy.SO10Decomposition
+import SpectralPhysics.YukawaHierarchy.MultiplicityRatio
+import SpectralPhysics.YukawaHierarchy.CharmTauRatio
+import SpectralPhysics.YukawaHierarchy.InstantonCounting
+import SpectralPhysics.YukawaHierarchy.IntegralityConsistency
+import SpectralPhysics.YukawaHierarchy.RealValuedConsistency
+
+-- ═══ YUKAWA HIERARCHY — Bundle scaffolding (Tier 1 + Tier 3) ═══
+import SpectralPhysics.YukawaHierarchy.Bundle.PrincipalBundle
+import SpectralPhysics.YukawaHierarchy.Bundle.ChernSimons
+import SpectralPhysics.YukawaHierarchy.Bundle.Pontryagin
+import SpectralPhysics.YukawaHierarchy.Bundle.THooftSymbol
+import SpectralPhysics.YukawaHierarchy.Bundle.Curvature
+import SpectralPhysics.YukawaHierarchy.Bundle.InstantonNumber
+import SpectralPhysics.YukawaHierarchy.Bundle.AtiyahSinger
+import SpectralPhysics.YukawaHierarchy.Bundle.SpectralAction
+import SpectralPhysics.YukawaHierarchy.Bundle.SpectralActionConcrete
+import SpectralPhysics.YukawaHierarchy.Bundle.HeatKernelExpansion
