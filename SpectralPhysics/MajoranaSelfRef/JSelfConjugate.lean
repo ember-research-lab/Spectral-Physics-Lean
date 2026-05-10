@@ -16,8 +16,10 @@ The user's structural insight: Majorana fermions satisfy `J_F ψ = ψ`
 the J operator acts as the IDENTITY rather than as an off-diagonal
 pairing (Dirac fermions: `J_F ψ = ψ_c`, with `ψ_c ≠ ψ`).
 
-Since the framework's foundation is self-reference (Axiom 4,
-observation algebra), Majorana fields are the *only* matter fields
+Since the framework's foundation is self-reference (Axiom 3 =
+Spectral Faithfulness, label `ax:self-ref` v0.9 line 299; the former
+Axiom 4 = Composition is a derived theorem from Axiom 3), Majorana
+fields are the *only* matter fields
 exhibiting self-reference at the J-action level.  This is the precise
 sense in which a Majorana field is "its own antiparticle".
 
