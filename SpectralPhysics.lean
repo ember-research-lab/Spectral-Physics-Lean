@@ -42,6 +42,7 @@ import SpectralPhysics.Predictions.CabibboAngle
 import SpectralPhysics.Predictions.ElectroweakRatio
 import SpectralPhysics.Predictions.CPPhase
 import SpectralPhysics.Predictions.NeutrinoAngle
+import SpectralPhysics.Predictions.NeutrinoMass
 
 -- ═══ ANALYTIC SPINE (scaffolding) ═══
 import SpectralPhysics.Analysis.HeatSemigroup
