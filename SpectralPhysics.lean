@@ -131,3 +131,9 @@ import SpectralPhysics.YukawaHierarchy.Bundle.AtiyahSinger
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralAction
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralActionConcrete
 import SpectralPhysics.YukawaHierarchy.Bundle.HeatKernelExpansion
+
+-- ═══ SELF-MODEL DEFICIT — J-FIXED RESTRICTION (this branch) ═══
+import SpectralPhysics.SelfModelJFixed.JFixedLocus
+import SpectralPhysics.SelfModelJFixed.RestrictedZeta
+import SpectralPhysics.SelfModelJFixed.SingleEigenvalueReduction
+import SpectralPhysics.SelfModelJFixed.Verdict
