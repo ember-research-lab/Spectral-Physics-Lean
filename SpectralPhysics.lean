@@ -42,7 +42,6 @@ import SpectralPhysics.Predictions.CabibboAngle
 import SpectralPhysics.Predictions.ElectroweakRatio
 import SpectralPhysics.Predictions.CPPhase
 import SpectralPhysics.Predictions.NeutrinoAngle
-import SpectralPhysics.Predictions.NeutrinoMass
 
 -- ═══ ANALYTIC SPINE (scaffolding) ═══
 import SpectralPhysics.Analysis.HeatSemigroup
@@ -103,6 +102,8 @@ import SpectralPhysics.Thermo.FourLaws
 -- ═══ COSMOLOGY ═══
 import SpectralPhysics.Cosmology.Predictions
 import SpectralPhysics.Cosmology.EfoldMultiplicity
+import SpectralPhysics.Cosmology.SigmaTrDispersion
+import SpectralPhysics.Cosmology.H4Nonlinear
 
 -- ═══ SELF-REFERENCE ═══
 import SpectralPhysics.SelfRef.GodelTrace
