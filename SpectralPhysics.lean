@@ -131,3 +131,9 @@ import SpectralPhysics.YukawaHierarchy.Bundle.AtiyahSinger
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralAction
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralActionConcrete
 import SpectralPhysics.YukawaHierarchy.Bundle.HeatKernelExpansion
+
+-- ═══ MAJORANA / SELF-REFERENCE (compute/majorana-self-reference) ═══
+import SpectralPhysics.MajoranaSelfRef.JSelfConjugate
+import SpectralPhysics.MajoranaSelfRef.TriadicPartition
+import SpectralPhysics.MajoranaSelfRef.SelfReferenceClosure
+import SpectralPhysics.MajoranaSelfRef.Verdict
