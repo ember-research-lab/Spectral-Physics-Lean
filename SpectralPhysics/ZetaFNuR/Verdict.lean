@@ -157,8 +157,8 @@ theorem cross_branch_alignment :
     -- 288 closure consistent with both branches numerically
     (S_nuL + S_nuR = 1061 / 100) := by
   refine ⟨?_, ?_, ?_, K_seesaw_decimal⟩
-  · unfold multA target_eight at multA_ne_eight ⊢; decide
-  · unfold multB target_eight at multB_ne_eight ⊢; decide
+  · unfold multA; decide
+  · unfold multB; decide
   · rfl
 
 /-! ## What remains transcendent IC (the standing claim) -/

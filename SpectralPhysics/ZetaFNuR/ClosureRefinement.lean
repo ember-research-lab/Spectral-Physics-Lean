@@ -174,7 +174,7 @@ theorem hypB_forces_unphysical_yR :
 /-- Numerical comparison: empirical `y_R ≈ 3.27 × 10⁻⁵` corresponds
     to `−log y_R ≈ 10.33`.  Neither Hypothesis-A's `−log y_R = 174.01`
     nor Hypothesis-B's `−log y_R = 29.0` is anywhere near that. -/
-def empirical_neg_log_yR : ℝ := 1033 / 100  -- 10.33
+noncomputable def empirical_neg_log_yR : ℝ := 1033 / 100  -- 10.33
 
 /-- **Tier 1 — the J-restriction does NOT force a viable `y_R`.**
 
