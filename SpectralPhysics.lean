@@ -101,6 +101,10 @@ import SpectralPhysics.Thermo.FourLaws
 
 -- ═══ COSMOLOGY ═══
 import SpectralPhysics.Cosmology.Predictions
+import SpectralPhysics.Cosmology.SigmaTrDispersion
+import SpectralPhysics.Cosmology.ConformalFrameTransform
+import SpectralPhysics.Cosmology.FriedmannEquation
+import SpectralPhysics.Cosmology.PerpetualTraceActivity
 
 -- ═══ SELF-REFERENCE ═══
 import SpectralPhysics.SelfRef.GodelTrace
