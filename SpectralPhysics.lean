@@ -103,6 +103,7 @@ import SpectralPhysics.Thermo.FourLaws
 import SpectralPhysics.Cosmology.Predictions
 import SpectralPhysics.Cosmology.SigmaTrDispersion
 import SpectralPhysics.Cosmology.ConformalFrameTransform
+import SpectralPhysics.Cosmology.ConformalFrameTransform
 import SpectralPhysics.Cosmology.FriedmannEquation
 import SpectralPhysics.Cosmology.PerpetualTraceActivity
 
