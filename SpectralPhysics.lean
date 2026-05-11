@@ -229,3 +229,9 @@ import SpectralPhysics.Eta.IntegerCounts
 import SpectralPhysics.SeeleyDeWitt.A4Coefficients
 import SpectralPhysics.SeeleyDeWitt.R2Coefficient
 import SpectralPhysics.SeeleyDeWitt.SpectralActionR2
+-- ═══ SAGF JOINT-UNIQUENESS REDEMPTION (5 substantive constraints; H3 preserved with honest scope) ═══
+import SpectralPhysics.Predictions.NeutrinoMass
+import SpectralPhysics.SAGFJointUniqueness.Constraints
+import SpectralPhysics.SAGFJointUniqueness.JointSystem
+import SpectralPhysics.SAGFJointUniqueness.UniquenessTheorem
+import SpectralPhysics.SAGFJointUniqueness.Verdict
