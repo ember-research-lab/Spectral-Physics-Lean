@@ -305,3 +305,10 @@ import SpectralPhysics.BasinConnectivity.Verdict
 -- closure requires a Python/mpmath sidecar at
 -- yukawa/pre_geometric/alpha_eff_RG_below_EW/.
 import SpectralPhysics.AlphaEffRGFlow.Verdict
+-- ═══ IR/UV SCALE SEPARATION (v0.9.2 J.1 — v0.9 line 1437) ═══
+-- Conditional on 1 named axiom (Wilson 1971 + Polchinski 1984) and
+-- two Prop-predicate hypotheses (KatoReedSimonBridge from Kato 1966/1995
+-- §V + Reed-Simon Vol. IV §XIII.5; SchattenUVSuppression with rate α > 1).
+-- Identifies the v0.9 spectral-convergence hypothesis with the Wilsonian
+-- IR/UV-separation universality.  Verdict: CONDITIONAL.
+import SpectralPhysics.IRUVScaleSeparation.Verdict
