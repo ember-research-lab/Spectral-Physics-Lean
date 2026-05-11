@@ -131,3 +131,8 @@ import SpectralPhysics.YukawaHierarchy.Bundle.AtiyahSinger
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralAction
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralActionConcrete
 import SpectralPhysics.YukawaHierarchy.Bundle.HeatKernelExpansion
+
+-- ═══ OP3 REDEMPTION (honest predicate-hypothesis formalization of Λ_1 = λ_1(k*)) ═══
+import SpectralPhysics.OP3.SCSEClosureSystem
+import SpectralPhysics.OP3.Lambda1Bound
+import SpectralPhysics.OP3.CosmologicalConstantMatch
