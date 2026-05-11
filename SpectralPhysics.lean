@@ -285,3 +285,8 @@ import SpectralPhysics.Kappa2FromSpectrum.Verdict
 -- Conditional on 1 named axiom (Rellich 1930, Kondrachov 1945, Simon 2005,
 -- Reed-Simon Vol. IV).  See KSRCompactness/Verdict.lean and STATUS.md.
 import SpectralPhysics.KSRCompactness.Verdict
+-- ═══ BASIN CONNECTIVITY (v0.9.2 G.3 — v0.9 line 16763) ═══
+-- Conditional on 2 named axioms (Morse 1934, Palais-Smale 1964) and
+-- three open predicates for SAGFfunctional (Coercive, AtMostOneLocalMin,
+-- PalaisSmaleCondition).  See BasinConnectivity/Verdict.lean and STATUS.md.
+import SpectralPhysics.BasinConnectivity.Verdict
