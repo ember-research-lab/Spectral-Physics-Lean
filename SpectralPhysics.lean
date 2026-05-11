@@ -130,6 +130,18 @@ import SpectralPhysics.SelfModelDeficitRigorous.CompletenessBound
 import SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessBound
 import SpectralPhysics.SelfModelDeficitRigorous.Theorem
 
+-- ═══ SELF-MODEL DEFICIT — UNCONDITIONAL (v0.9.2 C.1 dispatch) ═══
+-- Reduces the v0.9.1 two open Prop-predicates to three named literature
+-- axioms (Bekenstein 1981, Mac Lane 1998, Connes–Marcolli 2008).
+-- Verdict: PARTIAL — 2 open predicates → 0 open predicates + 2 more
+-- named axioms.  See SelfModelDeficitUnconditional/STATUS.md.
+import SpectralPhysics.SelfModelDeficitUnconditional.PredicateInventory
+import SpectralPhysics.SelfModelDeficitUnconditional.CapacityBound
+import SpectralPhysics.SelfModelDeficitUnconditional.NaturalityBound
+import SpectralPhysics.SelfModelDeficitUnconditional.MellinFunctionalDet
+import SpectralPhysics.SelfModelDeficitUnconditional.UnconditionalGoal
+import SpectralPhysics.SelfModelDeficitUnconditional.Verdict
+
 -- ═══ CONJECTURES ═══
 import SpectralPhysics.Conjectures.Hodge
 
