@@ -129,6 +129,10 @@ import SpectralPhysics.Conjectures.Hodge
 import SpectralPhysics.EtaB.Formulas
 import SpectralPhysics.EtaB.Comparison
 import SpectralPhysics.EtaB.Verdict
+-- ═══ SELF-MODEL DEFICIT (κ₂ refinement, f₄ derivation) ═══
+import SpectralPhysics.SelfModelDeficit.Yukawas
+import SpectralPhysics.SelfModelDeficit.Kappa2
+import SpectralPhysics.SelfModelDeficit.F4Coefficient
 
 -- ═══ YUKAWA HIERARCHY (toward rigorous 3/16 derivation) ═══
 import SpectralPhysics.YukawaHierarchy.SO10Decomposition
