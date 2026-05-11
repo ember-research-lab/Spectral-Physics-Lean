@@ -101,6 +101,7 @@ import SpectralPhysics.Thermo.FourLaws
 
 -- ═══ COSMOLOGY ═══
 import SpectralPhysics.Cosmology.Predictions
+import SpectralPhysics.Cosmology.EfoldMultiplicity
 
 -- ═══ SELF-REFERENCE ═══
 import SpectralPhysics.SelfRef.GodelTrace
