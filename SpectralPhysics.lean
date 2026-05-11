@@ -285,3 +285,12 @@ import SpectralPhysics.Kappa2FromSpectrum.Verdict
 -- Conditional on 1 named axiom (Rellich 1930, Kondrachov 1945, Simon 2005,
 -- Reed-Simon Vol. IV).  See KSRCompactness/Verdict.lean and STATUS.md.
 import SpectralPhysics.KSRCompactness.Verdict
+-- ═══ α_eff > 0 BELOW EW (v0.9.2 G.7 — v0.9 line 16805) ═══
+-- Conditional on 4 named axioms (Machacek-Vaughn 1983/84/85,
+-- Ford-Jones-Stevenson-Stephens 1992, Mihaila-Salomon-Steinhauser 2012,
+-- Manohar-Wise 2000) and three Prop-predicate hypotheses (RGE solution,
+-- decoupling at SM thresholds, regulator-coefficient transport).
+-- Empirical closure requires a Python/mpmath sidecar at
+-- yukawa/pre_geometric/alpha_eff_RG_below_EW/.
+-- See AlphaEffRGFlow/STATUS.md.
+import SpectralPhysics.AlphaEffRGFlow.Verdict
