@@ -221,3 +221,7 @@ import SpectralPhysics.FaithfulnessForcesYR.Verdict
 import SpectralPhysics.OP3.SCSEClosureSystem
 import SpectralPhysics.OP3.Lambda1Bound
 import SpectralPhysics.OP3.CosmologicalConstantMatch
+-- ═══ η-INTEGERS REDEMPTION (structural η-invariant; integers from spectral identification + APS doubling) ═══
+import SpectralPhysics.Eta.JumpMap
+import SpectralPhysics.Eta.SpectralIdentification
+import SpectralPhysics.Eta.IntegerCounts
