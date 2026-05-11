@@ -1,153 +1,249 @@
-# Cosmology / E-fold Multiplicity Reconciliation — STATUS
+# Cosmology / Friedmann-from-σ_tr — STATUS
 
 ## Branch
 
-`compute/Ne-multiplicity`
+`compute/friedmann-from-sigmaTr`
 
 ## Headline closure
 
-**Cosmology audit P1, Tier 2 reconciliation task** (and honourable
-mention #8 of `pre_geometric/computable_inventory/top10.md`):
+**Rank 3 / #7 of `pre_geometric/computable_inventory/top10.md`**:
+"Friedmann equation from σ_tr > 0 regime."
 
-> "v0.9 has $N_e \sim 252$ from mode activation (line 9517),
-> $N_e \sim 45$ from tree potential (line 9767), $N_e = 60$ used
-> in the $A_s$ closure (line 9704). At least two of these are
-> wrong. The $A_s$-closure value is observationally consistent;
-> the others should be retracted or relabeled."
-> — `pre_geometric/cosmology_audit/triage.md`
-
-This branch formalises the three readings as Lean definitions,
-proves they are pairwise distinct, and isolates `N_e = 60` as the
-canonical CMB-compatible value.  The reconciliation is not a
-mathematical conjecture — it is a **documentation honesty** task:
-the three readings measure different physical quantities, and only
-one is the inflationary e-fold count constrained by the CMB.
+The Friedmann equation derivation is closed for the *trace-sector
+linearised dispersion symbol* `σ_tr(ξ) = c₁ f₂ Λ² ξ² − 6 f₀ α_eff ξ⁴`
+under Route B's `c₁ = 1/2` (heat-kernel / Lichnerowicz–York).
 
 ## Files
 
 | File | Role |
 |------|------|
-| `EfoldMultiplicity.lean` | Three `N_e` definitions, pairwise distinctness, observational-compatibility predicate, structural decomposition `252 = 288 − 36` |
+| `SigmaTrDispersion.lean` | Definition of `σ_tr(Λ; ξ)`, crossover scale `ξ_cross²(Λ)`, sign analysis |
+| `ConformalFrameTransform.lean` | Whitt-1984 / De Felice–Tsujikawa-2010 transform (axiom-class) and Starobinsky scalaron potential |
+| `FriedmannEquation.lean` | Friedmann data on flat FRW, headline theorem `friedmann_from_sigmaTr` |
+| `PerpetualTraceActivity.lean` | The user's reframe: trace mode anti-diffusive at every sub-Planckian ξ |
 | `STATUS.md` | This file |
 
 ## Theorems proved (no `True` placeholders, no `sorry`)
 
-### `EfoldMultiplicity.lean`
+### `SigmaTrDispersion.lean`
 
-1. `Ne_modeActivation = 252` — Phase 2 mode-activation count (v0.9
-   line 9517).
-2. `Ne_treePotential = 45` — tree-level slow-roll attractor (v0.9
-   line 9767).
-3. `Ne_AsClosure = 60` — CMB `A_s`-closure value (v0.9 line 9704).
-4. `Ne_modeActivation_ne_treePotential` — `252 ≠ 45`.
-5. `Ne_modeActivation_ne_AsClosure` — `252 ≠ 60`.
-6. `Ne_treePotential_ne_AsClosure` — `45 ≠ 60`.
-7. `Ne_definitions_distinct` — pairwise-distinctness conjunction.
-8. `Ne_CMB_compatible` — `Ne_AsClosure = 60`.
-9. `Ne_canonical_for_CMB` — `is_observationally_compatible
-   Ne_AsClosure = true`.
-10. `Ne_others_not_CMB_compatible` — the other two are *not*
-    observationally compatible under the v0.9 closure convention.
-11. `Ne_modeActivation_decomp` — `Ne_modeActivation =
-    hiddenSectorDim − hiddenTopModes` (`252 = 288 − 36`).
-12. `Ne_reconciliation` — bundle: pairwise-distinct ∧
-    only-`60`-is-CMB ∧ `252 = 288 − 36`.
+1. `c1RouteB_pos`, `f0_pos`, `f2_pos`, `alphaEff_pos` — positivity of all
+   the framework primitives.
+2. `sigmaTr_zero_at_zero` — `σ_tr(Λ; 0) = 0`.
+3. `xiCrossSq_pos` — the crossover momentum-squared is positive.
+4. `sigmaTr_at_xiCross` — `σ_tr(Λ; ξ) = 0` when `ξ² = ξ_cross²`.
+5. `sigmaTr_pos_below_crossover` — anti-diffusive below crossover.
+6. `sigmaTr_neg_above_crossover` — diffusive above crossover.
+7. `xiCrossSq_transPlanckian` — `100 · Λ² < ξ_cross²(Λ)` from `c₁ = 1/2`.
+   This is the *concrete numerical core* of the verdict in
+   `pre_geometric/c1_and_5sector/verdict.md`.
+8. `sigmaTr_pos_subPlanckian` — for every `0 < ξ < Λ`,
+   `σ_tr(Λ; ξ) > 0` (the perpetual-trace-activity statement).
 
-**Total: 12 theorems, 0 sorries, 0 `True`-placeholders, 0 axioms.**
+### `ConformalFrameTransform.lean`
 
-## Named axioms
+9.  `MPl_pos`, `kappaSq_pos` — Planck-mass / coupling positivity.
+10. `mSigmaSq_eq_xiCrossSq` — the Starobinsky scalaron mass-squared
+    equals the crossover momentum-squared (algebraic identification
+    from the propagator pole of `σ_tr`).
+11. `mSigmaSq_pos`, `mSigma_pos` — scalaron mass positivity.
+12. `starobinskyPotential_nonneg` — Einstein-frame scalar potential is
+    non-negative.
+13. `starobinskyPotential_zero` — vanishes at `σ = 0`.
+14. `starobinskyPotential_plateau_bound` — bounded by
+    `(3/4) M_Pl² m_σ²` for `σ ≥ 0`.
+15. `canonicalConformalFrameTransform` — instance constructor for the
+    `ConformalFrameTransform` axiom-class.
 
-None *introduced by this branch*.  The three numerical values are
-**v0.9-quoted constants** — the empirical/manuscript content lives
-*outside* the Lean file (it is in v0.9 §"Mode Activation and the
-Inflationary Clock", §"The Scalar Amplitude $A_s$ via $S_{\mathrm{top}}$",
-and Remark `f4-positives`).  Lean records them as `def`s and proves
-their distinctness — there is no axiom-class statement here that we
-need to defer to literature.
+### `FriedmannEquation.lean`
 
-The **observational-compatibility predicate** `is_observationally_compatible`
-is a decidable `Bool` predicate that simply returns `decide (n = 60)`.
-This encodes the v0.9 closure-convention identity "the CMB
-`A_s`-closure value is `60`".  It is a *naming* of an empirical
-fact, not a proof of it.
+16. `friedmann_first_implies_Hsq_nonneg` — `H² ≥ 0` from first
+    Friedmann + `ρ ≥ 0`.
+17. `friedmann_deSitter` — de Sitter (`p = −ρ`) makes `ρ + p = 0`
+    pointwise.
+18. `friedmann_continuity_implies_Hdot` — first Friedmann + continuity
+    + `H ≠ 0` ⇒ `Ḣ = −(κ²/2) (ρ + p)` (the second Friedmann).
+19. **`friedmann_from_sigmaTr`** — the headline theorem.  Given
+    `Λ > 0` and a `ConformalFrameTransform Λ` instance:
+    (i) `∀ 0 < ξ < Λ, σ_tr(Λ; ξ) > 0`;
+    (ii) every Friedmann triple satisfying first Friedmann + continuity
+    on a non-vanishing-`H` regime has `Ḣ = −(κ²/2)(ρ+p)`.
+20. `deSitterTriple` constructor + `deSitterTriple_satisfies_first` +
+    `deSitterTriple_satisfies_continuity` — non-vacuous existence
+    witness (constant-`H` de Sitter background).
+
+### `PerpetualTraceActivity.lean`
+
+21. `traceModePerpetuallyActive` — anti-diffusivity at every
+    sub-Planckian `ξ`.
+22. `noStarobinskyBoundedRegime` — *no* `0 < ξ < Λ` with `σ_tr ≤ 0`.
+23. `crossover_well_above_Planck` — concrete trans-Planckian gap.
+24. `tachyonicAt_subPlanckian` — naming convenience for the
+    "tachyonic everywhere" picture.
+25. `perpetual_trace_activity_reframe` — the three reframe
+    statements packaged as one theorem.
+26. `reframe_plus_friedmann` — combined headline + reframe.
+
+**Total: 26 substantive theorems, 0 sorries, 0 `True`-placeholders.**
+
+## Named axioms / imports
+
+The following are *not* derived inside this branch; they are imported
+as textbook primitives or as framework primitives proven elsewhere.
+
+1. **`c1RouteB = 1/2`** — *axiom* in the file (`def c1RouteB := 1/2`).
+   Source: Route B heat-kernel / Lichnerowicz–York
+   (`pre_geometric/c1_and_5sector/verdict.md`).
+2. **`f0 = τ`** — defined to be the framework's `τ`
+   (`Triad/SelfReferentialTriad.lean`); positivity inherited.
+3. **`f2 = 48 e⁶`** — defined directly from the framework's Level-1
+   faithfulness primitive.
+4. **`alphaEff = 1/120`** — convention from v0.9 line 12219.
+5. **`MPl = 1`** — chosen as a canonical positive value (results are
+   `M_Pl`-equivariant).
+6. **`ConformalFrameTransform`** — class encoding Whitt 1984 +
+   De Felice–Tsujikawa 2010 §3.  Instances are constructed
+   automatically (`canonicalConformalFrameTransform`) from the
+   already-proved properties of `starobinskyPotential`.
+
+The class records the *content* of the conformal-frame
+transformation; it does not derive it from a tensorial Lorentzian-GR
+formalisation (Mathlib does not currently support 4D semi-Riemannian
+geometry at the level of generality needed).  This is a textbook
+import.
 
 ## Sorrys
 
-**None.**  All four distinctness claims and the CMB-compatibility
-predicate are proved by `decide` / `rfl`.
+**Zero.**  No `sorry`s in any of the four files.
 
-## The reconciliation: what does each `N_e` measure?
+## Verdict on the headline question
 
-| Definition | Value | Physical content | v0.9.1 label |
-|---|---|---|---|
-| `Ne_modeActivation` | 252 | **Count of slow-roll mode activations.** Phase 2 of the algebra-to-geometry transition: 288 hidden modes minus 36 hidden tops which activate during the violent Big Bang Phase 1.  Dimensionally a *count*, not an e-fold. v0.9 line 9517 calls these "$\sim 252$ e-folds," but the identification "one mode activation = one e-fold" is a *naming choice*, not derived. | mode-activation count |
-| `Ne_treePotential` | 45 | **Tree-level slow-roll e-fold attractor.**  The number of e-folds obtained from the tree-level potential `λ_σ = π²/(288τ) ≈ 0.124`, *before* the topological suppression `S_top` is included.  Superseded by `Ne_AsClosure` once `λ_σ = exp(−S_top)` enters. | tree-potential attractor |
-| `Ne_AsClosure` | 60 | **CMB-compatible non-perturbative e-fold count.**  The unique value (modulo 11% closure tolerance) compatible with `A_s = 2 · Ch₂ · λ_σ · N_e² / π² = 2.33 × 10⁻⁹`, matching Planck 2018 `A_s^obs = 2.10 × 10⁻⁹`.  The canonical "N_e" for v0.9.1. | inflationary e-fold count |
+### Does Friedmann derive cleanly from σ_tr > 0?
 
-The user's BOOM reframe (`compute/friedmann-from-sigmaTr`) ties them
-together physically:
+**Yes**, modulo the named axioms above.  The chain is
 
-> "BOOM = slow-roll inflation phase where high-energy /
-> short-wavelength modes are dense and active; lower modes
-> progressively activate."
+```
+σ_tr > 0  →  Starobinsky-form f(R) read-off (mSigmaSq = ξ_cross²)
+          →  Whitt 1984 conformal transform (axiom-class)
+          →  Einstein-frame scalar action S_E
+          →  Friedmann data on flat FRW
+          →  H² = (κ²/3) ρ + Ḣ = -(κ²/2)(ρ+p)
+```
 
-In this picture:
+All four steps are formalised; the textbook-equivalence step (Whitt
+1984) is an axiom-class with an instance constructor.
 
-* the **mode-activation count** is the rate-counter on the
-  hidden-light sector roll;
-* the **tree-potential attractor** is the perturbative slow-roll
-  estimate of how long the metric expands while that roll happens;
-* the **`A_s`-closure value** is what the CMB *actually* measures
-  about that expansion, after all non-perturbative corrections
-  (topological factor `S_top = 28.09`) are included.
+### Is ξ_cross trans-Planckian (perpetual-trace reframe) or
+### sub-Planckian (Starobinsky-bounded)?
 
-Only the third is an observable.  The other two are *internal*
-quantities the framework computes en route to the observable.
+**`xiCrossSq_transPlanckian`** is **proved**:
+`100 · Λ² < ξ_cross²(Λ)`.  This is *much weaker* than the actual
+numerical bound `ξ_cross² ≈ 1.17·10⁵ · Λ²` from
+`c1_and_5sector/verdict.md`, but it suffices to confirm the
+*qualitative* verdict: the crossover is parametrically above the
+spectral cutoff.
 
-## Recommendation for v0.9.1 emendation
+The tighter bound `≈ 117 000 · Λ²` is straightforward to formalise
+(it just needs `e⁶ > 403` instead of `e⁶ > 400`), but `100 · Λ²` is
+clean and decisive: there is no way the standard inflationary slow-
+roll plateau is sub-Planckian under Route B.
 
-Per the reconciliation table above:
+**Conclusion**: v0.9's nominal Starobinsky-bounded narrative branch
+(which required `c₁ ≈ λ_σ ≈ 0.124`, *not* what heat-kernel gives) is
+**retracted**.  The right reading under Route B is the user's:
+*perpetual trace activity*.
 
-1. **Relabel reading #1** from "$N_e \sim 252$ e-folds" to
-   "**mode-activation count $N_{\mathrm{act}} = 252$**".  Phrase the
-   slow-roll-attractor argument in v0.9 §"Mode Activation and the
-   Inflationary Clock" without identifying $N_{\mathrm{act}}$ with
-   the inflationary e-fold count.  The functional form
-   $n_s = 1 - 1/(36-k)$ in the same section uses $k$, *not*
-   $N_{\mathrm{act}}$, so this is a relabel-only fix.
+### Is "perpetual trace activity" type-checked?
 
-2. **Relabel reading #2** from "$\sim 45$ e-folds" to "**tree-level
-   attractor $N_e^{\mathrm{tree}} = 45$**" with an explicit
-   parenthetical "(superseded by $N_e = 60$ once `S_top` is
-   included)".  v0.9 already flags this implicitly at line 9762–9770;
-   making it explicit closes the audit's honesty objection.
+**Yes** — `perpetual_trace_activity_reframe` packages the three
+statements:
 
-3. **Retain reading #3** as the canonical "**inflationary e-fold
-   count $N_e = 60$**".  No relabel needed; only ensure §"Scalar
-   Amplitude $A_s$ via $S_{\mathrm{top}}$" cites it as *the*
-   canonical inflationary e-fold count, with a forward reference
-   from §"Mode Activation and the Inflationary Clock" and a
-   forward reference from Remark `f4-positives`.
+1. trace mode anti-diffusive at every sub-Planckian ξ,
+2. no sub-Planckian regulating regime,
+3. trans-Planckian crossover.
 
-4. **Add a one-paragraph remark** at the start of Chapter 38 (or as
-   a footnote at first occurrence of "$N_e$") that reads roughly:
+These are mutually consistent and jointly proved.
 
-   > "Three quantities in this chapter share the symbol `N_e` in
-   > earlier drafts: the mode-activation count $N_{\mathrm{act}} = 252$
-   > (the number of light-sector modes activating during the
-   > slow-roll phase), the tree-level slow-roll attractor
-   > $N_e^{\mathrm{tree}} = 45$ (perturbative estimate, superseded
-   > by `S_top`), and the CMB-compatible inflationary e-fold count
-   > $N_e = 60$ (the value used in the `A_s` closure).  Only the
-   > last is constrained by CMB observations; the others are
-   > internal counting/perturbative quantities computed en route."
+## Connection to other branches
 
-This is **additive documentation**, not new mathematics — the same
-profile as the recommended P5 fix in `triage.md` Tier 1.
+* **`compute/c1-route-b`** (hypothetical / current verdict): this
+  branch *imports* `c₁ = 1/2` as `c1RouteB`.  If the c₁ branch later
+  produces a different value (e.g. via Reuter–Saueressig fixed-point
+  /  asymptotic-safety closure), only the `c1RouteB` definition needs
+  to be touched; the rest of the chain is parameteric in `c₁ > 0`
+  and would carry over modulo a different numerical bound in
+  `xiCrossSq_transPlanckian`.
+
+* **`compute/kappa2-refinement`**: indirectly relevant — `f₂ = 48 e⁶`
+  is the Level-1 faithfulness primitive; if `κ₂` corrections shift
+  `f₂`, the `xiCrossSq_transPlanckian` bound shifts but stays
+  qualitatively in place (the dominant factor is `e⁶ ≈ 403`, not the
+  prefactor `48`).
+
+* **`compute/R2-sign`** (Rank 7 / #15): if that branch confirms the
+  `R²`-coefficient sign, the Starobinsky-form identification
+  underlying `mSigmaSq_eq_xiCrossSq` becomes more than a plausibility
+  argument.  If the sign comes out reversed, the trace-flip
+  inflation reading is the one that's reversed, *not* the
+  perpetual-trace-activity reading (which is sign-agnostic in
+  the σ_tr > 0 direction below the cutoff).
+
+* **Implication for v0.9 narrative**: v0.9's nominal "c₁ ~ λ_σ"
+  branch (line 12186 of v0.9) is the **only** branch that produces
+  Starobinsky inflation; it is *not* what Route B gives.  This
+  branch can be retracted in favour of perpetual trace activity.
+
+## N_e reconciliation
+
+This branch *does not* pin `N_e`.  The Friedmann derivation gives the
+local-in-time evolution `Ḣ = -(κ²/2)(ρ+p)`, but the e-fold count
+`N_e = ∫ H dt` from horizon-crossing to inflation's end depends on
+*inflaton dynamics* (slow-roll parameters, end-of-slow-roll condition),
+which require the *time integral* of the σ-trajectory.
+
+Within the formalisation, the `deSitterTriple` example gives
+`Ḣ = 0` and so `N_e = ∞` formally — the de Sitter limit, not
+inflation per se.  The three values that v0.9 quotes (60 from `A_s`
+closure, 252 from mode activation, 45 from the tree potential) all
+sit downstream of *additional* dynamical inputs not formalised here:
+
+* `N_e ≈ 60` requires the COBE normalisation `A_s ≈ 2.1·10⁻⁹` of the
+  scalar power spectrum, which fixes the slow-roll parameter
+  `ε_*` at horizon crossing.  This is *not* in this branch.
+* `N_e ≈ 252` requires the framework-internal mode-activation count
+  (288/96 split + factor count); this is in
+  `Cosmology/Predictions.lean` but the connection to the inflationary
+  trajectory is conjectural.
+* `N_e ≈ 45` requires the tree-level scalaron potential profile,
+  which is `starobinskyPotential` in this branch *but* under Route B
+  the slow-roll plateau is trans-Planckian, so the tree count does
+  not apply directly.
+
+**Verdict on N_e**: the Friedmann derivation provides the
+*kinematic* setup but does not select among 60 / 252 / 45.  Closing
+the N_e question is a **separate** computation involving slow-roll
+parameters and the COBE normalisation, downstream of this branch.
+The user's audit flag (#8 in `top10.md`) stands.
 
 ## Build status
 
-Full `lake build` is green at HEAD of `compute/Ne-multiplicity`
-(post commit, pre push).  `EfoldMultiplicity.lean` builds in 1.3 s
-on top of the existing 3171-job baseline.  No regressions; no new
-sorries; no new axioms.
+All four files compile.  Full library `lake build` succeeds:
+
+```
+Build completed successfully (3171 jobs).
+```
+
+(Modulo pre-existing unused-`simp`-arg / deprecated-import warnings
+in `SpectralPhysics/Conjectures/Hodge.lean` and
+`SpectralPhysics/Triad/SelfReferentialTriad.lean`, which are
+unrelated to this branch.)
+
+## Hard-rules compliance
+
+| Rule | Status |
+|------|--------|
+| 1. No Python shortcut. Lean for all claims. | OK — only Lean files |
+| 2. `sorry` documented if used. | OK — no sorrys |
+| 3. No `True` placeholders. | OK — every theorem has substantive content |
+| 4. Build must compile. | OK — full `lake build` succeeds |
+| 5. Commit incrementally. Do NOT push. | Awaiting commits; not pushing |

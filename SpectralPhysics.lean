@@ -101,6 +101,13 @@ import SpectralPhysics.Thermo.FourLaws
 
 -- ═══ COSMOLOGY ═══
 import SpectralPhysics.Cosmology.Predictions
+import SpectralPhysics.Cosmology.SigmaTrDispersion
+import SpectralPhysics.Cosmology.ConformalFrameTransform
+import SpectralPhysics.Cosmology.FriedmannEquation
+import SpectralPhysics.Cosmology.PerpetualTraceActivity
+import SpectralPhysics.Cosmology.ConformalFrameTransform
+import SpectralPhysics.Cosmology.FriedmannEquation
+import SpectralPhysics.Cosmology.PerpetualTraceActivity
 
 -- ═══ CORRESPONDENCE PRINCIPLE (Hess–λ_1 monotonicity) ═══
 import SpectralPhysics.CorrespondencePrinciple.HessLambda1Monotonicity
