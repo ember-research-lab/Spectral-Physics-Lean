@@ -132,3 +132,17 @@ import SpectralPhysics.YukawaHierarchy.Bundle.AtiyahSinger
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralAction
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralActionConcrete
 import SpectralPhysics.YukawaHierarchy.Bundle.HeatKernelExpansion
+
+-- ═══ MAJORANA SELF-REFERENCE (cherry-picked from prior branch) ═══
+import SpectralPhysics.MajoranaSelfRef.JSelfConjugate
+
+-- ═══ J-SELF-CONJ INDEX DISPATCH (sister branch, cherry-picked) ═══
+import SpectralPhysics.IndexJSelfConj.JSelfConjBlock
+import SpectralPhysics.IndexJSelfConj.IndexComputation
+import SpectralPhysics.IndexJSelfConj.ExponentVerdict
+
+-- ═══ η-INVARIANT + SPECTRAL-FLOW DISPATCH (this branch) ═══
+import SpectralPhysics.EtaJSelfConj.EtaInvariant
+import SpectralPhysics.EtaJSelfConj.SpectralFlow
+import SpectralPhysics.EtaJSelfConj.APSIndex
+import SpectralPhysics.EtaJSelfConj.Verdict
