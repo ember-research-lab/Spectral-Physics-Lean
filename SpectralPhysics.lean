@@ -131,3 +131,8 @@ import SpectralPhysics.YukawaHierarchy.Bundle.AtiyahSinger
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralAction
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralActionConcrete
 import SpectralPhysics.YukawaHierarchy.Bundle.HeatKernelExpansion
+
+-- ═══ η-INTEGERS REDEMPTION (structural η-invariant; integers from spectral identification + APS doubling) ═══
+import SpectralPhysics.Eta.JumpMap
+import SpectralPhysics.Eta.SpectralIdentification
+import SpectralPhysics.Eta.IntegerCounts
