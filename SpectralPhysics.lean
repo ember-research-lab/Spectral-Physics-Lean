@@ -290,3 +290,9 @@ import SpectralPhysics.Kappa2FromSpectrum.Verdict
 -- Conditional on 1 named axiom (Rellich 1930, Kondrachov 1945, Simon 2005,
 -- Reed-Simon Vol. IV).  See KSRCompactness/Verdict.lean and STATUS.md.
 import SpectralPhysics.KSRCompactness.Verdict
+-- ═══ f_2 FROM SPECTRAL ACTION (v0.9.2 D.3 — v0.9 line 14742) ═══
+-- Conditional on 2 named literature predicates (Chamseddine-Connes 1997,
+-- Vassilevich 2003 eq. 4.13).  Identifies `f_2` cutoff moment of the
+-- spectral action with `(Λ²-coefficient) / a_2(D²)` via Seeley-DeWitt
+-- expansion.  See F2FromSpectralAction/Verdict.lean and STATUS.md.
+import SpectralPhysics.F2FromSpectralAction.Verdict
