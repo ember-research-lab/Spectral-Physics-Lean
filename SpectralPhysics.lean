@@ -305,3 +305,10 @@ import SpectralPhysics.BasinConnectivity.Verdict
 -- closure requires a Python/mpmath sidecar at
 -- yukawa/pre_geometric/alpha_eff_RG_below_EW/.
 import SpectralPhysics.AlphaEffRGFlow.Verdict
+-- ═══ GJ IDENTIFICATION FROM ALGEBRA (v0.9.2 J.3 — v0.9 line 11036) ═══
+-- Conditional on 6 named axioms (3 opaque empirical reals + 3 bracket
+-- axioms from 2-loop SM-RG / PDG 2024 / Antusch et al. 2005).
+-- Verdict: CONDITIONAL — bracket [0.014, 0.024] for max-rel-err, contains
+-- v0.9's central 1.7% but wider than v0.9's quoted [0.006, 0.017];
+-- tightening to close J.3 to a theorem requires a 3-loop SM-RG sidecar.
+import SpectralPhysics.GJIdentification.Verdict
