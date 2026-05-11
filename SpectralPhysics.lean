@@ -240,3 +240,9 @@ import SpectralPhysics.DixonOrderOne.DixonAlgebra
 import SpectralPhysics.DixonOrderOne.OrderOneCondition
 import SpectralPhysics.DixonOrderOne.NonAssocObstruction
 import SpectralPhysics.DixonOrderOne.Verdict
+-- ═══ DIXON POINCARÉ DUALITY (v0.9.2 B.2) ═══
+-- Same non-associativity obstruction as B.1 — also blocks Poincaré
+-- duality.  Two named axioms cite Connes 1994 §VI.4 (PD definition)
+-- and Bochniak-Sitarz arXiv:2001.02613 §III (PD obstruction for
+-- Dixon-type triples).
+import SpectralPhysics.DixonPoincareDuality.Verdict
