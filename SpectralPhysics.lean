@@ -235,3 +235,8 @@ import SpectralPhysics.SAGFJointUniqueness.Constraints
 import SpectralPhysics.SAGFJointUniqueness.JointSystem
 import SpectralPhysics.SAGFJointUniqueness.UniquenessTheorem
 import SpectralPhysics.SAGFJointUniqueness.Verdict
+-- ═══ DIXON ORDER-ONE OBSTRUCTION (v0.9.2 B.1; non-associativity obstruction to Connes order-one axiom) ═══
+import SpectralPhysics.DixonOrderOne.DixonAlgebra
+import SpectralPhysics.DixonOrderOne.OrderOneCondition
+import SpectralPhysics.DixonOrderOne.NonAssocObstruction
+import SpectralPhysics.DixonOrderOne.Verdict
