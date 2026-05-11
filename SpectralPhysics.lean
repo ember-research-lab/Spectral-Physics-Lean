@@ -269,3 +269,7 @@ import SpectralPhysics.Kappa2FromSpectrum.Kappa2Formula
 import SpectralPhysics.Kappa2FromSpectrum.LightMassesContribution
 import SpectralPhysics.Kappa2FromSpectrum.Bracket
 import SpectralPhysics.Kappa2FromSpectrum.Verdict
+-- ═══ K_SR COMPACTNESS (v0.9.2 G.2 — v0.9 lines 16759, 11082(a)) ═══
+-- Conditional on 1 named axiom (Rellich 1930, Kondrachov 1945, Simon 2005,
+-- Reed-Simon Vol. IV).  See KSRCompactness/Verdict.lean and STATUS.md.
+import SpectralPhysics.KSRCompactness.Verdict
