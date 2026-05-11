@@ -102,6 +102,10 @@ import SpectralPhysics.Thermo.FourLaws
 -- ═══ COSMOLOGY ═══
 import SpectralPhysics.Cosmology.Predictions
 
+-- ═══ CORRESPONDENCE PRINCIPLE (Hess–λ_1 monotonicity) ═══
+import SpectralPhysics.CorrespondencePrinciple.HessLambda1Monotonicity
+import SpectralPhysics.CorrespondencePrinciple.Verdict
+
 -- ═══ SELF-REFERENCE ═══
 import SpectralPhysics.SelfRef.GodelTrace
 import SpectralPhysics.SelfRef.TraceInterior
