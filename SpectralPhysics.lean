@@ -158,3 +158,15 @@ import SpectralPhysics.MajoranaSelfRef.JSelfConjugate
 import SpectralPhysics.MajoranaSelfRef.TriadicPartition
 import SpectralPhysics.MajoranaSelfRef.SelfReferenceClosure
 import SpectralPhysics.MajoranaSelfRef.Verdict
+-- ═══ FAITHFULNESS FORCES y_R? (compute/faithfulness-forces-yR) ═══
+-- Tests whether Axiom 3 (Spectral Faithfulness) — the framework's
+-- distinguishing principle — pins the Majorana Yukawa y_R at the
+-- J-self-conjugate locus (1,1)_0.  Combined verdict: NO across all
+-- five readings A/B/C/D/E.  See FaithfulnessForcesYR/STATUS.md.
+import SpectralPhysics.MajoranaSelfRef.JSelfConjugate
+import SpectralPhysics.FaithfulnessForcesYR.AxiomThreeRestricted
+import SpectralPhysics.FaithfulnessForcesYR.CDTowerExtension
+import SpectralPhysics.FaithfulnessForcesYR.CompositionFaithfulness
+import SpectralPhysics.FaithfulnessForcesYR.OperatorReconstruction
+import SpectralPhysics.FaithfulnessForcesYR.SelfModelDeficitFaithfulness
+import SpectralPhysics.FaithfulnessForcesYR.Verdict
