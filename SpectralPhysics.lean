@@ -225,3 +225,7 @@ import SpectralPhysics.OP3.CosmologicalConstantMatch
 import SpectralPhysics.Eta.JumpMap
 import SpectralPhysics.Eta.SpectralIdentification
 import SpectralPhysics.Eta.IntegerCounts
+-- ═══ R²-SIGN REDEMPTION (Seeley-DeWitt a_4 with separated unconditional/conditional claims) ═══
+import SpectralPhysics.SeeleyDeWitt.A4Coefficients
+import SpectralPhysics.SeeleyDeWitt.R2Coefficient
+import SpectralPhysics.SeeleyDeWitt.SpectralActionR2
