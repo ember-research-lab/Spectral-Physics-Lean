@@ -112,6 +112,7 @@ import SpectralPhysics.Cosmology.PerpetualTraceActivity
 -- ═══ CORRESPONDENCE PRINCIPLE (Hess–λ_1 monotonicity) ═══
 import SpectralPhysics.CorrespondencePrinciple.HessLambda1Monotonicity
 import SpectralPhysics.CorrespondencePrinciple.Verdict
+import SpectralPhysics.Cosmology.H4Nonlinear
 
 -- ═══ SELF-REFERENCE ═══
 import SpectralPhysics.SelfRef.GodelTrace
