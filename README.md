@@ -4,8 +4,10 @@ A machine-checked formalization of the spectral physics framework
 (`papers/spectral_physics/spectral-physics-v0.9.1.tex`), built under
 adversarial audit discipline. The repository pairs Tier-1 proofs of the
 core spectral apparatus with **honest predicate-hypothesis closures** of
-v0.9's open problems, and **catalogued negative results** for hypotheses
-that do not survive Lean-level scrutiny.
+the v0.9 open problems, **catalogued negative results** for hypotheses
+that do not survive Lean-level scrutiny, and a v0.9.2 release pass that
+reduced 12 deferred items to predicate-hypothesis form with named
+literature citations.
 
 Part of [**Ember Research Lab**](https://ember-research-lab.github.io/) —
 independent research deriving geometry, quantum mechanics, and consciousness as
@@ -13,10 +15,10 @@ three projections of the graph Laplacian. See the [concepts
 index](https://ember-research-lab.github.io/concepts.html) for definitions of
 the framework's terms.
 
-**169 Lean files | 28 top-level modules | ~15 sorry sites | 54 named declarations carrying axiom-class status**
+**229 Lean files | 40 top-level modules | ~10 sorry sites | 86 named declarations carrying axiom-class status**
 
 Builds against Lean 4.29.0-rc6 and Mathlib master via `lake build`
-(3179 jobs at last full pass, 2026-05-10).
+(3294 jobs at last full pass, 2026-05-11).
 
 ---
 
@@ -51,154 +53,107 @@ which predicates carry open content, and the explicit verdict —
 
 ---
 
+## v0.9.2 Release Pass (2026-05-11)
+
+Twelve `compute/*` branches reduced the v0.9.2 deferred queue to
+predicate-hypothesis form with named literature citations. All twelve
+were merged via three staging branches (`v0.9.2-merge-staging`,
+`v0.9.2-wave2-staging`, `v0.9.2-wave3-staging`) and fast-forwarded to
+`main`.
+
+### Negative results (NO / DEGENERATE)
+
+| Module | v0.9.2 § | Verdict | Headline |
+|--------|----------|---------|----------|
+| `DixonOrderOne` | B.1 | **NO** | `dixon_order_one_fails` — non-assoc obstruction on octonion factor; `[L_a, R_b] ≠ 0` via Mathlib `Quaternion`'s `i·j ≠ j·i` |
+| `DixonPoincareDuality` | B.2 | **NO** | `dixon_pd_obstruction` — same non-associativity blocks K-theory descent for the intersection form |
+| `RMForcesDivisionAlgebras` | G.4 | **NO + counterexample** | `RM_does_not_force_division_algebras_headline` — `ℝ × ℝ` (split-complex) satisfies Axiom 3 but has zero divisors; vindicates v0.9 line 16779 self-flag |
+
+### Falsification of a v0.9 perturbative recipe
+
+| Module | v0.9.2 § | Verdict | Headline |
+|--------|----------|---------|----------|
+| `Kappa2FromSpectrum` | D.2 | **CONDITIONAL + falsification** | `kappa2Full canonical ≠ 258` — bracket [285, 290] central (sensitivity [281, 320]), 22-32 units above v0.9 target 258±5; the closed-form perturbative cumulant recipe of v0.9 line 9747 is theorem-level falsified, while structural SCSE fixed-point determination of Λ_cosmo is unaffected |
+
+### Conditional / Partial closures
+
+| Module | v0.9.2 § | Verdict | What's new |
+|--------|----------|---------|------------|
+| `SelfModelDeficitUnconditional` | C.1 | **PARTIAL** | `self_model_deficit_unconditional : ∀ V, negZetaPrimeAtZero V = 288` — hypothesis-free now; v0.9.1's two caller-supplied predicates reduced to three named lit axioms (Bekenstein 1981, Mac Lane 1998, Connes-Marcolli 2008) |
+| `KSRCompactness` | G.2 | **CONDITIONAL** | `ksr_compact` from one named axiom (Rellich 1930, Kondrachov 1945, Simon 2005, Reed-Simon Vol. IV §XIII.5); Mathlib search documented (no Schatten infrastructure yet) |
+| `CompositionBroaderUniqueness` | A.1 | **PARTIAL — 0 new axioms** | Four non-Kasparov candidates falsified Tier-1 (free-Voiculescu, mult-free, monoidal non-Kasparov, boxed); uncountable case identified as the named Nica-Speicher 2006 research program |
+| `F2FromSpectralAction` | D.3 | **CONDITIONAL** | `f2_identification` — recovers `Cosmology.f_2_pos` via Chamseddine-Connes 1997 + Vassilevich 2003 a₂ coefficient; specific value 48·e⁶ remains open |
+| `BasinConnectivity` | G.3 | **CONDITIONAL bidirectional** | `v092_G3_verdict` — forward (Palais-Smale + coercivity + at-most-one-min → basin connectivity) AND reverse (basin connectivity → at-most-one-min via Morse two-minima-disconnect); coercivity bridges to `KSRCompactness` |
+| `AlphaEffRGFlow` | G.7 | **CONDITIONAL** | `alpha_eff_verdict_v092_G7` — four named SM RGE axioms (Machacek-Vaughn 1983/84/85, Ford-Jones-Stevenson-Stephens 1992, Mihaila-Salomon-Steinhauser 2012, Manohar-Wise 2000) + three predicate hypotheses; empirical closure routed to a Python/mpmath sidecar |
+| `IRUVScaleSeparation` | J.1 | **CONDITIONAL** | `spectral_universality_from_perturbation_bound` (kernel axioms only) + Wilson-Polchinski biconditional (Wilson 1971 + Polchinski 1984); v0.9 `prop:spectral-convergence` (line 1437) identified as spectral analogue of statistical-mechanics universality |
+| `GJIdentification` | J.3 | **CONDITIONAL + bracket** | GJ = **Georgi-Jarlskog** (not Glashow-Jaffe); three GUT-scale Yukawa ratios `c₁=√5, c₂=1/(3+φ), c₃=2/3` all in ℚ(√5); algebraic side Tier-1 zero axioms, empirical bracket [0.014, 0.024] from 6 named axioms (PDG 2024 + Antusch et al. 2005); v0.9's quoted [0.006, 0.017] is tighter than the audit-honest interval-arithmetic bracket can verify |
+
+---
+
 ## Tiered Status of Results
 
 ### Tier 1 — Proved in Lean (zero `sorry`, zero open hypotheses)
 
 Core spectral apparatus:
 
-- **Lattice spectral gap** — connected relational structure with `L ≥ 0`
-  implies `λ₁ > 0`; null space = constants (`Laplacian.lean`).
-- **Heat kernel** — `e^{-tL}` is PSD (reflection positivity); exponential
-  correlator decay at rate `λ₁` (`HeatSemigroup.lean`).
-- **Rayleigh / Courant-Fischer** — variational characterization
-  `R(v_k) = λ_k`, min-max principle (`RayleighQuotient.lean`).
-- **Bakry-Émery on graphs** — discrete `CD(κ, ∞)`, Lichnerowicz
-  `κ ≤ λ₁`, SU(2) bound `ρ_0 = 12/7` (`BakryEmery.lean`).
-- **Cheeger-Colding convergence** — antitone + bounded-below sequences
-  converge; the gap passes to the limit via `ge_of_tendsto`
-  (`CheegerColding.lean`).
-- **Wick rotation** — analytic continuation of `Z(β)`, equal-time
-  commutator vanishing, spacelike correlator decay (`WickRotation.lean`).
-- **Cayley-Dickson tower** — `ℝ → ℂ → ℍ → 𝕆` with norm-multiplicativity
-  (`CayleyDickson.lean`, `Hurwitz.lean`).
-- **Numerical predictions** — `α_s = π(2+φ)/96` (0.4%), Cabibbo
-  `(150 − 23√5)/440` (0.12%), `T_c/v` (0.6%), `θ_13`, `δ_CP`
-  (`Predictions/`).
-- **Self-reference** — Gödel trace; `ε̄ ≥ I·C_min/τ`
-  (`SelfRef/`, `accuracy_integration_tradeoff`).
-- **YukawaHierarchy** — 16-file SO(10) instanton-counting scaffold
-  closed at the Tier-1 boundary; `main_yukawa_ratio_theorem`,
-  `mult(y_c)/mult(y_τ) = N_c`, BPST self-duality, anomaly cancellation
-  for any ν (`YukawaHierarchy/`).
+- **Lattice spectral gap** — `λ₁ > 0` for connected `L ≥ 0`; `ker L = constants` (`Laplacian.lean`).
+- **Heat kernel** — `e^{-tL}` PSD; exponential correlator decay (`HeatSemigroup.lean`).
+- **Rayleigh / Courant-Fischer** — variational characterization, min-max (`RayleighQuotient.lean`).
+- **Bakry-Émery on graphs** — discrete `CD(κ, ∞)`, Lichnerowicz `κ ≤ λ₁`, SU(2) `ρ_0 = 12/7` (`BakryEmery.lean`).
+- **Cheeger-Colding convergence** — antitone + bounded → converges; gap passes to limit (`CheegerColding.lean`).
+- **Wick rotation** — analytic continuation of `Z(β)`, spacelike correlator decay (`WickRotation.lean`).
+- **Cayley-Dickson tower** — `ℝ → ℂ → ℍ → 𝕆` with norm-multiplicativity (`CayleyDickson.lean`, `Hurwitz.lean`).
+- **Numerical predictions** — `α_s = π(2+φ)/96` (0.4%), Cabibbo `(150 − 23√5)/440` (0.12%), `T_c/v` (0.6%), `θ_13`, `δ_CP` (`Predictions/`).
+- **Self-reference** — Gödel trace; `ε̄ ≥ I·C_min/τ` (`SelfRef/`).
+- **YukawaHierarchy** — 16-file SO(10) instanton-counting scaffold, anomaly cancellation for any ν (`YukawaHierarchy/`).
+- **v0.9.2 unconditional headlines** — `dixon_order_one_fails`, `dixon_pd_obstruction`, `self_model_deficit_unconditional`, `RM_does_not_force_division_algebras_headline`, `broader_uniqueness_among_named_candidates`, `framework_GJ_symbolic` — all on Lean kernel axioms only.
 
 ### Tier 2 — Conditional on named, standard, unformalized results
 
 These theorems are **proved in Lean** given explicit hypotheses naming
-classical theorems. The conclusions are honest; the hypotheses are the
-inputs whose Lean-level formalization is deferred.
+classical theorems.
 
-- **Continuum mass gap** — `assembly_clay_v3 : … h_antitone : … →
-  ∃ m, m > 0 ∧ (N : ℝ)/4 ≤ m²`. The eigenvalue antitone property
-  for lattice refinements is hypothesised, not proved.
-- **OS axioms in continuum** — OS2/OS3 transfer with 0 sorry; OS4
-  clustering has one residual `sorry` for a `Finset.sum` splitting at
-  `k = 0`.
-- **Lattice Lichnerowicz gap values** — `3/4` for SU(2), `6/7` for
-  SU(3), etc., are supplied as data on `CompactSimpleGroup`; the
-  O'Neill formula `Ric(A/G) ≥ N/4` is cited, not formalized.
-- **SeeleyDeWitt `R²` coefficient** — sign-triple independence is
-  **unconditional Tier 1**; per-DOF normalization is **conditional on a
-  cutoff-rescaling axiom** explicitly named and flagged (see
-  `SeeleyDeWitt/STATUS.md`, redemption rewrite 2026-05-10).
-- **Friedmann from `σ_tr`** — `friedmann_from_sigmaTr` proved given the
-  Whitt-1984 / De Felice-Tsujikawa-2010 conformal-frame transform
-  carried as an axiom-class declaration (`Cosmology/STATUS.md`).
-- **κ₂ to 0.01-unit precision** and **`f₄` via Edgeworth tower** —
-  closed-form coefficient at `ξ_cross` (Rank 10 / #18 of the v0.9
-  computable inventory), with the Edgeworth expansion's regularity
-  hypothesis named (`OP3/STATUS.md`).
+- **Continuum mass gap** — `assembly_clay_v3` (conditional on antitone hypothesis).
+- **OS axioms in continuum** — OS2/OS3 transfer; OS4 has one residual `sorry`.
+- **Lichnerowicz gap values** — supplied as data on `CompactSimpleGroup`; O'Neill cited not formalized.
+- **SeeleyDeWitt `R²` coefficient** — sign-triple independence unconditional; per-DOF normalization cutoff-conditional.
+- **Friedmann from `σ_tr`** — `friedmann_from_sigmaTr` given Whitt 1984 / De Felice-Tsujikawa 2010 axiom.
+- **κ₂ / f₄ (v0.9.1)** — predicate-conditional closure at OP3; **v0.9.2 sharpened** with bracket [285, 290] in `Kappa2FromSpectrum` and conditional Chamseddine-Connes derivation in `F2FromSpectralAction`.
 
 ### Tier 3 — Scaffolding (structure without full mathematical content)
 
-- **Wightman axioms W1–W5** carried as bare `Prop` fields on
-  `OSReconstruction.WightmanData`; the genuine spectral content lives
-  in Tiers 1/2.
-- **Wightman distributions** — `wightman_n := fun _n => sorry` in
-  `ClayStatement.lean`. OS reconstruction (Osterwalder-Schrader
-  1973/1975) is cited, not formalized.
-- **GR / Spacetime** — placeholder theorems (`: True := trivial`) for
-  spacetime emergence and dimension running.
-- **Consciousness** — definitional statements as `True := trivial`;
-  these are spectral definitions, not empirical claims.
+- **Wightman axioms W1-W5** as bare `Prop` fields on `OSReconstruction.WightmanData`.
+- **Wightman distributions** — `wightman_n := fun _n => sorry` (OS reconstruction cited not formalized).
+- **GR / Spacetime** — placeholder theorems (`: True := trivial`).
+- **Consciousness** — definitional statements as `True := trivial`.
 
 ### Honest negatives — what *did not* close
 
-Five independent routes for forcing the Majorana coupling `y_R` from the
-J-self-conjugate `(1,1)_0` locus all returned NO or DEGENERATE under
-audit-discipline Lean formalization. Each is a real branch with
-machine-checked theorems; together they consolidate the
-**transcendent-IC framing** for `y_R` as the v0.9.1 standing claim.
+**Five independent routes for forcing `y_R` from the J-self-conjugate `(1,1)_0` locus all returned NO / DEGENERATE** (v0.9.1 work):
 
 | Route | Module | Verdict |
 |-------|--------|---------|
-| Atiyah-Singer | `IndexJSelfConj/` | NO — chiral index `= 0` for every ν |
+| Atiyah-Singer | `IndexJSelfConj/` | NO — chiral index = 0 for every ν |
 | ζ_F-regularization | `ZetaFNuR/` | DEGENERATE — `ζ_F(0; ν_R) = mult`, not 8 |
-| Self-Model Deficit (J-fixed) | `SelfModelJFixed/` | NO — closure holds for any `y_R > 0` |
-| η-invariant + spectral flow | `EtaJSelfConj/` | DEGENERATE — `η ≡ 0`, net `sf ≡ 0`, APS index 0 |
+| Self-Model Deficit (J-fixed) | `SelfModelJFixed/` | NO — closure for any `y_R > 0` |
+| η + spectral flow | `EtaJSelfConj/` | DEGENERATE — η ≡ 0, net sf ≡ 0, APS index 0 |
 | Axiom 3 readings A/B/C/D/E | `FaithfulnessForcesYR/` | NO across all five |
 
-Adjacent honest verdicts from this session:
+**Three additional structural negatives** (v0.9.2 work):
 
-- **MajoranaBlock** — discriminator selects Hypothesis B
-  (`mult = 6` under standard NCG Connes-Marcolli §17.5).
-- **SAGFJointUniqueness** — verdict **H3**: 1-parameter family in `m_1`;
-  closure under spectral-gap-maximization NOT claimed in this branch,
-  per the homeostatic-SGM reframe.
-- **CorrespondencePrinciple** — verdict **CO-MONOTONE**: across the v0.9
-  acceptance window `M_R ∈ [3·10¹⁴, 1.5·10¹⁵] GeV`, the IR-dominant
-  Hessian eigenvalue and `λ_1` are strictly co-monotone (mpmath dps=50).
-- **EtaB** — Formula A (`λ^14`) bracketed `7.9·10⁻¹⁰ < η_B < 8.1·10⁻¹⁰`
-  vs. Formula B (`J²/2`); framework verdict recorded.
-- **CompositionUniqueness** (Path A) — among the three named convolution
-  candidates, only additive satisfies the three-condition predicate;
-  trace law forced **unconditionally** (zero new axioms); narrow
-  uniqueness via Mesland-Rennie 2013 / Rosenberg-Schochet 1987 /
-  Kassel 1986 is **conditional** on the cited Kasparov-product axioms.
+| Route | Module | Verdict |
+|-------|--------|---------|
+| Dixon order-one | `DixonOrderOne/` | NO — non-assoc obstruction (Bochniak-Sitarz) |
+| Dixon Poincaré duality | `DixonPoincareDuality/` | NO — same obstruction; K-theory descent fails |
+| Axiom 3 → Hurwitz tower | `RMForcesDivisionAlgebras/` | NO — `ℝ × ℝ` counterexample |
 
----
-
-## Status at a Glance
-
-Per-module counts after the v0.9.1 release pass (2026-05-10):
-
-| Module | Files | Sorries | Named axioms | Role |
-|--------|:-----:|:-------:|:------------:|------|
-| Axioms | 4 | 0 | 0 | `L ≥ 0`, `ker L = const`, spectral determination |
-| Algebra | 6 | 3 | 2 | CayleyDickson, Hurwitz, SpectralArithmetic, Circulant |
-| Analysis | 19 | 6 | 2 | HeatSemigroup, BakryEmery, CheegerColding, Cheeger upper/lower |
-| QFT | 30 | 4 | 1 | Lattice gap, OS, WickRotation, ClayStatement |
-| Predictions | 9 | 1 | 0 | α_s, Cabibbo, T_c/v, θ_13, δ_CP, Koide |
-| Triad | 2 | 0 | 0 | Golden ratio, self-referential triad |
-| GR | 3 | 0 | 0 | Placeholders (True := trivial) |
-| SelfRef | 5 | 0 | 4 | Gödel trace, Baker form |
-| Thermo | 1 | 0 | 1 | Four laws (1 axiom: second law) |
-| Cosmology | 7 | 0 | 0 | Friedmann from σ_tr, CMB, e-fold multiplicity |
-| Conjectures | 1 | 0 | 2 | Hodge scaffold (Lefschetz) |
-| **YukawaHierarchy** | **16** | **0** | **0** | SO(10) instanton scaffold, BPST, anomaly cancel |
-| **OP3** | **3** | **0** | **0** | κ₂ / f₄ honest predicate-hypothesis closure |
-| **CompositionUniqueness** | **8** | **0** | **5** | Path A: 3-condition forces trace law, narrow uniqueness |
-| **MajoranaSelfRef** | **4** | **0** | **1** | ν_R isMajorana; unique J-self-conj in 16 |
-| **MajoranaBlock** | **4** | **0** | **6** | Discriminator: Hypothesis B (mult=6) under NCG |
-| **IndexJSelfConj** | **3** | **0** | **1** | AS index of J-self-conj sub-block = 0, not 8 |
-| **EtaJSelfConj** | **4** | **0** | **0** | η ≡ 0; APS index ≠ 8 |
-| **EtaB** | **3** | **0** | **5** | Formula A vs Formula B; bracket on η_B |
-| **Eta** | **3** | **0** | **1** | Structural η-invariant; integer counts (12, 144, 168, 768) |
-| **ZetaFNuR** | **4** | **0** | **2** | J-restricted ζ at s=0 = multiplicity, not 8 |
-| **SelfModelDeficit** | **5** | **0** | **10** | Sector decomposition (288 = 384 − 96) |
-| **SelfModelDeficitRigorous** | **6** | **0** | **1** | Rigorous Prop 23.10: predicate-hypothesis form |
-| **SelfModelJFixed** | **4** | **0** | **4** | J-fixed locus: NO under standard NCG |
-| **FaithfulnessForcesYR** | **6** | **0** | **0** | Axiom 3 readings A/B/C/D/E all return NO |
-| **SAGFJointUniqueness** | **4** | **0** | **3** | H3: 1-parameter family in m_1 |
-| **CorrespondencePrinciple** | **2** | **0** | **1** | Co-monotone over the v0.9 window |
-| **SeeleyDeWitt** | **3** | **0** | **2** | R² sign-triple independence + cutoff-conditional normalization |
-| **Total** | **169** | **~15** | **54** | |
+Together these vindicate the **transcendent-IC framing** for `y_R` and
+the **structurally-additional-hypothesis-needed** framing for the Dixon
+program.
 
 ---
 
 ## Yang-Mills Mass Gap Chain
-
-The core argument, with honest status for each step:
 
 ```
 TIER 1 (proved in Lean, 0 sorry):
@@ -224,7 +179,7 @@ TIER 3 (scaffolding):
 Key statements:
 
 ```lean
--- Tier 1: lattice gap (tautological — extracts user-supplied positive data)
+-- Tier 1: lattice gap
 theorem yang_mills_lattice_gap_general (G : CompactSimpleGroup) :
     ∃ (m : ℝ), 0 < m
 
@@ -243,35 +198,21 @@ theorem clay_yang_mills (G : CompactSimpleGroup) :
 
 ## What This Formalization Does NOT Prove
 
-Explicit gaps:
-
-1. **Lichnerowicz gap values** are asserted as data on
-   `CompactSimpleGroup`, not derived from the Ricci curvature of SU(N)
-   with the bi-invariant metric.
-2. **The O'Neill formula** `Ric(A/G) ≥ N/4` is cited in comments but not
-   formalized.
-3. **The Wightman axioms** W1, W2, W4, W5 are bare `Prop` fields; the
-   predicates `SatisfiesW1` … `SatisfiesW5` in `ClayStatement.lean`
-   reduce to checking `0 < first_excited` (plus trivial conditions),
-   not the actual physical content of each axiom.
-4. **The eigenvalue antitone property** for lattice refinements
-   (needed for Cheeger-Colding convergence to the continuum) is
-   hypothesized, not proved.
-5. **OS reconstruction** (Euclidean correlators → Wightman
-   distributions) is cited as a theorem of Osterwalder-Schrader
-   (1973/1975) but not formalized; the `wightman_n` field is `sorry`'d.
-6. **The Composition theorem** (former Axiom 4) has narrow Path-A
-   uniqueness in `CompositionUniqueness/` but broader uniqueness across
-   *all* binary spectral operations remains stated as an open
-   hypothesis (`BroaderUniquenessOpen.lean`), not a theorem. v0.9 line
-   16783's hand-wavy admission is closed only along Path A.
-7. **`y_R` is not derived** from any J-self-conjugate route tested in
-   this repository (see "Honest negatives" above). The v0.9.1
-   manuscript carries it as a transcendent initial condition.
+1. **Lichnerowicz gap values** asserted as data, not derived from Ricci.
+2. **The O'Neill formula** `Ric(A/G) ≥ N/4` cited but not formalized.
+3. **The Wightman axioms** W1, W2, W4, W5 are bare `Prop` fields.
+4. **The eigenvalue antitone property** for lattice refinements — hypothesized.
+5. **OS reconstruction** cited (Osterwalder-Schrader 1973/1975); `wightman_n` is `sorry`.
+6. **The Composition theorem** has Path-A uniqueness in `CompositionUniqueness/` plus four-candidate falsification in `CompositionBroaderUniqueness/`, but broader uniqueness across *all* non-Kasparov factorizations stays a predicate identified with the named Nica-Speicher 2006 research program.
+7. **`y_R` is not derived** — five v0.9.1 routes returned NO/DEGENERATE; carried as transcendent IC.
+8. **The Dixon-algebra spectral triple is structurally incomplete** in the Connes program — non-associativity obstructs both order-one (B.1) and Poincaré duality (B.2). Additional structural hypotheses (Bochniak-Sitarz, Boyle-Farnsworth) are required.
+9. **Axiom 3 alone does NOT force the Hurwitz tower** — a `ℝ × ℝ` counterexample falsifies the strong reading; an additional structural hypothesis at Link 2 (faithful composition norm) is required.
+10. **The closed-form perturbative κ₂ recipe of v0.9 line 9747 is falsified** at theorem level — the structural SCSE fixed-point route remains the only viable path to Λ_cosmo.
+11. **λ_σ first-principles derivation (D.1)** and **birth of geometry / σ_0/M_Pl hierarchy (D.4)** remain explicitly v1.0 research-program targets. v0.9.2 does not advance them.
 
 ---
 
-## Redemption History
+## Redemption History (v0.9.1)
 
 An adversarial audit on 2026-05-09/10 caught seven deceptive branches.
 Each was rewritten under predicate-hypothesis discipline; the resulting
@@ -281,14 +222,11 @@ branches are now merged to `main`.
 |--------|--------------------|-----------|
 | `zetaF-prime-zero` | Axiomatized constants engineered to sum to 8 | Superseded by `self-model-deficit-rigorous` (predicate form) |
 | `Lambda1-refinement` | `kappa2_target := 2·log(Λ_c²/Λ_obs)` made the SCSE match a definitional identity | Predicate-hypothesis form; `λ_1_at_kstar` now conditional on three Prop predicates matching v0.9 open problems |
-| `eta-integers-12-144-168-768` | `rfl` proofs on definitional integers | Structural η-invariant `Σ sgn(λ_k)` over `FiniteSpectralTriple`; integer counts emerge from spectral flow, not unfold |
-| `majorana-block-residue` | `standard_NCG_three_generation_sum : 6 = 6` and `rfl`-disguised multiplicity | Predicate-over-spectral-triple formalization; integer 6 emerges via 3-step rewrite chain consuming three named axioms |
-| `R2-sign` | Per-DOF normalization smuggled in via `cutoff_rescaling_per_dof` axiom | Split into A (unconditional, sign-triple independence) and B (conditional on the cutoff axiom, explicitly named) |
-| `SAGF-joint-uniqueness` | 5 of 8 "constraints" tautological `X = X` | Dropped tautologies; only the 5 substantive constraints remain; verdict H3 |
-| `composition-uniqueness` | Axiom-smuggling of the conclusion | Path A: trace law forced **unconditionally**; narrow uniqueness conditional on three cited Kasparov-product axioms |
-
-The seven redemption branches were merged sequentially into
-`v0.9.1-merge-staging` then fast-forwarded to `main`.
+| `eta-integers-12-144-168-768` | `rfl` proofs on definitional integers | Structural η-invariant `Σ sgn(λ_k)` over `FiniteSpectralTriple` |
+| `majorana-block-residue` | `standard_NCG_three_generation_sum : 6 = 6` and `rfl`-disguised multiplicity | Predicate-over-spectral-triple formalization; integer 6 emerges via 3-step rewrite chain |
+| `R2-sign` | Per-DOF normalization smuggled via `cutoff_rescaling_per_dof` axiom | Split into A (unconditional) and B (cutoff-conditional with explicit named axiom) |
+| `SAGF-joint-uniqueness` | 5 of 8 "constraints" tautological `X = X` | Dropped tautologies; only 5 substantive constraints; verdict H3 |
+| `composition-uniqueness` | Axiom-smuggling of the conclusion | Path A: trace law unconditional; narrow uniqueness conditional on K1+K2+K3 (Mesland-Rennie 2013, Rosenberg-Schochet 1987, Kassel 1986) |
 
 ---
 
@@ -300,7 +238,7 @@ Requires Lean 4 (v4.29.0-rc6) and Mathlib master.
 lake build
 ```
 
-Full repo build is 3179 jobs.
+Full repo build is 3294 jobs.
 
 ---
 
@@ -308,25 +246,33 @@ Full repo build is 3179 jobs.
 
 - Ben-Shalom, A. *Spectral Physics* v0.9.1. Ember Research Lab, 2026.
 - Ben-Shalom, A. *Yang-Mills Mass Gap via Spectral Geometry*. 2026.
-- Jaffe, A. and Witten, E. *Quantum Yang-Mills Theory*. Clay Mathematics
-  Institute, 2000.
-- Connes, A. and Marcolli, M. *Noncommutative Geometry, Quantum Fields
-  and Motives*. 2008.
-- Mesland, B. and Rennie, A. *Nonunital spectral triples and metric
-  completeness in unbounded KK-theory*. 2013.
-- Rosenberg, J. and Schochet, C. *The Künneth theorem and the universal
-  coefficient theorem for Kasparov's generalized K-functor*. 1987.
-- Kassel, C. *A Künneth formula for the cyclic cohomology of
-  Z/2-graded algebras*. 1986.
-- Cheeger, J. and Colding, T.H. *On the structure of spaces with Ricci
-  curvature bounded below*. 1997.
-- Osterwalder, K. and Schrader, R. *Axioms for Euclidean Green's
-  Functions*. 1973.
+- Jaffe, A. and Witten, E. *Quantum Yang-Mills Theory*. Clay Mathematics Institute, 2000.
+- Connes, A. and Marcolli, M. *Noncommutative Geometry, Quantum Fields and Motives*. 2008.
+- Mesland, B. and Rennie, A. *Nonunital spectral triples and metric completeness in unbounded KK-theory*. 2013.
+- Rosenberg, J. and Schochet, C. *The Künneth theorem and the universal coefficient theorem for Kasparov's generalized K-functor*. 1987.
+- Kassel, C. *A Künneth formula for the cyclic cohomology of Z/2-graded algebras*. 1986.
+- Cheeger, J. and Colding, T.H. *On the structure of spaces with Ricci curvature bounded below*. 1997.
+- Osterwalder, K. and Schrader, R. *Axioms for Euclidean Green's Functions*. 1973.
 - Bakry, D. and Eméry, M. *Diffusions hypercontractives*. 1985.
 - Baker, A. *Linear forms in the logarithms of algebraic numbers*. 1966.
-- Vassilevich, D.V. *Heat kernel expansion: user's manual*. 2003.
-- Whitt, B. *Fourth-order gravity as general relativity plus matter*.
-  1984.
+- Vassilevich, D.V. *Heat kernel expansion: user's manual*. Phys. Rept. 388 (2003).
+- Whitt, B. *Fourth-order gravity as general relativity plus matter*. Phys. Lett. B 145 (1984).
+- Chamseddine, A.H. and Connes, A. *The spectral action principle*. Comm. Math. Phys. 186 (1997).
+- Bochniak, A. and Sitarz, A. *Spectral triples for the Standard Model* (Dixon obstruction analysis). arXiv:2001.02613.
+- Boyle, L. and Farnsworth, S. *Non-commutative geometry, non-associative geometry and the Standard Model of particle physics*. arXiv:1910.11888.
+- Bekenstein, J.D. *Universal upper bound on the entropy-to-energy ratio for bounded systems*. Phys. Rev. D 23 (1981).
+- Mac Lane, S. *Categories for the Working Mathematician* (2nd ed.), Springer 1998.
+- Wilson, K.G. *Renormalization Group and Strong Interactions*. Phys. Rev. D 3 (1971); *Renormalization Group and Critical Phenomena*. Phys. Rev. B 4 (1971).
+- Polchinski, J. *Renormalization and Effective Lagrangians*. Nucl. Phys. B 231 (1984).
+- Kato, T. *Perturbation Theory for Linear Operators* (2nd ed.), Springer 1995.
+- Reed, M. and Simon, B. *Methods of Modern Mathematical Physics*, Vol. IV: Analysis of Operators. Academic Press 1978.
+- Simon, B. *Trace Ideals and Their Applications* (2nd ed.), AMS 2005.
+- Morse, M. *The Calculus of Variations in the Large*. AMS Colloquium Publications 18, 1934.
+- Palais, R.S. and Smale, S. *A generalized Morse theory*. Bull. AMS 70 (1964).
+- Nica, A. and Speicher, R. *Lectures on the Combinatorics of Free Probability*. Cambridge 2006.
+- Voiculescu, D. *Addition of certain non-commuting random variables*. J. Funct. Anal. 66 (1985); *Limit laws for random matrices and free products*. Invent. Math. 104 (1991).
+- Machacek, M.E. and Vaughn, M.T. *Two-loop renormalization group equations in a general quantum field theory* I/II/III. Nucl. Phys. B 222/236/249 (1983-1985).
+- Antusch, S. et al. *Running neutrino mass parameters in see-saw scenarios*. JHEP 03 (2005).
 
 ---
 
