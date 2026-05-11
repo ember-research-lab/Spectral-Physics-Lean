@@ -174,6 +174,11 @@ import SpectralPhysics.CompositionUniqueness.AdditiveSatisfies
 import SpectralPhysics.CompositionUniqueness.KasparovProductUniqueness
 import SpectralPhysics.CompositionUniqueness.BroaderUniquenessOpen
 import SpectralPhysics.CompositionUniqueness.Theorem
+-- ═══ COMPOSITION BROADER UNIQUENESS (v0.9.2 / A.1) ═══
+-- Named non-Kasparov candidates closed at Tier 1; uncountable closure
+-- recorded as the `BroaderUniquenessAllNonKasparov` predicate, identified
+-- with the Voiculescu / Nica–Speicher free-probability research program.
+import SpectralPhysics.CompositionBroaderUniqueness.Verdict
 -- ═══ MAJORANA BLOCK — discriminator for ν_R multiplicity (Hyp A vs B) ═══
 import SpectralPhysics.MajoranaBlock.SpectralMultiplicity
 import SpectralPhysics.MajoranaBlock.HypothesisA
