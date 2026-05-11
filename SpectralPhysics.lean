@@ -162,6 +162,11 @@ import SpectralPhysics.CompositionUniqueness.AdditiveSatisfies
 import SpectralPhysics.CompositionUniqueness.KasparovProductUniqueness
 import SpectralPhysics.CompositionUniqueness.BroaderUniquenessOpen
 import SpectralPhysics.CompositionUniqueness.Theorem
+-- ═══ MAJORANA BLOCK — discriminator for ν_R multiplicity (Hyp A vs B) ═══
+import SpectralPhysics.MajoranaBlock.SpectralMultiplicity
+import SpectralPhysics.MajoranaBlock.HypothesisA
+import SpectralPhysics.MajoranaBlock.HypothesisB
+import SpectralPhysics.MajoranaBlock.Discriminator
 
 -- ═══ YUKAWA HIERARCHY (toward rigorous 3/16 derivation) ═══
 import SpectralPhysics.YukawaHierarchy.SO10Decomposition
