@@ -112,6 +112,11 @@ import SpectralPhysics.SelfRef.Consciousness
 -- ═══ CONJECTURES ═══
 import SpectralPhysics.Conjectures.Hodge
 
+-- ═══ η_B DISAMBIGUATION (Formula A vs Formula B) ═══
+import SpectralPhysics.EtaB.Formulas
+import SpectralPhysics.EtaB.Comparison
+import SpectralPhysics.EtaB.Verdict
+
 -- ═══ YUKAWA HIERARCHY (toward rigorous 3/16 derivation) ═══
 import SpectralPhysics.YukawaHierarchy.SO10Decomposition
 import SpectralPhysics.YukawaHierarchy.MultiplicityRatio
