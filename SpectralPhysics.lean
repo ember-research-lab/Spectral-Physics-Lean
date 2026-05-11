@@ -296,6 +296,12 @@ import SpectralPhysics.KSRCompactness.Verdict
 import SpectralPhysics.F2FromSpectralAction.Verdict
 -- ═══ BASIN CONNECTIVITY (v0.9.2 G.3 — v0.9 line 16763) ═══
 -- Conditional on 2 named axioms (Morse 1934, Palais-Smale 1964) and
--- three open predicates for SAGFfunctional (Coercive, AtMostOneLocalMin,
--- PalaisSmaleCondition).
+-- three open predicates for SAGFfunctional.
 import SpectralPhysics.BasinConnectivity.Verdict
+-- ═══ α_eff > 0 BELOW EW (v0.9.2 G.7 — v0.9 line 16805) ═══
+-- Conditional on 4 named axioms (Machacek-Vaughn 1983/84/85,
+-- Ford-Jones-Stevenson-Stephens 1992, Mihaila-Salomon-Steinhauser 2012,
+-- Manohar-Wise 2000) and three Prop-predicate hypotheses.  Empirical
+-- closure requires a Python/mpmath sidecar at
+-- yukawa/pre_geometric/alpha_eff_RG_below_EW/.
+import SpectralPhysics.AlphaEffRGFlow.Verdict
