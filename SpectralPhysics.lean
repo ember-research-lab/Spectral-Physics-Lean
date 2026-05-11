@@ -235,3 +235,13 @@ import SpectralPhysics.SAGFJointUniqueness.Constraints
 import SpectralPhysics.SAGFJointUniqueness.JointSystem
 import SpectralPhysics.SAGFJointUniqueness.UniquenessTheorem
 import SpectralPhysics.SAGFJointUniqueness.Verdict
+-- ═══ DIXON POINCARÉ DUALITY (v0.9.2 deferred item B.2) ═══
+-- Sister to compute/dixon-order-one (B.1).  Verdict: NO — the same
+-- non-associativity of the octonion factor 𝕆 = CD(ℍ) that obstructs
+-- the order-one axiom also obstructs Poincaré duality.  Two named
+-- axioms cite Connes 1994 §VI.4 (PD definition) and Bochniak-Sitarz
+-- arXiv:2001.02613 §III (PD obstruction for Dixon-type triples).
+-- The Dixon-specific zeroth-order failure is unconditional Tier 1
+-- via the i*j ≠ j*i witness through the Cayley-Dickson tower.
+-- See DixonPoincareDuality/STATUS.md.
+import SpectralPhysics.DixonPoincareDuality.Verdict
