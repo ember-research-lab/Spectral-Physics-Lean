@@ -153,3 +153,8 @@ import SpectralPhysics.MajoranaSelfRef.JSelfConjugate
 import SpectralPhysics.IndexJSelfConj.JSelfConjBlock
 import SpectralPhysics.IndexJSelfConj.IndexComputation
 import SpectralPhysics.IndexJSelfConj.ExponentVerdict
+-- ═══ MAJORANA / SELF-REFERENCE (compute/majorana-self-reference) ═══
+import SpectralPhysics.MajoranaSelfRef.JSelfConjugate
+import SpectralPhysics.MajoranaSelfRef.TriadicPartition
+import SpectralPhysics.MajoranaSelfRef.SelfReferenceClosure
+import SpectralPhysics.MajoranaSelfRef.Verdict
