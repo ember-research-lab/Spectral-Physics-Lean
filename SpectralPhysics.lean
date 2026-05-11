@@ -229,6 +229,18 @@ import SpectralPhysics.FaithfulnessForcesYR.CompositionFaithfulness
 import SpectralPhysics.FaithfulnessForcesYR.OperatorReconstruction
 import SpectralPhysics.FaithfulnessForcesYR.SelfModelDeficitFaithfulness
 import SpectralPhysics.FaithfulnessForcesYR.Verdict
+-- ═══ R∘M=id FORCES DIVISION ALGEBRAS? (compute/RM-forces-division-algebras) ═══
+-- v0.9.2 deferred item G.4.  Tests whether Axiom 3
+-- (Reconstruction R∘M=id + Naturality) alone forces the observation
+-- algebra to be a normed division algebra in the Hurwitz tower
+-- {ℝ, ℂ, ℍ, 𝕆}.  Verdict: NO — explicit counterexample A = ℝ × ℝ
+-- satisfies Axiom 3 but is not a division algebra.
+-- See RMForcesDivisionAlgebras/STATUS.md.
+import SpectralPhysics.RMForcesDivisionAlgebras.ReadingA_FormalChain
+import SpectralPhysics.RMForcesDivisionAlgebras.ReadingB_TraceState
+import SpectralPhysics.RMForcesDivisionAlgebras.ReadingC_NaturalityForcesAlt
+import SpectralPhysics.RMForcesDivisionAlgebras.CounterexampleClass
+import SpectralPhysics.RMForcesDivisionAlgebras.Verdict
 -- ═══ OP3 REDEMPTION (honest predicate-hypothesis formalization of Λ_1 = λ_1(k*)) ═══
 import SpectralPhysics.OP3.SCSEClosureSystem
 import SpectralPhysics.OP3.Lambda1Bound
