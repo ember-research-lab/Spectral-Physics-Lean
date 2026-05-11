@@ -112,6 +112,28 @@ import SpectralPhysics.SelfRef.Consciousness
 -- ═══ CONJECTURES ═══
 import SpectralPhysics.Conjectures.Hodge
 
+-- ═══ COMPOSITION UNIQUENESS (honest Path A redemption of v0.9 line 16783) ═══
+-- Replaces the audit-caught `compute/composition-uniqueness` deception (which
+-- imported HypothesisSet+SpectralOperations without committing them, falsely
+-- claimed STATUS green, and axiom-smuggled the conclusion via
+-- `three_conditions_force_higher_moments`). All eight modules below build
+-- cleanly under `lake build`. The headline file `Theorem.lean` labels four
+-- distinct scopes:
+--   Scope 1 (named candidates)  : CLOSED mod two Minkowski-cancel axioms
+--   Scope 2 (trace channel)     : CLOSED unconditionally (zero new axioms)
+--   Scope 3 (Kasparov narrow)   : CONDITIONAL on K1+K2+K3 (Mesland-Rennie 2013,
+--                                 Rosenberg-Schochet 1987, Kassel 1986)
+--   Scope 4 (broader pointwise) : HONESTLY OPEN, recorded as predicate
+-- See CompositionUniqueness/STATUS.md for the full accounting.
+import SpectralPhysics.CompositionUniqueness.SpectralOperations
+import SpectralPhysics.CompositionUniqueness.HypothesisSet
+import SpectralPhysics.CompositionUniqueness.MultiplicativeFails
+import SpectralPhysics.CompositionUniqueness.FreeFails
+import SpectralPhysics.CompositionUniqueness.AdditiveSatisfies
+import SpectralPhysics.CompositionUniqueness.KasparovProductUniqueness
+import SpectralPhysics.CompositionUniqueness.BroaderUniquenessOpen
+import SpectralPhysics.CompositionUniqueness.Theorem
+
 -- ═══ YUKAWA HIERARCHY (toward rigorous 3/16 derivation) ═══
 import SpectralPhysics.YukawaHierarchy.SO10Decomposition
 import SpectralPhysics.YukawaHierarchy.MultiplicityRatio
