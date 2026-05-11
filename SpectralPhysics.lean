@@ -235,3 +235,7 @@ import SpectralPhysics.SAGFJointUniqueness.Constraints
 import SpectralPhysics.SAGFJointUniqueness.JointSystem
 import SpectralPhysics.SAGFJointUniqueness.UniquenessTheorem
 import SpectralPhysics.SAGFJointUniqueness.Verdict
+-- ═══ K_SR COMPACTNESS (v0.9.2 deferred §G.2 — v0.9 lines 16759, 11082(a)) ═══
+-- Conditional on 1 named axiom (Rellich 1930, Kondrachov 1945, Simon 2005,
+-- Reed-Simon Vol. IV).  See KSRCompactness/Verdict.lean and STATUS.md.
+import SpectralPhysics.KSRCompactness.Verdict
