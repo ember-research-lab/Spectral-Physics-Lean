@@ -131,3 +131,8 @@ import SpectralPhysics.YukawaHierarchy.Bundle.AtiyahSinger
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralAction
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralActionConcrete
 import SpectralPhysics.YukawaHierarchy.Bundle.HeatKernelExpansion
+
+-- ═══ R²-SIGN REDEMPTION (Seeley-DeWitt a_4 with separated unconditional/conditional claims) ═══
+import SpectralPhysics.SeeleyDeWitt.A4Coefficients
+import SpectralPhysics.SeeleyDeWitt.R2Coefficient
+import SpectralPhysics.SeeleyDeWitt.SpectralActionR2
