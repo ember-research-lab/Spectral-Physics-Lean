@@ -258,3 +258,14 @@ import SpectralPhysics.DixonOrderOne.Verdict
 -- and Bochniak-Sitarz arXiv:2001.02613 §III (PD obstruction for
 -- Dixon-type triples).
 import SpectralPhysics.DixonPoincareDuality.Verdict
+-- ═══ κ₂ FROM FULL D_F SPECTRUM (v0.9.2 D.2) ═══
+-- Explicit numerical bracket [285, 290] (central) vs v0.9 target 258±5;
+-- the closed-form perturbative recipe of v0.9 line 9747 is theorem-
+-- level falsified, while the structural SCSE fixed-point determination
+-- of Λ_cosmo is unaffected.  Six named axioms (Yukawa mass inputs,
+-- M_R window, numerical bracket from sidecar mpmath script).
+import SpectralPhysics.Kappa2FromSpectrum.DFSpectrum
+import SpectralPhysics.Kappa2FromSpectrum.Kappa2Formula
+import SpectralPhysics.Kappa2FromSpectrum.LightMassesContribution
+import SpectralPhysics.Kappa2FromSpectrum.Bracket
+import SpectralPhysics.Kappa2FromSpectrum.Verdict
