@@ -101,7 +101,6 @@ import SpectralPhysics.Thermo.FourLaws
 
 -- ═══ COSMOLOGY ═══
 import SpectralPhysics.Cosmology.Predictions
-import SpectralPhysics.Cosmology.EfoldMultiplicity
 
 -- ═══ SELF-REFERENCE ═══
 import SpectralPhysics.SelfRef.GodelTrace
@@ -133,16 +132,8 @@ import SpectralPhysics.YukawaHierarchy.Bundle.SpectralAction
 import SpectralPhysics.YukawaHierarchy.Bundle.SpectralActionConcrete
 import SpectralPhysics.YukawaHierarchy.Bundle.HeatKernelExpansion
 
--- ═══ MAJORANA SELF-REFERENCE (cherry-picked from prior branch) ═══
-import SpectralPhysics.MajoranaSelfRef.JSelfConjugate
-
--- ═══ J-SELF-CONJ INDEX DISPATCH (sister branch, cherry-picked) ═══
-import SpectralPhysics.IndexJSelfConj.JSelfConjBlock
-import SpectralPhysics.IndexJSelfConj.IndexComputation
-import SpectralPhysics.IndexJSelfConj.ExponentVerdict
-
--- ═══ η-INVARIANT + SPECTRAL-FLOW DISPATCH (this branch) ═══
-import SpectralPhysics.EtaJSelfConj.EtaInvariant
-import SpectralPhysics.EtaJSelfConj.SpectralFlow
-import SpectralPhysics.EtaJSelfConj.APSIndex
-import SpectralPhysics.EtaJSelfConj.Verdict
+-- ═══ SELF-MODEL DEFICIT — J-FIXED RESTRICTION (this branch) ═══
+import SpectralPhysics.SelfModelJFixed.JFixedLocus
+import SpectralPhysics.SelfModelJFixed.RestrictedZeta
+import SpectralPhysics.SelfModelJFixed.SingleEigenvalueReduction
+import SpectralPhysics.SelfModelJFixed.Verdict
