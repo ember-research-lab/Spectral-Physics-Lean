@@ -307,8 +307,14 @@ import SpectralPhysics.BasinConnectivity.Verdict
 import SpectralPhysics.AlphaEffRGFlow.Verdict
 -- ═══ IR/UV SCALE SEPARATION (v0.9.2 J.1 — v0.9 line 1437) ═══
 -- Conditional on 1 named axiom (Wilson 1971 + Polchinski 1984) and
--- two Prop-predicate hypotheses (KatoReedSimonBridge from Kato 1966/1995
--- §V + Reed-Simon Vol. IV §XIII.5; SchattenUVSuppression with rate α > 1).
--- Identifies the v0.9 spectral-convergence hypothesis with the Wilsonian
--- IR/UV-separation universality.  Verdict: CONDITIONAL.
+-- two Prop-predicate hypotheses (Kato 1995 + Reed-Simon Vol. IV;
+-- SchattenUVSuppression with rate α > 1).
 import SpectralPhysics.IRUVScaleSeparation.Verdict
+-- ═══ GJ IDENTIFICATION FROM ALGEBRA (v0.9.2 J.3 — v0.9 line 11036) ═══
+-- GJ = Georgi-Jarlskog (not Glashow-Jaffe).  Three GUT-scale Yukawa
+-- ratios: c₁=√5, c₂=1/(3+φ), c₃=2/3, all in ℚ(√5).  Algebraic side
+-- Tier-1 zero axioms; empirical bracket via 6 named axioms (PDG 2024 +
+-- Antusch et al. 2005).  Verdict: CONDITIONAL — provable bracket
+-- [0.014, 0.024] (contains v0.9's 1.7% but wider than v0.9's [0.006,
+-- 0.017]); 3-loop SM-RG sidecar needed to graduate to theorem.
+import SpectralPhysics.GJIdentification.Verdict
