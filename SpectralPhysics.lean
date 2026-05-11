@@ -318,3 +318,14 @@ import SpectralPhysics.IRUVScaleSeparation.Verdict
 -- [0.014, 0.024] (contains v0.9's 1.7% but wider than v0.9's [0.006,
 -- 0.017]); 3-loop SM-RG sidecar needed to graduate to theorem.
 import SpectralPhysics.GJIdentification.Verdict
+-- ═══ σ₀/M_Pl AS AKRAMI-MAJID BRAIDED HODGE PERIOD (v1.0 bridge) ═══
+-- Conditional theorem reducing v0.9.1's 11% A_s gap closure to the
+-- value of the Akrami-Majid braided Chern pairing at the SAGF fixed
+-- point k*.  Named axioms: Akrami-Majid 2004 (arXiv:math/0406005),
+-- Albuquerque-Majid 1999 (J. Algebra 220), Kassel 1986 (Math. Z. 193),
+-- Atiyah-Bott-Shapiro 1964 (Topology 3 Suppl. 1).  Verdict: CONDITIONAL
+-- on (a) AM lit axioms, (b) Hodge filtration stabilization at k* (new
+-- predicate), (c) Kassel Kunneth+Tor lit axiom, (d) numerical pairing
+-- value (deferred to parallel mpmath dispatch).  See
+-- SigmaMPlHodgePeriod/STATUS.md.
+import SpectralPhysics.SigmaMPlHodgePeriod.Verdict
