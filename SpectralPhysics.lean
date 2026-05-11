@@ -122,6 +122,14 @@ import SpectralPhysics.SelfRef.BakerForm
 import SpectralPhysics.SelfRef.SelfModelDeficit
 import SpectralPhysics.SelfRef.Consciousness
 
+-- ═══ SELF-MODEL DEFICIT — RIGOROUS / HONEST (Prop 23.10 attempt) ═══
+import SpectralPhysics.SelfModelDeficitRigorous.SectorDecomposition
+import SpectralPhysics.SelfModelDeficitRigorous.FaithfulState
+import SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
+import SpectralPhysics.SelfModelDeficitRigorous.CompletenessBound
+import SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessBound
+import SpectralPhysics.SelfModelDeficitRigorous.Theorem
+
 -- ═══ CONJECTURES ═══
 import SpectralPhysics.Conjectures.Hodge
 
