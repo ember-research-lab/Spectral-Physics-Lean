@@ -186,3 +186,44 @@ wrong structural reading and the 11% gap must come from elsewhere
 error).
 
 Either way, the logical structure is now machine-checked.
+
+## Update (2026-05-11): parallel mpmath dispatch verdict
+
+The parallel `yukawa/pre_geometric/akrami_majid_chern_pairing/`
+computation returned **DEGENERATE**: under three independent readings
+of the K₀-class for σ, none of the four candidate values
+{`ln(9/8)`, `ln(288)/48`, `11/96`, `1/9`} match the computed pairing
+within the 0.0005 tolerance.
+
+**Structural reason (key finding)**: the Akrami-Majid braided cocycle
+`φ_F` on `𝕆 = C_F[ℤ₂³]` has the Klein-4 subgroup `{(0,0,0), (1,1,0),
+(1,0,1), (0,1,1)}` in its kernel — *exactly* the coset where the
+framework's Furey embedding places the SM-visible sector. Under
+uniform Klein-4 distribution, `⟨Ch^br([σ]_vis), τ^br⟩ = 0`
+structurally; the log-ratio is then either `+∞` (combinatorial) or
+`0` (heat-kernel collapse under uniform `Y_hid = y_σ·σ`).
+
+**Implications for the Lean conditional theorem**:
+
+1. **`sigma_MPl_hodge_period_AM` is still valid as stated** — it's a
+   *conditional* theorem on `h_pairing_value`, and that hypothesis
+   has not been *refuted* by the mpmath dispatch; it has been shown
+   to be **currently underdetermined** (depends on a choice of Furey
+   embedding + σ K₀-class identification that v0.9.1 does not
+   uniquely make).
+
+2. **The closure path is sharper**: the v1.0-bridge open content
+   is no longer "compute the period" (we computed three of them) but
+   **"pick the structurally-correct Furey embedding × σ K₀ class"**
+   among 3 × 2 = 6 published combinations (Furey 2018, Stoica-
+   Todorov 2022, Boyle-Farnsworth 2014, crossed with Majorana-
+   projector vs inner-fluctuation bimodule).
+
+3. **The honest v0.9.2 / v1.0 manuscript framing**: do NOT claim
+   empirical closure via `ln(9/8)`. The Hodge-period reframe survives
+   at the conditional-theorem level captured here, but the empirical
+   closure requires a v1.0 structural axiom selecting one of the 6
+   embedding/class combinations.
+
+See `yukawa/pre_geometric/akrami_majid_chern_pairing/verdict.md` for
+the full computation log.
