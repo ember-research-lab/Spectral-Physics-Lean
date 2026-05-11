@@ -235,3 +235,9 @@ import SpectralPhysics.SAGFJointUniqueness.Constraints
 import SpectralPhysics.SAGFJointUniqueness.JointSystem
 import SpectralPhysics.SAGFJointUniqueness.UniquenessTheorem
 import SpectralPhysics.SAGFJointUniqueness.Verdict
+-- ═══ κ₂ FROM FULL D_F SPECTRUM (v0.9.2 D.2 closure attempt) ═══
+import SpectralPhysics.Kappa2FromSpectrum.DFSpectrum
+import SpectralPhysics.Kappa2FromSpectrum.Kappa2Formula
+import SpectralPhysics.Kappa2FromSpectrum.LightMassesContribution
+import SpectralPhysics.Kappa2FromSpectrum.Bracket
+import SpectralPhysics.Kappa2FromSpectrum.Verdict
