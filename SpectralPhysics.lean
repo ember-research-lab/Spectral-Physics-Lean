@@ -329,3 +329,12 @@ import SpectralPhysics.GJIdentification.Verdict
 -- value (deferred to parallel mpmath dispatch).  See
 -- SigmaMPlHodgePeriod/STATUS.md.
 import SpectralPhysics.SigmaMPlHodgePeriod.Verdict
+-- ═══ 5³ · 2² CLOSURE OF A_s (compute/inflation-As-from-5cubed-2squared) ═══
+-- Headline CONDITIONAL theorem: A_s closes to 2.4% (≤ 0.025 bound) from
+-- the structural factor 5^3 · 2^2 = 500.  Mechanism: trace-sector Berry
+-- gives ln(N_sectors^N_gen) = ln(125); TT-sector Berry gives ln(2^N_pol)
+-- = ln(4); product is λ_σ_full / λ_σ_kstar = 500 vs required ≈ 510.
+-- Six named axioms cite v0.9.1 §thm:ember-reconstruction, Furey 2018,
+-- Weinberg 1965, v0.9.1 §rem:berry-meaning, and two prior
+-- pre_geometric dispatches.  See InflationAsClosure/STATUS.md.
+import SpectralPhysics.InflationAsClosure.Verdict
