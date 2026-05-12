@@ -1,4 +1,36 @@
-# InflationAsClosure — `5³ · 2²` closure of `A_s` to 2.4%
+# ⚠ DEPRECATED ⚠ — superseded by `InflationAsClosureV2`
+
+**This module's headline theorem `inflation_As_closure` is
+VACUOUSLY TRUE.** Adversarial audit on 2026-05-12 demonstrated that
+the named axioms `berry_phase_corrected_trace` and
+`tt_sector_berry_polarization_ℤ2` are logically inconsistent: both
+have the form `∀ s : ℝ, P s → s = <fixed value>` where `P s := True`
+for all `s` (the Prop-shells `TraceSectorBerry` / `TTSectorBerry` are
+defined as `_ → True`). The audit derived `(0 : ℝ) = (1 : ℝ)` in
+Lean using only `berry_phase_corrected_trace` plus standard kernel
+axioms. Lean accepted the derivation. The v1 headline
+`inflation_As_closure` depends on these axioms (confirmed via
+`#print axioms`), so the theorem is **vacuously true** — it carries
+no falsifiable content.
+
+Additionally: `spin2_two_polarizations_4D : (2 : ℕ) = 2`
+(`FrameworkPrimitives.lean:163`) is the literal `rfl` axiom `2 = 2`
+— it asserts nothing.
+
+**See `InflationAsClosureV2/STATUS.md` for the rigorous rebuild.**
+The V2 module replaces all `_ → True` Prop-shells with non-trivial
+real/natural data equations on a `StructuralSpectralTriple`, and the
+`#print axioms` of the V2 headline `inflation_As_rigorous` shows
+only `propext`, `Classical.choice`, `Quot.sound` (Lean kernel) —
+all structural content is now carried by the predicates.
+
+The V1 module remains buildable (kept on `main` for historical
+auditing) but is NOT used for any forward reasoning. The top-level
+`SpectralPhysics.lean` imports `InflationAsClosureV2.Verdict` only.
+
+---
+
+# InflationAsClosure — `5³ · 2²` closure of `A_s` to 2.4%  *(DEPRECATED — see above)*
 
 **Date:** 2026-05-11
 **Branch:** `compute/inflation-As-from-5cubed-2squared`

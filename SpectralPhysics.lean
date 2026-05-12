@@ -329,12 +329,28 @@ import SpectralPhysics.GJIdentification.Verdict
 -- value (deferred to parallel mpmath dispatch).  See
 -- SigmaMPlHodgePeriod/STATUS.md.
 import SpectralPhysics.SigmaMPlHodgePeriod.Verdict
--- ═══ 5³ · 2² CLOSURE OF A_s (compute/inflation-As-from-5cubed-2squared) ═══
--- Headline CONDITIONAL theorem: A_s closes to 2.4% (≤ 0.025 bound) from
--- the structural factor 5^3 · 2^2 = 500.  Mechanism: trace-sector Berry
--- gives ln(N_sectors^N_gen) = ln(125); TT-sector Berry gives ln(2^N_pol)
--- = ln(4); product is λ_σ_full / λ_σ_kstar = 500 vs required ≈ 510.
--- Six named axioms cite v0.9.1 §thm:ember-reconstruction, Furey 2018,
--- Weinberg 1965, v0.9.1 §rem:berry-meaning, and two prior
--- pre_geometric dispatches.  See InflationAsClosure/STATUS.md.
-import SpectralPhysics.InflationAsClosure.Verdict
+-- ═══ A_s CLOSURE — V2 RIGOROUS REBUILD (compute/inflation-As-rigorous-v2) ═══
+-- REPLACES the audit-failed v1 `compute/inflation-As-from-5cubed-2squared`
+-- module (now `SpectralPhysics/InflationAsClosure/`, DEPRECATED, kept
+-- on main for historical auditing only).  The v1 module was caught by
+-- adversarial audit deriving `(0 : ℝ) = 1` from `Prop := True` shells
+-- combined with `∀ s, P s → s = c` named axioms — see
+-- `InflationAsClosure/STATUS.md` for the audit trail.
+--
+-- V2 carries the closure on NON-TRIVIAL Prop predicates over a
+-- `StructuralSpectralTriple`: real/natural data equations and
+-- inequalities, not `_ → True` shells.  The user's 2026-05-12
+-- structural reframe replaces v1's `5^3 · 2^2 = 500` (with `× 4`
+-- attributed to graviton polarizations) by `5^3 · 4 = 500` (with
+-- `× 4` from algebraic-sector multiplicity 1 visible + 3 hidden).
+--
+-- `#print axioms inflation_As_rigorous` =
+--   [propext, Classical.choice, Quot.sound] — kernel only.
+-- The two V2 named axioms (algebraic_factor_is_log_of_count,
+-- A_s_observed_planck2018) cite GENERAL literature (Feynman-Hibbs
+-- 1965, Coleman 1985, Polyakov 1987, Planck 2018), not framework-
+-- specific conclusions.  See InflationAsClosureV2/STATUS.md.
+import SpectralPhysics.InflationAsClosureV2.Verdict
+-- v1 module is kept buildable (NOT imported here) for historical
+-- inspection of the audit-failure pattern:
+-- import SpectralPhysics.InflationAsClosure.Verdict  -- DEPRECATED
