@@ -55,21 +55,52 @@ def Tor_minus_one_piece (_A1 _A2 : Type) : Type := ULift Unit
 
 /-! ## 2. The named Kassel axiom -/
 
-/-- **Axiom (Kassel 1986 §3)** — the Künneth+Tor decomposition for
-cyclic cohomology of a tensor product `A1 ⊗ A2` produces an explicit
-Tor⁻¹ component. This is a general-fact axiom from the published
-Künneth long exact sequence.
+/-- **Theorem (vacuous; replacing audit-caught vacuous axiom)**.
 
-The axiom is *parameterized over* the algebra type `A`; it does NOT fix
-a numerical period value. The numerical content enters through
-`PeriodCandidate.period_candidate` and the *hypothesis*
-`chern_pairing_log_ratio = period_candidate` in `MainConditional`. -/
-axiom kassel_kunneth_tor_decomposition (A : Type) :
-    ∃ (_p : Tor_minus_one_piece A A), True
+For all types `A`, there exists `_p : Tor_minus_one_piece A A` such
+that `True` holds. Since `Tor_minus_one_piece A A := ULift Unit`, this
+is `∃ _ : ULift Unit, True`, provable by `⟨⟨⟨⟩⟩, trivial⟩`.
+
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+declared as `axiom kassel_kunneth_tor_decomposition` named after
+Kassel 1986 §3, even though the statement is `∃ _ : Unit, True` —
+trivially provable. This was Pattern 1 cheating (vacuous-marker axiom
+posing as literature import). Converted to theorem to make the audit
+trail honest.
+
+The Kassel 1986 Künneth+Tor formula for cyclic cohomology is NOT
+formalized here. To formalize it, one would need to define cyclic
+cohomology HC*(A) as a graded chain complex, construct the parity-
+shifted long exact sequence, and produce the Tor⁻¹ piece as an
+explicit element of HC^4(A ⊗ A'). None of this exists in the current
+Lean repo; downstream theorems that invoke this name carry NO Kassel
+content beyond the tautology.
+
+Reference for the unformulated mathematical content:
+* Kassel, C. (1986), *Künneth formula in cyclic homology*, Math. Z. 193,
+  489–515. -/
+theorem kassel_kunneth_tor_decomposition (A : Type) :
+    ∃ (_p : Tor_minus_one_piece A A), True :=
+  ⟨⟨⟨⟩⟩, trivial⟩
 
 /-! ## 3. The (1,1) Tor⁻¹ bidegree-4 piece predicate -/
 
-/-- **Predicate**: the algebra `A` admits a rank-1 Tor⁻¹ class of
+/-- **UNUSED placeholder predicate** — flagged for removal in next pass.
+
+This predicate is not referenced by any other theorem or definition in
+the project (verified by grep). Originally a `Prop := True` shell. To
+make non-vacuous, define HC*(A) explicitly, then a `HodgeClass A`
+structure with bidegree fields, then a predicate stating the class is
+rank-1 with bidegree (1,1). None of this is formalized.
+
+**Audit recommendation (2026-05)**: since this predicate is unused,
+DELETE in next maintenance pass. Until then, the body remains `True`
+but no theorem depends on it, so it cannot cause logical issues
+downstream.
+
+(Original docstring follows for context.)
+
+**Predicate**: the algebra `A` admits a rank-1 Tor⁻¹ class of
 bidegree (1,1) in `HC^4(A ⊗ A')` (the geometric content the prior
 dispatch identified — see
 `pre_geometric/hodge_periods_sigma_MPl/verdict.md`). -/

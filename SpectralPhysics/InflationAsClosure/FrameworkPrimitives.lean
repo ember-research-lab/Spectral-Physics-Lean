@@ -82,31 +82,44 @@ TT (transverse-traceless) and trace. This is the standard f(R)/spin-2
 mode decomposition; see `Cosmology.SigmaTrDispersion`. -/
 def N_metric_sectors : ℕ := 2
 
-/-- **Named axiom (v0.9.1 §`thm:ember-reconstruction`)** — the Ember
-reconstruction theorem says the *full* sector count of the framework's
-effective inflationary dynamics is
+/-- **Theorem (combinatorial, trivial; replacing audit-caught vacuous axiom)**.
 
-```
-N_sectors = N_gauge_sectors + N_metric_sectors = 3 + 2 = 5.
-```
+`N_sectors = N_gauge_sectors + N_metric_sectors = 3 + 2 = 5`.
 
-The `3` comes from the Hurwitz tower (3 non-trivial division algebras),
-the `2` comes from York decomposition (TT + trace). The named axiom
-encodes the framework's reconstruction-theorem statement that NO other
-sector enters the inflationary amplitude after the SAGF projection.
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+declared as `axiom ember_reconstruction_five_sectors` named after
+v0.9.1 §`thm:ember-reconstruction`, with the body proof of
+`N_sectors_count` explicitly avoiding `rfl` to make the axiom appear
+load-bearing in `#print axioms`. The axiom statement
+`N_gauge_sectors + N_metric_sectors = 5` is `3 + 2 = 5`, provable by
+`rfl` — the literature-named axiom was a vacuous-marker (Pattern 2:
+reflexive-tautology). Converted to theorem to make the audit trail
+honest.
 
-Reference: v0.9.1 §`thm:ember-reconstruction` (line ~5750). -/
-axiom ember_reconstruction_five_sectors :
-    N_gauge_sectors + N_metric_sectors = 5
+The PHYSICAL interpretation of the integers (3 = Hurwitz division
+algebras, 2 = York TT+trace) is in the comment, not in the Lean
+statement. The framework's v0.9.1 reconstruction theorem CONTENT is
+not formalized here — only the arithmetic `3 + 2 = 5` is.
+
+References for the physical interpretation (NOT a Lean import):
+* v0.9.1 §`thm:ember-reconstruction` (line ~5750). -/
+theorem ember_reconstruction_five_sectors :
+    N_gauge_sectors + N_metric_sectors = 5 := rfl
 
 /-- The framework's effective sector count `N_sectors`. By construction
 `N_gauge_sectors + N_metric_sectors`; equals `5` by the named axiom. -/
 def N_sectors : ℕ := N_gauge_sectors + N_metric_sectors
 
-/-- **Tier-1 lemma (audit-Rule-3 compliant)**: `N_sectors = 5`. The
-proof is *not* `rfl` — it invokes the named axiom
-`ember_reconstruction_five_sectors`. The integer `5` traces to the
-v0.9.1 reconstruction theorem, NOT to a `def := 5`. -/
+/-- **Tier-1 lemma**: `N_sectors = 5`.
+
+**Audit note (2026-05)**: previously had docstring claiming "The proof
+is *not* `rfl` — it invokes the named axiom" — that was the cheating
+pattern (using axiom-keyword as fake citation marker for a tautology).
+After remediation, `ember_reconstruction_five_sectors` is a `theorem`
+proved by `rfl`; this lemma's proof goes through that theorem
+honestly. The integer 5 is definitionally `3 + 2`. The framework's
+reconstruction-theorem CONTENT (why exactly 3 gauge + 2 metric
+sectors) is in the comments/references, not formalized in Lean. -/
 theorem N_sectors_count : N_sectors = 5 := by
   unfold N_sectors
   exact ember_reconstruction_five_sectors
@@ -122,45 +135,67 @@ theorem N_metric_sectors_eq_two : N_metric_sectors = 2 := rfl
 
 /-! ## 2. `N_gen = 3` — from `Cl(6)` minimal left ideals -/
 
-/-- **Named axiom (Furey 2018 / v0.9.1 framework data)** — the number
-of fermion generations equals the count of minimal left ideals of the
-Clifford algebra `Cl(6)`, which is `3`. This is the framework's
-generation-count primitive.
+/-- **Theorem (definitional, trivial; replacing audit-caught vacuous axiom)**.
 
-In Lean, the integer `3` is recorded in
-`SelfModelDeficitRigorous.SectorDecomposition.numGen`; the named axiom
-records the *physical interpretation* of that integer as the framework
-generation count.
+`numGen = 3` where `numGen` is defined as `3` in
+`SelfModelDeficitRigorous.SectorDecomposition`.
 
-References:
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+declared as `axiom framework_three_generations` named after Furey 2018.
+The statement `numGen = 3` with `def numGen := 3` is `rfl`; the
+literature-named axiom was a vacuous-marker (Pattern 2:
+reflexive-tautology). Converted to theorem to make the audit trail
+honest.
+
+The PHYSICAL interpretation (Cl(6) minimal left ideals → 3 generations
+via Furey 2018) is in the comment, not in the Lean statement. The Furey
+2018 CONTENT is NOT formalized here — only the arithmetic identity
+`numGen = 3` is.
+
+References for the physical interpretation (NOT a Lean import):
 * Furey, C. (2018), *Three generations, two unbroken gauge symmetries,
   and one eight-dimensional algebra*, Phys. Lett. B 785, 84.
 * v0.9.1 §`generations-from-Cl6` (line ~8200). -/
-axiom framework_three_generations : numGen = 3
+theorem framework_three_generations : numGen = 3 := rfl
 
 /-- The framework's fermion-generation count, `N_gen = numGen`. -/
 def N_gen : ℕ := numGen
 
-/-- **Tier-1 lemma**: `N_gen = 3`. The proof goes through the named
-axiom `framework_three_generations`, NOT through `rfl`. -/
+/-- **Tier-1 lemma**: `N_gen = 3`.
+
+**Audit note (2026-05)**: previously docstring said "proof goes through
+the named axiom, NOT through `rfl`" — that was the cheating-pattern
+language. After remediation, `framework_three_generations` is a
+`theorem` proved by `rfl`. The integer 3 is definitionally `numGen`
+which is `def := 3`. The Furey 2018 CONTENT (Cl(6) minimal left ideals
+→ 3) is in the comments, not formalized. -/
 theorem N_gen_count : N_gen = 3 := by
   unfold N_gen
   exact framework_three_generations
 
 /-! ## 3. `N_pol = 2` — from spin-2 graviton helicity in 4D -/
 
-/-- **Named axiom (Weinberg 1965)** — a massless spin-2 particle in 4D
-Minkowski spacetime has exactly two physical polarizations
-(helicity `±2`). This is the standard helicity-count result for
-massless higher-spin fields.
+/-- **Theorem (tautology, trivial; replacing audit-caught vacuous axiom)**.
 
-References:
+`(2 : ℕ) = 2`.
+
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+declared as `axiom spin2_two_polarizations_4D : (2 : ℕ) = 2` named after
+Weinberg 1965. The statement `2 = 2` is `rfl`; the literature-named
+axiom was a vacuous-marker (Pattern 2: reflexive-tautology) — a
+Weinberg-shaped audit-trail attachment to a tautology. Converted to
+theorem to make the audit trail honest.
+
+The PHYSICAL interpretation (massless spin-2 → 2 polarizations in 4D
+via Weinberg 1965) is the comment. The Weinberg 1965 helicity-counting
+CONTENT is NOT formalized here.
+
+References for the physical interpretation (NOT a Lean import):
 * Weinberg, S. (1965), *Photons and gravitons in S-matrix theory*,
   Phys. Rev. 135, B1049.
 * Connes, A. (1996), *Gravity coupled with matter and the foundation
-  of non-commutative geometry*, Commun. Math. Phys. 182, 155 —
-  realisation of the spin-2 mode in NCG. -/
-axiom spin2_two_polarizations_4D : (2 : ℕ) = 2
+  of non-commutative geometry*, Commun. Math. Phys. 182, 155. -/
+theorem spin2_two_polarizations_4D : (2 : ℕ) = 2 := rfl
 
 /-- The number of physical graviton polarizations in 4D. -/
 def N_pol : ℕ := 2

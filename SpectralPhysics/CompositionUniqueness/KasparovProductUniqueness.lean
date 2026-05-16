@@ -80,14 +80,30 @@ Recorded:
 
 * `symm` — the underlying multiset is symmetric in the two
   factors (the grading γ does not change the multiset of
-  eigenvalues, only their parity-pairing).
+  eigenvalues, only their parity-pairing). **SUBSTANTIVE**.
 * `is_kk_product` — abstract marker that the operation represents
-  the KK-equivalence class of the exterior product.
--/
+  the KK-equivalence class of the exterior product. **AUDIT-FLAGGED
+  (2026-05) — currently `: True`, carries no KK-theoretic content**.
+
+**Audit warning (2026-05 cheating-pattern remediation)**: the
+`is_kk_product : True` field is a PREDICATE-SHELL — `True` is
+trivially provable. Theorems requiring `KasparovProductWitness op`
+EFFECTIVELY only require `op` to be commutative (via the substantive
+`symm` field); the "KK-product class" content is decorative.
+
+The Mesland-Rennie 2014/2016 + Rosenberg-Schochet 1987 + Kassel 1986
+literature content (the three "K1/K2/K3" axioms below) is captured at
+the spectrum-shadow level via the substantive `symm` field and the
+specific ∀-quantified axiom statements. To make the structure fully
+faithful to KK-theory, replace `is_kk_product` with an actual
+constraint (e.g., the spectrum-shadow analog of the KK-equivalence
+relation). Keeping the trivial field for now to preserve downstream
+type-checking; the audit note here surfaces the gap. -/
 structure KasparovProductWitness (op : BinaryOpOnSpectra) : Prop where
-  /-- Symmetry of the spectrum-side shadow. -/
+  /-- Symmetry of the spectrum-side shadow (SUBSTANTIVE). -/
   symm : ∀ μ ν : Spectrum, op μ ν = op ν μ
-  /-- Abstract marker that this is a KK-product class. -/
+  /-- **VACUOUS marker** (`: True`) — does not carry KK-product content.
+      See structure docstring for audit note. -/
   is_kk_product : True
 
 /-! ## The three named axioms (K1, K2, K3) -/

@@ -61,14 +61,39 @@ theorem visible_to_total :
     (visibleDim : ℝ) / (totalDim : ℝ) = 1 / 4 := by
   simp [visibleDim, totalDim]; norm_num
 
-/-- **De Sitter spectral gap**: On a de Sitter space dS_d, the
-    Laplacian has a spectral gap proportional to the cosmological
-    constant Lambda: lambda_1 >= c * Lambda for some c > 0. -/
+/-- **Trivial positivity (NOT the de Sitter spectral gap)**.
+
+For any `Λ > 0` and any `d ≥ 2`, there exists `c > 0` with `c·Λ > 0`.
+
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+named `de_sitter_gap` with a docstring claiming this proves "the
+Laplacian has a spectral gap proportional to the cosmological constant
+Lambda: lambda_1 >= c * Lambda for some c > 0." The Lean statement
+does NOT mention any Laplacian or any λ_1 — it merely says "there
+exists c > 0 with c·Λ > 0," provable by picking c = 1. The dimension
+hypothesis `d ≥ 2` is unused.
+
+The ACTUAL de Sitter spectral gap result (λ_n = n(n+2)/a² on the
+n-sphere section, so λ_1 = 3/a² = Λ for de Sitter dS₄) is the
+**Avis-Isham-Storey 1978 / Bunch-Davies 1978 / Allen 1985** kinematic
+identity on the de Sitter background. To formalize that, one needs
+to define the Laplacian on de Sitter sections, prove the eigenvalue
+formula, and identify λ_1 with Λ. This is NOT formalized in the
+current Lean repo. -/
+theorem trivial_positive_lambda_has_positive_multiple
+    (Lambda : ℝ) (hL : 0 < Lambda)
+    (d : ℕ) (_hd : d ≥ 2) :
+    ∃ (c : ℝ), c > 0 ∧ c * Lambda > 0 :=
+  ⟨1, one_pos, by linarith⟩
+
+/-- Alias kept for downstream compatibility; see audit note on
+    `trivial_positive_lambda_has_positive_multiple` for honest framing.
+    The misleading name `de_sitter_gap` was the prior cheating pattern. -/
 theorem de_sitter_gap
     (Lambda : ℝ) (hL : 0 < Lambda)
     (d : ℕ) (hd : d ≥ 2) :
-    ∃ (c : ℝ), c > 0 ∧ c * Lambda > 0 := by
-  exact ⟨1, one_pos, by linarith⟩
+    ∃ (c : ℝ), c > 0 ∧ c * Lambda > 0 :=
+  trivial_positive_lambda_has_positive_multiple Lambda hL d hd
 
 /-- **Cosmological constant positivity**: The spectral gap of the
     Laplacian on a compact spatial section is positive, which

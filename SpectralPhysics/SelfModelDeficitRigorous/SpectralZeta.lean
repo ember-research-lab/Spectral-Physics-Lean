@@ -150,25 +150,42 @@ axiom**: the existence of a `−ζ̃'(0)` value equal to the
   faithfulness bounds in `CompletenessBound.lean` and
   `FaithfulnessBound.lean`. -/
 
-/-- **Named axiom** (Connes–Marcolli 2008, §1.7; Berline–Getzler–Vergne
-1992, Ch. 2 + §9.6).  For a finite visible spectrum, the
-zeta-regularised value `−ζ̃'(0)` (defined via Mellin transform of the
-heat trace `Tr e^{−tD²}`) equals the explicit
-`informationContent` sum.
+/-- **Theorem (trivial; replacing audit-caught vacuous axiom)**.
 
-* **What this asserts**: an existence statement — for every
-  `VisibleSpectrum V`, there exists a real number `z` (the
-  zeta-regularised value) equal to `informationContent V`.
-* **What this does NOT assert**: any specific numerical value of
-  `informationContent V` for any concrete `V`.  The value depends
-  entirely on the Yukawa parameters, which are inputs.
-* **Smuggling check**: this axiom does not fix `informationContent`
-  to 288 nor to any constant.  It only names the
-  Mellin/heat-kernel value as `informationContent`.  If you supply a
-  visible spectrum, the sum is what it is. -/
-axiom mellin_heat_kernel_finite_spectrum_log_sum
+For every `VisibleSpectrum V`, there exists `z : ℝ` with
+`z = informationContent V`.
+
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+declared as `axiom mellin_heat_kernel_finite_spectrum_log_sum` named
+after Connes-Marcolli 2008 §1.7 + Berline-Getzler-Vergne 1992. The
+Lean statement `∃ z : ℝ, z = informationContent V` is provable by
+`⟨informationContent V, rfl⟩` — trivially true. The literature-named
+axiom was a Pattern 1 vacuous-marker.
+
+**What the literature actually says (NOT formalized here)**: for a
+finite visible spectrum, the zeta-regularised value `−ζ̃'(0)` (defined
+via Mellin transform of the heat trace `Tr e^{−tD²}`) equals the
+explicit Yukawa-log sum. To formalize this, one would need: Mellin
+transform infrastructure for spectral zetas, heat-trace asymptotics,
+and a proof that the Mellin-regularised limit equals
+`informationContent V`. None of this exists in the current Lean repo;
+this trivially-true theorem is a REIFICATION that gives
+`informationContent V` an alias `negZetaPrimeAtZero V`, not a proof of
+the Connes-Marcolli identity.
+
+**Smuggling check (preserved from prior axiom docstring)**: this
+theorem does not fix `informationContent V` to 288 or any constant.
+The value depends on Yukawa inputs.
+
+References for the unformulated mathematical content:
+* Connes, A., Marcolli, M. (2008), *Noncommutative Geometry, Quantum
+  Fields and Motives*, AMS Colloquium Publications 55, §1.7.
+* Berline, N., Getzler, E., Vergne, M. (1992), *Heat Kernels and Dirac
+  Operators*, Ch. 2 + §9.6. -/
+theorem mellin_heat_kernel_finite_spectrum_log_sum
     (V : VisibleSpectrum) :
-    ∃ z : ℝ, z = informationContent V
+    ∃ z : ℝ, z = informationContent V :=
+  ⟨informationContent V, rfl⟩
 
 /-- The **functional determinant** at zero, `−ζ̃'_vis(0)`, taken as the
 existential value supplied by the named axiom. -/

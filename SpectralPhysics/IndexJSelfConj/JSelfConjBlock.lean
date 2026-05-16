@@ -139,10 +139,28 @@ matrices.  Equivalently, its unique irreducible real representation
 Reference:  Lawson–Michelsohn 1989, Theorem I.4.3 and Table I.4.3
 (Bott periodicity table: `Cl_{p,q}` for `q − p ≡ 6 (mod 8)`). -/
 
-/-- **Tier 3 (axiom).**  Lawson–Michelsohn Theorem I.4.3:
-    the unique irreducible real representation of Cl(0,6) has
-    dimension 8. -/
-axiom dim_Cl06_irrep_eq_eight : (8 : ℕ) = 8  -- placeholder shape
+/-- **Theorem (tautology, trivial; replacing audit-caught vacuous axiom)**.
+
+`(8 : ℕ) = 8`.
+
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+declared as `axiom dim_Cl06_irrep_eq_eight` with inline comment
+"-- placeholder shape" and docstring claiming Lawson–Michelsohn
+Theorem I.4.3. The statement `8 = 8` is `rfl`; the literature-named
+axiom was a vacuous-marker (Pattern 2: reflexive-tautology). Converted
+to theorem to make the audit trail honest.
+
+The PHYSICAL CONTENT (Cl(0,6) ≅ M_8(ℝ) so the unique irreducible real
+representation has dimension 8) is from Lawson–Michelsohn Theorem I.4.3
+but is NOT formalized here — only the arithmetic `8 = 8`. To actually
+import the Lawson–Michelsohn content, define a `Cliff06Algebra` type,
+prove the matrix-algebra isomorphism, and derive the spinor dimension
+constructively.
+
+Reference for the physical content (NOT a Lean import):
+* Lawson–Michelsohn 1989, *Spin Geometry*, Theorem I.4.3 and Table
+  I.4.3 (Bott periodicity for Cl_{p,q} with q − p ≡ 6 (mod 8)). -/
+theorem dim_Cl06_irrep_eq_eight : (8 : ℕ) = 8 := rfl
 
 /-- The candidate Clifford-spinor dimension at KO-dim 6. -/
 def cliffSpinor_KO6_dim : ℕ := 8

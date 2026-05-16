@@ -143,21 +143,30 @@ theorem no_pole_at_zero {mult : ℕ} {y_R : ℝ} (hy : 0 < y_R) :
 
 /-! ## Derivative at `s = 0` — where the `y_R` information actually lives -/
 
-/-- **Named axiom — Tier 2.**  The structural form of `ζ'_F(0; ν_R)`
-    for a single-mode J-restricted finite spectral triple:
+/-- **Theorem (trivial; replacing audit-caught vacuous axiom)**.
 
-      `ζ'_F(0; ν_R) = -2 · mult · log y_R`.
+There exists `ζ'₀ : ℝ` with `ζ'₀ = -2·mult·log y_R`.
 
-    This is the standard ζ-regularized `log det |D|` identity for a
-    one-mode contribution.  The `s = 0` value is the multiplicity,
-    but the *first derivative* carries the log of the eigenvalue.
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+declared as `axiom zetaF_nuR_deriv_at_zero` named after Connes-Marcolli
+(2008) §1.7.4 + Hawking (1977) + Ray-Singer (1971). The statement
+`∃ ζ'₀, ζ'₀ = (closed-form expression)` is provable by
+`⟨closed-form, rfl⟩` — Pattern 1 vacuous-marker. Converted to theorem.
 
-    **Citation**: Connes–Marcolli (2008) §1.7.4, eq. (1.226);
-    Hawking (1977) eq. (1.6); Ray–Singer (1971), Adv. Math. **7**, 145
-    (analytic torsion / ζ-regularized determinants). -/
-axiom zetaF_nuR_deriv_at_zero (mult : ℕ) (y_R : ℝ) (hy : 0 < y_R) :
-    -- abstract value of ζ'_F(0; ν_R) under the framework's normalization
-    ∃ ζ'₀ : ℝ, ζ'₀ = -2 * (mult : ℝ) * Real.log y_R
+The literature CONTENT — that the ζ-regularized derivative
+`-ζ'_F(0; ν_R)` for a one-mode J-restricted spectral triple equals
+`-2·mult·log y_R` via Mellin/heat-kernel — is NOT formalized here.
+To formalize, define the spectral zeta function, prove the Mellin
+transform identity, and show the derivative at s=0 gives the
+log-of-eigenvalue.
+
+References for the unformulated content:
+* Connes-Marcolli (2008), §1.7.4, eq. (1.226).
+* Hawking (1977), eq. (1.6).
+* Ray-Singer (1971), Adv. Math. **7**, 145. -/
+theorem zetaF_nuR_deriv_at_zero (mult : ℕ) (y_R : ℝ) (_hy : 0 < y_R) :
+    ∃ ζ'₀ : ℝ, ζ'₀ = -2 * (mult : ℝ) * Real.log y_R :=
+  ⟨-2 * (mult : ℝ) * Real.log y_R, rfl⟩
 
 /-! ## The split of "residue" vs "value" — the load-bearing observation
 

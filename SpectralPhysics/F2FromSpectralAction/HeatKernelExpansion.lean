@@ -85,17 +85,27 @@ The scalar coefficient `1/6` in front of `R` in `a_2` is Vassilevich
 named fact: given a spectral triple of positive scalar curvature, the
 `a_2` coefficient exists and is positive. -/
 
-/-- **Named axiom (Vassilevich 2003, eq. 4.13).**
+/-- **Theorem (vacuous; replacing audit-caught vacuous axiom)**.
 
-    The Seeley–DeWitt coefficient `a_2(D²)` of the heat-kernel expansion
-    has the explicit form `(4π)⁻² · (R/6 + E)` (integrated), where `R`
-    is the scalar curvature and `E` is the endomorphism part of the
-    generalized Laplacian `D²`.  This is the standard heat-kernel
-    formula.
+There exists an `A2Coefficient` and `True` holds.
 
-    Predicate form: `∃ (a_2 : A2Coefficient), True`. The existence is
-    the content of Vassilevich's theorem. -/
-axiom vassilevich2003_a2_formula : ∃ (_a2 : A2Coefficient), True
+**Audit history (2026-05 cheating-pattern remediation)**: previously
+declared as `axiom vassilevich2003_a2_formula : ∃ _ : A2Coefficient, True`
+named after Vassilevich 2003 eq. (4.13). The statement is `∃ _, True`
+which is provable provided `A2Coefficient` is inhabited; this is
+Pattern 1 cheating (vacuous-marker named after literature). Converted
+to theorem.
+
+The Vassilevich 2003 CONTENT — that the Seeley-DeWitt `a_2(D²)`
+coefficient has the explicit form `(4π)⁻²·(R/6 + E)` — is NOT
+formalized here. To formalize, define `a_2` as a concrete functional
+of the metric and Dirac-square structure, and prove the explicit form.
+Reference for the unformulated content:
+* Vassilevich, D.V. (2003), *Heat kernel expansion: user's manual*,
+  Phys. Rep. 388, 279–360, eq. (4.13). -/
+theorem vassilevich2003_a2_formula
+    [Inhabited A2Coefficient] : ∃ (_a2 : A2Coefficient), True :=
+  ⟨default, trivial⟩
 
 /-! ## The Chamseddine–Connes spectral-action expansion
 

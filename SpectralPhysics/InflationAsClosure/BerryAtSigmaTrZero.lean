@@ -48,23 +48,44 @@ open SpectralPhysics.Cosmology
 
 /-! ## 1. The two Berry-sector predicates -/
 
-/-- **Predicate (open content, audit Rule 1)**: the trace-sector Berry
-contribution is captured by a real-valued quantity `s_trace`.
+/-- **Substantive predicate (replacing INCONSISTENT predicate-shell)**.
 
-This is a Prop-shell carrying the *name* of the trace-sector Berry
-loop's logarithmic contribution to `λ_σ`. The semantic content (the
-specific real value) is fixed by the conditional theorem in
-`TraceSectorContribution.lean`. -/
-def TraceSectorBerry (_s_trace : ℝ) : Prop := True
+The trace-sector Berry contribution value `s_trace` satisfies
+`s_trace = Real.log 125` (= log(N_sectors^N_gen) = log(5^3)).
 
-/-- **Predicate (open content, audit Rule 1)**: the TT-sector Berry
-contribution is captured by a real-valued quantity `s_TT`.
+**Audit history (2026-05 cheating-pattern + LOGICAL-INCONSISTENCY remediation)**:
+previously `def TraceSectorBerry (_s_trace : ℝ) : Prop := True` —
+vacuous, ignoring argument. The downstream axiom
+`berry_phase_corrected_trace : ∀ s : ℝ, TraceSectorBerry s → s = Real.log 125`
+combined with this vacuous predicate to assert
+**`∀ s : ℝ, s = Real.log 125`** (inconsistent: 0 ≠ 1 but both would
+equal log 125). This was a logically inconsistent axiom hidden behind
+the predicate-shell pattern.
 
-This is a Prop-shell carrying the *name* of the TT-sector Berry
-loop's logarithmic contribution to `λ_σ`. The semantic content (the
-specific real value) is fixed by the conditional theorem in
-`TTSectorContribution.lean`. -/
-def TTSectorBerry (_s_TT : ℝ) : Prop := True
+By giving `TraceSectorBerry` the substantive body `s = Real.log 125`:
+- The `berry_phase_corrected_trace` axiom becomes a tautology (∀ s,
+  s = log 125 → s = log 125), harmless.
+- The "trivial witness" `trace_sector_berry_witness s := trivial` no
+  longer compiles — converted below to require an actual proof.
+- The closure theorem `inflation_As_closure` retains its semantics:
+  `h_trace : TraceSectorBerry s_trace` now means `s_trace = log 125`,
+  which is what the proof was assuming anyway.
+
+Reference for the framework-physical interpretation:
+* `pre_geometric/berry_phase_corrected/verdict.md`. -/
+def TraceSectorBerry (s_trace : ℝ) : Prop :=
+  s_trace = Real.log ((N_sectors : ℝ) ^ N_gen)
+
+/-- **Substantive predicate (replacing INCONSISTENT predicate-shell)**.
+
+The TT-sector Berry contribution value `s_TT` satisfies
+`s_TT = Real.log 4` (= log(2^N_pol) = log(2^2)).
+
+**Audit history (2026-05)**: same logical-inconsistency pattern as
+`TraceSectorBerry`. Was `Prop := True` paired with axiom asserting
+`∀ s : ℝ, s = log 4` via vacuous antecedent. Now substantive. -/
+def TTSectorBerry (s_TT : ℝ) : Prop :=
+  s_TT = Real.log ((2 : ℝ) ^ N_pol)
 
 /-! ## 2. The crossover-character-exchange axiom -/
 
@@ -97,16 +118,22 @@ content; the witnesses below confirm that the framework's metric
 sectors *both* satisfy the Berry-crossover hypothesis (i.e. the v0.9.1
 §`rem:berry-meaning` statement is symmetric between trace and TT). -/
 
-/-- **Witness**: the trace-sector Berry contribution can be supplied
-for any candidate value. The witness is a `True` certificate; the
-semantic content is what the caller asserts about the value
-`s_trace`. -/
-theorem trace_sector_berry_witness (s_trace : ℝ) :
-    TraceSectorBerry s_trace := trivial
+/-- **Witness (substantive)**: the trace-sector Berry contribution at
+the specific value `Real.log (N_sectors^N_gen)` satisfies
+`TraceSectorBerry`.
 
-/-- **Witness**: the TT-sector Berry contribution can be supplied for
-any candidate value. -/
-theorem tt_sector_berry_witness (s_TT : ℝ) :
-    TTSectorBerry s_TT := trivial
+**Audit history (2026-05)**: previously `theorem ... (s_trace : ℝ) :
+TraceSectorBerry s_trace := trivial` — claimed any real number satisfies
+the predicate (because predicate was vacuously `True`). Now restricted
+to the canonical value. -/
+theorem trace_sector_berry_witness_at_log_125 :
+    TraceSectorBerry (Real.log ((N_sectors : ℝ) ^ N_gen)) :=
+  rfl
+
+/-- **Witness (substantive)**: TT-sector Berry at the canonical value
+`Real.log (2^N_pol)`. -/
+theorem tt_sector_berry_witness_at_log_4 :
+    TTSectorBerry (Real.log ((2 : ℝ) ^ N_pol)) :=
+  rfl
 
 end SpectralPhysics.InflationAsClosure
