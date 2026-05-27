@@ -9,6 +9,18 @@ import Mathlib.Algebra.Order.Field.Basic
 /-!
 # Cosmic Energy Fractions from Self-Referential Tolerance (Ch 39)
 
+> ⚠️ **SUPERSEDED BUDGET (2026-05-26 rigor audit).** This file encodes the
+> Ch.39 triad budget `Ω_vis=τ≈0.276`, `Ω_DM=1−3τ≈0.171`, `Ω_DE=2τ≈0.553`.
+> The value `Ω_DE=2τ≈0.553` is **~15σ from the observed `0.685±0.007`** and is
+> **superseded** by the manuscript v1.0/latest closure
+> `Ω_Λ = 1 − τ − τ²/φ ≈ 0.677` (`spectral-physics-latest.tex` lines 480, 23632;
+> ≈1σ of measured), which the manuscript itself labels a **closure-residual**
+> (`Ω_tot=1`), NOT an independent prediction (Group-5 honesty note).
+> Do **NOT** cite `dark_energy_approx` (0.553) as the framework's Ω_DE
+> prediction. This module should be updated to the `1−τ−τ²/φ` closure or
+> retired. The theorems below remain T1-clean *about their own arithmetic*;
+> only the physical identification is stale. See `results/CHAIN-RIGOR-LEDGER.md`.
+
 The dark matter and dark energy fractions are derived from the
 self-referential tolerance tau = 1/(2+phi).
 

@@ -47,7 +47,17 @@ Direct evaluation:
   κ₂_full = W + B  =  529.421091
 
 This **matches the Baker target `κ₂_needed_obs = 2 ln(Λ_c²/Λ_obs) = 529.421…`
-to all 30 mpmath digits** — the 12-unit residual reported in the
+to all 30 mpmath digits**.
+
+NOTE (2026-05-26 rigor audit): because `529.42` IS `2·ln(Λ_c²/Λ_obs)`, the
+Tier-2 input `κ₂_hid = 533.586` (and the see-saw `ξ_R = 3.7090` that produces
+it) are *tuned to* `Λ_obs` — the chain runs `Λ_obs → κ₂`, not `κ₂ → Λ_obs`.
+So the downstream "CC closure" is a consistency/identification statement, NOT
+a first-principles prediction of the Λ magnitude (the honest Edgeworth `f_4`
+route overshoots `Λ_obs/M_Pl²` by ~10 orders; see
+`F4Coefficient.f4_overshoots_cc_target` and `results/CHAIN-RIGOR-LEDGER.md`).
+
+The 12-unit residual reported in the
 inventory entry was an artifact of the *naive* μ_hid ≈ 1 reading and
 the *coarse* κ₂_vis ≈ 19.854 figure quoted in the early
 faithfulness-tower audit; both are corrected by the high-precision

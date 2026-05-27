@@ -284,4 +284,31 @@ theorem f_4_verdict :
     Real.log f_4 + 100 < Real.log f_4_v09_reading :=
   ⟨log_f_4_lt_neg_254, log_f_4_v09_gt_7, f_4_readings_inconsistent⟩
 
+/-! ## Honest negative — the Edgeworth route does NOT close the CC magnitude -/
+
+/-- `Λ_obs / M_Pl² ≈ 2.76×10⁻¹²¹` (Planck 2018), so its natural log is
+    `≈ −277.6`.  We use `−277` as a deliberately *conservative* (upper) bound,
+    which makes the overshoot proved below an UNDER-statement of the true
+    residual (`≈ 21.6`–`23.6` nat-log units, i.e. ~9–10 orders of magnitude). -/
+noncomputable def cc_log_target : ℝ := -277
+
+/-- **Honest negative (2026-05-26 rigor audit): the Edgeworth `f₄` route does
+    NOT predict the cosmological-constant magnitude.**
+
+    `f₄ = f₂·exp(−κ₂/2)` has `log f₄ ∈ (−256, −254)` (`log_f_4_{gt,lt}` above),
+    whereas the cosmological target `Λ_obs/M_Pl² ≈ 10⁻¹²¹` has
+    `ln ≈ −277.6`.  Hence `log f₄ − ln(Λ_obs/M_Pl²) > 20`: the honest cumulant
+    coefficient is **more than `e²⁰` (≳ 8 orders of magnitude) too large** to be
+    `Λ_obs/M_Pl²`.
+
+    Consequently the framework's CC "closure" does **not** flow from this `f₄`;
+    it relies on a `κ₂` *tuned to* `Λ_obs` (`Kappa2.lean` docstring line 49:
+    `κ₂ = 2·ln(Λ_c²/Λ_obs)`), i.e. the chain runs `Λ_obs → κ₂`, not the reverse.
+    This theorem machine-records the residual so the non-closure is a proved
+    artifact, not prose.  See `results/CHAIN-RIGOR-LEDGER.md`. -/
+theorem f4_overshoots_cc_target : Real.log f_4 - cc_log_target > 20 := by
+  have h := log_f_4_gt_neg_256
+  unfold cc_log_target
+  linarith
+
 end SpectralPhysics.SelfModelDeficit
