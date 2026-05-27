@@ -1,13 +1,15 @@
 # Spectral Physics: Lean 4 Formalization
 
 A machine-checked formalization of the spectral physics framework
-(`papers/spectral_physics/spectral-physics-v0.9.1.tex`), built under
+(`papers/spectral_physics/spectral-physics-latest.tex`, v1.0), built under
 adversarial audit discipline. The repository pairs Tier-1 proofs of the
 core spectral apparatus with **honest predicate-hypothesis closures** of
 the v0.9 open problems, **catalogued negative results** for hypotheses
-that do not survive Lean-level scrutiny, and a v0.9.2 release pass that
+that do not survive Lean-level scrutiny, a v0.9.2 release pass that
 reduced 12 deferred items to predicate-hypothesis form with named
-literature citations.
+literature citations, and a v1.0 pass adding the **cosmology chain**
+(neutrino mass, cosmic energy budget, dark-energy `w(z)`, Hubble tension)
+with machine-recorded **honest negatives** where claims do not close.
 
 Part of [**Ember Research Lab**](https://ember-research-lab.github.io/) —
 independent research deriving geometry, quantum mechanics, and consciousness as
@@ -15,10 +17,10 @@ three projections of the graph Laplacian. See the [concepts
 index](https://ember-research-lab.github.io/concepts.html) for definitions of
 the framework's terms.
 
-**229 Lean files | 40 top-level modules | ~10 sorry sites | 86 named declarations carrying axiom-class status**
+**259 Lean files | 45 top-level modules | 14 sorry sites | 123 axiom declarations**
 
 Builds against Lean 4.29.0-rc6 and Mathlib master via `lake build`
-(3294 jobs at last full pass, 2026-05-11).
+(3324 jobs at last full pass, 2026-05-26).
 
 ---
 
@@ -87,6 +89,39 @@ were merged via three staging branches (`v0.9.2-merge-staging`,
 | `AlphaEffRGFlow` | G.7 | **CONDITIONAL** | `alpha_eff_verdict_v092_G7` — four named SM RGE axioms (Machacek-Vaughn 1983/84/85, Ford-Jones-Stevenson-Stephens 1992, Mihaila-Salomon-Steinhauser 2012, Manohar-Wise 2000) + three predicate hypotheses; empirical closure routed to a Python/mpmath sidecar |
 | `IRUVScaleSeparation` | J.1 | **CONDITIONAL** | `spectral_universality_from_perturbation_bound` (kernel axioms only) + Wilson-Polchinski biconditional (Wilson 1971 + Polchinski 1984); v0.9 `prop:spectral-convergence` (line 1437) identified as spectral analogue of statistical-mechanics universality |
 | `GJIdentification` | J.3 | **CONDITIONAL + bracket** | GJ = **Georgi-Jarlskog** (not Glashow-Jaffe); three GUT-scale Yukawa ratios `c₁=√5, c₂=1/(3+φ), c₃=2/3` all in ℚ(√5); algebraic side Tier-1 zero axioms, empirical bracket [0.014, 0.024] from 6 named axioms (PDG 2024 + Antusch et al. 2005); v0.9's quoted [0.006, 0.017] is tighter than the audit-honest interval-arithmetic bracket can verify |
+
+---
+
+## v1.0 Pass — Audit Remediation + Cosmology Chain (2026-05-26)
+
+### Anti-cheating audit remediation
+
+A second adversarial audit (commit `3f66049`) converted **~12 vacuous-marker
+axioms** (trivially-provable statements named after literature theorems) into
+`theorem`s with placeholder docstrings, and fixed **2 logical inconsistencies**
+(predicate-shells `:= True` paired with universal axioms, derivable to `0 = 1`).
+A follow-up pass (`8525cbd`) demoted two residual tautology axioms and corrected
+over-named / stale docstrings. A reusable vacuity-check toolchain lives in
+`scripts/check_axioms.sh`. Every result below was cleared by an independent
+multi-agent **verifier loop** (re-derivation + cheating audit + manuscript
+faithfulness).
+
+### Cosmology chain (cross-checked vs `spectral-physics-latest.tex`)
+
+| Module | Tier | Headline |
+|--------|------|----------|
+| `SelfModelDeficit/Kappa2Partial` | T1 | Mode-resolved `kappa2Partial` machine + `AsValue = P·exp(−κ₂ᶦⁿᶠ/2)`; band-matching `κ₂ᶦⁿᶠ ∈ (22,24)/(30,32)`. **Honest negative:** the `univ` anchor `529.42` is not reconstructible per-mode (visible `y` is an opaque axiom) — the divergence `kappa2_full − kappa2_modeGrounded = (N_vis/N)·κ₂_vis ≈ 2.48` is proved exactly. A_s **not** closed. |
+| `Cosmology/NeutrinoMassPrediction` | T1 + caveat | `Σmν ∈ [0.058, 0.063] eV` (normal hierarchy), falsifiable (`> 0.07` refutes); NH kinematic floor `Σmν > 0.0582 eV` Lean-derived from measured Δm² in `Predictions/NeutrinoMass`. Caveat: Route 2 is tied to the `Λ_obs`-tuned `κ₂`, so Route 1 + the floor are the genuine prediction. |
+| `Predictions/CosmicEnergy` | T3 | Cosmic energy budget `Ω_DM=τ≈0.276`, `Ω_b=τ²/φ≈0.047`, `Ω_Λ=1−τ−τ²/φ≈0.677` (sum-rule exact; ~1–3σ of measured). `Ω_Λ` flagged a **closure-residual**, not an independent prediction. |
+| `Cosmology/DarkEnergyEoS` | T4 | Self-stiffening evolving-`w` prediction `w₀>−1, w_a<0` (CPL) as a load-bearing hypothesis with proved kinematic consequences (today-not-phantom, thawing, excludes ΛCDM, matches DESI DR2 direction). The `(w₀,w_a)` values need the full SAGF. |
+| `Cosmology/HubbleTension` | T3 (partial) | Scale-dependent measurement effect `α = g·r_s/L_H ≈ 0.017`, accounting for `~20%` of the SH0ES–Planck tension (`5σ → 4σ`). `partial_mechanism_only` — explicitly **NOT a resolution**; `g=0.5` is a Kaiser-multipole fit. |
+
+**The CC magnitude is NOT closed** (machine-recorded honest negative,
+`F4Coefficient.f4_overshoots_cc_target`): the honest Edgeworth `f₄ ≈ 2.11×10⁻¹¹¹`
+overshoots `Λ_obs/M_Pl² ≈ 10⁻¹²¹` by ~10 orders, and `κ₂ = 529.42` is itself the
+`Λ_obs`-derived target `2·ln(Λ_c²/Λ_obs)` (so the closure runs `Λ_obs → κ₂`, not
+the reverse). The full neutrino + dark-energy rigor ledger — T1/T2/T3/T4 per claim,
+and exactly what DESI / CMB-S4 can falsify — is in `results/CHAIN-RIGOR-LEDGER.md`.
 
 ---
 
@@ -238,13 +273,13 @@ Requires Lean 4 (v4.29.0-rc6) and Mathlib master.
 lake build
 ```
 
-Full repo build is 3294 jobs.
+Full repo build is 3324 jobs.
 
 ---
 
 ## References
 
-- Ben-Shalom, A. *Spectral Physics* v0.9.1. Ember Research Lab, 2026.
+- Ben-Shalom, A. *Spectral Physics* v1.0 (`spectral-physics-latest.tex`). Ember Research Lab, 2026.
 - Ben-Shalom, A. *Yang-Mills Mass Gap via Spectral Geometry*. 2026.
 - Jaffe, A. and Witten, E. *Quantum Yang-Mills Theory*. Clay Mathematics Institute, 2000.
 - Connes, A. and Marcolli, M. *Noncommutative Geometry, Quantum Fields and Motives*. 2008.
