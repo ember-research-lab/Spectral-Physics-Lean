@@ -110,6 +110,7 @@ import SpectralPhysics.Cosmology.ConformalFrameTransform
 import SpectralPhysics.Cosmology.FriedmannEquation
 import SpectralPhysics.Cosmology.PerpetualTraceActivity
 import SpectralPhysics.Cosmology.NeutrinoMassPrediction
+import SpectralPhysics.Cosmology.DarkEnergyEoS
 
 -- ═══ CORRESPONDENCE PRINCIPLE (Hess–λ_1 monotonicity) ═══
 import SpectralPhysics.CorrespondencePrinciple.HessLambda1Monotonicity

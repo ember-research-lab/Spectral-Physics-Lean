@@ -19,8 +19,8 @@ against the manuscript's own tier labels. `lake build` green (3309 jobs).
 |---|---|---|
 | **Σmν (neutrino mass)** | **Near-rigorous, falsifiable** | NH kinematic floor `Σmν > 0.0582 eV` is **Lean-derived (T1)** from measured Δm². Framework commits `Σmν ∈ [0.058, 0.063] eV` (NH); refuted if `>0.07` or inverted hierarchy. |
 | **Λ magnitude (CC)** | **NOT closed — reverse-engineered** | The "match to Λ_obs" uses a κ₂ tuned *to* Λ_obs. The honest Edgeworth route overshoots Λ_obs by **~10 orders**. No first-principles Λ-magnitude prediction. |
-| **Dark-energy w(z)** | **Manuscript: evolving (Tier 4); Lean: only endpoint** | Manuscript predicts `w₀>−1, w_a<0` (Tier-4 mechanism), *aligned* with DESI evolving-w hints — but **not formalized in Lean**. Lean only has an axiom-gated `t→∞` de Sitter endpoint, in an orphan module. |
-| **Ω_DE fraction** | **Lean module is STALE** | Lean `CosmicEnergy.lean` says `Ω_DE=2τ≈0.553`; manuscript v1.0 uses `Ω_Λ=1−τ−τ²/φ≈0.677` (≈1σ of 0.685), flagged as a closure-**residual**, not a prediction. |
+| **Dark-energy w(z)** | **Now formalized (Tier 4) — `DarkEnergyEoS.lean`** | Self-stiffening prediction `w₀>−1, w_a<0` (CPL form) is now a precise Lean hypothesis with proved kinematic consequences (today not phantom, more-negative past, excludes ΛCDM, matches DESI DR2 direction). Tier-4: the *direction* is stated/falsifiable; the *values* still need the full SAGF. The `t→∞` de Sitter endpoint (`HeatDeathForbidden`) is a separate far-future regime. |
+| **Ω_DE fraction** | **FIXED — `CosmicEnergy.lean` rewritten** | Now the manuscript v1.0 budget `Ω_DM=τ≈0.276, Ω_b=τ²/φ≈0.047, Ω_Λ=1−τ−τ²/φ≈0.677` (sum-rule exact, ~1–3σ of measured), T1 brackets, Tier-3 labels, Ω_Λ flagged closure-residual. The stale `2τ≈0.553` is gone. |
 
 ---
 
