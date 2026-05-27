@@ -232,7 +232,7 @@ theorem cheeger_lower_bound (hcard : 2 ≤ Fintype.card V)
 This bridges the concrete discrete Cheeger inequality to the abstract
 `CheegerData` structure used in the rest of the formalization. -/
 def toCheegerData (hcard : 2 ≤ Fintype.card V)
-    (_hne : Nonempty V) (hdeg : 0 < G.maxDegree) :
+    (hne : Nonempty V) (hdeg : 0 < G.maxDegree) :
     SpectralPhysics.CheegerInequality.CheegerData where
   cheeger_h := G.cheegerConst
   spectral_gap := G.spectralGap hcard
@@ -240,6 +240,18 @@ def toCheegerData (hcard : 2 ≤ Fintype.card V)
   cheeger_nonneg := G.cheegerConst_nonneg
   gap_nonneg := G.spectralGap_nonneg hcard
   d_max_pos := Nat.cast_pos.mpr hdeg
+  -- The Cheeger invariants are discharged from the graph-level bounds
+  -- (Category-A: the real co-area / Buser proofs, currently `sorry`).
+  cheeger_lower_holds := G.cheeger_lower_bound hcard hne hdeg
+  cheeger_upper_holds := by
+    have h_upper := G.cheeger_upper_bound hcard hne
+    have h_dmax : (1 : ℝ) ≤ (G.maxDegree : ℝ) := by exact_mod_cast hdeg
+    calc G.spectralGap hcard
+        ≤ 2 * G.cheegerConst := h_upper
+      _ = 2 * G.cheegerConst * 1 := by ring
+      _ ≤ 2 * G.cheegerConst * (G.maxDegree : ℝ) := by
+          apply mul_le_mul_of_nonneg_left h_dmax
+          exact mul_nonneg (by norm_num) G.cheegerConst_nonneg
 
 /-- The abstract Cheeger lower bound holds for graph-derived data. -/
 theorem toCheegerData_lower (hcard : 2 ≤ Fintype.card V)
