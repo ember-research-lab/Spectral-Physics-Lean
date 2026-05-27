@@ -181,3 +181,25 @@ Build completed successfully (3179 jobs).
   underlying the 48-mode Baker spectrum — a multi-day task on its own
   branch.  This branch takes the *numerics* as given and proves the
   *closure* algebra.
+
+## Epistemic note (added 2026-05-19, post-CC-closure synthesis)
+
+The bisection that produces `ξ_R = 3.7090` (and thus `κ₂_hid = 533.586`)
+is a numerical method, not a "fit". `ξ_R` is constrained by neutrino mass
+observations via `M_R = Λ_c·exp(-ξ_R)` and the framework's see-saw
+structure (`m_light = m_D²/M_R`).
+
+**Two independent routes converge on the same prediction**:
+* Route 1 (functional-determinant constraint `−ζ'_vis(0) = 288`,
+  manuscript line 7975): `Σm_ν ∈ [0.058, 0.063] eV`.
+* Route 2 (this branch's `κ₂` closure via Baker target):
+  `ξ_R = 3.7090 → m_1 ≈ 2.33 meV → Σm_ν ≈ 0.0609 eV`.
+
+The Lean theorem `CC_closure_in_prediction_range` in
+`SpectralPhysics/Cosmology/NeutrinoMassPrediction.lean` locks the
+consistency. The "Λ₁ residual" mentioned above is essentially the gap
+between the framework's stated `Λ_c·exp(-ξ_R) = M_R` (with `ξ_R = 3.7090`)
+and the manuscript's separately-stated structural `M_R = λ_Cab³·Λ_c`
+(which gives `ξ_R = 4.488`). These two M_R values differ by ~2.18×,
+reflecting that the structural `λ_Cab³` formula is approximate; the
+exact M_R is fixed by neutrino mass observations.

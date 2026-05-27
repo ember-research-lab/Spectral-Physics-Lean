@@ -109,6 +109,7 @@ import SpectralPhysics.Cosmology.PerpetualTraceActivity
 import SpectralPhysics.Cosmology.ConformalFrameTransform
 import SpectralPhysics.Cosmology.FriedmannEquation
 import SpectralPhysics.Cosmology.PerpetualTraceActivity
+import SpectralPhysics.Cosmology.NeutrinoMassPrediction
 
 -- ═══ CORRESPONDENCE PRINCIPLE (Hess–λ_1 monotonicity) ═══
 import SpectralPhysics.CorrespondencePrinciple.HessLambda1Monotonicity
@@ -153,6 +154,8 @@ import SpectralPhysics.EtaB.Verdict
 import SpectralPhysics.SelfModelDeficit.Yukawas
 import SpectralPhysics.SelfModelDeficit.Kappa2
 import SpectralPhysics.SelfModelDeficit.F4Coefficient
+-- mode-resolved κ₂ machine + A_s = P·exp(−κ₂ᶦⁿᶠ/2) assembly (spec:as-partial-cumulant)
+import SpectralPhysics.SelfModelDeficit.Kappa2Partial
 -- ═══ COMPOSITION UNIQUENESS (honest Path A redemption of v0.9 line 16783) ═══
 -- Replaces the audit-caught `compute/composition-uniqueness` deception (which
 -- imported HypothesisSet+SpectralOperations without committing them, falsely
@@ -338,3 +341,24 @@ import SpectralPhysics.SigmaMPlHodgePeriod.Verdict
 -- Weinberg 1965, v0.9.1 §rem:berry-meaning, and two prior
 -- pre_geometric dispatches.  See InflationAsClosure/STATUS.md.
 import SpectralPhysics.InflationAsClosure.Verdict
+-- ═══ WIP modules wired into the build 2026-05-26 (post verifier audit) ═══
+-- All verified DERIVED / compiling / honestly-tiered by the cortex verifier
+-- loops. Wired (rather than left orphan) so the whole-project `lake build`
+-- protects them from silent rot (cf. the orphaned-and-broken ZetaFNuR chain).
+-- Inflation/CMB observables (n_s, α_s, r, reheating, mode activation):
+import SpectralPhysics.InflationAsClosure.AsConventionChain
+import SpectralPhysics.InflationAsClosure.CMBObservables
+import SpectralPhysics.InflationAsClosure.EffectivePotential
+import SpectralPhysics.InflationAsClosure.ModeActivation
+import SpectralPhysics.InflationAsClosure.ReheatingMass
+-- σ₀/M_Pl Hodge-period supporting lemmas (T2; PUnit-shell scaffolding, see STATUS):
+import SpectralPhysics.SigmaMPlHodgePeriod.KunnethProof
+import SpectralPhysics.SigmaMPlHodgePeriod.LemmaA_AMTwistInvariance
+-- SCSE self-aligned evolution / late-time de Sitter (T2/T3 scaffolding):
+import SpectralPhysics.SCSE.SelfAlignedEvolution
+import SpectralPhysics.SCSE.DegeneracyBreaking
+import SpectralPhysics.SCSE.HeatDeathForbidden
+import SpectralPhysics.SelfRef.SpectralFloor
+-- Dark matter (zeroed modes) + YM positivity-gap localization:
+import SpectralPhysics.DarkMatter.ZeroedModes
+import SpectralPhysics.MetaPattern.PositivityGapLocalization
