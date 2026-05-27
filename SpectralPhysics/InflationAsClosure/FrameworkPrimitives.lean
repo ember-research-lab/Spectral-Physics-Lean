@@ -39,7 +39,16 @@ literature, each carrying its physical / mathematical origin:
   is the named axiom `ember_reconstruction_five_sectors` citing
   v0.9.1 §`thm:ember-reconstruction`.
 
-## References (named axioms)
+## References (framework primitives)
+
+NOTE (2026-05 audit): the primitives below were originally `axiom`s
+named after these citations.  The adversarial audit demoted the
+trivially-true ones (`ember_reconstruction_five_sectors`,
+`framework_three_generations`, `spin2_two_polarizations_4D`) to
+`theorem`s (proved by `rfl`/`decide`) carrying PLACEHOLDER docstrings —
+the literature content below is NOT formalized; the citations record
+what the bare integers (`5`, `3`, `2`) are *meant* to encode, not a
+formal import.
 
 * v0.9.1 §`thm:ember-reconstruction` (line ~5750) — Ember
   reconstruction: 3 gauge sectors from ℂ ⊗ ℍ ⊗ 𝕆 + 2 metric sectors
@@ -57,11 +66,11 @@ literature, each carrying its physical / mathematical origin:
 
 ## What this file does NOT do
 
-* It does NOT prove `5 = 3 + 2`. The `5` enters as a named axiom
-  recording the v0.9.1 reconstruction statement; `5 = 3 + 2` is then a
-  Tier-1 lemma by `decide`.
-* It does NOT axiomatize `N_sectors_count : N_sectors = 5` as a
-  conclusion — the equation is *proved* from the named axiom.
+* It does NOT prove `5 = 3 + 2` from the cited literature.  The `5`,
+  `3`, `2` are bare integer `def`s; `5 = 3 + 2` is a Tier-1 lemma by
+  `decide`.  The named results (`ember_reconstruction_five_sectors`,
+  etc.) are `theorem`-by-`rfl` PLACEHOLDERS — named reifications, not
+  formalizations of the cited papers.
 -/
 
 namespace SpectralPhysics.InflationAsClosure

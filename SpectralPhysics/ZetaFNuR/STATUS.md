@@ -1,9 +1,24 @@
 # `compute/zeta-F-nuR-regularized` — STATUS
 
+> ⚠️ **QUARANTINED — ORPHANED & BROKEN (2026-05-26 pre-push audit).**
+> This entire module chain (`JRestrictedZeta`, `ResidueAtZero`,
+> `Verdict`, `ClosureRefinement`) is **NOT imported by the root
+> `SpectralPhysics.lean`** (orphaned — it is excluded from the main
+> `lake build`, which is why the library stays green without it) and
+> **no longer compiles**: `JRestrictedZeta.lean:160` and `Verdict.lean:156`
+> reference `SpectralPhysics.MajoranaBlock.three_gen_dirac_multiplicity`,
+> which the `MajoranaBlock` refactor **removed** (replaced by the
+> spectral-triple-valued `JSC_multiplicity`; see `MajoranaBlock/STATUS.md`).
+> Porting these proofs to the new `JSC_multiplicity` API is a TODO.
+> Until then the chain is dead code; the "Build succeeds" line below is
+> **stale (2026-05-10)**.  NOTE: the `axiom`→`theorem` demotion of
+> `zetaF_nuR_deriv_at_zero` (commit `3f66049`) is correct in *source*
+> but cannot be build-verified while this chain is broken.
+
 **Date:** 2026-05-10
 **Branch:** `compute/zeta-F-nuR-regularized`
-**Build:** `lake build SpectralPhysics.ZetaFNuR.Verdict` succeeds
-        (2438 jobs, no new errors).
+**Build:** ~~`lake build SpectralPhysics.ZetaFNuR.Verdict` succeeds
+        (2438 jobs, no new errors).~~  **STALE — see quarantine note above.**
 
 ## The hypothesis under test
 

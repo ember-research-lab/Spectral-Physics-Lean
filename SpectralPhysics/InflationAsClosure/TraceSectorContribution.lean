@@ -76,12 +76,21 @@ Berry loop in the framework selects a single homotopy class out of
 The contribution to `λ_σ` is `ln(N_sectors ^ N_gen)`.
 
 Two independent mechanisms (5-sector cross-coupling AND 1-of-125
-homotopy projection) converge on this same statement; the axiom name
+homotopy projection) converge on this same statement; the name
 records the framework-level claim. Reference:
-`pre_geometric/berry_phase_corrected/verdict.md`. -/
-axiom berry_phase_corrected_trace :
+`pre_geometric/berry_phase_corrected/verdict.md`.
+
+AUDIT (2026-05, pre-push verifier): `TraceSectorBerry s` is *defined*
+as `s = Real.log ((N_sectors : ℝ) ^ N_gen)`, so this statement is the
+tautology `∀ s, (s = X) → (s = X)`.  Per RIGOROUS_WORKFLOW.md the
+`axiom` keyword is reserved for non-derivable assertions, so a
+trivially-provable statement must be a `theorem`.  Demoted from `axiom`
+to `theorem`; the framework-physical content lives in the *predicate*
+`TraceSectorBerry`, not here. -/
+theorem berry_phase_corrected_trace :
     ∀ (s : ℝ), TraceSectorBerry s →
-      s = Real.log ((N_sectors : ℝ) ^ N_gen)
+      s = Real.log ((N_sectors : ℝ) ^ N_gen) :=
+  fun _ h => h
 
 /-- **Conditional theorem**: under the trace-sector Berry hypothesis,
 the contribution value is `trace_contribution = ln(N_sectors ^ N_gen)`.

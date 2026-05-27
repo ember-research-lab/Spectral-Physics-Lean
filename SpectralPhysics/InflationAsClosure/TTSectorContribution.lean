@@ -65,10 +65,17 @@ noncomputable def tt_contribution : ℝ :=
 `ℤ₂` of its double cover around the σ_TT = 0 crossing point. The
 contribution to `λ_σ` is `ln(2 ^ N_pol) = 2 ln 2`.
 
-Reference: `pre_geometric/tt_sector_berry/verdict.md`. -/
-axiom tt_sector_berry_polarization_ℤ2 :
+Reference: `pre_geometric/tt_sector_berry/verdict.md`.
+
+AUDIT (2026-05, pre-push verifier): `TTSectorBerry s` is *defined* as
+`s = Real.log ((2 : ℝ) ^ N_pol)`, so this is the tautology
+`∀ s, (s = X) → (s = X)`.  Per RIGOROUS_WORKFLOW.md a trivially-provable
+statement must be a `theorem`, not an `axiom`.  Demoted accordingly;
+the physical content lives in the predicate `TTSectorBerry`. -/
+theorem tt_sector_berry_polarization_ℤ2 :
     ∀ (s : ℝ), TTSectorBerry s →
-      s = Real.log ((2 : ℝ) ^ N_pol)
+      s = Real.log ((2 : ℝ) ^ N_pol) :=
+  fun _ h => h
 
 /-- **Conditional theorem**: under the TT-sector Berry hypothesis,
 the contribution value is `tt_contribution = ln(2 ^ N_pol)`.

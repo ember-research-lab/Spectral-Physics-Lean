@@ -225,8 +225,18 @@ AsPredicted _ _ _` is asserting the formula relationship. -/
 def AsPredicted (lambdaSigmaKstar c_R2 A_s_pred : ℝ) : Prop :=
   A_s_pred = lambdaSigmaFull lambdaSigmaKstar * 500 * c_R2 * A_s_observed
 
-/-- **HEADLINE conditional theorem** — the framework closes `A_s` to
-within `2.5%` from the structural factor `5³ · 2² = 500`.
+/-- **HEADLINE conditional theorem** — the framework's **structural
+enhancement factor** `5³ · 2² = 500` closes to within `2.5%` of the
+required `≈ 510`.
+
+**Honest scope of the formal conclusion (2026-05 pre-push audit).** The
+three conjuncts below bound the *structural factor* (`s_trace + s_TT =
+ln 500`, residual `≤ 0.025`, `λ_σ_full = λ_σ_kstar · 500`).  They do
+**NOT** themselves bound `|A_s_predicted − A_s_observed| / A_s_observed`
+— that transfer is *asserted* (in prose, via the proof-unused
+hypotheses `h_kstar, h_cR, h_starobinsky, h_pred`), not formalized in
+the conclusion.  The theorem is the structural-factor step of the
+inflation-`A_s` program, not a Lean-level `A_s` bound.
 
 Hypotheses:
 * `h_kstar`        — `lambdaSigmaKstar` is a valid k*-Hodge baseline value
@@ -246,9 +256,10 @@ Hypotheses:
   framework's `lambdaSigmaFull`-formula (Prop-shell).
 
 Conclusion: the structural residual
-`|delivered - required| / required ≤ 0.025`. The hypotheses ensure
-that this residual transfers to `|A_s_predicted - A_s_observed| /
-A_s_observed`.
+`|delivered - required| / required ≤ 0.025`. The claim that this
+residual *transfers* to `|A_s_predicted - A_s_observed| / A_s_observed`
+is the intended physical reading, but it is NOT part of the formal
+conclusion (the linking hypotheses are not consumed by the proof).
 
 **Honest scope**: the bound `0.025` is a *generic sub-percent* bound
 chosen so that the dispatch's `2.4%` measured residual fits. It is
