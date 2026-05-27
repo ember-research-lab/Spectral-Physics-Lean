@@ -83,19 +83,19 @@ It strengthens the v0.9.1 conditional theorem
 hypothesis arguments with discharges from the named literature
 axioms. -/
 theorem self_model_deficit_unconditional_param
-    (S : SectoredStarAlgebra) (V : VisibleSpectrum) :
-    negZetaPrimeAtZero V = (S.dimHid : ℝ) :=
-  self_model_deficit_theorem S V
-    (completenessAtLevel2_negZetaPrimeAtZero S V)
-    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero S V)
+    (V : VisibleSpectrum) :
+    negZetaPrimeAtZero V = (spectralPhysicsSectoredAlgebra.dimHid : ℝ) :=
+  self_model_deficit_theorem spectralPhysicsSectoredAlgebra V
+    (completenessAtLevel2_negZetaPrimeAtZero V)
+    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero V)
 
 /-- **v0.9.2 headline — equality in `informationContent` form**. -/
 theorem self_model_deficit_unconditional_explicit_param
-    (S : SectoredStarAlgebra) (V : VisibleSpectrum) :
-    informationContent V = (S.dimHid : ℝ) := by
+    (V : VisibleSpectrum) :
+    informationContent V = (spectralPhysicsSectoredAlgebra.dimHid : ℝ) := by
   have h_eq := negZetaPrimeAtZero_eq V
   rw [← h_eq]
-  exact self_model_deficit_unconditional_param S V
+  exact self_model_deficit_unconditional_param V
 
 /-- **v0.9.2 headline — specialised to the spectral-physics decomposition**.
 
@@ -114,8 +114,7 @@ reduction in the open content with explicit, cited axioms. -/
 theorem self_model_deficit_unconditional
     (V : VisibleSpectrum) :
     negZetaPrimeAtZero V = (288 : ℝ) := by
-  have h := self_model_deficit_unconditional_param
-              spectralPhysicsSectoredAlgebra V
+  have h := self_model_deficit_unconditional_param V
   rw [h, spectralPhysicsSectoredAlgebra_dimHid]
   norm_cast
 
@@ -134,10 +133,10 @@ depends only on the three named literature axioms plus kernel
 axioms.  See `STATUS.md` for the verified output text. -/
 
 -- Sanity: the parametric form factors through the predicate inventory
-example (S : SectoredStarAlgebra) (V : VisibleSpectrum) :
-    (negZetaPrimeAtZero V ≤ (S.dimHid : ℝ)) ∧
-      ((S.dimHid : ℝ) ≤ negZetaPrimeAtZero V) :=
-  ⟨negZetaPrimeAtZero_le_dimHid S V,
-   dimHid_le_negZetaPrimeAtZero S V⟩
+example (V : VisibleSpectrum) :
+    (negZetaPrimeAtZero V ≤ (spectralPhysicsSectoredAlgebra.dimHid : ℝ)) ∧
+      ((spectralPhysicsSectoredAlgebra.dimHid : ℝ) ≤ negZetaPrimeAtZero V) :=
+  ⟨negZetaPrimeAtZero_le_dimHid V,
+   dimHid_le_negZetaPrimeAtZero V⟩
 
 end SpectralPhysics.SelfModelDeficitUnconditional.UnconditionalGoal

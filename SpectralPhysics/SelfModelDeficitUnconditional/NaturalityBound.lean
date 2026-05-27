@@ -7,6 +7,7 @@ import SpectralPhysics.SelfModelDeficitRigorous.SectorDecomposition
 import SpectralPhysics.SelfModelDeficitRigorous.FaithfulState
 import SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
 import SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessBound
+import SpectralPhysics.SelfModelDeficitRigorous.Theorem
 
 /-!
 # v0.9.2 Naturality (No-Dead-Weight) Bound — Mac Lane coherence axiom
@@ -67,6 +68,7 @@ open SpectralPhysics.SelfModelDeficitRigorous.SectorDecomposition
 open SpectralPhysics.SelfModelDeficitRigorous.FaithfulState
 open SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
 open SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessBound
+open SpectralPhysics.SelfModelDeficitRigorous.Theorem
 
 /-- **Named literature axiom**: monoidal-category coherence (Mac Lane
 *Categories for the Working Mathematician* §VII), specialised to the
@@ -105,33 +107,27 @@ subcategory of sectored algebras with information-preserving
 morphisms, and the verification that its associator / unitor system
 satisfies the coherence pentagon and triangle — is a research-level
 gap acknowledged in v0.9.2 deferred item C.1. -/
-axiom NaturalityCoherence
-    (S : SectoredStarAlgebra) (c : ℝ) : (S.dimHid : ℝ) ≤ c
+-- SOUNDNESS FIX (2026-05-27): prior form `axiom … (S)(c:ℝ) : S.dimHid ≤ c`
+-- quantified `c` over ALL reals (false at `c = dimHid−1`) and `S` over ALL
+-- algebras (with BekensteinInformationBound → all `dimHid` equal), making the
+-- set INCONSISTENT (see AXIOM-SOUNDNESS-SWEEP.md item 0).  Restricted to the
+-- actual content `negZetaPrimeAtZero V` and the canonical algebra:
+-- `288 ≤ −ζ̃'_vis(0)`, a genuine no-dead-weight claim, no falsifying instantiation.
+axiom NaturalityCoherence (V : VisibleSpectrum) :
+    (spectralPhysicsSectoredAlgebra.dimHid : ℝ) ≤ negZetaPrimeAtZero V
 
-/-- **Discharge of v0.9.1 predicate (ii)** from the Mac Lane
-coherence axiom.
+/-- Discharge of v0.9.1 predicate (ii) at the canonical algebra:
+`SectorFaithfulNoDeadWeight = (dimHid ≤ negZetaPrimeAtZero V)` is exactly the
+Mac Lane no-dead-weight bound. -/
+theorem sectorFaithfulNoDeadWeight_negZetaPrimeAtZero (V : VisibleSpectrum) :
+    SectorFaithfulNoDeadWeight spectralPhysicsSectoredAlgebra (negZetaPrimeAtZero V) :=
+  NaturalityCoherence V
 
-The v0.9.1 predicate `SectorFaithfulNoDeadWeight S c` is *defined* as
-`(S.dimHid : ℝ) ≤ c`, which is exactly `NaturalityCoherence`. -/
-theorem sectorFaithfulNoDeadWeight_of_naturality
-    (S : SectoredStarAlgebra) (c : ℝ) :
-    SectorFaithfulNoDeadWeight S c :=
-  NaturalityCoherence S c
-
-/-- Specialised form: at the spectral-physics visible spectrum,
-naturality coherence discharges `SectorFaithfulNoDeadWeight`. -/
-theorem sectorFaithfulNoDeadWeight_negZetaPrimeAtZero
-    (S : SectoredStarAlgebra) (V : VisibleSpectrum) :
-    SectorFaithfulNoDeadWeight S (negZetaPrimeAtZero V) :=
-  sectorFaithfulNoDeadWeight_of_naturality S (negZetaPrimeAtZero V)
-
-/-- Consequence: `dim(H_hid) ≤ −ζ̃'_vis(0)` for any `(S, V)` under the
-naturality axiom. -/
-theorem dimHid_le_negZetaPrimeAtZero
-    (S : SectoredStarAlgebra) (V : VisibleSpectrum) :
-    (S.dimHid : ℝ) ≤ negZetaPrimeAtZero V :=
-  sector_faithfulness_upper_bound S V
-    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero S V)
+/-- Consequence: `dim(H_hid) ≤ −ζ̃'_vis(0)` at the canonical algebra. -/
+theorem dimHid_le_negZetaPrimeAtZero (V : VisibleSpectrum) :
+    (spectralPhysicsSectoredAlgebra.dimHid : ℝ) ≤ negZetaPrimeAtZero V :=
+  sector_faithfulness_upper_bound spectralPhysicsSectoredAlgebra V
+    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero V)
 
 /-! ### Honest residue
 
