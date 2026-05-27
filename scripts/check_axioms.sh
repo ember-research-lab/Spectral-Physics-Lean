@@ -18,6 +18,13 @@
 #   * `: Nonempty (PUnit → A)`— vacuous nonempty predicate
 #   * `: Nonempty Unit`       — trivially inhabited
 #   * `: True`                — literal True
+#   * Pattern 8 (UNSOUNDNESS): an axiom with a numeric parameter (ℝ/ℕ/ℤ/ℚ) that
+#       appears in an (in)equality — e.g. `axiom f (c : ℝ) : c ≤ X`. If `c` is
+#       FREELY bounded (not constrained by a hypothesis), the axiom is FALSE at
+#       some value (c = X+1) and is INCONSISTENT. This class is invisible to the
+#       vacuity patterns 1–7 and was the 2026-05 bug (BekensteinInformationBound,
+#       NaturalityCoherence, cheeger_lower/upper). Definitive test: derive
+#       `example : False` from the axiom in a scratch file (see AXIOM-SOUNDNESS-SWEEP.md).
 #
 # Usage: ./scripts/check_axioms.sh [path-to-SpectralPhysics-dir]
 # Default: ./SpectralPhysics/
@@ -71,6 +78,30 @@ echo
 echo "=== Pattern 7: 'theorem' bodies using placeholder hypothesis predicates ==="
 # Predicates like is_kk_product : True inside structures
 grep -rn "is_kk_product\s*:\s*True\|is_real\s*:\s*True" --include="*.lean" "$DIR" 2>/dev/null | head -20 || echo "  (none found)"
+echo
+
+echo "=== Pattern 8: UNSOUNDNESS — false-universal bound/equality axioms ==="
+echo "  Flags axioms with a numeric parameter (ℝ/ℕ/ℤ/ℚ) used in an (in)equality."
+echo "  REVIEW each: is the parameter CONSTRAINED by a hypothesis (sound), or FREELY"
+echo "  bounded (e.g. 'axiom f (c : ℝ) : c ≤ X') — which is FALSE at c=X+1 ⇒ UNSOUND?"
+echo "  Definitive test: try to build 'example : False' from the axiom in a scratch file."
+AX_FILES=$(find "$DIR" -name "*.lean")
+if [ -n "$AX_FILES" ]; then
+  awk '
+    function flush() {
+      if (inax && buf ~ /\([^():]*:[ ]*(ℝ|ℕ|ℤ|ℚ)[ ]*\)/ && buf ~ /≤|≥| < | > | = /) {
+        gsub(/[ \t]+/, " ", buf); print "  " loc "  " buf
+      }
+      inax=0; buf=""
+    }
+    /^axiom / { flush(); inax=1; buf=$0; loc=FILENAME ":" FNR; next }
+    inax && ($0 == "" || $0 ~ /^(def |theorem |lemma |namespace |end |open |\/-|--|@\[|instance |structure |inductive |abbrev )/) { flush(); next }
+    inax { buf = buf " " $0 }
+    END { flush() }
+  ' $AX_FILES 2>/dev/null | head -60
+else
+  echo "  (no .lean files)"
+fi
 echo
 
 echo "=== Summary ==="
