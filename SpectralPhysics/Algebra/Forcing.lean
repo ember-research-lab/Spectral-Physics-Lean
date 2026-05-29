@@ -108,13 +108,19 @@ class SelfReferentiallyClosed (A : Type*) [ObservationAlgebra A] where
 -- Key argument (Baez 2002): the composition algebra doubling theorem.
 -- Now proved as `cd_norm_mul_of_assoc` in Hurwitz.lean.
 
-/-- Meta-observation forces CD doubling: if A is an associative composition
+/- Meta-observation forces CD doubling: if A is an associative composition
 algebra with the inner product adjoint properties, then CD(A) is again a
 composition algebra (norm-multiplicative). This is `cd_norm_mul_of_assoc`
 from Hurwitz.lean. The tower climbs because each base ℝ,ℂ,ℍ is associative.
 The tower stops at 𝕆 because 𝕆 is NOT associative, so CD(𝕆) = 𝕊 fails
 (has zero divisors, proved as `Sedenion.zero_divisor_exists`). -/
-theorem meta_observation_forces_cd : True := trivial
+-- (Audit fix) The former vacuous shell
+--   `theorem meta_observation_forces_cd : True := trivial`
+-- is removed: a `True`-valued theorem named "forces_cd" misrepresented the
+-- forcing content. The genuine doubling step (associative B -> CD(B)
+-- norm-multiplicative) is `cd_norm_mul_of_assoc` in `Algebra/Hurwitz.lean`;
+-- the only kernel-checked verdict on axiom-level forcing is the NO verdict
+-- `RMForcesDivisionAlgebras.v092_G4_verdict_NO` (R x R counterexample).
 -- The substantive content is `CompositionAlgebra.cd_norm_mul_of_assoc`
 -- which proves: B associative → CD(B) norm-multiplicative.
 
