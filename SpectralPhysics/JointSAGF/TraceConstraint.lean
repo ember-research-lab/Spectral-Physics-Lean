@@ -72,7 +72,8 @@ theorem tracefn_evolution {N : ℕ} (g g' : ℝ → ℝ) (lam lam' : ℝ → Fin
     (hlam : ∀ n t, HasDerivAt (fun s => lam s n) (lam' t n) t) (t : ℝ) :
     HasDerivAt (fun s => tracefn g (lam s))
       (∑ n, g' (lam t n) * lam' t n) t := by
-  sorry
+  unfold tracefn
+  exact HasDerivAt.fun_sum fun n _ => (hg (lam t n)).comp t (hlam n t)
 
 /-! ### Layer 2: the trace as coercivity term (session contribution, J6) -/
 
@@ -84,16 +85,17 @@ The trace contribution dominates at infinity in kernel space. -/
 theorem coercive_add_of_bddBelow (Sbase Str : E → ℝ) (c : ℝ)
     (hb : ∀ k, c ≤ Sbase k)
     (hc : Tendsto Str (cocompact E) atTop) :
-    Tendsto (fun k => Sbase k + Str k) (cocompact E) atTop := by
-  sorry
+    Tendsto (fun k => Sbase k + Str k) (cocompact E) atTop :=
+  tendsto_atTop_mono (fun k => by linarith [hb k])
+    (tendsto_atTop_add_const_left _ c hc)
 
 /-- A continuous coercive functional on a proper space attains its global
 minimum: the SCSE vacuum candidate exists as a minimizer. -/
 theorem exists_minimizer_of_coercive [ProperSpace E] [Nonempty E]
     (S : E → ℝ) (hS : Continuous S)
     (hc : Tendsto S (cocompact E) atTop) :
-    ∃ kstar, ∀ k, S kstar ≤ S k := by
-  sorry
+    ∃ kstar, ∀ k, S kstar ≤ S k :=
+  hS.exists_forall_le hc
 
 /-- At a global minimum, the gradient vanishes: a minimizer is a SAGF
 stationary point (`δS_tot/δk = 0`, the fixed-point condition of the flow). -/
@@ -102,7 +104,9 @@ theorem gradient_eq_zero_of_isMinOn [CompleteSpace E]
     (hS : ∀ k, HasGradientAt S (g k) k)
     (hmin : ∀ k, S kstar ≤ S k) :
     g kstar = 0 := by
-  sorry
+  have hloc : IsLocalMin S kstar := Filter.Eventually.of_forall hmin
+  have h0 := hloc.hasFDerivAt_eq_zero (hS kstar).hasFDerivAt
+  exact (InnerProductSpace.toDual ℝ E).map_eq_zero_iff.mp h0
 
 /-- **J6 headline (session contribution).** If the total spectral action
 decomposes as a bounded-below base term plus a coercive trace term, and is
@@ -117,6 +121,11 @@ theorem sagf_stationary_exists [ProperSpace E] [CompleteSpace E] [Nonempty E]
     (hcoer : Tendsto Str (cocompact E) atTop)
     (hgrad : ∀ k, HasGradientAt (fun x => Sbase x + Str x) (g k) k) :
     ∃ kstar, g kstar = 0 := by
-  sorry
+  have hcont : Continuous fun k => Sbase k + Str k :=
+    continuous_iff_continuousAt.mpr fun k =>
+      (hgrad k).differentiableAt.continuousAt
+  obtain ⟨kstar, hmin⟩ := exists_minimizer_of_coercive _ hcont
+    (coercive_add_of_bddBelow Sbase Str c hb hcoer)
+  exact ⟨kstar, gradient_eq_zero_of_isMinOn _ g kstar hgrad hmin⟩
 
 end SpectralPhysics.JointSAGF

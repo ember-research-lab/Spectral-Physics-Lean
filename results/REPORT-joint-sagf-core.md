@@ -35,3 +35,20 @@
 `lake build` on the three modules + root import: clean, zero sorries in `JointSAGF/`.
 Full-repo rebuild not run in this sandbox (1 CPU); the three modules import Mathlib only,
 so no existing module's build is affected. CI should confirm on push.
+
+## Addendum (same session): J6 — TraceConstraint.lean
+
+| Label | Lean name | Verdict | Notes |
+|---|---|---|---|
+| J6 L1: trace evolution | `tracefn_evolution` | **CLOSED** | Manuscript `thm:trace-evolution` (Tier 1) at finite spectrum; Hellmann–Feynman identification of λ̇ₙ is upstream (hypothesis). |
+| J6 L2: coercive sum | `coercive_add_of_bddBelow` | **CLOSED** | Bounded-below base + coercive trace ⟹ coercive total. |
+| J6 L2: minimizer exists | `exists_minimizer_of_coercive` | **CLOSED** | `Continuous.exists_forall_le` on cocompact→atTop. |
+| J6 L2: critical point | `gradient_eq_zero_of_isMinOn` | **CLOSED** | Global min ⟹ ∇=0 via `IsLocalMin.hasFDerivAt_eq_zero` + `toDual` injectivity. |
+| **J6 headline** | `sagf_stationary_exists` | **CLOSED** | Bounded-below base + coercive trace + differentiable ⟹ SAGF stationary point (SCSE vacuum candidate) EXISTS, finite-dim. |
+
+**Provenance flag:** Layer 2 (the coercivity chain) is a SESSION CONTRIBUTION
+(derivation-doc J6), not yet a manuscript claim — the manuscript must adopt it
+before any chapter cites these as formalized manuscript theorems. Layer 1
+formalizes an existing manuscript Tier-1 theorem. Uniqueness of k* NOT proved
+(Baker-form isolation separate). Infinite-dim version = stress tests 1–2, open.
+Axiom audit: all five kernel-only (propext, Classical.choice, Quot.sound).
