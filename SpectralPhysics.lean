@@ -364,3 +364,6 @@ import SpectralPhysics.SelfRef.SpectralFloor
 -- Dark matter (zeroed modes) + YM positivity-gap localization:
 import SpectralPhysics.DarkMatter.ZeroedModes
 import SpectralPhysics.MetaPattern.PositivityGapLocalization
+import SpectralPhysics.JointSAGF.Monotone
+import SpectralPhysics.JointSAGF.Barrier
+import SpectralPhysics.JointSAGF.Basin

@@ -46,8 +46,8 @@ spectrum `μ`, then the spectral-action sum weakly increases:
 `∑ f(μ_k) ≤ ∑ f(μ'_k)`. Mode crowding toward zero never lowers `Tr f`. -/
 theorem trace_f_mono_of_spectrum_le {N : ℕ} (f : ℝ → ℝ) (hf : Antitone f)
     (μ μ' : Fin N → ℝ) (h : ∀ k, μ' k ≤ μ k) :
-    ∑ k, f (μ k) ≤ ∑ k, f (μ' k) := by
-  sorry
+    ∑ k, f (μ k) ≤ ∑ k, f (μ' k) :=
+  Finset.sum_le_sum fun k _ => hf (h k)
 
 /-- **J2 core (strict form).** If in addition at least one eigenvalue
 strictly decreases and `f` is strictly antitone (on the relevant pair),
@@ -55,12 +55,12 @@ the spectral action strictly increases: gap collapse is strictly uphill. -/
 theorem trace_f_strict_of_gap_collapse {N : ℕ} (f : ℝ → ℝ) (hf : Antitone f)
     (μ μ' : Fin N → ℝ) (h : ∀ k, μ' k ≤ μ k)
     (j : Fin N) (hj : f (μ j) < f (μ' j)) :
-    ∑ k, f (μ k) < ∑ k, f (μ' k) := by
-  sorry
+    ∑ k, f (μ k) < ∑ k, f (μ' k) :=
+  Finset.sum_lt_sum (fun k _ => hf (h k)) ⟨j, Finset.mem_univ j, hj⟩
 
 /-- Sanity instance: the standard heat-kernel cutoff `f(x) = exp(-x)` is
 antitone, so the J2 inequalities apply to the manuscript's cutoff class. -/
-theorem exp_neg_antitone : Antitone (fun x : ℝ => Real.exp (-x)) := by
-  sorry
+theorem exp_neg_antitone : Antitone (fun x : ℝ => Real.exp (-x)) :=
+  fun _ _ hab => Real.exp_le_exp.mpr (neg_le_neg hab)
 
 end SpectralPhysics.JointSAGF

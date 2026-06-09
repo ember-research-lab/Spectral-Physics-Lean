@@ -42,7 +42,8 @@ curvature: `|x| = √(2·S(x)/h)`. The `√Q` scaling of the `C_eff` equation is
 the generic geometry of a nondegenerate basin, not a phenomenological ansatz. -/
 theorem basin_amplitude_sqrt (h x : ℝ) (hh : 0 < h) :
     |x| = Real.sqrt (2 * (h * x ^ 2 / 2) / h) := by
-  sorry
+  rw [show 2 * (h * x ^ 2 / 2) / h = x ^ 2 by field_simp]
+  exact (Real.sqrt_sq_eq_abs x).symm
 
 /-- **J5b (relaxation dynamics).** The trajectory `x(t) = x₀·exp(-h·t)`
 satisfies the 1-D gradient flow `x'(t) = -h·x(t)` of the quadratic basin.
@@ -51,7 +52,12 @@ not by the deficit. -/
 theorem basin_relaxation (h x₀ : ℝ) (t : ℝ) :
     HasDerivAt (fun s => x₀ * Real.exp (-h * s))
       (-h * (x₀ * Real.exp (-h * t))) t := by
-  sorry
+  have h1 : HasDerivAt (fun s : ℝ => -h * s) (-h) t := by
+    simpa using (hasDerivAt_id t).const_mul (-h)
+  have h2 := (Real.hasDerivAt_exp (-h * t)).comp t h1
+  have h3 := h2.const_mul x₀
+  convert h3 using 1
+  ring
 
 /-- **J5c (deficit decay).** Along the relaxation trajectory the deficit
 decays at twice the rate: `S(x(t)) = S(x₀)·exp(-2h·t)`. Recovery *time* is
@@ -60,6 +66,7 @@ claims the April session found in conflict are about different quantities. -/
 theorem basin_deficit_decay (h x₀ t : ℝ) :
     h * (x₀ * Real.exp (-h * t)) ^ 2 / 2
       = (h * x₀ ^ 2 / 2) * Real.exp (-2 * h * t) := by
-  sorry
+  rw [mul_pow, sq (Real.exp (-h * t)), ← Real.exp_add]
+  ring_nf
 
 end SpectralPhysics.JointSAGF
