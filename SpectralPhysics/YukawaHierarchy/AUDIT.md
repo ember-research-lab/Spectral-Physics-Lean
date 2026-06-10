@@ -1,5 +1,34 @@
 # YukawaHierarchy — Full Chain Audit
 
+> **CORRECTION NOTE (2026-06-09 hygiene pass).** Parts of this
+> 2026-05-03 audit are wrong and are corrected here (the original text
+> below is kept for the record, with inline `[CORRECTED 2026-06-09]`
+> markers at the affected claims):
+>
+> 1. **"No vacuous classes" is FALSE.** Four classes are content-free:
+>    - `S3VolumeFact` (`∃ v, v = 2π²` — trivially provable),
+>    - `BPSTRadialIntegralFact` (`∀ ρ>0, ∃ I, I = 1/(12ρ⁴)` — trivially provable),
+>    - `InstantonChargeIsOne` (`∃ q, q = 1` — trivially provable),
+>    - `KIdentification` (`∃ c, 0<c ∧ K = c·Λ²·f₂` — witness `c := K/(Λ²f₂)`
+>      always exists since all factors are positive).
+>    Each is a provable instance of `True` and constrains nothing.
+> 2. **The `KIdentification` "non-vacuous ✓" check below was wrong**:
+>    positivity of `c` does not make the existential falsifiable, because
+>    `c` is existentially quantified and the positive witness always exists.
+> 3. **The proof-skeleton diagram below oversells the typeclasses**: in
+>    `yukawa_ratio_from_spectral_structure` the instance arguments
+>    `[SpectralActionExpansion][PontryaginCoefficientIsCharge]` are
+>    decorative (unused by the proof); the load is carried entirely by the
+>    explicit cross-multiplied hypotheses `h_yτ` / `h_yc_norm`. Likewise
+>    `instanton_charge_one_from_facts` does not derive charge 1 from
+>    `S3VolumeFact`/`BPSTRadialIntegralFact` — all three classes are
+>    content-free, and the only real content is the arithmetic identity
+>    `192·2π²/(12·32π²) = 1` in `instanton_charge_assembly`.
+>
+> Disclosures were added to the affected Lean docstrings in
+> `Bundle/InstantonNumber.lean` and `Bundle/SpectralActionConcrete.lean`
+> in the same pass.
+
 **Date:** 2026-05-03
 **Build:** `lake build` succeeds; **0 errors, 0 warnings, 0 sorries, 0 axioms** in `YukawaHierarchy/`.
 
@@ -135,6 +164,11 @@ mechanical verification. The decision procedure is the proof.
 
 Stripping out the algebraic substitutions, the substantive chain is:
 
+*[CORRECTED 2026-06-09: the "⇒" below is aspirational, not a Lean
+implication — the typeclasses do not produce the matching hypotheses
+anywhere in the repo (they are decorative/vacuous; see correction note
+at top). The hypotheses enter as explicit theorem arguments.]*
+
 ```
 [Tier 3 hypothesis]:
    SpectralActionExpansion + PontryaginCoefficientIsCharge + KIdentification
@@ -192,7 +226,9 @@ hypotheses really constrain something):
   **Non-vacuous.** ✓
 * `KIdentification`'s `K_form` requires `∃ c > 0, K = c · Λ² · f_2`.
   Constrains K to be positive multiples of cutoff data.
-  **Non-vacuous.** ✓
+  **Non-vacuous.** ✓ *[CORRECTED 2026-06-09: this check was WRONG — the
+  witness `c := K/(Λ²f₂)` always exists (all factors positive), so the
+  class is vacuous. See correction note at top.]*
 
 ## What to fix in the docstrings
 
@@ -249,4 +285,7 @@ The YukawaHierarchy/ directory contains:
 
 The repo's epistemic structure is sound. Some minor docstring softening
 would make the audit a perfect match. **No fabrication, no hidden sorries,
-no vacuous classes.**
+no vacuous classes.** *[CORRECTED 2026-06-09: "no vacuous classes" is
+FALSE — `S3VolumeFact`, `BPSTRadialIntegralFact`, `InstantonChargeIsOne`,
+and `KIdentification` are all content-free ∃-shells. See correction note
+at top.]*

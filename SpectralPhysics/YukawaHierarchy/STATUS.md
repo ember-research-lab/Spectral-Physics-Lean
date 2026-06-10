@@ -1,5 +1,30 @@
 # YukawaHierarchy — Status Snapshot
 
+> **CORRECTION NOTE (2026-06-09 hygiene pass).** Three claims in this
+> 2026-05-03 snapshot are wrong; the original text is kept below with
+> inline `[CORRECTED 2026-06-09]` markers:
+>
+> 1. **"No vacuous classes ✓" is FALSE** — `S3VolumeFact`,
+>    `BPSTRadialIntegralFact`, `InstantonChargeIsOne`, and
+>    `KIdentification` are content-free ∃-shells (each body has the form
+>    `∃ x, x = c`, or for `KIdentification` an existential whose witness
+>    `c := K/(Λ²f₂)` always exists). They are provable instances of
+>    `True` and constrain nothing.
+> 2. **"`S3VolumeFact`, `BPSTRadialIntegralFact` ... will close
+>    automatically as Mathlib matures" is wrong as stated** — as
+>    formalized they are content-free, so there is *nothing to close*;
+>    they would first need substantive bodies (actual `MeasureTheory`
+>    statements) before Mathlib progress could discharge them.
+> 3. **The "Final picture" skeleton overstates the typeclasses** — the
+>    listed classes do not yield `y_c/y_τ = 3/16` in Lean; they are
+>    inert (decorative instance arguments, unused by the proofs). The
+>    load is carried by the explicit cross-multiplied hypotheses
+>    (`h_yc`/`h_yτ` etc.) passed directly to the Bucket-B theorems.
+>
+> See AUDIT.md's matching correction note and the disclosure docstrings
+> added to `Bundle/InstantonNumber.lean` and
+> `Bundle/SpectralActionConcrete.lean`.
+
 **Date:** 2026-05-03 (fifth pass — all 3 follow-up tasks done)
 
 ## Build status — 16 files, 0 sorries, 0 new axioms
@@ -126,8 +151,17 @@ axioms. The `BridgeConjecture` and `SpectralActionExpansion` typeclasses
 correctly carry that as an open Tier-3 hypothesis.
 
 **No fabrication, no hidden sorries, no vacuous classes.** ✓
+*[CORRECTED 2026-06-09: "no vacuous classes" is FALSE — see correction
+note at top.]*
 
 ## Final picture: the proof skeleton
+
+*[CORRECTED 2026-06-09: this diagram is misleading — the named
+typeclasses are inert (decorative or content-free; `KIdentification` is
+vacuous) and do NOT produce the matching condition in Lean. The listed
+Tier-1 theorems take the matching condition as explicit cross-multiplied
+hypotheses; the typeclass arrow "↓" is aspiration, not a derivation.
+See correction note at top.]*
 
 ```
 Tier-3 hypotheses (all classes / typeclasses):
@@ -165,6 +199,12 @@ The **only** open Tier-3 hypotheses are textbook classical results:
 All will close automatically as Mathlib's differential geometry /
 heat kernel infrastructure matures. They are **not** part of the
 spectral arithmetic program's open question.
+
+*[CORRECTED 2026-06-09: `S3VolumeFact` and `BPSTRadialIntegralFact`
+will NOT "close automatically" — as formalized they are content-free
+∃-shells (already trivially provable today), so there is nothing for
+Mathlib progress to discharge. Making them closable requires first
+rewriting them as substantive `MeasureTheory` statements.]*
 
 The genuine open question — the `BridgeConjecture` — is now a
 **fully-stated Lean class** with **proven Tier-1 implications**.
