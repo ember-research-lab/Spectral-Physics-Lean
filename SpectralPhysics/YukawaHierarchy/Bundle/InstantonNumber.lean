@@ -38,6 +38,24 @@ is orthogonal to our actual interest (rep theory + bundle topology).
 * **Tier 3 (hypothesised)**: the integral evaluation
   `∫_0^∞ r³ / (r²+ρ²)⁴ dr = 1/(12 ρ⁴)`, and the volume of S³ being `2π²`.
 
+## VACUITY DISCLOSURE (hygiene pass, 2026-06-09)
+
+The three `class`es in this file — `S3VolumeFact`,
+`BPSTRadialIntegralFact`, `InstantonChargeIsOne` — are **content-free
+∃-shells**: each field has the form `∃ x, x = c`, which is trivially
+provable (`⟨c, rfl⟩`) for ANY value of `c`. They are provable instances
+of `True` and constrain nothing; no integral, volume, or charge is
+related to anything else in the formalization. Consequently
+`instanton_charge_one_from_facts` does NOT derive the charge from the
+analytic facts — it discharges a trivially-true class from two other
+trivially-true classes. The ONLY real mathematical content in this file
+is the Tier-1 arithmetic identity `192·ρ⁴·2π²·(1/(12ρ⁴))/(32π²) = 1` in
+`instanton_charge_assembly` (plus the `rfl` data-level charge lemmas at
+the bottom). The classes are retained as NAMED REIFICATIONS of the
+textbook facts so downstream signatures keep compiling; a future
+closing pass should give them substantive bodies (actual
+`MeasureTheory` integrals) before anything is claimed to "close".
+
 ## References
 
 * Coleman, S. (1985). *Aspects of Symmetry*, Chapter 7.
@@ -55,23 +73,34 @@ open Real
 
 These two facts are textbook integrals / volumes; we declare them as
 typeclasses for use downstream. The proofs (in Mathlib) require integration
-theory on improper Riemann integrals which we don't undertake here. -/
+theory on improper Riemann integrals which we don't undertake here.
 
-/-- **Tier 3 hypothesis** — the volume of `S³(1)` (unit 3-sphere).
+**VACUITY DISCLOSURE (2026-06-09)**: as currently stated, both classes
+are content-free ∃-shells (see module docstring). -/
 
-    Standard result: `Vol(S³) = 2π²`. -/
+/-- PLACEHOLDER / CONTENT-FREE (2026-06-09 hygiene pass) — the body
+    `∃ v, v = 2π²` is trivially provable (`⟨2π², rfl⟩`); this class is
+    an instance of `True` and carries NO volume content (no sphere, no
+    measure appears in the statement). It is a NAMED REIFICATION of the
+    standard result `Vol(S³) = 2π²`, which is NOT formalized here. -/
 class S3VolumeFact : Prop where
-  /-- The 3-sphere volume formula. -/
+  /-- The 3-sphere volume formula (content-free ∃-shell; see class
+      docstring). -/
   vol_S3 : ∃ v : ℝ, v = 2 * Real.pi^2
 
-/-- **Tier 3 hypothesis** — the radial integral
+/-- PLACEHOLDER / CONTENT-FREE (2026-06-09 hygiene pass) — the body
+    `∀ ρ > 0, ∃ I, I = 1/(12ρ⁴)` is trivially provable (witness the
+    RHS); this class is an instance of `True` and carries NO integral
+    content (no integral appears in the statement). It is a NAMED
+    REIFICATION of the textbook radial integral
 
-      `∫_0^∞ r³ / (r² + ρ²)⁴ dr = 1 / (12 ρ⁴)`        for `ρ > 0`.
+      `∫_0^∞ r³ / (r² + ρ²)⁴ dr = 1 / (12 ρ⁴)`        for `ρ > 0`
 
-    Standard substitution `u = r²` reduces to
-    `(1/2) ∫_0^∞ u / (u+ρ²)⁴ du = 1/(12 ρ⁴)`. -/
+    (standard substitution `u = r²` reduces to
+    `(1/2) ∫_0^∞ u / (u+ρ²)⁴ du = 1/(12 ρ⁴)`), which is NOT
+    formalized here. -/
 class BPSTRadialIntegralFact : Prop where
-  /-- The integral value. -/
+  /-- The integral value (content-free ∃-shell; see class docstring). -/
   radial_integral : ∀ ρ : ℝ, 0 < ρ →
     ∃ I : ℝ, I = 1 / (12 * ρ^4)
 
@@ -109,22 +138,30 @@ This is the goal: assemble the previous lemma into a clean named theorem
 that says "the BPST charge is 1". The actual integration step requires
 Mathlib's `MeasureTheory.Integral` and is not done here. -/
 
-/-- **Tier 3 hypothesis.**  The BPST topological-charge integral exists and
-    evaluates to `instantonCharge_one = 1`.
+/-- PLACEHOLDER / CONTENT-FREE (2026-06-09 hygiene pass) — the body
+    `∃ q, q = instantonCharge_one` is trivially provable (`⟨1, rfl⟩`);
+    this class is an instance of `True` and asserts NOTHING about any
+    integral. It is a NAMED REIFICATION of the BPST charge-1 statement
 
-    Concretely: `(1/16π²) ∫_{R⁴} Σ_{a,μ,ν} (F^a_{μν}(x))² d⁴x = 1`.
+      `(1/16π²) ∫_{R⁴} Σ_{a,μ,ν} (F^a_{μν}(x))² d⁴x = 1`,
 
-    The proof would proceed:
+    which is NOT formalized here. The intended (unformalized) proof:
       1. By `BPSTField_sumsq_eq`, the integrand equals `192 ρ⁴ / (x²+ρ²)⁴`.
       2. The radial integral `∫_0^∞ r³/(r²+ρ²)⁴ dr = 1/(12ρ⁴)` (Tier-3 fact).
       3. The angular integral over `S³(r)` gives factor `2π² r³ dr`.
       4. Putting it together: `192 ρ⁴ · 2π² · 1/(12ρ⁴) / 16π² = 1` (Tier 1).
-    Steps 1, 4 are formal; steps 2, 3 are the Tier-3 dependencies. -/
+    Of these, only step 4 (`instanton_charge_assembly`) is formal. -/
 class InstantonChargeIsOne : Prop where
   charge_eq_one : ∃ q : ℝ, q = instantonCharge_one
 
-/-- Combining the Tier-1 algebra with the Tier-3 hypotheses gives the desired
-    statement. -/
+/-- VACUOUS DERIVATION — DISCLOSED (2026-06-09 hygiene pass). This does
+    NOT derive the charge from the analytic facts: `InstantonChargeIsOne`
+    is content-free (`⟨1, rfl⟩` proves it outright), and the two
+    instance arguments `[S3VolumeFact] [BPSTRadialIntegralFact]` are
+    themselves content-free and entirely unused by the proof — they are
+    decorative. The real content connecting these quantities is the
+    arithmetic identity `192·ρ⁴·2π²·(1/(12ρ⁴))/(32π²) = 1` in
+    `instanton_charge_assembly` above. -/
 theorem instanton_charge_one_from_facts
     [S3VolumeFact] [BPSTRadialIntegralFact] : InstantonChargeIsOne where
   charge_eq_one := ⟨1, rfl⟩
