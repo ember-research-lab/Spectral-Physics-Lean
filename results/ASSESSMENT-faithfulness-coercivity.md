@@ -162,6 +162,50 @@ the decomposition lattice** can. Define
 
 **Verdict: OPEN**, with both halves now stated precisely enough to formalize.
 
+## 5b. Sharpening (Aaron, 2026-06-09): the algebra is known — A_obs = ℂ⊗ℍ⊗𝕆
+
+§3 said "Connes needs the algebra, not just the spectrum." In this framework the
+algebra is not an unknown: A_obs = ℂ⊗ℍ⊗𝕆 is fixed by the Cayley–Dickson/Hurwitz
+forcing. That changes the analysis in three ways — strengthening, not overturning,
+the verdicts:
+
+1. **It does not by itself kill the flat directions.** Reconstruction needs the
+   algebra *concretely acting* — the triple (A, H, D) — not the isomorphism class
+   of A. Cospectral kernels share the same abstract algebra (functions on X for
+   the relational part; the same finite A_obs) and the same spectrum, and differ
+   in D / the action. M measures spectral moments only. So fixing A ≅ ℂ⊗ℍ⊗𝕆
+   leaves exactly the moduli of (representation, D); §3's degeneracy survives.
+
+2. **It canonicalizes the gauge group and the decomposition lattice.** With A
+   fixed, gauge is no longer "whatever preserves structure" but the standard NCG
+   fact: inner automorphisms of the (associative core of the) SM algebra =
+   U(1)×SU(2)×SU(3), times Aut(X, μ) on the relational base. And naturality's
+   "decompositions" stop being a free choice: the sector projections of ℂ⊗ℍ⊗𝕆
+   (visible/hidden, the triad, generation structure) give a **canonical finite
+   decomposition lattice** for F_nat. This answers the "which decompositions?"
+   ambiguity in §7's L2/L3 spec — F_nat should be indexed by the algebra's own
+   sector lattice, not by arbitrary partitions. (Caveat, handled elsewhere in the
+   repo: 𝕆 is non-associative, so the inner-automorphism statement applies to the
+   associative gauge sector; the Dixon-obstruction modules govern the rest.)
+
+3. **The remaining moduli are then classified — and they are the Yukawas.** For
+   the SM algebra, the moduli space of admissible finite Dirac operators D_F
+   (order-one, J, grading constraints) is known in NCG to be parametrized by the
+   Yukawa couplings and mixing angles up to unitary equivalence
+   (Connes–Chamseddine moduli-of-Dirac-operators analysis). So "flat directions
+   transverse to gauge at fixed algebra" is not a vague set: it is the
+   **D_F-moduli at fixed spectrum** — independently the same subspace §4 found
+   (Ch₂ rank-2 light Yukawas, tensor-sum twisting moduli, Tor⁻¹). The fixed
+   algebra converts §3's generic characterization into a sharp one and *explains*
+   why the framework's Gödelian residue (A.1 bit, y_R, m₁, c₁) clusters exactly
+   there.
+
+Net effect on the open problem: **SectorRigidity should be stated relative to the
+canonical ℂ⊗ℍ⊗𝕆 sector lattice**, and the conjecture sharpens to "F_nat is
+coercive transverse to gauge × D_F-moduli" — a statement with a known, finite
+parametrization of its allowed flat set, hence materially more provable than the
+generic version. The L3 spec in §7 inherits this refinement.
+
 ## 6. The legibility chain, honest form
 
 CONDITIONAL chain, each link labeled:
