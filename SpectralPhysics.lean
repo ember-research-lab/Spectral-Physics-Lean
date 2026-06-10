@@ -368,3 +368,4 @@ import SpectralPhysics.JointSAGF.Monotone
 import SpectralPhysics.JointSAGF.Barrier
 import SpectralPhysics.JointSAGF.Basin
 import SpectralPhysics.JointSAGF.TraceConstraint
+import SpectralPhysics.JointSAGF.NonVacuity
