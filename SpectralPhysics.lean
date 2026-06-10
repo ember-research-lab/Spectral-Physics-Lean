@@ -369,3 +369,4 @@ import SpectralPhysics.JointSAGF.Barrier
 import SpectralPhysics.JointSAGF.Basin
 import SpectralPhysics.JointSAGF.TraceConstraint
 import SpectralPhysics.JointSAGF.NonVacuity
+import SpectralPhysics.JointSAGF.Faithfulness

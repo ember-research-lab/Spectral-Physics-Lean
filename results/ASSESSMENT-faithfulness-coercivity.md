@@ -278,3 +278,19 @@ Three layers, failing-first, zero new axioms:
   imports only Mathlib, so nothing here is contaminated, but **rebase (or merge
   `fix/unsound-axioms` first) before this branch lands**, or the P0 fixes get
   orphaned.
+
+---
+
+## Addendum (same day): L1 and L2 are now CLOSED in Lean
+
+`SpectralPhysics/JointSAGF/Faithfulness.lean` (root build, kernel-only axioms):
+the Saltire pair as 5-point relational kernels; `witness_isospectral`
+(five global moments agree), `witness_not_gauge` (120 relabelings) and
+`witness_not_monomial` (full monomial gauge, 120·2⁵ cases) — so
+`global_penalty_blind`: **every functional of the global moment data is
+constant across a gauge-inequivalent pair. DEGENERATE (§3) is now a
+machine-checked honest negative.** `naturality_separates`: 3-point sector data
+distinguishes the same pair — **L2 (§5) checked**. `SectorRigidityProp` stated
+as the named T3 open problem (monomial gauge as Bool-signed permutations),
+unused by any theorem. §0's table rows "DEGENERATE — characterized" and
+"naturality strictly stronger" are upgraded from assessed to proved.
