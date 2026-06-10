@@ -80,16 +80,22 @@ structure SpectralActionNormalization (data : SpectralActionData physicalSM_SU3)
   /-- `K` is positive (since it scales with cutoff moments and dim H_F > 0). -/
   K_pos : 0 < K
 
-/-- **Tier 3 hypothesis** — concrete identification of `K`.
+/-- PLACEHOLDER / VACUOUS (disclosed 2026-06-09 hygiene pass) — the body
+    `∃ c, 0 < c ∧ K = c·Λ²·f₂` is trivially satisfiable: since `K`, `Λ²`
+    and `f₂` are all positive, the witness `c := K/(Λ²·f₂)` ALWAYS
+    exists. The class therefore constrains nothing and is a content-free
+    shell. (The 2026-05-03 AUDIT.md claim that this is "non-vacuous"
+    was wrong — positivity of `c` does not save it; see the dated
+    correction note in AUDIT.md.)
 
-    In the Connes-Chamseddine action,
+    Intended (unformalized) content: in the Connes-Chamseddine action,
       `K = (Λ² · f_2) · V_M / 6 · (mult-weighted lepton-sector data)`
-
-    Here we don't compute the precise value; we just state that
-    `K` is what the lepton-sector spectral-action coefficient gives. -/
+    with a *specific* `c` computed from the cutoff function — pinning
+    `c` to that value is what would make this class substantive. -/
 class KIdentification (data : SpectralActionData physicalSM_SU3)
     (norm : SpectralActionNormalization data) where
-  /-- `K` equals (a positive linear combination of) the cutoff moments. -/
+  /-- `K` equals (a positive linear combination of) the cutoff moments
+      (vacuous as stated; see class docstring). -/
   K_form : ∃ (c : ℝ), 0 < c ∧
     norm.K = c * data.Λ^2 * data.moments.f_2
 
@@ -142,7 +148,17 @@ The two arrows correspond to the Tier-3 hypotheses
     a form that takes the spectral-action data and normalisation as
     arguments. The conclusion `y_c/y_τ = 3/16` comes from the `iff` in
     `bridge_clean_form` applied to the supplied matching hypothesis;
-    the matching hypothesis itself is *not* derived here. -/
+    the matching hypothesis itself is *not* derived here.
+
+    **Decorative-typeclass disclosure (2026-06-09 hygiene pass)**: the
+    instance arguments `[SpectralActionExpansion ...]` and
+    `[PontryaginCoefficientIsCharge ...]` are DECORATIVE — the proof
+    never uses them. The entire logical load is carried by the explicit
+    hypotheses `h_yτ : y_τ = K` and `h_yc_norm : y_c·16 = K·3`, which
+    are the conclusion in cross-multiplied form (same caveat as the
+    self-flag on `main_yukawa_ratio_theorem` in `SpectralAction.lean`).
+    The typeclass names suggest the spectral action supplies the
+    hypotheses; nothing here establishes that. -/
 theorem yukawa_ratio_from_spectral_structure
     (data : SpectralActionData physicalSM_SU3)
     (norm : SpectralActionNormalization data)

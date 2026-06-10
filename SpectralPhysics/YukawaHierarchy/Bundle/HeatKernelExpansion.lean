@@ -80,7 +80,12 @@ noncomputable def heatKernelTrace (data : FinSpectralData) (t : ℝ) : ℝ :=
     data.heatKernelTrace 0 = (data.N : ℝ) := by
   unfold heatKernelTrace; ring
 
-/-- The first-order Taylor coefficient of the heat kernel is `-trace2`. -/
+/-- PLACEHOLDER / CONTENT-FREE (2026-06-09 hygiene pass) — the body
+    `∃ c₁, c₁ = -trace2` is trivially provable for any value and says
+    nothing about derivatives: no `deriv` appears in the statement. The
+    actual claim "the first-order Taylor coefficient of
+    `heatKernelTrace` at 0 is `-trace2`" (i.e.
+    `deriv (heatKernelTrace data) 0 = -trace2`) is NOT formalized here. -/
 theorem heatKernelTrace_deriv_zero (data : FinSpectralData) :
     ∃ c₁ : ℝ, c₁ = -data.trace2 := ⟨-data.trace2, rfl⟩
 
@@ -89,12 +94,19 @@ end FinSpectralData
 /-! ## Bridge to the SM finite spectral triple -/
 
 /-- The framework's GUT-running finite spectral data, derived from
-    `frameworkGUT_Real`. -/
+    `frameworkGUT_Real`.
+
+    PLACEHOLDER NOTE (2026-06-09 hygiene pass): `trace4` and `trace6`
+    are set to `0` as placeholders — the true values are
+    `Tr_F(D_F⁴) = Σ mult·y⁴` and `Tr_F(D_F⁶) = Σ mult·y⁶`, which are
+    NOT computed here. Nothing downstream currently consumes the `t²`
+    or `t³` terms, but any future use of `heatKernelTrace` beyond first
+    order with `smFinData` would be silently wrong. -/
 noncomputable def smFinData : FinSpectralData where
   N := 384
   trace2 := frameworkGUT_Real.trDFsq
-  trace4 := 0   -- placeholder; would be Σ mult · y⁴ in full
-  trace6 := 0   -- placeholder
+  trace4 := 0   -- PLACEHOLDER (not the true Tr_F(D_F⁴) = Σ mult · y⁴)
+  trace6 := 0   -- PLACEHOLDER (not the true Tr_F(D_F⁶))
   N_pos := by decide
 
 /-- For the SM data, `trace2 = trDFsq(frameworkGUT_Real)`. -/
@@ -173,21 +185,13 @@ Concretely:
 
 The factor `V_M / (4π)² = 1/6` for unit-S⁴, giving the `/6`. -/
 
-/-- **Tier 1.**  The full `a_2` Seeley-DeWitt coefficient on unit S⁴ × F is
-    related to the Λ² coefficient by a factor of −1/6:
+/-- **Tier 1.**  `(1/6) · lambda2Coefficient(smFinData, R_{S⁴}) = a2`.
 
-      `(1/6) · lambda2Coefficient = -frameworkGUT_Real.a2 - 256`
-
-    For frameworkGUT_Real (y_t = 1, trDFsq ≈ 306):
-       LHS = (1/6)·(-306 - 768) = -179
-       RHS = -(−128 - 306/6) - 256 ≈ 179 + 51 - 256 ≈ -26 (off — sign error)
-
-    The correct identification is the `RealValuedConsistency.a2` definition,
-    which is `-128 - trDFsq/6`. So:
-
-      `(1/6) · (-trDFsq - 768) = -trDFsq/6 - 128 = a2`
-
-    i.e. `(1/6) · lambda2Coefficient = a2`. -/
+    This identity holds by construction of the two sides:
+    `lambda2Coefficient smFinData (s4_scalar_curvature 1)
+     = -trDFsq - 384·12/6 = -trDFsq - 768`, and
+    `RealValuedConsistency.a2 = -128 - trDFsq/6`; dividing the former
+    by 6 gives the latter (768/6 = 128). -/
 theorem a2_from_lambda2 :
     (1/6 : ℝ) * lambda2Coefficient smFinData (s4_scalar_curvature 1)
     = frameworkGUT_Real.a2 := by
