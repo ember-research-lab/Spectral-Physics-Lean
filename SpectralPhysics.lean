@@ -350,6 +350,11 @@ import SpectralPhysics.SigmaMPlHodgePeriod.Verdict
 -- Weinberg 1965, v0.9.1 §rem:berry-meaning, and two prior
 -- pre_geometric dispatches.  See InflationAsClosure/STATUS.md.
 import SpectralPhysics.InflationAsClosure.Verdict
+-- Sheet-count factorization (2026-06-12): the crossover axiom's 5³·2²
+-- decomposed — counting layer PROVED (500 = card of explicit crossing-class
+-- space), (A)–(D) residues as named hypotheses; see selection-corank
+-- SHEETCOUNT-DERIVATION note.
+import SpectralPhysics.InflationAsClosure.SheetCountFactorization
 -- ═══ WIP modules wired into the build 2026-05-26 (post verifier audit) ═══
 -- All verified DERIVED / compiling / honestly-tiered by the cortex verifier
 -- loops. Wired (rather than left orphan) so the whole-project `lake build`
