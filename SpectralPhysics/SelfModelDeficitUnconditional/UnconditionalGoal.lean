@@ -42,18 +42,21 @@ axioms" is the v0.9.2 progress that v0.9.2 deferred item C.1 requests.
   combinatorial `dim H_hid = 384 − 96` of `SectorDecomposition.lean`,
   not as a named target.
 
-## Audit trail
+## Audit trail (updated 2026-06-12, SOUNDNESS FIX 2)
 
-`#print axioms self_model_deficit_unconditional` shows the four
-non-kernel axioms:
+`#print axioms self_model_deficit_unconditional` shows the three
+non-kernel axioms (verified 2026-06-12):
 
-* `SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta.mellin_heat_kernel_finite_spectrum_log_sum`
 * `SpectralPhysics.SelfModelDeficitUnconditional.CapacityBound.BekensteinInformationBound`
 * `SpectralPhysics.SelfModelDeficitUnconditional.NaturalityBound.NaturalityCoherence`
+* `SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum.IsPhysicalSpectrum`
 
 plus kernel `propext`, `Classical.choice`, `Quot.sound`.
 
-Three named literature axioms, no others.
+Two named literature axioms plus the physicality predicate symbol, no
+others.  ALL headline forms are conditional on `IsPhysicalSpectrum V`
+(the prior `∀ V` forms were provably false — see PhysicalSpectrum.lean
+and AXIOM-SOUNDNESS-SWEEP.md item 0b).
 -/
 
 namespace SpectralPhysics.SelfModelDeficitUnconditional.UnconditionalGoal
@@ -83,19 +86,21 @@ It strengthens the v0.9.1 conditional theorem
 hypothesis arguments with discharges from the named literature
 axioms. -/
 theorem self_model_deficit_unconditional_param
-    (V : VisibleSpectrum) :
+    (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
     negZetaPrimeAtZero V = (spectralPhysicsSectoredAlgebra.dimHid : ℝ) :=
   self_model_deficit_theorem spectralPhysicsSectoredAlgebra V
-    (completenessAtLevel2_negZetaPrimeAtZero V)
-    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero V)
+    (completenessAtLevel2_negZetaPrimeAtZero V h_phys)
+    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero V h_phys)
 
 /-- **v0.9.2 headline — equality in `informationContent` form**. -/
 theorem self_model_deficit_unconditional_explicit_param
-    (V : VisibleSpectrum) :
+    (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
     informationContent V = (spectralPhysicsSectoredAlgebra.dimHid : ℝ) := by
   have h_eq := negZetaPrimeAtZero_eq V
   rw [← h_eq]
-  exact self_model_deficit_unconditional_param V
+  exact self_model_deficit_unconditional_param V h_phys
 
 /-- **v0.9.2 headline — specialised to the spectral-physics decomposition**.
 
@@ -112,31 +117,40 @@ Connes–Marcolli 2008).
 The verdict for v0.9.2 is **PARTIAL**: not closure, but a measurable
 reduction in the open content with explicit, cited axioms. -/
 theorem self_model_deficit_unconditional
-    (V : VisibleSpectrum) :
+    (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
     negZetaPrimeAtZero V = (288 : ℝ) := by
-  have h := self_model_deficit_unconditional_param V
+  have h := self_model_deficit_unconditional_param V h_phys
   rw [h, spectralPhysicsSectoredAlgebra_dimHid]
   norm_cast
 
 /-- Variant in `informationContent` form. -/
 theorem self_model_deficit_unconditional_explicit
-    (V : VisibleSpectrum) :
+    (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
     informationContent V = (288 : ℝ) := by
   have h_eq := negZetaPrimeAtZero_eq V
   rw [← h_eq]
-  exact self_model_deficit_unconditional V
+  exact self_model_deficit_unconditional V h_phys
 
 /-! ### `#print axioms` audit (compile-time)
 
 The following declarations explicitly check that the v0.9.2 headline
 depends only on the three named literature axioms plus kernel
-axioms.  See `STATUS.md` for the verified output text. -/
+axioms.  See `STATUS.md` for the verified output text.
+
+SOUNDNESS FIX 2 (2026-06-12): all headline forms are now conditional on
+`IsPhysicalSpectrum V` — the prior unconditional-in-`V` forms asserted
+`informationContent V = 288` for ARBITRARY spectra, which is provably
+false (`informationContent` is a concrete sum).  See
+PhysicalSpectrum.lean for the falsifier record and consistency model. -/
 
 -- Sanity: the parametric form factors through the predicate inventory
-example (V : VisibleSpectrum) :
+example (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
     (negZetaPrimeAtZero V ≤ (spectralPhysicsSectoredAlgebra.dimHid : ℝ)) ∧
       ((spectralPhysicsSectoredAlgebra.dimHid : ℝ) ≤ negZetaPrimeAtZero V) :=
-  ⟨negZetaPrimeAtZero_le_dimHid V,
-   dimHid_le_negZetaPrimeAtZero V⟩
+  ⟨negZetaPrimeAtZero_le_dimHid V h_phys,
+   dimHid_le_negZetaPrimeAtZero V h_phys⟩
 
 end SpectralPhysics.SelfModelDeficitUnconditional.UnconditionalGoal

@@ -6,6 +6,7 @@ Authors: Aaron Ben-Shalom
 import SpectralPhysics.SelfModelDeficitRigorous.SectorDecomposition
 import SpectralPhysics.SelfModelDeficitRigorous.FaithfulState
 import SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
+import SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum
 import SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessBound
 import SpectralPhysics.SelfModelDeficitRigorous.Theorem
 
@@ -113,21 +114,32 @@ gap acknowledged in v0.9.2 deferred item C.1. -/
 -- set INCONSISTENT (see AXIOM-SOUNDNESS-SWEEP.md item 0).  Restricted to the
 -- actual content `negZetaPrimeAtZero V` and the canonical algebra:
 -- `288 ≤ −ζ̃'_vis(0)`, a genuine no-dead-weight claim, no falsifying instantiation.
-axiom NaturalityCoherence (V : VisibleSpectrum) :
+-- SOUNDNESS FIX 2 (2026-06-12): the 2026-05-27 form was STILL unsound — this
+-- axiom ALONE derived `False` at the single-mode `y = 1` spectrum
+-- (`informationContent = 0`, asserted `288 ≤ 0`; machine-checked falsifier with
+-- axiom set [propext, Classical.choice, Quot.sound, NaturalityCoherence], no
+-- sorryAx; see PhysicalSpectrum.lean + AXIOM-SOUNDNESS-SWEEP.md item 0b).
+-- Now conditional on `IsPhysicalSpectrum V`; consistency model in
+-- PhysicalSpectrum.lean.
+axiom NaturalityCoherence (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
     (spectralPhysicsSectoredAlgebra.dimHid : ℝ) ≤ negZetaPrimeAtZero V
 
 /-- Discharge of v0.9.1 predicate (ii) at the canonical algebra:
 `SectorFaithfulNoDeadWeight = (dimHid ≤ negZetaPrimeAtZero V)` is exactly the
-Mac Lane no-dead-weight bound. -/
-theorem sectorFaithfulNoDeadWeight_negZetaPrimeAtZero (V : VisibleSpectrum) :
+Mac Lane no-dead-weight bound (for physical spectra). -/
+theorem sectorFaithfulNoDeadWeight_negZetaPrimeAtZero (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
     SectorFaithfulNoDeadWeight spectralPhysicsSectoredAlgebra (negZetaPrimeAtZero V) :=
-  NaturalityCoherence V
+  NaturalityCoherence V h_phys
 
-/-- Consequence: `dim(H_hid) ≤ −ζ̃'_vis(0)` at the canonical algebra. -/
-theorem dimHid_le_negZetaPrimeAtZero (V : VisibleSpectrum) :
+/-- Consequence: `dim(H_hid) ≤ −ζ̃'_vis(0)` at the canonical algebra, for
+physical spectra. -/
+theorem dimHid_le_negZetaPrimeAtZero (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
     (spectralPhysicsSectoredAlgebra.dimHid : ℝ) ≤ negZetaPrimeAtZero V :=
   sector_faithfulness_upper_bound spectralPhysicsSectoredAlgebra V
-    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero V)
+    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero V h_phys)
 
 /-! ### Honest residue
 

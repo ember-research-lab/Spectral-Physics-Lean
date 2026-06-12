@@ -179,3 +179,36 @@ not be presented as established, and the Cheeger axioms should be quarantined.
 - Blast-radius `#print axioms` was run on the register's headline set + the Cheeger consumers; it was **not**
   run on all ~3300 build declarations, so a deeply-buried consumer of `cheeger_lower/upper` cannot be 100%
   excluded (textual grep found none).
+
+---
+
+## Item 0b (2026-06-12) — the item-0 fix was STILL unsound
+
+The 2026-05-27 restriction (`c : ℝ` → `negZetaPrimeAtZero V`) left
+`V : VisibleSpectrum` universally quantified over ARBITRARY spectral data,
+while `negZetaPrimeAtZero_eq : negZetaPrimeAtZero V = informationContent V`
+is a theorem and `informationContent` is a concrete sum. `NaturalityCoherence`
+ALONE derived `False` at the single-mode `y = 1` spectrum
+(`informationContent = 0`, asserted `288 ≤ 0`).
+
+**Machine-checked falsifier (2026-06-12):** `still_inconsistent : False`
+compiled with `#print axioms = [propext, Classical.choice, Quot.sound,
+NaturalityCoherence]` — no `sorryAx`. (Counterexample file removed in the
+fixing commit; reproduce by asserting `NaturalityCoherence ⟨1, fun _ => 1,
+fun _ => 1, fun _ => one_pos⟩` and rewriting with `negZetaPrimeAtZero_eq`.)
+
+**Scanner gap:** pattern 8 catches free NUMERIC variables; a free
+STRUCTURE variable whose fields feed a computable definition evades it.
+Added lesson: any axiom whose conclusion mentions `f V` for computable/
+choose-spec'd `f` and unconstrained structure `V` has the same shape.
+
+**Fix 2:** both axioms (and all downstream headline theorems in
+`UnconditionalGoal.lean`) are now conditional on the undefined predicate
+`IsPhysicalSpectrum : VisibleSpectrum → Prop`
+(`SelfModelDeficitUnconditional/PhysicalSpectrum.lean`). Consistency model:
+interpret `IsPhysicalSpectrum V := (informationContent V = 288)`; both
+axioms become theorems and the class is nonempty (`witnessSpectrum`,
+single mode `y = e^{−288}`, content exactly 288 — proven). The
+conditionality is the honest formal residue of manuscript Steps 3–4
+("argued, not proven"), which only ever concerned the realized
+fixed-point spectrum.

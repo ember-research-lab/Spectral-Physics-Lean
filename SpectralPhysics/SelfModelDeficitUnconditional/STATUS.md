@@ -137,3 +137,22 @@ This is real progress and worth the v0.9.2 stamp. It is **not** closure; the thr
 - Connes, A. and Marcolli, M. *Noncommutative Geometry, Quantum Fields and Motives*. AMS Colloquium Publications vol. 55 (2008), §1.7.
 - Berline, N., Getzler, E. and Vergne, M. *Heat Kernels and Dirac Operators*. Grundlehren der Math. Wiss. **298**, Springer (1992), Ch. 2 and §9.6.
 - Ben-Shalom, A. *Spectral Physics* v0.9 (lines 8464, 8753, 8767, 9036, 9157, 9201, 9204, 14910, 16672, 16723); v0.9.1 release.
+
+---
+
+## SOUNDNESS FIX 2 (2026-06-12) — headline forms made conditional on physicality
+
+The 2026-05-27 fix was itself still unsound: `V : VisibleSpectrum` remained
+free over arbitrary spectra while `negZetaPrimeAtZero_eq` makes the content a
+concrete computable sum; `NaturalityCoherence` alone derived `False` at the
+single-mode `y = 1` spectrum (machine-checked falsifier, no `sorryAx`; see
+`results/AXIOM-SOUNDNESS-SWEEP.md` item 0b).
+
+All forms of the headline (and both capacity axioms) are now conditional on
+the undefined predicate `IsPhysicalSpectrum : VisibleSpectrum → Prop`
+(`PhysicalSpectrum.lean`, with consistency model + nonemptiness witness).
+The verified `#print axioms` set for `self_model_deficit_unconditional` is
+now: kernel three + `BekensteinInformationBound` + `NaturalityCoherence` +
+`IsPhysicalSpectrum`. The "no caller-supplied Prop hypotheses" claim above
+is RETIRED — the physicality hypothesis is exactly the honest residue of
+manuscript Steps 3–4, and removing it was the unsoundness.

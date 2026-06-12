@@ -139,6 +139,7 @@ import SpectralPhysics.SelfModelDeficitRigorous.Theorem
 -- Verdict: PARTIAL — 2 open predicates → 0 open predicates + 2 more
 -- named axioms.  See SelfModelDeficitUnconditional/STATUS.md.
 import SpectralPhysics.SelfModelDeficitUnconditional.PredicateInventory
+import SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum
 import SpectralPhysics.SelfModelDeficitUnconditional.CapacityBound
 import SpectralPhysics.SelfModelDeficitUnconditional.NaturalityBound
 import SpectralPhysics.SelfModelDeficitUnconditional.MellinFunctionalDet
