@@ -35,6 +35,12 @@ import SpectralPhysics.Algebra.DoublingMap
 import SpectralPhysics.Algebra.Forcing
 import SpectralPhysics.Algebra.CirculantMatrix
 import SpectralPhysics.Algebra.SpectralArithmetic
+-- Self-observation register: (ℤ₂)³ from the CD involution stack; trace
+-- register-blindness proved definitionally (selection-corank notes §14.7).
+import SpectralPhysics.Algebra.RegisterForcing
+-- Exit-stability skeleton: fixed-point neighborhoods are gap-protected
+-- (Condensate vs Collapse); DK-blinding bound is the open Lean target.
+import SpectralPhysics.ExitStability.Skeleton
 import SpectralPhysics.Triad.GoldenRatio
 import SpectralPhysics.Triad.SelfReferentialTriad
 import SpectralPhysics.Predictions.StrongCoupling
