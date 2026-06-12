@@ -104,6 +104,34 @@ else
 fi
 echo
 
+echo "=== Pattern 9: UNSOUNDNESS — free STRUCTURE variable in bound/equality axioms ==="
+echo "  (Added 2026-06-12 after sweep item 0b: a free structure-typed binder whose"
+echo "  fields feed a computable definition is the SAME class as a free numeric"
+echo "  variable — e.g. 'axiom f (V : VisibleSpectrum) : g V ≤ X' with computable g"
+echo "  is FALSE at a counterexample V. Pattern 8 cannot see it.)"
+echo "  Flags axioms with a non-numeric structure-typed binder in an (in)equality"
+echo "  conclusion and NO Prop-hypothesis binder guarding it. REVIEW each: is every"
+echo "  structure binder constrained by a hypothesis, or freely quantified?"
+if [ -n "$AX_FILES" ]; then
+  awk '
+    function flush() {
+      if (inax && buf ~ /\([A-Za-z_][A-Za-z0-9_]* :[ ]*[A-Z][A-Za-z0-9_.]*\)/ \
+          && buf ~ /≤|≥| < | > | = / \
+          && buf !~ /\(h[A-Za-z0-9_]* :/) {
+        gsub(/[ \t]+/, " ", buf); print "  " loc "  " buf
+      }
+      inax=0; buf=""
+    }
+    /^axiom / { flush(); inax=1; buf=$0; loc=FILENAME ":" FNR; next }
+    inax && ($0 == "" || $0 ~ /^(def |theorem |lemma |namespace |end |open |\/-|--|@\[|instance |structure |inductive |abbrev )/) { flush(); next }
+    inax { buf = buf " " $0 }
+    END { flush() }
+  ' $AX_FILES 2>/dev/null | head -60
+else
+  echo "  (no .lean files)"
+fi
+echo
+
 echo "=== Summary ==="
 echo "Manual review required for any matches above. Each flagged axiom should:"
 echo "  (a) Convert to 'theorem' with trivial proof + placeholder docstring, OR"
