@@ -139,6 +139,7 @@ import SpectralPhysics.SelfModelDeficitRigorous.Theorem
 -- Verdict: PARTIAL — 2 open predicates → 0 open predicates + 2 more
 -- named axioms.  See SelfModelDeficitUnconditional/STATUS.md.
 import SpectralPhysics.SelfModelDeficitUnconditional.PredicateInventory
+import SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum
 import SpectralPhysics.SelfModelDeficitUnconditional.CapacityBound
 import SpectralPhysics.SelfModelDeficitUnconditional.NaturalityBound
 import SpectralPhysics.SelfModelDeficitUnconditional.MellinFunctionalDet
@@ -364,3 +365,9 @@ import SpectralPhysics.SelfRef.SpectralFloor
 -- Dark matter (zeroed modes) + YM positivity-gap localization:
 import SpectralPhysics.DarkMatter.ZeroedModes
 import SpectralPhysics.MetaPattern.PositivityGapLocalization
+import SpectralPhysics.JointSAGF.Monotone
+import SpectralPhysics.JointSAGF.Barrier
+import SpectralPhysics.JointSAGF.Basin
+import SpectralPhysics.JointSAGF.TraceConstraint
+import SpectralPhysics.JointSAGF.NonVacuity
+import SpectralPhysics.JointSAGF.Faithfulness

@@ -159,8 +159,13 @@ spectral-flow crossings.
 A future "closing" branch would replace this axiom with the formal APS
 index theorem for KO-dim 6 finite spectral triples — which requires
 the APS index theorem in Mathlib (not currently available). -/
-axiom aps_bismut_freed_majorana_doubling :
-    ∃ apsFactor : ℕ, apsFactor = 2
+-- SOUNDNESS-HYGIENE FIX (2026-05-27): `∃ apsFactor:ℕ, apsFactor = 2` is trivially
+-- provable (`⟨2, rfl⟩`), so per RIGOROUS_WORKFLOW it must be a `theorem`, not an
+-- `axiom` (the `axiom` keyword is for non-derivable assertions). The literature
+-- content (APS index theorem for KO-dim 6) remains NOT formalized — this is a
+-- named PLACEHOLDER reification, not a proof of the index theorem.
+theorem aps_bismut_freed_majorana_doubling :
+    ∃ apsFactor : ℕ, apsFactor = 2 := ⟨2, rfl⟩
 
 /-- The APS / Bismut-Freed doubling factor, extracted from the named
     axiom.  By construction `aps_factor = 2`. -/

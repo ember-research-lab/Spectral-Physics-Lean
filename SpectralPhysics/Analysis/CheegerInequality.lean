@@ -54,6 +54,17 @@ structure CheegerData where
   gap_nonneg : 0 ≤ spectral_gap
   /-- Maximum degree is positive -/
   d_max_pos : 0 < d_max
+  -- SOUNDNESS FIX (2026-05-27): the Cheeger inequalities below were previously
+  -- `axiom`s over arbitrary `CheegerData` — FALSE for unrelated `(h, gap, d_max)`
+  -- (e.g. h=10, gap=0, d_max=1 ⇒ 50 ≤ 0), i.e. an inconsistent axiom (see
+  -- AXIOM-SOUNDNESS-SWEEP.md). They are now structure INVARIANTS: a `CheegerData`
+  -- is, by definition, spectral data that satisfies Cheeger. The only constructor
+  -- (`SimpleGraph.toCheegerData`) discharges them from the graph-level
+  -- `cheeger_{lower,upper}_bound` (Category-A: real co-area proof, currently sorry).
+  /-- Cheeger lower bound holds for this data (Cheeger 1970). -/
+  cheeger_lower_holds : cheeger_h ^ 2 / (2 * d_max) ≤ spectral_gap
+  /-- Cheeger upper bound holds for this data (Buser 1982). -/
+  cheeger_upper_holds : spectral_gap ≤ 2 * cheeger_h * d_max
 
 /-- **Cheeger inequality (lower bound)**: h² / (2 d_max) ≤ λ₁.
 
@@ -65,9 +76,10 @@ S_t = {x : v₁(x) ≥ t}. The co-area formula gives:
   ∫ |∂S_t| dt ≤ Σ_{x~y} |v₁(x) - v₁(y)| w(x,y).
 Cauchy-Schwarz + Rayleigh quotient: h ≤ √(2λ₁ d_max).
 
-Manuscript: Theorem 33.1 (thm:cheeger, line 11533). -/
-axiom cheeger_lower (cd : CheegerData) :
-    cd.cheeger_h ^ 2 / (2 * cd.d_max) ≤ cd.spectral_gap
+Manuscript: Theorem 33.1 (thm:cheeger, line 11533).
+Now a projection of the `CheegerData` invariant (was an unsound axiom). -/
+theorem cheeger_lower (cd : CheegerData) :
+    cd.cheeger_h ^ 2 / (2 * cd.d_max) ≤ cd.spectral_gap := cd.cheeger_lower_holds
 
 /-- **Cheeger inequality (upper bound)**: λ₁ ≤ 2h · d_max.
 
@@ -76,9 +88,10 @@ Construct a test function f: f = 1 on the optimal set S, f = 0 on S̄,
 linear on the boundary. Rayleigh quotient:
   λ₁ ≤ R(f) = ⟨f, Lf⟩/⟨f,f⟩ ≤ 2h · d_max.
 
-Manuscript: Theorem 33.1 (thm:cheeger, line 11533). -/
-axiom cheeger_upper (cd : CheegerData) :
-    cd.spectral_gap ≤ 2 * cd.cheeger_h * cd.d_max
+Manuscript: Theorem 33.1 (thm:cheeger, line 11533).
+Now a projection of the `CheegerData` invariant (was an unsound axiom). -/
+theorem cheeger_upper (cd : CheegerData) :
+    cd.spectral_gap ≤ 2 * cd.cheeger_h * cd.d_max := cd.cheeger_upper_holds
 
 /-- **Topological gap**: If the Cheeger constant is positive (the structure
 is well-connected), then the spectral gap is positive. -/

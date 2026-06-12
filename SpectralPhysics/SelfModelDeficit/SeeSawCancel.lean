@@ -128,10 +128,18 @@ multiplicities — not of `M_R` itself.
 
     **Citation**: v0.9 Remark `rem:seesaw-product` (line 8489) and
     `rem:m1-sensitivity` (line 8497). -/
-axiom seesaw_product_independence :
+-- SOUNDNESS-HYGIENE FIX (2026-05-27): this existential is trivially provable
+-- (witness `K_seesaw = 288 − S_charged`, discharged from `S_total_eq_288`), so per
+-- RIGOROUS_WORKFLOW it must be a `theorem`, not an `axiom`. NOTE: it being provable
+-- is exactly the "288 see-saw closure" CIRCULARITY flagged in the gap register —
+-- `S_νR = −174.01` is the back-fit that makes the decimals sum to the target 288.
+theorem seesaw_product_independence :
     ∃ K_seesaw : ℝ,
       S_nuR = K_seesaw - S_nuL ∧
-      S_charged + K_seesaw = 288
+      S_charged + K_seesaw = 288 :=
+  ⟨288 - S_charged,
+    by have h := S_total_eq_288; simp only [S_total] at h; linarith,
+    by ring⟩
 
 /-! ## Structural consequences — Tier 1 -/
 

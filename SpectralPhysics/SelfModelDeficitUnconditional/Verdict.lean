@@ -100,12 +100,17 @@ open SpectralPhysics.SelfModelDeficitUnconditional.UnconditionalGoal
 via three named literature axioms.
 
 This `Prop`-valued statement records the precise content of the
-v0.9.2 dispatch: for any visible spectrum, the Mellin-regularised
-visible-sector functional determinant equals 288. -/
-def V092PartialVerdict : Prop :=
-  ∀ V : VisibleSpectrum, negZetaPrimeAtZero V = (288 : ℝ)
+v0.9.2 dispatch: for any **physical** visible spectrum, the
+Mellin-regularised visible-sector functional determinant equals 288.
 
-/-- The v0.9.2 PARTIAL verdict holds. -/
+SOUNDNESS FIX 2 (2026-06-12): the prior unconditional-in-`V` form
+(`∀ V, negZetaPrimeAtZero V = 288`) was provably FALSE — see
+`PhysicalSpectrum.lean` and AXIOM-SOUNDNESS-SWEEP.md item 0b. -/
+def V092PartialVerdict : Prop :=
+  ∀ V : VisibleSpectrum,
+    PhysicalSpectrum.IsPhysicalSpectrum V → negZetaPrimeAtZero V = (288 : ℝ)
+
+/-- The v0.9.2 PARTIAL verdict holds (conditional on physicality). -/
 theorem v092_partial_verdict_holds : V092PartialVerdict :=
   self_model_deficit_unconditional
 

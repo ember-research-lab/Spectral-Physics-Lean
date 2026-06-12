@@ -6,7 +6,9 @@ Authors: Aaron Ben-Shalom
 import SpectralPhysics.SelfModelDeficitRigorous.SectorDecomposition
 import SpectralPhysics.SelfModelDeficitRigorous.FaithfulState
 import SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
+import SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum
 import SpectralPhysics.SelfModelDeficitRigorous.CompletenessBound
+import SpectralPhysics.SelfModelDeficitRigorous.Theorem
 
 /-!
 # v0.9.2 Capacity Bound — Bekenstein literature axiom
@@ -69,6 +71,7 @@ open SpectralPhysics.SelfModelDeficitRigorous.SectorDecomposition
 open SpectralPhysics.SelfModelDeficitRigorous.FaithfulState
 open SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
 open SpectralPhysics.SelfModelDeficitRigorous.CompletenessBound
+open SpectralPhysics.SelfModelDeficitRigorous.Theorem
 
 /-- **Named literature axiom**: the Bekenstein universal information
 bound, specialised to a finite-dimensional sectored C*-algebra
@@ -103,33 +106,41 @@ about bounded *physical* systems) for an abstract sectored
 finite-dim C*-algebra is the genuine v0.9.2 research-program gap.
 v0.9.2 deferred item C.1 (`v092_deferred.md` line 23) estimates this
 at "6–12 month research project". -/
-axiom BekensteinInformationBound
-    (S : SectoredStarAlgebra) (c : ℝ) : c ≤ (S.dimHid : ℝ)
+-- SOUNDNESS FIX (2026-05-27): the prior form
+--   `axiom … (S)(c : ℝ) : c ≤ S.dimHid`
+-- quantified `c` over ALL reals (false at `c = dimHid+1`) and `S` over ALL
+-- algebras (combined with NaturalityCoherence it forced every `dimHid` equal),
+-- making the axiom set INCONSISTENT (`False` derivable; see AXIOM-SOUNDNESS-SWEEP.md
+-- item 0).  Restricted to the actual information content `negZetaPrimeAtZero V`
+-- and the canonical algebra: the bound now states `−ζ̃'_vis(0) ≤ 288`, a genuine
+-- (Tier-2, capacity-bound) claim about the noncomputable `negZetaPrimeAtZero`,
+-- with no falsifying instantiation.
+-- SOUNDNESS FIX 2 (2026-06-12): the 2026-05-27 form was STILL unsound — `V`
+-- remained free over arbitrary spectra while `negZetaPrimeAtZero_eq` makes the
+-- content computable (machine-checked falsifier: paired with NaturalityCoherence
+-- at the single-mode `y = 1` spectrum; see PhysicalSpectrum.lean +
+-- AXIOM-SOUNDNESS-SWEEP.md item 0b).  Now conditional on `IsPhysicalSpectrum V`
+-- — the manuscript's Steps 3–4 only ever claimed the bound for the realized
+-- fixed-point spectrum.  Consistency model in PhysicalSpectrum.lean.
+axiom BekensteinInformationBound (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
+    negZetaPrimeAtZero V ≤ (spectralPhysicsSectoredAlgebra.dimHid : ℝ)
 
-/-- **Discharge of v0.9.1 predicate (i)** from the Bekenstein axiom.
+/-- Discharge of v0.9.1 predicate (i) at the canonical algebra:
+`CompletenessAtLevel2 = (negZetaPrimeAtZero V ≤ dimHid)` is exactly the Bekenstein
+capacity bound (for physical spectra). -/
+theorem completenessAtLevel2_negZetaPrimeAtZero (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
+    CompletenessAtLevel2 spectralPhysicsSectoredAlgebra (negZetaPrimeAtZero V) :=
+  BekensteinInformationBound V h_phys
 
-The v0.9.1 predicate `CompletenessAtLevel2 S c` is *defined* as
-`c ≤ (S.dimHid : ℝ)`, which is the exact statement of
-`BekensteinInformationBound`.  Hence the discharge is `rfl`-clean. -/
-theorem completenessAtLevel2_of_bekenstein
-    (S : SectoredStarAlgebra) (c : ℝ) :
-    CompletenessAtLevel2 S c :=
-  BekensteinInformationBound S c
-
-/-- Specialised form: at the spectral-physics visible spectrum, the
-Bekenstein bound discharges `CompletenessAtLevel2`. -/
-theorem completenessAtLevel2_negZetaPrimeAtZero
-    (S : SectoredStarAlgebra) (V : VisibleSpectrum) :
-    CompletenessAtLevel2 S (negZetaPrimeAtZero V) :=
-  completenessAtLevel2_of_bekenstein S (negZetaPrimeAtZero V)
-
-/-- Consequence: `−ζ̃'_vis(0) ≤ dim(H_hid)` for any `(S, V)` under the
-Bekenstein axiom. -/
-theorem negZetaPrimeAtZero_le_dimHid
-    (S : SectoredStarAlgebra) (V : VisibleSpectrum) :
-    negZetaPrimeAtZero V ≤ (S.dimHid : ℝ) :=
-  completeness_lower_bound S V
-    (completenessAtLevel2_negZetaPrimeAtZero S V)
+/-- Consequence: `−ζ̃'_vis(0) ≤ dim(H_hid)` at the canonical algebra, for
+physical spectra, under the Bekenstein axiom. -/
+theorem negZetaPrimeAtZero_le_dimHid (V : VisibleSpectrum)
+    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
+    negZetaPrimeAtZero V ≤ (spectralPhysicsSectoredAlgebra.dimHid : ℝ) :=
+  completeness_lower_bound spectralPhysicsSectoredAlgebra V
+    (completenessAtLevel2_negZetaPrimeAtZero V h_phys)
 
 /-! ### Honest residue
 
