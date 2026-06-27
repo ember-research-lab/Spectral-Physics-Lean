@@ -42,9 +42,27 @@ namespace SpectralPhysics.KoideFormula
 def koideRatio (m1 m2 m3 : ℝ) (h1 : 0 < m1) (h2 : 0 < m2) (h3 : 0 < m3) : ℝ :=
   (m1 + m2 + m3) / (Real.sqrt m1 + Real.sqrt m2 + Real.sqrt m3) ^ 2
 
-/-- **Koide formula from circulant structure**: If the mass matrix is
-    circulant (arising from the Z_3 symmetry of the triad), then the
-    Koide ratio is exactly 2/3. -/
+/-- **Koide identity from the circulant parameterization — OPEN obligation (`sorry`).**
+
+    STATUS (2026-06-27 manuscript↔Lean sync audit): this theorem is the one
+    HIGH-severity divergence. As stated below it is **false**: the circulant
+    structure alone does NOT force the Koide ratio to `2/3`. The genuine
+    algebra is `K = 1/3 + ε²/6`, where `ε` is the democratic amplitude of the
+    square-root-mass parameterization `√mₖ = M(1 + ε·cos(θ + 2πk/3))`; hence
+    `K = 2/3 ⟺ ε² = 2`. The value `ε = √2` is an *empirical fit* to the lepton
+    masses, not a consequence of circularity (manuscript Remark
+    `rem:koide-eps-honest`).
+
+    WELL-POSED TARGET (the actual open task): add the hypothesis `ε² = 2` (the
+    democratic amplitude) to the circulant parameterization and prove
+    `koideRatio = 2/3` from the trig identities `Σ cos = 0`, `Σ cos² = 3/2`.
+    That conditional is true and provable; the remaining *physics* gap — whether
+    the `D_F` lepton block forces `ε = √2` — stays open and is NOT an algebra
+    obligation.
+
+    Currently only `koide_approx` (the numerical bracket from measured masses)
+    is proven. Supporting `Algebra/CirculantMatrix.lean` is also incomplete
+    (2 `sorry`). The manuscript no longer claims this lemma as formalized. -/
 theorem circulant_implies_koide
     (a b_re b_im : ℝ)
     (ha : a > 0) (hb : b_re ^ 2 + b_im ^ 2 > 0)
