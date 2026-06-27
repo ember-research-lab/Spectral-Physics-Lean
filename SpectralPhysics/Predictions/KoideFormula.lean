@@ -5,6 +5,7 @@ Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.Triad.SelfReferentialTriad
 import Mathlib.Algebra.Order.Field.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
 /-!
 # The Koide Formula from Circulant Structure (Ch 39)
@@ -15,16 +16,20 @@ of a circulant mass matrix automatically satisfy the Koide sum rule.
 
 ## Main results (to be formalized)
 
-* `koide_ratio` : K = (m_e + m_mu + m_tau) / (sqrt(m_e) + sqrt(m_mu) + sqrt(m_tau))^2 = 2/3
-* `circulant_implies_koide` : Circulant structure forces K = 2/3
+* `koideRatio` : K = (m_e + m_mu + m_tau) / (sqrt(m_e) + sqrt(m_mu) + sqrt(m_tau))^2
+* `circulant_implies_koide` : CONDITIONAL identity — with the democratic
+  amplitude ε² = 2 in √mₖ = M(1 + ε cos(θ + 2πk/3)), K = 2/3 (proved).
+  Circulant structure alone does NOT force K = 2/3; the general value is
+  K = 1/3 + ε²/6, and ε = √2 is an empirical fit, not a theorem.
 * `koide_approx` : Numerical agreement with measured lepton masses
 
 ## The derivation chain
 
 1. Triad {O, S, R} has Z_3 cyclic symmetry
 2. Mass matrix in the symmetric basis is circulant: M = a I + b C + b* C^2
-3. Eigenvalues: m_k = a + b omega^k + b* omega^{-k}, k = 0,1,2
-4. Direct computation: (sum m_k) / (sum sqrt(m_k))^2 = 2/3
+3. Sqrt-mass eigenvalues: √m_k = M(1 + ε cos(θ + 2πk/3)), k = 0,1,2
+4. Direct computation: (sum m_k) / (sum sqrt(m_k))^2 = 1/3 + ε²/6,
+   which equals 2/3 IFF ε² = 2 (the conditional proved in this file)
 
 ## References
 
@@ -42,39 +47,102 @@ namespace SpectralPhysics.KoideFormula
 def koideRatio (m1 m2 m3 : ℝ) (h1 : 0 < m1) (h2 : 0 < m2) (h3 : 0 < m3) : ℝ :=
   (m1 + m2 + m3) / (Real.sqrt m1 + Real.sqrt m2 + Real.sqrt m3) ^ 2
 
-/-- **Koide identity from the circulant parameterization — OPEN obligation (`sorry`).**
+/-- **Koide identity from the circulant parameterization — CONDITIONAL form (proved).**
 
-    STATUS (2026-06-27 manuscript↔Lean sync audit): this theorem is the one
-    HIGH-severity divergence. As stated below it is **false**: the circulant
+    STATUS (2026-06-27 manuscript↔Lean sync audit): the earlier statement of
+    this theorem (`circulant ⇒ K = 2/3`, with a `sorry`) was the one
+    HIGH-severity divergence: it was **false as stated**, because circulant
     structure alone does NOT force the Koide ratio to `2/3`. The genuine
     algebra is `K = 1/3 + ε²/6`, where `ε` is the democratic amplitude of the
-    square-root-mass parameterization `√mₖ = M(1 + ε·cos(θ + 2πk/3))`; hence
+    square-root-mass parameterization `√mₖ = M·(1 + ε·cos(θ + 2πk/3))`; hence
     `K = 2/3 ⟺ ε² = 2`. The value `ε = √2` is an *empirical fit* to the lepton
     masses, not a consequence of circularity (manuscript Remark
     `rem:koide-eps-honest`).
 
-    WELL-POSED TARGET (the actual open task): add the hypothesis `ε² = 2` (the
-    democratic amplitude) to the circulant parameterization and prove
-    `koideRatio = 2/3` from the trig identities `Σ cos = 0`, `Σ cos² = 3/2`.
-    That conditional is true and provable; the remaining *physics* gap — whether
-    the `D_F` lepton block forces `ε = √2` — stays open and is NOT an algebra
-    obligation.
+    WHAT IS PROVED HERE (the well-posed conditional): given `M > 0`, the
+    democratic amplitude `ε² = 2`, an angle `θ`, the branch-selection
+    positivity `0 < 1 + ε·cos(θ + 2πk/3)` (needed because
+    `√((M·u)²) = |M·u|`, and `1 + √2·cos` is negative for some `θ`), and the
+    parameterization `mₖ = (M·(1 + ε·cos(θ + 2πk/3)))²`, then
+    `koideRatio m₀ m₁ m₂ = 2/3`. The proof uses only the two cyclic cosine
+    sums `Σ cos = 0`, `Σ cos² = 3/2` (via the cosine-addition expansions and
+    `sin² + cos² = 1`). It FAILS without `hε : ε² = 2` — that is the point.
 
-    Currently only `koide_approx` (the numerical bracket from measured masses)
-    is proven. Supporting `Algebra/CirculantMatrix.lean` is also incomplete
-    (2 `sorry`). The manuscript no longer claims this lemma as formalized. -/
+    What stays OPEN (NOT closed by this): whether the `D_F` lepton-Yukawa block
+    *forces* `ε = √2`. That is a physics question, kept as a Tier-3 empirical
+    fit in the manuscript. Supporting `Algebra/CirculantMatrix.lean` also still
+    has 2 `sorry` (generic circulant eigenvalue theory). -/
 theorem circulant_implies_koide
-    (a b_re b_im : ℝ)
-    (ha : a > 0) (hb : b_re ^ 2 + b_im ^ 2 > 0)
-    -- The three eigenvalues of the circulant matrix
+    (M ε θ : ℝ)
+    (hM : 0 < M)
+    (hε : ε ^ 2 = 2)
+    -- Branch-selection positivity: 1 + ε·cos(θ + 2πk/3) > 0 for k = 0,1,2,
+    -- so that √mₖ = M·(1 + ε·cos…) rather than its absolute value.
+    (hp0 : 0 < 1 + ε * Real.cos θ)
+    (hp1 : 0 < 1 + ε * Real.cos (θ + 2 * Real.pi / 3))
+    (hp2 : 0 < 1 + ε * Real.cos (θ + 4 * Real.pi / 3))
+    -- The three sqrt-mass eigenvalues of the circulant parameterization.
     (m1 m2 m3 : ℝ)
-    (h_m1 : m1 = a + 2 * b_re) -- k=0 mode
-    (h_m2_pos : 0 < m2)
-    (h_m3_pos : 0 < m3)
-    (h_m1_pos : 0 < m1)
-    :
+    (h_m1 : m1 = (M * (1 + ε * Real.cos θ)) ^ 2)
+    (h_m2 : m2 = (M * (1 + ε * Real.cos (θ + 2 * Real.pi / 3))) ^ 2)
+    (h_m3 : m3 = (M * (1 + ε * Real.cos (θ + 4 * Real.pi / 3))) ^ 2)
+    (h_m1_pos : 0 < m1) (h_m2_pos : 0 < m2) (h_m3_pos : 0 < m3) :
     koideRatio m1 m2 m3 h_m1_pos h_m2_pos h_m3_pos = 2 / 3 := by
-  sorry
+  -- Special-angle constants: cos/sin at 2π/3 and 4π/3.
+  have hcos23 : Real.cos (2 * Real.pi / 3) = -(1 / 2) := by
+    rw [show 2 * Real.pi / 3 = Real.pi - Real.pi / 3 by ring, Real.cos_sub, Real.cos_pi,
+      Real.sin_pi, Real.cos_pi_div_three]
+    ring
+  have hsin23 : Real.sin (2 * Real.pi / 3) = Real.sqrt 3 / 2 := by
+    rw [show 2 * Real.pi / 3 = Real.pi - Real.pi / 3 by ring, Real.sin_sub, Real.cos_pi,
+      Real.sin_pi, Real.sin_pi_div_three]
+    ring
+  have hcos43 : Real.cos (4 * Real.pi / 3) = -(1 / 2) := by
+    rw [show 4 * Real.pi / 3 = Real.pi + Real.pi / 3 by ring, Real.cos_add, Real.cos_pi,
+      Real.sin_pi, Real.cos_pi_div_three]
+    ring
+  have hsin43 : Real.sin (4 * Real.pi / 3) = -(Real.sqrt 3 / 2) := by
+    rw [show 4 * Real.pi / 3 = Real.pi + Real.pi / 3 by ring, Real.sin_add, Real.cos_pi,
+      Real.sin_pi, Real.sin_pi_div_three]
+    ring
+  -- Per-angle cosine-addition expansions.
+  have hC1 : Real.cos (θ + 2 * Real.pi / 3)
+      = Real.cos θ * -(1 / 2) - Real.sin θ * (Real.sqrt 3 / 2) := by
+    rw [Real.cos_add, hcos23, hsin23]
+  have hC2 : Real.cos (θ + 4 * Real.pi / 3)
+      = Real.cos θ * -(1 / 2) - Real.sin θ * -(Real.sqrt 3 / 2) := by
+    rw [Real.cos_add, hcos43, hsin43]
+  -- The two cyclic cosine sums, packaged as the amplitude identities we need.
+  have hpyth : Real.sin θ ^ 2 + Real.cos θ ^ 2 = 1 := Real.sin_sq_add_cos_sq θ
+  have hsqrt3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  -- Σ (1 + ε cos) = 3   (uses Σ cos = 0)
+  have hSum1 : (1 + ε * Real.cos θ) + (1 + ε * Real.cos (θ + 2 * Real.pi / 3))
+      + (1 + ε * Real.cos (θ + 4 * Real.pi / 3)) = 3 := by
+    rw [hC1, hC2]; ring
+  -- Σ (1 + ε cos)² = 6  (uses Σ cos = 0, Σ cos² = 3/2, ε² = 2)
+  have hSumsq : (1 + ε * Real.cos θ) ^ 2 + (1 + ε * Real.cos (θ + 2 * Real.pi / 3)) ^ 2
+      + (1 + ε * Real.cos (θ + 4 * Real.pi / 3)) ^ 2 = 6 := by
+    rw [hC1, hC2]
+    linear_combination (3 / 2) * ε ^ 2 * hpyth + (3 / 2) * hε
+      + (1 / 2) * ε ^ 2 * Real.sin θ ^ 2 * hsqrt3
+  -- Resolve the square roots via the positivity (branch selection).
+  have hs1 : Real.sqrt m1 = M * (1 + ε * Real.cos θ) := by
+    rw [h_m1]; exact Real.sqrt_sq (mul_nonneg hM.le hp0.le)
+  have hs2 : Real.sqrt m2 = M * (1 + ε * Real.cos (θ + 2 * Real.pi / 3)) := by
+    rw [h_m2]; exact Real.sqrt_sq (mul_nonneg hM.le hp1.le)
+  have hs3 : Real.sqrt m3 = M * (1 + ε * Real.cos (θ + 4 * Real.pi / 3)) := by
+    rw [h_m3]; exact Real.sqrt_sq (mul_nonneg hM.le hp2.le)
+  -- Numerator and denominator in closed form.
+  have hsum_sqrt : Real.sqrt m1 + Real.sqrt m2 + Real.sqrt m3 = 3 * M := by
+    rw [hs1, hs2, hs3]; linear_combination M * hSum1
+  have hsum_m : m1 + m2 + m3 = 6 * M ^ 2 := by
+    rw [h_m1, h_m2, h_m3]; linear_combination M ^ 2 * hSumsq
+  -- Assemble the ratio: 6 M² / (3 M)² = 2/3.
+  unfold koideRatio
+  rw [hsum_sqrt, hsum_m]
+  have hM' : M ≠ 0 := ne_of_gt hM
+  field_simp
+  ring
 
 /-- **Koide ratio numerical check**: Using measured lepton masses
     m_e = 0.511 MeV, m_mu = 105.66 MeV, m_tau = 1776.86 MeV,
