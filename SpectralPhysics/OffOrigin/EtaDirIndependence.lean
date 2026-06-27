@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
+import Mathlib.Data.Matrix.Basic
 
 /-!
 # eta_dir independence — Phase 3 scaffold (grounded on the rigorous deficit infra)
@@ -60,5 +61,48 @@ def ForwardOriginExists : Prop := ∃ sel : M2Deformation → ℝ, NonSpectral s
 
 theorem forward_origin : ForwardOriginExists := by
   sorry -- OPEN: independence branch (Phase 1 BACK-SOLVE, Phase 2 FREE).
+
+/-! ## C2 — M2-blindness of spectral-triple invariants (extends C1 above)
+
+C1 (`spectral_functional_M2_invariant`) covered functionals factoring through the *spectrum*.
+C2 extends this to the whole **self-adjoint layer**: a pure-M2 deformation of the dynamical
+generator adds an ANTISYMMETRIC `κ • A` (def:Lk, `Aᵀ = -A`), whose symmetric part vanishes, so
+the symmetric (self-adjoint) part `D_M`/`L` is unchanged. Every spectral-triple invariant — the
+spectral action `Tr f(D/Λ)`, the KO-dimension signs, the K-homology class, the **Connes distance**
+`d_D(φ,ψ)=sup{|φ(a)-ψ(a)| : ‖[D,a]‖≤1}` (a witness invariant that is NOT a function of `spec(L)`
+alone), and the gauge group `Aut(A)` — factors through this self-adjoint part, hence is M2-blind.
+
+Scope: this is irreducibility to spectral-**triple** invariants (C2), NOT to arbitrary
+dynamical/pseudospectral closures (C3), which remains open. -/
+section TripleBlindness
+open Matrix
+variable {n : Type*}
+
+/-- Symmetric (self-adjoint) part of a real square matrix. The spectral triple is built from the
+self-adjoint Dirac `D_M` and so sees only this part of the dynamical generator. -/
+noncomputable def symmetricPart (M : Matrix n n ℝ) : Matrix n n ℝ := (2:ℝ)⁻¹ • (M + Mᵀ)
+
+/-- A pure-M2 deformation adds an antisymmetric `κ • A` to the generator; its symmetric part is
+unchanged. The antisymmetry hypothesis `Aᵀ = -A` is load-bearing: drop it and `κ • A`
+contributes `κ • symmetricPart A ≠ 0`, breaking the identity. -/
+theorem symmetricPart_add_antisymm (L A : Matrix n n ℝ) (hA : Aᵀ = -A) (κ : ℝ) :
+    symmetricPart (L + κ • A) = symmetricPart L := by
+  unfold symmetricPart
+  rw [transpose_add, transpose_smul, hA, smul_neg]
+  congr 1
+  abel
+
+/-- **C2 — M2-blindness of spectral-triple invariants.** Any functional `Φ` of the symmetric
+(self-adjoint) part — i.e. any spectral-triple invariant — is invariant under a pure-M2
+deformation `L ↦ L + κ • A` with `Aᵀ = -A`. Extends `spectral_functional_M2_invariant` from
+functions of the spectrum to functions of the whole self-adjoint layer. Hence `η_dir` (the
+field-of-values asymmetry, living in the antisymmetric `κ • A`) is transversal to every triple
+invariant. -/
+theorem triple_invariant_M2_invariant (Φ : Matrix n n ℝ → ℝ) (L A : Matrix n n ℝ)
+    (hA : Aᵀ = -A) (κ κ' : ℝ) :
+    Φ (symmetricPart (L + κ • A)) = Φ (symmetricPart (L + κ' • A)) := by
+  rw [symmetricPart_add_antisymm L A hA, symmetricPart_add_antisymm L A hA]
+
+end TripleBlindness
 
 end SpectralPhysics.OffOrigin
