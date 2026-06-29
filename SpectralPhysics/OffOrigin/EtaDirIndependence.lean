@@ -21,6 +21,17 @@ STATUS (do NOT upgrade without an adversarial audit: vacuity check + `#print axi
 - `forward_origin` : **OPEN** (`sorry`). Phase 1 = BACK-SOLVE, Phase 2 = FREE: no spectral
   closure can supply it (it factors through the spectrum → invariant above), and no
   field-of-values closure is known to.
+
+PARITY CORRECTION (2026-06-28, off-origin-directed-side/DIRECTED-SIDE-STATUS-2026-06.md):
+η_dir's content splits by parity with opposite status. Its MAGNITUDE = the numerical abscissa
+ω = λ_max(symmetricPart G) is a SYMMETRIC-sector functional, hence DERIVABLE geometry (κ_crit ∝ Λ),
+NOT the external datum — so "field-of-values closure" above concerns only the derivable magnitude.
+The genuinely-external content `forward_origin` is about is the residual ANTISYMMETRIC ORIENTATION
+ℤ/2 (the L/R eigenframe orientation = transpose), invisible to every transpose-invariant functional
+(the whole framework inventory; see triple_invariant_M2_invariant). It needs a non-spectral source —
+the Pfaffian sign Pf(Aᵀ)=(−1)ⁿPf(A) or a Krein signature — none formalized here yet. So the sharp
+form of `ForwardOriginExists` is "a ℤ/2-valued non-spectral selector (Pfaffian/Krein)", stronger than
+the generic real selector `NonSpectral` below; tightening it is future work.
 -/
 
 namespace SpectralPhysics.OffOrigin
