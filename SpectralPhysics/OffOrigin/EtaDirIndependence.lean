@@ -22,12 +22,15 @@ STATUS (do NOT upgrade without an adversarial audit: vacuity check + `#print axi
   closure can supply it (it factors through the spectrum → invariant above), and no
   field-of-values closure is known to.
 
-PARITY CORRECTION (2026-06-28, off-origin-directed-side/DIRECTED-SIDE-STATUS-2026-06.md):
-η_dir's content splits by parity with opposite status. Its MAGNITUDE = the numerical abscissa
-ω = λ_max(symmetricPart G) is a SYMMETRIC-sector functional, hence DERIVABLE geometry (κ_crit ∝ Λ),
-NOT the external datum — so "field-of-values closure" above concerns only the derivable magnitude.
-The genuinely-external content `forward_origin` is about is the residual ANTISYMMETRIC ORIENTATION
-ℤ/2 (the L/R eigenframe orientation = transpose), invisible to every transpose-invariant functional
+PARITY CORRECTION (2026-06-28, rev. 2026-06-29, off-origin-directed-side/DIRECTED-SIDE-STATUS-2026-06.md):
+η_dir's content splits by parity into TWO OPEN pieces. Its MAGNITUDE = the numerical abscissa
+ω = λ_max(symmetricPart G) reads symmetricPart(L_κ) = L + κ·B_sym, which MOVES WITH κ (the one-way
+coupling's symmetric part B_sym ≠ 0); it escapes the EIGENVALUE blindness theorem (field-of-values,
+not eigenvalue) but for that reason is DIRECTED content, located by a back-solve (κ_crit ∝ Λ),
+OPEN at Tier 2 — NOT κ-independent derivable geometry. (Corrects an earlier note that called it
+"derivable geometry": symmetricPart(L_κ) depends on κ, so being read by ω ≠ being origin-geometry.)
+The genuinely-external, irreducible content `forward_origin` is about is the residual ANTISYMMETRIC
+ORIENTATION ℤ/2 (the L/R eigenframe orientation = transpose), invisible to every transpose-invariant functional
 (the whole framework inventory; see triple_invariant_M2_invariant). It needs a non-spectral source —
 the Pfaffian sign Pf(Aᵀ)=(−1)ⁿPf(A) or a Krein signature — none formalized here yet. So the sharp
 form of `ForwardOriginExists` is "a ℤ/2-valued non-spectral selector (Pfaffian/Krein)", stronger than
