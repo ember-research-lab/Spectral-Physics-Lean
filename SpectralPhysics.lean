@@ -382,3 +382,13 @@ import SpectralPhysics.JointSAGF.Basin
 import SpectralPhysics.JointSAGF.TraceConstraint
 import SpectralPhysics.JointSAGF.NonVacuity
 import SpectralPhysics.JointSAGF.Faithfulness
+-- ═══ OFF-ORIGIN — σ_P ORIENTATION INSTRUMENT (spec: krein-orientation-lean) ═══
+-- Frame-relative orientation invariant σ_P: two no-gos (plain-signature ≡ 0,
+-- det = 0 odd-dim), the 3×3 orientation lemma (multiset blindness + readout +
+-- transpose-oddness + symmetric stability), and the n=3 detailed-balance /
+-- cycle-current identity (F3 anchor).  All CLOSED, zero new axioms — see
+-- OffOrigin/STATUS.md.  NOTE: OffOrigin/EtaDirIndependence.lean stays OUT of
+-- the build (it carries the OPEN `forward_origin` sorry); these two files
+-- extend it mathematically without importing it.
+import SpectralPhysics.OffOrigin.OrientationLemma
+import SpectralPhysics.OffOrigin.MarkovCycle
