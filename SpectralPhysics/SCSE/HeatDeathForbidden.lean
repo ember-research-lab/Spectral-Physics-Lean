@@ -6,6 +6,7 @@ Authors: Aaron Ben-Shalom
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.Bounds.Basic
 import Mathlib.Topology.Basic
+import Mathlib.Analysis.SpecialFunctions.Exp
 
 /-!
 # Heat Death Forbidden Theorem
@@ -25,6 +26,22 @@ Formalized as Theorem 2 in
 
 Prose draft:
 `papers/spectral_physics/scse_stage1to4/4_late_time_asymptote/phase21_heat_death_forbidden.md`
+
+## Void-dichotomy split (2026-07-05)
+
+The previously asserted axiom block around `I_star` was split per
+`void-dichotomy-insert.tex` (spec `heatdeath-axiom-upgrade.tex`):
+
+* Part A (dynamical no-annihilation) and Part B (small-solution
+  exclusion + conditional dichotomy) are now **theorems** in
+  `SpectralPhysics/SCSE/VoidDichotomy.lean`.
+* Part C is the single documented permanent assumption
+  `instantiation_nonempty` below (Tarski meta-residue — not a sorry,
+  not a TODO).
+* `I_star` is now a `def` pinned to the manuscript's derived value;
+  `I_star_pos` is a theorem.
+
+Status ledger: `SpectralPhysics/SCSE/STATUS.md`.
 
 ## Tier system (per RIGOROUS_WORKFLOW.md)
 
@@ -90,10 +107,28 @@ namespace SpectralPhysics.SCSE.HeatDeathForbidden
     `KSR` from `KSRCompactness/`). -/
 opaque RelationalKernel : Type
 
-/-- **Axiom**: `RelationalKernel` is nonempty. Physically obvious —
-    k* from SAGF supplies a witness — but Lean needs this declared
-    since `RelationalKernel` is `opaque`. -/
-axiom RelationalKernel_nonempty : Nonempty RelationalKernel
+/-- Tarski meta-residue — intentionally permanent; see void-dichotomy
+    insert Part C. Not a sorry. Not a TODO.
+
+    Which branch of the dichotomy `Sol(SCSE) ⊆ {∅, k*}`
+    (`VoidDichotomy.prop_dichotomy`) is instantiated is not an internal
+    predicate: a structure cannot assert its own instantiation (Tarski;
+    the model-existence statement of a theory is not a sentence of the
+    theory). After Parts A and B of the void-dichotomy split
+    (2026-07-05), this is the *only* assumption remaining of the old
+    asserted axiom block — the instantiation of the nonempty branch,
+    which is exactly the assumption every physical theory makes by
+    existing to be checked. One bit of meta-level contingency, counted
+    in the underivable inventory alongside the units morphism and the
+    orientation ℤ/2. -/
+axiom instantiation_nonempty : Nonempty RelationalKernel
+
+/-- Old name, now a corollary of the documented meta-residue
+    `instantiation_nonempty` (k* from SAGF supplies the physical
+    witness; Lean still needs the meta-residue declared since
+    `RelationalKernel` is `opaque`). -/
+theorem RelationalKernel_nonempty : Nonempty RelationalKernel :=
+  instantiation_nonempty
 
 noncomputable instance : Inhabited RelationalKernel :=
   Classical.inhabited_of_nonempty RelationalKernel_nonempty
@@ -112,12 +147,28 @@ opaque lambda_1 (k : RelationalKernel) : ℝ
     formalization in `SelfRef/` is Phase 2.1. -/
 opaque integratedInformation (k : RelationalKernel) : ℝ
 
-/-- The self-reference threshold I* from manuscript v0.9.2.
-    Approximately `(e + 2) · exp(-e/(e+2)) ≈ 1.45`. We do not fix
-    the exact value here; it's a positive real. -/
-axiom I_star : ℝ
+/-- The self-reference threshold I* — the manuscript's derived value
+    (`thm:Istar-spectral-consciousness-restated`, eq:Istar):
+    `I* = (e + 2) · exp(−e/(e+2)) ≈ 2.6520`, the effective spectral
+    rank of the self-referential triad at `β_SR = τ`.
 
-axiom I_star_pos : 0 < I_star
+    HISTORY (void-dichotomy split, 2026-07-05): previously carried as
+    the asserted axioms `axiom I_star : ℝ` + `axiom I_star_pos` — the
+    single Lean object named I* in the tree (manuscript
+    `spectral-physics.tex` ~line 7781, exit-stability context). That
+    axiom's content is now split per `void-dichotomy-insert.tex`:
+    Part A (`VoidDichotomy.thm_no_annihilation_i/ii` — annihilation
+    forbidden by theorem), Part B (`VoidDichotomy.prop_small_exclusion`
+    + `prop_dichotomy`), Part C (the single documented permanent
+    assumption `instantiation_nonempty` above). The threshold itself is
+    pinned to the manuscript's derived value, so its positivity is a
+    theorem, not an axiom. -/
+noncomputable def I_star : ℝ :=
+  (Real.exp 1 + 2) * Real.exp (-(Real.exp 1 / (Real.exp 1 + 2)))
+
+/-- Positivity of I* — now a theorem (was `axiom I_star_pos`). -/
+theorem I_star_pos : 0 < I_star :=
+  mul_pos (by linarith [Real.exp_pos 1]) (Real.exp_pos _)
 
 /-! ## Section 2: Axiom 3 — self-reference closure. -/
 
@@ -307,5 +358,16 @@ theorem framework_late_time_prediction
     late_time_de_sitter_forced traj h_SR_init
   rw [h_H_sq]
   exact div_pos h_Lambda_pos (by norm_num : (0 : ℝ) < 3)
+
+/-! ## Axiom audit (emitted at compile time)
+
+`I_star_pos` and `RelationalKernel_nonempty` were axioms before the
+void-dichotomy split; their traces below show what each now rests on
+(`RelationalKernel_nonempty` rests on exactly the documented
+meta-residue `instantiation_nonempty`). -/
+
+#print axioms I_star_pos
+#print axioms RelationalKernel_nonempty
+#print axioms heat_death_forbidden_conditional
 
 end SpectralPhysics.SCSE.HeatDeathForbidden
