@@ -382,3 +382,16 @@ import SpectralPhysics.JointSAGF.Basin
 import SpectralPhysics.JointSAGF.TraceConstraint
 import SpectralPhysics.JointSAGF.NonVacuity
 import SpectralPhysics.JointSAGF.Faithfulness
+-- ═══ OFF-ORIGIN — DODD EXISTENCE (spec: dodd-existence-t1) ═══
+-- The parity-forced second self-model deficit at Tier 1: RecordClass
+-- (functionals factoring through the eigenvalue multiset) is transpose-
+-- invariant; the 2×2 M2 archetype gives distinct generators no record
+-- separates (dodd_exists); M∘R ≠ id follows at ANY capacity — the capacity
+-- route (GodelTrace.godel_trace) is cited, not modified.  Instrument
+-- membership (gerrymander guard): trace/det/−log det CLOSED, heat trace
+-- CONDITIONAL (spectral-mapping gap named) with diagonal + archetype
+-- evidence CLOSED.  Zero new axioms — see OffOrigin/STATUS.md.
+-- NOTE: OffOrigin/EtaDirIndependence.lean stays OUT of the build (it
+-- carries the OPEN `forward_origin` sorry); DoddExistence.lean extends it
+-- mathematically without importing it.
+import SpectralPhysics.OffOrigin.DoddExistence
