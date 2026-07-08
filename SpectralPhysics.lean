@@ -138,6 +138,11 @@ import SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
 import SpectralPhysics.SelfModelDeficitRigorous.CompletenessBound
 import SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessBound
 import SpectralPhysics.SelfModelDeficitRigorous.Theorem
+-- Faithfulness-Saturation Lemma (open problem A): WITNESSED-form partial —
+-- reduction (saturation ⟺ ε²=2 ⟺ K=2/3, + Cabibbo λ) CLOSED sorry-free given
+-- O1,O2; O1 = stated hyps, O2 = named OPEN residue axiom (naturalityNoDeadWeight),
+-- guarded by IsSelfModeledChannel.  See FaithfulnessSaturation.lean header.
+import SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessSaturation
 
 -- ═══ SELF-MODEL DEFICIT — UNCONDITIONAL (v0.9.2 C.1 dispatch) ═══
 -- Reduces the v0.9.1 two open Prop-predicates to three named literature
