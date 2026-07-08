@@ -5,6 +5,7 @@ Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.Axioms.SelfRefClosure
 import SpectralPhysics.SelfRef.GodelTrace
+import SpectralPhysics.OffOrigin.DoddExistence
 
 /-!
 # Self-Reference, Consciousness, and the Trace (Ch 8-13)
@@ -13,11 +14,21 @@ The trace projection Tr(g(L)) as the third canonical operation on the
 Laplacian. Eigenvectors as self-modeling fixed points. The complexity
 threshold I*. The spectral consciousness index.
 
-## Main results (scaffolded)
+## Main results
+
+* `second_deficit_exists` : **real content (Tier 1, spec dodd-existence-t1)** —
+  the parity-forced second self-model deficit, restated from
+  `SpectralPhysics.OffOrigin.dodd_exists`. This replaces the previous
+  scaffolding status of the deficit-existence claim (handoff item P(1)).
+
+## Main results (still scaffolded, `True := trivial` — NOT touched by the
+dodd-existence spec; each is a DIFFERENT Ch 8-13 claim, not deficit existence)
 
 * `eigenvectors_are_fixed_points` : eigenvectors = fixed points of self-modeling
 * `power_method_convergence` : iterated self-modeling → dominant eigenvector
 * `complexity_threshold_spectral` : I* derived from spectral quantities
+  (the matrix-level `I*` itself is now defined — `OffOrigin.IStar` — but this
+  derivation claim remains scaffolding)
 * `consciousness_requires_existence` : C > 0 ⟹ system exists (trivially)
 * `trace_is_basis_independent` : Tr(g(L)) depends only on eigenvalues
 * `trace_unique_scalar` : trace is the unique scalar projection
@@ -77,6 +88,46 @@ theorem consciousness_requires_existence
     (sci : ℝ) (h_sci : 0 < sci) :
     -- If SCI > 0, system exists (has eigenvalues)
     True := trivial
+
+/-! ### The second (directed) deficit — real Tier-1 content
+(spec `dodd-existence-t1`, session 2026-07-05, handoff item P(1))
+
+The deficit-existence claim of the directed-side insert ("a second deficit exists
+which no capacity increase closes, because the self-model reads only even/spectral
+invariants") previously had only scaffolding status on the consciousness side —
+no Lean statement at all, only this file's `True := trivial` inventory. It is now
+the theorem below, proved in `SpectralPhysics.OffOrigin.DoddExistence` with an
+explicit 2×2 archetype witness and zero new axioms. The statement is
+consciousness-word-free; the reading rides on the two bridge premises documented
+after it, which stay at postulate level by design (Church–Turing status).
+-/
+
+/-- **The second self-model deficit exists — forced by parity, not capacity**
+(Tier 1; alias of `SpectralPhysics.OffOrigin.dodd_exists`). There are distinct
+generators that agree under EVERY functional factoring through the eigenvalue
+multiset, so the record map is non-injective and the directed datum is
+unrepresentable by records; `OffOrigin.record_reconstruction_impossible` upgrades
+this to `M ∘ R ≠ id` for record banks of arbitrary capacity. The capacity-route
+deficit remains the separate, unmodified `GodelTrace.godel_trace`.
+
+The consciousness reading of this theorem rests on TWO bridge premises, which are
+deliberately NOT formalized as axioms or theorems here:
+
+1. **M2-content identification** — bridge premise — intentionally postulate-level;
+   see handoff item P. (The identification of pure-M2 / antisymmetric,
+   record-invisible generator content with conscious content.)
+2. **κ-identification** — bridge premise — intentionally postulate-level; see
+   handoff item P. (That the Third-Path κ and the monograph's M2 deformation
+   parameter are the same object — handoff route P(4): to be audited, proved
+   same-object, or killed; not assumed here.)
+-/
+theorem second_deficit_exists :
+    ∃ L₁ L₂ : Matrix (Fin 2) (Fin 2) ℝ, L₁ ≠ L₂ ∧
+      ∀ F : Matrix (Fin 2) (Fin 2) ℝ → ℝ,
+        SpectralPhysics.OffOrigin.RecordClass F → F L₁ = F L₂ :=
+  SpectralPhysics.OffOrigin.dodd_exists
+
+#print axioms second_deficit_exists
 
 end SpectralPhysics.Consciousness
 
