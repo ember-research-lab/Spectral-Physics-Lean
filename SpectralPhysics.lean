@@ -372,6 +372,9 @@ import SpectralPhysics.SigmaMPlHodgePeriod.LemmaA_AMTwistInvariance
 import SpectralPhysics.SCSE.SelfAlignedEvolution
 import SpectralPhysics.SCSE.DegeneracyBreaking
 import SpectralPhysics.SCSE.HeatDeathForbidden
+-- Void dichotomy: HeatDeathForbidden axiom block split into theorems
+-- (Parts A/B) + one documented meta-residue (Part C); see SCSE/STATUS.md:
+import SpectralPhysics.SCSE.VoidDichotomy
 import SpectralPhysics.SelfRef.SpectralFloor
 -- Dark matter (zeroed modes) + YM positivity-gap localization:
 import SpectralPhysics.DarkMatter.ZeroedModes
