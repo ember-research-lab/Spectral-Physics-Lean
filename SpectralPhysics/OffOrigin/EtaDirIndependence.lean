@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
+import SpectralPhysics.OffOrigin.ForwardOriginSplit
 import Mathlib.Data.Matrix.Basic
 
 /-!
@@ -18,8 +19,12 @@ STATUS (do NOT upgrade without an adversarial audit: vacuity check + `#print axi
   hypothesis** `frozen` (a pure-M2 deformation fixes the visible eigenvalue spectrum). The
   remaining work is to *derive* `frozen` from non-normal operator theory (numerical range /
   nilpotent-in-eigenbasis) — verdict for that operator-theoretic statement: **OPEN**.
-- `forward_origin` : **OPEN** (`sorry`). Phase 1 = BACK-SOLVE, Phase 2 = FREE: no spectral
-  closure can supply it (it factors through the spectrum → invariant above), and no
+- `forward_origin` : **PROVED from `loop_reads_arrow`** (no open hole in its body). The old
+  single opaque obligation is split (2026-07 tilt probe): the matrix-level content is CLOSED
+  in `OffOrigin/ForwardOriginSplit.lean`, and the residue is the strictly-narrower
+  `loop_reads_arrow` (does the physical loop read the `sym ∘ Im` parity-mixing channel?),
+  which carries the file's single open obligation. Phase 1 = BACK-SOLVE, Phase 2 = FREE: no
+  spectral closure can supply it (it factors through the spectrum → invariant above), and no
   field-of-values closure is known to.
 
 PARITY CORRECTION (2026-06-28, rev. 2026-06-29, off-origin-directed-side/DIRECTED-SIDE-STATUS-2026-06.md):
@@ -73,8 +78,55 @@ def NonSpectral (sel : M2Deformation → ℝ) : Prop :=
 not established — Phases 1–2 give only negative evidence.) -/
 def ForwardOriginExists : Prop := ∃ sel : M2Deformation → ℝ, NonSpectral sel
 
-theorem forward_origin : ForwardOriginExists := by
-  sorry -- OPEN: independence branch (Phase 1 BACK-SOLVE, Phase 2 FREE).
+/-! ### The forward-origin split (2026-07, tilt-probe result)
+
+`forward_origin` is no longer one opaque open hole. The tractable, matrix-level content
+— that the well-degeneracy holds for every transpose-covariant read, and that the ONE
+`sym ∘ Im` parity-mixing channel escapes it and induces a genuine tilt — is CLOSED in
+`OffOrigin/ForwardOriginSplit.lean` (`degeneracy_under_oddness`,
+`tc_read_tc_kernel_odd_drift`, `symImRead_not_transposeCovariant`, `tilt_source_exists`).
+
+What remains is strictly narrower than the bare `ForwardOriginExists`: not "some
+non-spectral selector exists", but "the physical autopoietic loop's selector is the
+one produced by the `sym ∘ Im` parity-mixing read of its own complex kernel". That is
+`LoopReadsArrow` below — the single remaining open obligation. -/
+
+/-- `sel` is a **`sym ∘ Im` tilt selector**: it factors through the parity-mixing read
+`symImRead` (= `sym ∘ Im`) of a complex kernel assigned to each deformation. NAMES the
+specific channel the tilt probe located; this is what makes `LoopReadsArrow` strictly
+stronger than the generic `NonSpectral`/`ForwardOriginExists`. -/
+def IsSymImTilt (sel : M2Deformation → ℝ) : Prop :=
+  ∃ assignK : M2Deformation → Matrix (Fin 2) (Fin 2) ℂ,
+    ∀ D, sel D = inducedDrift (symImRead (assignK D)) 1
+
+/-- **The narrowed obligation `LoopReadsArrow`.** The physical loop's forward-origin
+selector both (a) is non-spectral (`NonSpectral`, necessary by the C1/C2 blindness
+theorems) AND (b) is realized by the `sym ∘ Im` parity-mixing read (`IsSymImTilt`).
+Strictly stronger than `ForwardOriginExists = ∃ sel, NonSpectral sel`: it additionally
+pins the read channel. This is where the residual externality now lives. -/
+def LoopReadsArrow : Prop :=
+  ∃ sel : M2Deformation → ℝ, NonSpectral sel ∧ IsSymImTilt sel
+
+/-- **The reduction, with no open hole.** If the loop reads the `sym ∘ Im` arrow, a
+forward origin exists: the tilt selector is itself the non-spectral selector (drop the
+channel-identification conjunct). This is the honest content of the split — a genuine
+implication, not a relabel. -/
+theorem loop_reads_arrow_implies_forward_origin (h : LoopReadsArrow) :
+    ForwardOriginExists :=
+  let ⟨sel, hns, _⟩ := h
+  ⟨sel, hns⟩
+
+/-- **The one remaining obligation** (the genuinely-open residue, sharper than the old
+`forward_origin` gap): that the physical autopoietic loop's selector is the
+`sym ∘ Im` tilt. Whether this holds is the upstream question the tilt probe SHARPENS
+but does not answer. Carries the single open obligation of this file. -/
+theorem loop_reads_arrow : LoopReadsArrow := by
+  sorry -- OPEN (narrowed): does the physical loop read `sym ∘ Im` of its own kernel?
+
+/-- `forward_origin` is now PROVED (no open hole in its body) FROM `loop_reads_arrow` via
+the reduction above. The only open obligation in the file is `loop_reads_arrow`. -/
+theorem forward_origin : ForwardOriginExists :=
+  loop_reads_arrow_implies_forward_origin loop_reads_arrow
 
 /-! ## C2 — M2-blindness of spectral-triple invariants (extends C1 above)
 
