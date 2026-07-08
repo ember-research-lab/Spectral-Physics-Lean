@@ -408,3 +408,14 @@ import SpectralPhysics.OffOrigin.MarkovCycle
 -- carries the OPEN `forward_origin` sorry); DoddExistence.lean extends it
 -- mathematically without importing it.
 import SpectralPhysics.OffOrigin.DoddExistence
+-- ═══ OFF-ORIGIN — FORWARD-ORIGIN SPLIT (spec: forward-origin-memo / tilt probe) ═══
+-- The matrix-level formalization of the 2026-07 tilt-probe result: the FW
+-- well-degeneracy under odd drift + even metric (degeneracy_under_oddness); the
+-- C4 extension (transpose-covariant read of an anti-Hermitian kernel ⇒ odd drift,
+-- ΔV = 0); the sharpest check that the parity-mixing sym∘Im read is NOT
+-- transpose-covariant (symImRead_not_transposeCovariant); and the decidable
+-- tilt witness on the 2×2 archetype (tilt_source_exists).  All CLOSED, zero new
+-- axioms, sorry-free — see OffOrigin/STATUS.md.  This is the sorry-free half of
+-- the split; the narrowed residue (loop_reads_arrow) stays in EtaDirIndependence,
+-- which remains OUT of the root build.
+import SpectralPhysics.OffOrigin.ForwardOriginSplit

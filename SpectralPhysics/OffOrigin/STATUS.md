@@ -8,8 +8,11 @@ second self-model deficit (`DoddExistence.lean`; spec `dodd-existence-t1.tex`,
 session 2026-07-05, handoff item P(1)).
 
 **This directory — and the directed program — are NOT complete.** The open hinge
-(`forward_origin`, the orientation ℤ/2's external origin) remains OPEN; σ_P is the
-*instrument* that reads the bit given a frame, not a derivation of the frame's own
+(`forward_origin`, the orientation ℤ/2's external origin) is now SPLIT (2026-07 tilt
+probe, `ForwardOriginSplit.lean`): its matrix-level content is CLOSED, and the hinge
+narrows to `loop_reads_arrow` — does the physical loop read the `sym ∘ Im`
+parity-mixing channel? — which carries the file's single remaining obligation. σ_P is
+the *instrument* that reads the bit given a frame, not a derivation of the frame's own
 orientation. Frame-relativity is load-bearing (C′ externality made operational):
 a frame-free absolute invariant reading the bit would *contradict* C′ — none is
 exhibited here, and No-go 1 proves the eigenvalue route cannot supply one. Dodd
@@ -20,14 +23,21 @@ separate the M2 archetype pair; it does not derive the directed content's origin
 
 | File | In root build? | Sorries |
 |---|---|---|
-| `EtaDirIndependence.lean` | **NO** (deliberate) | 1 (`forward_origin`, OPEN) |
+| `EtaDirIndependence.lean` | **NO** (deliberate) | 1 (`loop_reads_arrow`, narrowed OPEN) |
+| `ForwardOriginSplit.lean` | **YES** | 0 |
 | `OrientationLemma.lean` | YES | 0 |
 | `MarkovCycle.lean` | YES | 0 |
 | `DoddExistence.lean` | YES | 0 |
 
-`OrientationLemma.lean` / `MarkovCycle.lean` deliberately do **not** import
-`EtaDirIndependence.lean` — that would pull its OPEN sorry into `lake build`.
-The extension is mathematical, not module-level.
+`OrientationLemma.lean` / `MarkovCycle.lean` / `DoddExistence.lean` deliberately do
+**not** import `EtaDirIndependence.lean` — that would pull its OPEN sorry into
+`lake build`. The extension is mathematical, not module-level.
+
+`ForwardOriginSplit.lean` is the exception in the OTHER direction: it is the
+sorry-free, root-built half of the `forward_origin` split, and `EtaDirIndependence.lean`
+imports IT (not vice versa) to state the narrowed `loop_reads_arrow` obligation in terms
+of the `sym ∘ Im` read. No cycle, and no sorry enters the root build (the root does not
+import `EtaDirIndependence.lean`).
 
 `DoddExistence.lean` deliberately does **not** import `EtaDirIndependence.lean` —
 that would pull its OPEN sorry into `lake build`. The extension is mathematical,
@@ -36,14 +46,86 @@ not module-level (same precedent as the σ_P orientation branch). It DOES import
 identification) and `SelfRef.GodelTrace` (clean; to cite — not modify — the
 capacity-route theorem).
 
-## Ledger — `EtaDirIndependence.lean` (unchanged by this branch)
+## Ledger — `EtaDirIndependence.lean` (restructured by `feat/forward-origin-split`)
 
 | Result | Verdict |
 |---|---|
 | `spectral_functional_M2_invariant` (C1) | CLOSED given `frozen`; deriving `frozen` OPEN |
 | `informationContent_M2_invariant` | CLOSED given `frozen` |
 | `symmetricPart_add_antisymm` / `triple_invariant_M2_invariant` (C2) | CLOSED |
-| `forward_origin` | **OPEN** (`sorry`; sharp form = ℤ/2 non-spectral selector) |
+| `loop_reads_arrow_implies_forward_origin` | **CLOSED** (no open hole): `LoopReadsArrow → ForwardOriginExists`, the reduction |
+| `forward_origin` | **PROVED from `loop_reads_arrow`** (body has no open hole; depends on `sorryAx` only transitively via `loop_reads_arrow`) |
+| `loop_reads_arrow` | **OPEN** (the file's single `sorry`; narrowed — NAMES the `sym ∘ Im` channel via `IsSymImTilt`, strictly stronger than the bare ℤ/2 non-spectral selector) |
+
+`grep -c sorry EtaDirIndependence.lean` = **1** (the tactic on `loop_reads_arrow`;
+prose no longer uses the token). The reduction `loop_reads_arrow_implies_forward_origin`
+is `sorryAx`-free; `forward_origin`'s body is the application term
+`loop_reads_arrow_implies_forward_origin loop_reads_arrow` (no `sorry` in the body) and
+inherits `sorryAx` only transitively through `loop_reads_arrow` — i.e. the reduction is
+REAL, the obligation moved, it was not renamed.
+
+**Strict-narrowing check.** `LoopReadsArrow := ∃ sel, NonSpectral sel ∧ IsSymImTilt sel`
+adds the conjunct `IsSymImTilt` (the selector factors through `symImRead = sym ∘ Im`) to
+the bare `ForwardOriginExists := ∃ sel, NonSpectral sel`. The forward implication
+(weakening) is proved; the reverse is NOT definitionally/trivially available (a bare
+selector need not factor through `sym ∘ Im`), so `loop_reads_arrow ≢ ForwardOriginExists`.
+
+## Ledger — Forward-origin split (`ForwardOriginSplit.lean`, `feat/forward-origin-split`, 2026-07)
+
+Tier: finite-dimensional linear algebra / Freidlin–Wentzell action functional — **T1**.
+All verdicts below CLOSED; zero `sorry`; zero new axioms; sorry-free and root-built.
+Formalizes `off-origin-directed-side/quasipotential-tilt/output/forward-origin-memo.md`
+and the TILTED verdict of that probe's `SUMMARY.md`.
+
+### Part 1 — FW action degeneracy under oddness
+
+| Result | Verdict | Statement |
+|---|---|---|
+| `lag_mirror` | CLOSED | odd `b` + even `D` ⇒ `Lag b D (−s) (−v) = Lag b D s v` (BOTH hyps rewritten; drop either ⇒ elaboration fails) |
+| `action_mirror_invariant` | CLOSED | the FW `Action` is ℤ/2-invariant under `mirrorPath` (pointwise `lag_mirror` under the sum) |
+| `degeneracy_under_oddness` | **CLOSED** | odd drift + even metric ⇒ `deltaV b D P = 0` for every instanton path — the two mirror wells are exactly degenerate |
+| `degeneracy_non_vacuous` | **CLOSED (non-vacuity witness)** | exhibited `(b, D, P)` with NON-odd `b` (= the `sym ∘ Im` tilt), even `D`, and `deltaV = −2 ≠ 0`: `ΔV` is a genuine function of the free drift, not `0` by construction |
+
+`deltaV b D P := Action b D P − Action b D (mirrorPath P)` (well-splitting along the
+instanton). Load-bearing: `degeneracy_under_oddness` passes `hodd` AND `heven` on to
+`action_mirror_invariant`/`lag_mirror`; removing either hypothesis fails to elaborate.
+
+### Part 2 — the C4 extension (transpose-covariant class)
+
+| Result | Verdict | Statement |
+|---|---|---|
+| `symM_isSymm` / `imPart_conjTranspose` | CLOSED (supporting) | `symM` symmetric; `Im(Kᴴ) = −(Im K)ᵀ` |
+| `TransposeCovariantRead` | (predicate) | `cov`: `R Kᴴ = (R K)ᵀ` (mirror = adjoint intertwined with transpose) ∧ `hom`: `R(−K) = −(R K)` |
+| `tc_read_antiHermitian_kernel_antisym` | **CLOSED** | transpose-covariant read of an anti-Hermitian kernel (`Kᴴ = −K`) ⇒ output antisymmetric `(R K)ᵀ = −(R K)` |
+| `antisym_matrix_induces_odd_drift` | CLOSED (bridge) | antisymmetric read output ⇒ `inducedDrift` is odd (transpose = mirror dictionary) |
+| `tc_read_tc_kernel_odd_drift` | **CLOSED** | drift-level C4: transpose-covariant read of anti-Hermitian kernel ⇒ **odd drift** ⇒ `ΔV = 0` by Part 1. The whole class cannot tilt |
+| `rePart_transposeCovariant` | CLOSED (non-vacuity) | `rePart` IS transpose-covariant ⇒ `TransposeCovariantRead` inhabited, C4 theorem non-vacuous |
+
+### Part 3 — the 2×2 archetype: `sym ∘ Im` is the tilt channel
+
+| Result | Verdict | Statement |
+|---|---|---|
+| `symImRead_archetype` / `symImRead_archetype_adj` | CLOSED | `sym∘Im` of the archetype `= !![1,0;0,0]`; of its adjoint `= !![−1,0;0,0]` |
+| `symImRead_not_transposeCovariant` | **CLOSED — THE SHARPEST CHECK** | `sym ∘ Im` is provably NOT transpose-covariant (fails `cov` on the archetype: `−!![1,0;0,0] ≠ !![1,0;0,0]`). So it escapes the Part-2 theorem — Parts 2 and 3 do NOT contradict |
+| `archetype_drift` | CLOSED | `inducedDrift (sym∘Im archetype) = fun _ => 1` (its odd part vanishes, even part `= 1`) |
+| `tilt_source_exists` | **CLOSED — WITNESS** | the `sym ∘ Im` drift is NON-odd (decidable, `norm_num`). Asserts ONLY this; no reference to the physical loop. Feeds `degeneracy_non_vacuous` |
+
+### `#print axioms` transcript (2026-07, `lake env lean`, toolchain v4.29.0-rc6)
+
+Every closed result in Parts 1–3, and the reduction
+`loop_reads_arrow_implies_forward_origin`, depends on exactly
+`[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no new axioms):
+
+`lag_mirror`, `action_mirror_invariant`, `degeneracy_under_oddness`,
+`degeneracy_non_vacuous`, `symM_isSymm`, `imPart_conjTranspose`,
+`tc_read_antiHermitian_kernel_antisym`, `rePart_transposeCovariant`,
+`antisym_matrix_induces_odd_drift`, `tc_read_tc_kernel_odd_drift`,
+`symImRead_archetype`, `symImRead_archetype_adj`, `symImRead_not_transposeCovariant`,
+`archetype_drift`, `tilt_source_exists`, `loop_reads_arrow_implies_forward_origin`.
+
+`loop_reads_arrow` and (transitively) `forward_origin` depend additionally on
+`sorryAx` — the single, narrowed, open obligation. `check_axioms.sh` on `OffOrigin`:
+**zero `axiom` declarations** ⇒ Patterns 8/9 (unsound-axiom classes) vacuously clean.
 
 ## Ledger — σ_P orientation instrument (branch `feature/krein-orientation`, 2026-07-06)
 
