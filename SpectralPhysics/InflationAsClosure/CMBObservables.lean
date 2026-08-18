@@ -29,7 +29,7 @@ Phase 2 transition):
 | n_s | 0.9665 (with κ_B correction) | 0.9649 ± 0.0042 | 0.39σ |
 | r | 3.3×10⁻³ | <0.061 (95% CL) | consistent |
 | α_s | -5.5×10⁻⁴ | -0.0045 ± 0.0067 | 0.59σ |
-| A_s | 9.4×10⁻⁹ | 2.10×10⁻⁹ | factor 4.5 (closed via AsConventionChain) |
+| A_s (metric-mode, superseded) | 9.4×10⁻⁹ (α_eff); ≈5.7×10⁻⁹ with α_tr (2026-08-18) | 2.10×10⁻⁹ | residual OPEN — `AsConventionChain` is an arithmetic pilot, not a closure; live A_s figure is the Berry-enhanced closure (~2.4%) |
 
 ## What is proved
 
