@@ -421,7 +421,11 @@ theorem ghost_prevention
   ghosts CAN exist. The completeness condition is necessary.
 -/
 
-/-- A Kahler manifold that is NOT projective lacks algebraic closure. -/
+/-- **SHELL** (`True := trivial`). Named scaffolding: a Kähler manifold that
+is not projective lacks the projective algebraic-closure hypothesis, so the
+framework's ghost-prevention story does not apply. Hypotheses are unused;
+conclusion is `True`. Do not cite as a proved Voisin-counterexample theorem
+(content-repair-2b). Lives under `Conjectures/` — LEFT-OPEN content. -/
 theorem voisin_counterexample_is_below_threshold
     (p dim : ℕ) (is_kahler : Prop) (not_projective : Prop) :
     -- Without projectivity, we cannot establish algebraic closure

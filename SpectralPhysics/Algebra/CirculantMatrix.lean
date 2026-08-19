@@ -27,14 +27,17 @@ For the triad (n=3) with mass matrix M = circ(a, b, b̄):
 - m_0 = a + 2·Re(b) (totally symmetric mode)
 - m_1, m_2 = a - Re(b) ± √3·Im(b) (the two Z_3-breaking modes)
 
-The Koide ratio K = (m_1+m_2+m_3)/(√m_1+√m_2+√m_3)² = 2/3
-follows from the circulant structure (not from specific values of a, b).
+**Claimed** (not proved here): the Koide ratio
+`K = (m_1+m_2+m_3)/(√m_1+√m_2+√m_3)² = 2/3` follows from circulant
+structure. The decls `koide_from_circulant` and
+`circulant_sqrt_sum_identity` are `sorry` (flagged 06-27; content-repair-2b
+LEFT-OPEN). Do not cite this module header as establishing `K = 2/3`.
 
 ## Main definitions and results
 
 * `CirculantMatrix` : a circulant matrix on Fin n
 * `circulant_eigenvalues` : the DFT eigenvalue formula
-* `koide_from_circulant` : K = 2/3 for any circulant mass matrix
+* `koide_from_circulant` : **LEFT-OPEN** (`sorry`) — intended `K = 2/3`
 
 ## References
 
@@ -103,28 +106,20 @@ theorem triad_mass_splitting (M : TriadMassMatrix) :
 def koideRatio (M : TriadMassMatrix) : ℝ :=
   (M.m1 + M.m2 + M.m3) / (Real.sqrt M.m1 + Real.sqrt M.m2 + Real.sqrt M.m3) ^ 2
 
-/-- **Koide formula from circulant structure**: K = 2/3.
+/-- **LEFT-OPEN** (`sorry`). Intended: Koide formula from circulant structure,
+`K = 2/3` for any positive-eigenvalue 3×3 circulant mass matrix.
 
-The proof requires showing that for ANY circulant mass matrix (a, b_re, b_im)
-with positive eigenvalues, the Koide ratio is exactly 2/3. This is a
-non-trivial algebraic identity that uses the specific eigenvalue structure
-of 3×3 circulants.
-
-The key step: express √m_k in terms of a, b_re, b_im and show that
-(Σ √m_k)² = (3/2)(Σ m_k) = (9/2)a. This requires the identity
-(√(a+2b) + √(a-b+c) + √(a-b-c))² = 3(3a)/2 when the masses come
-from a circulant, which is a consequence of the orthogonality of the
-DFT eigenvectors. -/
+Flagged 06-27 / content-repair-2b: docstring must not be read as a proved
+`K = 2/3`. The algebraic identity is not discharged; do not cite as Tier-1. -/
 theorem koide_from_circulant (M : TriadMassMatrix) :
     koideRatio M = 2 / 3 := by
   sorry
 
 /-! ### Infrastructure for Future Spectrum Work -/
 
-/-- The circulant structure forces a specific algebraic relationship
-between eigenvalue SUMS and eigenvalue SQUARE ROOT sums. This is
-the deep reason Koide works: the DFT basis diagonalizes ANY circulant,
-and the eigenvalue-to-square-root map preserves the ratio 2/3. -/
+/-- **LEFT-OPEN** (`sorry`). Intended algebraic core of Koide: the
+circulant eigenvalue / square-root-sum identity that would force `K = 2/3`.
+Not proved here (content-repair-2b). -/
 theorem circulant_sqrt_sum_identity (a b c : ℝ)
     (h1 : 0 < a + 2 * b) (h2 : 0 < a - b + c) (h3 : 0 < a - b - c) :
     -- The Koide identity: (Σm)/(Σ√m)² = 2/3
