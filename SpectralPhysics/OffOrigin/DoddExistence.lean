@@ -137,8 +137,10 @@ theorem specMultiset_transpose (L : Matrix n n ℝ) :
 
 /-- **Task 1 headline — `record_transpose_invariant`.** Every member of
 `RecordClass` is invariant under `L ↦ Lᵀ`. Hence every record is blind to the
-orientation (transpose) bit: the whole class lies inside the transpose-invariant
-functionals covered by the C1/C2 blindness theorems. -/
+transpose-parity bit: the whole class lies inside the transpose-invariant
+functionals covered by the C1/C2 blindness theorems. (Per `lem:polar-odd-sector`
+this transpose-parity bit is the ARROW, A1 — not the A4 orientation; the older
+"orientation" phrasing here named the wrong trunk observable, not a proof defect.) -/
 theorem record_transpose_invariant {F : Matrix n n ℝ → ℝ} (hF : RecordClass F)
     (L : Matrix n n ℝ) : F Lᵀ = F L := by
   obtain ⟨f, hf⟩ := hF
