@@ -14,6 +14,38 @@ what it deliberately does not.
 
 ---
 
+## 0. DEMOTED (2026-08-18 content repair — read this first)
+
+The 2026-08-18 content audit (`lean-content-audit-2026-08-18/REGISTER.md`
+U4) found `BasinConnectivity F` **refutable for every `F`** in the
+discrete placeholder topology this module inherits from
+`KSRCompactness/RellichKondrachov.lean` (`IsPathConnected` collapses
+to "at most one point" under the discrete topology, and every
+sublevel set considered here has ≥2 points; positive control:
+`lean-content-audit-2026-08-18/BasinFalse.lean` proves
+`basinConnectivity_false : ∀ F, ¬ BasinConnectivity F`).
+
+**Repair**: the predicate and its SAGF instance are renamed
+`BasinConnectivity_superseded_conjecture` /
+`SAGFBasinConnected_superseded_conjecture` throughout this directory
+— a `DEMOTED` relabel, not a soundness fix (the topology issue is
+unchanged; the name now says so).  This is *also* superseded on
+physics grounds, independent of the Lean placeholder-topology defect:
+the trunk manuscript's v0.9 line 16763 "basin is everything" claim
+(the physical content this module formalises) is **retracted** by
+`spectral-physics.tex` `rem:basin-sagf` (branch
+`rung4-resolution-2026-08-17`, kill-ledger entry): the SAGF basin is
+established only as `B(k*)` — a neighbourhood of the fixed point, not
+all of `𝒦_SR` — via `thm:sagf-basin-convergence`, and whether
+`B(k*) = 𝒦_SR` is explicitly left open. Downstream readers should
+treat `v092_G3_verdict` and `SAGF_basin_closure_from_hypotheses` in
+`Verdict.lean` as characterising the now-superseded
+`*_superseded_conjecture` predicate, and look to
+`rem:basin-sagf` / `thm:sagf-basin-convergence` in the trunk for the
+current basin claim.
+
+---
+
 ## 1. Theorems proved (with statements)
 
 All five `.lean` modules in this directory build cleanly under

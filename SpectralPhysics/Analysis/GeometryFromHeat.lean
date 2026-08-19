@@ -25,8 +25,19 @@ Seeley-DeWitt coefficients. Topology comes from spectral invariants.
 * `varadhan_distance` : d(x,y)² = -4 lim_{t→0} t ln K_t(x,y)
 * `seeley_dewitt_a0` : a₀ = volume
 * `seeley_dewitt_a1` : a₁ = (1/6) ∫ R dvol
-* `heat_determines_geometry` : {a_k} determine the metric up to isometry
-* `spectral_dimension_eq_4` : d_s = 4 for our framework
+* `heat_determines_local_geometry` : **SHELL** — the statement is `True`;
+  it does NOT establish that {a_k} determine the metric up to isometry
+* `gauss_bonnet_is_spectral` : **SHELL** — returns its own hypothesis
+  `h_d4 : sd.d = 4`; no Euler characteristic appears
+* `lambda_from_spectral_gap` : **SHELL** — returns its own hypothesis
+  `h_gap`; no cosmological constant appears
+* `spectral_dimension_eq_4` : **DEFINITIONAL** — `rfl` on
+  `SpectralPhysics.Weyl.spectralDim`
+
+Per the 2026-08-18 content audit (§2b), the Ch. 5 geometry-from-spectrum
+claims are NOT formalized in this file. Retarget any citation of this
+module to `weyl_dimension` / `varadhan_distance` / the Seeley–DeWitt
+lemmas if those carry the content wanted, or mark the claim OPEN.
 
 ## References
 
@@ -137,10 +148,15 @@ theorem curvature_is_spectral (sd : SeeleyDeWitt) :
 
 /-! ### Heat Determines Geometry -/
 
-/-- **Heat kernel determines geometry** (Thm 5.3): The spectrum {λ_k}
-of L uniquely determines the Riemannian metric g up to isometry.
+/-- **SHELL**: the statement is `True`, proved by `trivial`; the argument
+`sd` is unused. Nothing about heat kernels, Seeley–DeWitt coefficients, or
+metrics is expressed. Do not cite as a geometry-from-spectrum result.
 
-Proof chain:
+Statement intended (not formalized) — **Heat kernel determines geometry**
+(Thm 5.3): the spectrum {λ_k} of L uniquely determines the Riemannian
+metric g up to isometry.
+
+Prose proof chain (not formalized):
 1. Spectrum → heat trace → Seeley-DeWitt {a_k}
 2. {a_k} → metric invariants at all orders (Gilkey 1975)
 3. Complete metric invariants → metric up to isometry
@@ -158,8 +174,13 @@ theorem heat_determines_local_geometry (sd : SeeleyDeWitt) :
 
 /-! ### Gauss-Bonnet-Chern -/
 
-/-- **Gauss-Bonnet-Chern** (Thm 5.5): The Euler characteristic
-χ(M) = (4π)^{-d/2} · a_d(L) is a spectral invariant.
+/-- **SHELL**: the hypothesis IS the conclusion — the body is `h_d4`. No
+Euler characteristic and no spectral invariant appears in the statement.
+Do not cite as a Gauss–Bonnet–Chern result.
+
+Statement intended (not formalized) — **Gauss-Bonnet-Chern** (Thm 5.5):
+The Euler characteristic χ(M) = (4π)^{-d/2} · a_d(L) is a spectral
+invariant.
 For d=2: χ = (1/4π) ∫ R dvol.
 For d=4: χ involves the Pfaffian of the curvature 2-form. -/
 theorem gauss_bonnet_is_spectral (sd : SeeleyDeWitt) (h_d4 : sd.d = 4) :
@@ -169,13 +190,17 @@ theorem gauss_bonnet_is_spectral (sd : SeeleyDeWitt) (h_d4 : sd.d = 4) :
 
 /-! ### Cosmological Constant = Spectral Gap -/
 
-/-- **Λ = λ₁** (Thm 5.7): The cosmological constant equals the spectral
-gap of the cosmic Laplacian. The universe's accelerated expansion is
-driven by the first nonzero eigenvalue of L on cosmological scales.
+/-- **SHELL**: the hypothesis IS the conclusion — the body is `h_gap`. No
+cosmological constant appears in the statement, and no comparison to any
+observed value is made. Do not cite as "Λ = λ₁" or as evidence of a ~3%
+agreement.
 
-Evidence: Λ_obs ≈ 1.1 × 10⁻⁵² m⁻², and the spectral gap of the
-cosmic Laplacian (estimated from large-scale structure) gives
-λ₁ ≈ 1.1 × 10⁻⁵² m⁻² — agreement within ~3%. -/
+Statement intended (not formalized) — **Λ = λ₁** (Thm 5.7): the
+cosmological constant equals the spectral gap of the cosmic Laplacian, so
+accelerated expansion is driven by the first nonzero eigenvalue of L on
+cosmological scales. The quoted numerical agreement (Λ_obs ≈ 1.1 × 10⁻⁵²
+m⁻² vs a large-scale-structure estimate of λ₁, ~3%) is prose; nothing in
+this file checks it. -/
 theorem lambda_from_spectral_gap {S : RelationalStructure} {n : ℕ}
     (sd : SpectralDecomp S n) (hn : 1 < n)
     (h_gap : 0 < sd.eigenval ⟨1, hn⟩) :

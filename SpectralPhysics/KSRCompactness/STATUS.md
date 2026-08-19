@@ -1,5 +1,27 @@
 # K_SR Compactness — Honest STATUS
 
+## 0. REPAIRED-SOUND (2026-08-18 content repair — read this first)
+
+The named axiom `rellich_kondrachov_trace_class` described throughout
+this file **no longer exists**. The 2026-08-18 content audit
+(`lean-content-audit-2026-08-18/REGISTER.md` U1) compile-verified
+that it derives `False` together with the discrete placeholder
+`TopologicalSpace KSR` instance: under discrete topology `IsCompact`
+collapses to `Finite`, and the continuum-indexed witness family
+`kOf : ℝ → KSR` embeds `Set.Icc 0 1` (infinite) into `KSRSobolev 2 1`
+(`lean-content-audit-2026-08-18/KSRFalse.lean`, positive control —
+recompiled clean before this repair). It has been **replaced by an
+explicit hypothesis** on every theorem that used it (`ksr_compact` and
+its corollaries below, `KSR_compactness_verdict`, and
+`BasinConnectivity.coercive_sublevels_compact`) — the `REPAIRED-SOUND`
+class per `lean-content-repair`'s frozen vocabulary. Everything below
+this section describes the pre-repair axiom-based form for provenance;
+where it says the headline theorems are "conditional on the named
+axiom", read that as "conditional on the corresponding hypothesis
+argument" post-repair.
+
+---
+
 **Branch**: `compute/K-SR-compactness`
 **Target**: v0.9 lines 16759 and 11082(a) (`rem:field-eq-open(a)`)
 **v0.9.2 deferred item**: §G.2 (`v092_deferred.md` line 54)

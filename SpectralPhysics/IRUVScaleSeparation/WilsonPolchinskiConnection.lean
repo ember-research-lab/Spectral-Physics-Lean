@@ -33,11 +33,25 @@ shadow of the path-integral universality.
   Wilson 1971 + Polchinski 1984.
 * `WilsonianUniversality` — the biconditional predicate (this is
   the v0.9 line 1437 *content* in modern RG language).
-* `wilson_polchinski_analogy` — the named axiom asserting the
-  biconditional holds for *every* `CutoffFamily R`. **This is the
-  Wilson–Polchinski universality hypothesis** — the literature
-  statement that *the* IR/UV separation in the spectral framework
-  is the same content as Wilsonian RG convergence.
+* `wilson_polchinski_analogy` — **SHELL** (2026-08-18 content audit,
+  U6). Declared as a named axiom of citation asserting the
+  biconditional for every `CutoffFamily R`, but it is provable outright
+  from the two definitions in this file (`Vacuity.lean:wp_provable`,
+  kernel axioms only). It assumes nothing about Wilsonian RG flow and
+  must not be cited as importing literature content.
+
+## Decl classes (2026-08-18 content audit)
+
+* `RGFlowConverges`, `WilsonianUniversality` — DEFINITIONAL predicates.
+* `RGFlowConverges.symm` — SHELL: returns its own hypothesis applied.
+* `wilson_polchinski_analogy` — **SHELL** (provable outright; see above).
+* `rg_flow_from_spectral_universality`,
+  `spectral_universality_from_rg_flow` — SHELL: `.mp`/`.mpr` of the
+  shell axiom.
+* `v091_line_1437_conditional_closure` — its second conjunct is SHELL
+  (it comes from the shell axiom); only the `SpectralUniversality`
+  conjunct carries the Kato/Schatten hypotheses. It is **not** a
+  closure of v0.9 line 1437.
 
 ## Honest scope
 
@@ -113,20 +127,30 @@ This is the *only* free axiom of this directory. It cites Wilson
 (1971) and Polchinski (1984) as the source of the analogy between
 spectral universality and RG-flow convergence. -/
 
-/-- **Named axiom (Wilson 1971 + Polchinski 1984).**
+/-- **SHELL**: provable outright from the two predicate definitions; it
+    carries no Wilson–Polchinski content and must not be cited as a
+    closure.
 
-    The Wilson–Polchinski analogy: for every cutoff family `R`,
-    the spectral universality predicate is *equivalent* to RG-flow
-    convergence.
+    The 2026-08-18 content audit (U6) showed that
+    `∀ R, WilsonianUniversality R` is a theorem of this file's own
+    definitions — see `lean-content-audit-2026-08-18/Vacuity.lean`,
+    where `wp_provable` discharges it with kernel axioms only (forward:
+    `SpectralUniversality.symmetric`; backward: `le_trans` on the two
+    cutoffs).  Naming it after Wilson (1971) and Polchinski (1984) is
+    laundering-by-citation: nothing about RG flow is being assumed or
+    used, because `RGFlowConverges` is a `Prop` shadow of
+    `SpectralUniversality` rather than an independent statement about
+    the Wilsonian effective action.
 
-    This axiom does **not** prove either side — it identifies them.
-    Conclusion of `SpectralUniversality R` still requires the Kato
-    hypotheses (`KatoStability.lean`). The axiom merely says that
-    once you have one, you have the other.
+    Kept as an `axiom` rather than demoted to a theorem because the
+    proof, while short, is not mechanical (`rfl`/`norm_num`/`decide`);
+    demoting it is a semantic change and out of scope for this
+    labels-only pass.  If it is demoted later, the two predicates need
+    to be genuinely independent first, or the demotion just makes the
+    vacuity visible without fixing it.
 
-    Honesty: this axiom is **load-bearing only inside this directory**
-    — outside it, no theorem in `SpectralPhysics` is concluded by
-    invoking it. -/
+    Statement as written: for every cutoff family `R`, the spectral
+    universality predicate is equivalent to RG-flow convergence. -/
 axiom wilson_polchinski_analogy :
     ∀ (R : CutoffFamily), WilsonianUniversality R
 
@@ -144,21 +168,25 @@ theorem spectral_universality_from_rg_flow
     SpectralUniversality R :=
   (wilson_polchinski_analogy R).mpr h
 
-/-! ## Combined statement — the conditional closure of v0.9 line 1437
+/-! ## Combined statement — NOT a closure of v0.9 line 1437
 
 Combining `KatoStability` with the Wilson–Polchinski analogy: given
-a Schatten-norm UV-suppression rate, we get both the spectral
-universality and (by the analogy) the Wilsonian RG-flow convergence.
+a Schatten-norm UV-suppression rate, we get the spectral universality
+and (by the shell axiom) the Wilsonian RG-flow convergence.
 
-This is the *full* v0.9 line 1437 statement, conditional on the
-named functional-analytic input. -/
+Because `wilson_polchinski_analogy` is SHELL (provable outright from
+the definitions in this file), the second conjunct adds nothing: it is
+`SpectralUniversality` re-read through a `Prop` alias, not a statement
+about the Wilsonian effective action. Do not cite this as closing
+v0.9 line 1437. -/
 
-/-- **The full v0.9 line 1437 closure, CONDITIONAL.**
+/-- Conditional statement combining the Kato input with the SHELL
+    Wilson–Polchinski alias. **Not a closure of v0.9 line 1437.**
 
     Given the Kato–Reed–Simon bridge and a Schatten-norm UV
-    suppression rate, the family `R` exhibits both spectral
-    universality and Wilsonian RG-flow convergence — the two sides
-    of the v0.9 line 1437 analogy.
+    suppression rate, the family `R` exhibits spectral universality;
+    the `RGFlowConverges` conjunct then follows from the SHELL axiom
+    `wilson_polchinski_analogy` and carries no independent content.
 
     Hypotheses:
 

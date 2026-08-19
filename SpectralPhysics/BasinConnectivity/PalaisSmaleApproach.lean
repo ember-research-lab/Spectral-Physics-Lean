@@ -28,7 +28,7 @@ These three are stated as predicates (Prop) and the theorem reads:
   `   (h_coercive : Coercive F)`
   `   (h_unique_min : AtMostOneLocalMin F)`
   `   (h_palais_smale : PalaisSmaleCondition F) :`
-  `  BasinConnectivity F`
+  `  BasinConnectivity_superseded_conjecture F`
 
 This is closed via the **named axiom**
 `palais_smale_morse_basin_closure` (Palais–Smale 1964 §3) — the
@@ -128,14 +128,14 @@ disconnect the retract.
 **Anti-pattern check**: the axiom is **general** — it depends only
 on the three named predicates and not on `SAGFfunctional`.  It is
 not the conclusion-as-axiom (which would be
-`axiom SAGF_basin_connected : BasinConnectivity SAGFfunctional`).
+`axiom SAGF_basin_connected : BasinConnectivity_superseded_conjecture SAGFfunctional`).
 The applicability to `SAGFfunctional` requires *separately*
 discharging the three predicate hypotheses — and that is what is
 open. -/
 axiom palais_smale_morse_basin_closure :
     ∀ (F : KSR → ℝ),
       Coercive F → AtMostOneLocalMin F → PalaisSmaleCondition F →
-      BasinConnectivity F
+      BasinConnectivity_superseded_conjecture F
 
 /-! ## The conditional theorem -/
 
@@ -156,12 +156,12 @@ theorem basin_connected_from_palais_smale
     (h_coercive : Coercive F)
     (h_unique_min : AtMostOneLocalMin F)
     (h_palais_smale : PalaisSmaleCondition F) :
-    BasinConnectivity F :=
+    BasinConnectivity_superseded_conjecture F :=
   palais_smale_morse_basin_closure F h_coercive h_unique_min h_palais_smale
 
 /-! ## The reverse direction — necessity of at-most-one-minimum
 
-If `BasinConnectivity F` holds, then `AtMostOneLocalMin F` must hold
+If `BasinConnectivity_superseded_conjecture F` holds, then `AtMostOneLocalMin F` must hold
 (via the Morse obstruction in the previous file). -/
 
 /-- **Necessity of the at-most-one-minimum predicate**: any `F` whose
@@ -170,7 +170,7 @@ minimum at each value.
 
 This is the contrapositive of `basin_connectivity_fails_of_two_minima`. -/
 theorem at_most_one_min_of_basin_connectivity
-    (F : KSR → ℝ) (h : BasinConnectivity F) :
+    (F : KSR → ℝ) (h : BasinConnectivity_superseded_conjecture F) :
     AtMostOneLocalMin F := by
   intro cStar h_two
   exact basin_connectivity_fails_of_two_minima F h_two h

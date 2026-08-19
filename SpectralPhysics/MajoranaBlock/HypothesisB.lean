@@ -145,16 +145,17 @@ theorem standardModelTriple_JSC_multiplicity_structural :
     standardModelTriple_J_signs
     standardModelTriple_uses_extendedDirac
 
-/-- **Tier 1, given Tier-2 axioms.**
+/-- **Tier 1 / DEFINITIONAL (REPAIRED-SOUND, 2026-08-18).**
 
-The Standard Model has exactly 3 generations.  This unpacks the
-named axiom `standardModel_three_generations`. -/
+The Standard Model has exactly 3 generations.  This restates
+`standardModel_three_generations`, which is now `rfl`-provable at the
+concrete `standardModelTriple` — the former `∀`-axiom over
+`FiniteSpectralTriple` was deleted (U7 in
+`lean-content-audit-2026-08-18/REGISTER.md`; see
+`SpectralMultiplicity.lean`). -/
 theorem standardModelTriple_n_generations_eq :
     standardModelTriple.n_generations = 3 :=
   standardModel_three_generations
-    standardModelTriple
-    standardModelTriple_KOdim
-    standardModelTriple_J_signs
 
 /-- **Tier 1, given Tier-2 axioms.**
 

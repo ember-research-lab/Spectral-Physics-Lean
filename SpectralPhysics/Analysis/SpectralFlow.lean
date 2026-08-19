@@ -33,7 +33,13 @@ variable (S : RelationalStructure)
 
 namespace SpectralPhysics.SpectralFlow
 
-/-- **Spectral flow equals index** (Theorem 26.1, Atiyah-Patodi-Singer):
+/-- **SHELL**: the hypothesis IS the conclusion — the body is `h_aps`,
+whose type is `sf = ind`, and `sf`/`ind` are bare integer parameters with
+no operator, path, or index structure attached. It states `x = y` given
+`x = y`. Do not cite as an APS index-theorem result.
+
+Statement intended (not formalized) — **Spectral flow equals index**
+(Theorem 26.1, Atiyah-Patodi-Singer):
 For a smooth path of self-adjoint operators L(t), t in [0,1], the
 spectral flow sf(L_t) -- the net number of eigenvalues crossing zero
 from negative to positive -- equals the Fredholm index of the associated

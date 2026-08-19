@@ -44,8 +44,14 @@ on Σm_D² (sum of squared Dirac neutrino masses, line 7975).
 > (which the manuscript flags OPEN: "Σmν/CC closure as a single Lean theorem").
 > See `results/CHAIN-RIGOR-LEDGER.md`.
 
-This file connects the two routes via the ξ_R see-saw scale and locks the
-prediction in the manuscript's stated range.
+**Decl classes (2026-08-18 content audit, §2).** Every theorem in this
+file is **ARITHMETIC**: `norm_num` comparisons among `def`-ed decimal
+literals (`0.058`, `0.0609`, `0.063`, `0.07`, `0.12`, `0.04`,
+`xi_R_CC := 3.7090`). None of those literals is derived in Lean, and no
+see-saw / κ₂ / ξ_R / Σm_ν derivation is exercised anywhere here. The file
+records the manuscript's stated range and checks that a quoted number sits
+inside it; it does **not** close the Σm_ν prediction, and its `[Lean: …]`
+citations should read "arithmetic check of stated inputs", not "Tier 1".
 
 ## References
 
@@ -155,7 +161,19 @@ prediction range. -/
     `scse_core/cc_neutrino_closure.py`. -/
 noncomputable def sigma_m_nu_CC_closure_eV : ℝ := 609 / 10000   -- 0.0609
 
-/-- The CC-closure value falls inside the manuscript prediction range. -/
+/-- **ARITHMETIC**: `norm_num` check of stated numeric inputs; it does not
+derive those inputs.
+
+The content is `0.058 < 0.0609 < 0.063` on three `def`-ed literals
+(`sigma_m_nu_lower_eV`, `sigma_m_nu_CC_closure_eV`,
+`sigma_m_nu_upper_eV`). The bracket endpoints are quoted from manuscript
+line 7985 and the central value from `scse_core/cc_neutrino_closure.py`;
+none of the three is computed in Lean, and no see-saw, κ₂, ξ_R or Σm_ν
+derivation is exercised. Recall from the caveat above that
+`xi_R_CC := 3.7090` is a bisection root tuned against the CC target, so
+even the prose chain behind `0.0609` is a consistency check on that
+tuning rather than an independent prediction. Do not cite this decl as a
+Tier-1 closure of the Σm_ν prediction. -/
 theorem CC_closure_in_prediction_range :
     sigma_m_nu_lower_eV < sigma_m_nu_CC_closure_eV ∧
     sigma_m_nu_CC_closure_eV < sigma_m_nu_upper_eV := by
@@ -164,7 +182,16 @@ theorem CC_closure_in_prediction_range :
 
 /-! ## Two-route self-consistency
 
-The framework has TWO independent routes to the Σm_ν prediction:
+**ARITHMETIC.** `two_route_consistency` weakens
+`CC_closure_in_prediction_range` from `<` to `≤`; both are `norm_num` on
+literals. It compares no two routes — only one number (`0.0609`) against
+two stated endpoints.
+
+The routes are described here as independent, but the 2026-05-26 caveat
+at the top of this file (and the 2026-08-18 content audit, §2) record that
+they are **not**: Route 2 runs Λ_obs → κ₂ → ξ_R → Σm_ν, so it is a
+consistency check on the CC tuning. The framework's two routes to the
+Σm_ν prediction are:
 
 * **Route 1** (Prop `thm:self-model-deficit`, −ζ'_vis(0) = 288):
   fixes the Yukawa product via the functional determinant constraint.
@@ -176,6 +203,9 @@ The framework has TWO independent routes to the Σm_ν prediction:
 Both routes yield Σm_ν in the same narrow range [0.058, 0.063] eV,
 which is the framework's **falsifiable prediction**. -/
 
+/-- **ARITHMETIC**: the `≤` weakening of `CC_closure_in_prediction_range`;
+`norm_num` on stated literals. It does not establish agreement between two
+routes — see the caveat at the top of this file. -/
 theorem two_route_consistency :
     sigma_m_nu_lower_eV ≤ sigma_m_nu_CC_closure_eV ∧
     sigma_m_nu_CC_closure_eV ≤ sigma_m_nu_upper_eV := by

@@ -108,19 +108,39 @@ modern textbook treatment).
 The audit-discipline check: this is a **classical** fact, not
 framework-specific.  It would hold for *any* `F : 𝒦_SR → ℝ`
 with two distinct non-degenerate local minima at the same value.
-The axiom carries the Morse-lemma content; the *applicability*
-to `SAGFfunctional` depends on whether `SAGFfunctional` does or
-does not have such a configuration — and that is exactly what is
-open at v0.9.2 G.3. -/
 
-/-- **Morse obstruction axiom** (Morse 1934; Milnor 1963).
+**2026-08-18 content audit (U6) correction.** The axiom below does NOT
+carry the Morse-lemma content described here. Under the placeholder
+**discrete** topology on `KSR` its conclusion is automatic (any two-point
+set fails `IsPathConnected`), so `morse_two_minima_disconnect` is SHELL —
+provable outright, importing nothing from Morse 1934 / Milnor 1963. The
+*applicability* to `SAGFfunctional` remains open at v0.9.2 G.3, but this
+file contributes no Morse content toward it. -/
 
-For any real-valued functional `F` on `KSR` (or any topological
-space with the relevant Morse structure), two distinct local
-minima at the same critical value force disconnected sublevel
-sets just above that value.
+/-- **SHELL**: satisfied by construction regardless of the physics; do not
+cite as a closure, and do not read it as importing Morse-theoretic content.
 
-**Citation**:
+The 2026-08-18 content audit (U6) found that this "axiom of citation"
+carries none of the Morse-lemma content it names. The topology on `KSR` is
+the placeholder **discrete** instance
+(`KSRCompactness/RellichKondrachov.lean`), under which any set containing
+two distinct points fails `IsPathConnected` outright. So
+`MorseObstruction F` holds for every `F` for a reason that has nothing to
+do with non-degenerate critical points, the Morse lemma, or sublevel-set
+retraction — it is an artifact of the placeholder topology. Nothing here
+survives replacing the discrete placeholder with the intended trace-norm
+topology.
+
+Kept as an `axiom` rather than demoted to a theorem: the discrete-topology
+proof is not mechanical (`rfl`/`norm_num`/`decide`), and demoting it is a
+semantic change out of scope for this labels-only pass. The real repair is
+the topology, not the declaration keyword.
+
+Statement as written: for any real-valued functional `F` on `KSR`, two
+distinct local minima at the same critical value force disconnected
+sublevel sets just above that value.
+
+**Citation (nominal — not load-bearing, see the SHELL note above)**:
 * Morse, M. (1934), *The Calculus of Variations in the Large*,
   AMS Colloquium Publications 18, Ch. VI, Theorem 6.1 (Morse
   lemma at a non-degenerate critical point) and Ch. VII (sublevel-set
@@ -129,12 +149,14 @@ sets just above that value.
   Princeton, Theorem 3.1 (sublevel-set retraction in the absence
   of critical values) and §3 corollaries.
 
-**Anti-pattern check**: this is the **structural obstruction**,
-not the conclusion.  It does NOT state "BasinConnectivity F is
-false"; it states the conditional "two distinct minima at the
-same value ⇒ disconnected sublevel".  The applicability to a
-specific `F` (e.g. `SAGFfunctional`) is a *separate* predicate —
-the genuinely open content. -/
+**Anti-pattern check (superseded by the U6 finding above)**: the intent
+was that this be the structural obstruction rather than the conclusion —
+it does NOT state "BasinConnectivity_superseded_conjecture F is false",
+it states the conditional "two distinct minima at the same value ⇒
+disconnected sublevel", with applicability to a specific `F` (e.g.
+`SAGFfunctional`) left as a separate open predicate. That framing is
+still correct about the *shape* of the statement, but the statement
+itself is SHELL under the current placeholder topology. -/
 axiom morse_two_minima_disconnect : ∀ F : KSR → ℝ, MorseObstruction F
 
 /-! ## Consequence: the Morse-conditional non-connectedness
@@ -147,14 +169,17 @@ This is the **structural risk** of the v0.9 line 16763 claim — and
 the reason it cannot be discharged without the
 at-most-one-local-minimum predicate. -/
 
-/-- **Corollary**: any `F` with two distinct local minima at the
-same value fails `BasinConnectivity`.
+/-- **SHELL** (inherited): consumes `morse_two_minima_disconnect`, which
+the 2026-08-18 content audit (U6) classed SHELL — its conclusion is an
+artifact of the placeholder discrete topology on `KSR`, not of Morse
+theory.
 
-This consumes `morse_two_minima_disconnect`. -/
+Statement as written: any `F` with two distinct local minima at the same
+value fails `BasinConnectivity_superseded_conjecture`. -/
 theorem basin_connectivity_fails_of_two_minima
     (F : KSR → ℝ) {cStar : ℝ}
     (h : TwoDistinctMinimaAt F cStar) :
-    ¬ BasinConnectivity F := by
+    ¬ BasinConnectivity_superseded_conjecture F := by
   intro h_BC
   obtain ⟨ε, _hε_pos, h_disc⟩ := morse_two_minima_disconnect F cStar h
   exact h_disc (h_BC (cStar + ε))

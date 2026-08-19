@@ -40,14 +40,19 @@ input the v0.9 universality hypothesis needs.
 * `SchattenUVSuppression R C α` is *not* shown for any concrete
   family `R` arising from the v0.9 spectral construction. The
   numerical value of `α` is free.
-* The Wilson–Polchinski biconditional is an *axiom of citation*
-  (`wilson_polchinski_analogy`), not a derivation.
+* The Wilson–Polchinski biconditional is **SHELL** — not merely "an
+  axiom of citation, not a derivation", but provable outright from this
+  directory's own definitions (2026-08-18 content audit, U6;
+  `lean-content-audit-2026-08-18/Vacuity.lean:wp_provable` closes it with
+  kernel axioms only). It imports no Wilson/Polchinski content.
+  Correspondingly, the `RGFlowConverges` half of the headline is a
+  `Prop` alias of `SpectralUniversality` and closes nothing.
 
 ## Named axioms (the entire directory)
 
 | Axiom | Citation | Role |
 | ----- | -------- | ---- |
-| `wilson_polchinski_analogy` | Wilson 1971 + Polchinski 1984 | Identifies `SpectralUniversality R ↔ RGFlowConverges R` |
+| `wilson_polchinski_analogy` | Wilson 1971 + Polchinski 1984 (nominal) | **SHELL** — identifies `SpectralUniversality R ↔ RGFlowConverges R`, but is provable outright from the definitions; the citation is not load-bearing |
 
 There is **one** named axiom in this directory. Three other
 load-bearing inputs (`KatoReedSimonBridge`, `SchattenUVSuppression`,
@@ -111,11 +116,14 @@ theorem verdict_spectral_universality_conditional
     SpectralUniversality R :=
   spectral_universality_from_perturbation_bound h_kato_bridge h_schatten
 
-/-- **Verdict — Wilson–Polchinski biconditional.**  The framework's
-    spectral universality is identified with Wilsonian RG-flow
-    convergence by the named Wilson–Polchinski axiom.
+/-- **SHELL**: satisfied by construction regardless of the physics; do
+    not cite as a closure.
 
-    Re-exports the axiom directly. -/
+    Re-exports `wilson_polchinski_analogy`, which the 2026-08-18 content
+    audit (U6) showed to be provable outright from this directory's own
+    definitions. The "identification" of spectral universality with
+    Wilsonian RG-flow convergence is an alias, not an import of
+    literature content. -/
 theorem verdict_wilson_polchinski_biconditional
     (R : CutoffFamily) :
     WilsonianUniversality R :=
@@ -123,7 +131,11 @@ theorem verdict_wilson_polchinski_biconditional
 
 /-- **Verdict — combined.**  Given the two named hypotheses, both
     `SpectralUniversality R` *and* `RGFlowConverges R` hold.
-    This is the full v0.9 line 1437 closure. -/
+
+    **Not the full v0.9 line 1437 closure.** The second conjunct comes
+    from the SHELL axiom `wilson_polchinski_analogy` and adds nothing;
+    only the `SpectralUniversality` conjunct is conditional on the Kato
+    and Schatten predicates. -/
 theorem verdict_full_closure
     {R : CutoffFamily} {C α : ℝ}
     (h_kato_bridge : KatoReedSimonBridge R)

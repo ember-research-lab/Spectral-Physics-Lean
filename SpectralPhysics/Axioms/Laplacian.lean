@@ -542,7 +542,19 @@ theorem null_space_is_constants (hc : S.isClassical) (hconn : isStronglyConnecte
   · exact ⟨f hne.some, funext (fun y => (h_all_eq _ y).symm)⟩
   · exact ⟨0, funext (fun x => absurd ⟨x⟩ hne)⟩
 
-/-- **Spectral gap: connected classical structures have λ₁ > 0.** -/
+/-- **SHELL, not SUBSTANTIVE (2026-08-18 content repair — RELABELLED;
+`lean-content-audit-2026-08-18/REGISTER.md` §2b, foundational site).**
+
+The name and statement read as "connected classical structures have
+`λ₁ > 0`", but the witness `gap := 1` (below) is a **dummy**: `gap`
+never appears in the conclusion `∀ f, ⟪f, Δf⟫.re = 0 → ∃ c, f = c`,
+which is exactly `null_space_is_constants` restated. This proves
+"the null space is constants" (a real, already-proved fact), NOT
+"the actual spectral gap λ₁ is positive" — no eigenvalue is computed
+or bounded here. Do not cite this as a spectral-gap-positivity
+result; cite `null_space_is_constants` for what is actually shown.
+Trunk L1080 cites this as "Tier 1: Proven" — see `TRUNK-EDITS.md`
+for the proposed retag ("definitional scaffold"). -/
 theorem spectral_gap_pos (hc : S.isClassical) (hconn : isStronglyConnected S) :
     ∃ gap : ℝ, 0 < gap ∧
     ∀ f : S.X → ℂ,

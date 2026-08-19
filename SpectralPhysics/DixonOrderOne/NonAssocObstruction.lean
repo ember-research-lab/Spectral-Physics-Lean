@@ -104,13 +104,14 @@ def OrderOneImpliesZerothOrder
     (π π' : OctonionFactor → (OctonionFactor → OctonionFactor)) : Prop :=
   (∃ D, OrderOne D π π') → ZerothOrder π π'
 
-/-- **Tier 1 conditional.**  Under the standard Connes reduction
-(`OrderOneImpliesZerothOrder`), the canonical Dixon representation
-fails the order-one axiom for every Dirac-like operator.
-
-The conditional hypothesis IS the published reduction in Connes
-1994 §VI.3; this Lean theorem packages the structural
-contrapositive. -/
+/-- **Conditional — VACUOUS as stated (2026-08-18, audit U8).**  Under the
+hypothesis `OrderOneImpliesZerothOrder LeftMult RightMult`, the canonical Dixon
+representation fails the order-one predicate for every `D`. But that hypothesis is
+FALSE in this formalisation (`Verdict.dixon_reduction_hypothesis_false`: the zero map
+satisfies `OrderOne` vacuously while zeroth-order fails), so this theorem has no
+satisfiable instance. It is kept as the structural contrapositive only; the published
+Connes 1994 §VI.3 reduction concerns genuine Dirac operators, a structure `OrderOne`
+does not carry. Do not cite as an order-one obstruction. -/
 theorem order_one_fails_canonical_dixon
     (h_reduce : OrderOneImpliesZerothOrder LeftMult RightMult) :
     ¬ ∃ D, OrderOne D LeftMult RightMult := by

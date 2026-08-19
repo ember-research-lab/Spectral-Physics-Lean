@@ -21,15 +21,19 @@ operator perturbations.
 self-model tracks the changing structure rather than becoming
 inaccurate" (`spectral_cosmology_complete/papers/Part_01`).
 
-## What is proved
+## What is checked (2026-08-18 content audit, §2 — nothing is "proved" here)
 
-* `selfaligned_evolution` (T2): for any SCSE trajectory, the
-  cosmic Laplacian's first nonzero eigenvalue λ_1(t) is continuous
-  in t (subject to Davis-Kahan-style regularity).
+* `selfaligned_evolution` — **SHELL**: an axiom re-export. Its body is
+  literally `scse_lambda_1_continuous traj`, i.e. the conclusion IS the
+  assumed axiom. Continuity of λ_1(t) is assumed, not derived; no
+  Davis–Kahan argument is present. Do not describe as "T2 (proved)".
 
-* `self_model_tracks_structure` (T2 corollary): under self-aligned
-  evolution, the self-model's representation of the cosmic state
-  remains accurate throughout the flow.
+* `selfaligned_floor_persistence` — **SHELL**: repackages the same axiom
+  with `heat_death_forbidden_conditional` (itself a composition of the
+  `SCSE.HeatDeathForbidden` axioms).
+
+* `self_model_tracks_structure` — Phase-2.1 placeholder over the `opaque`
+  `SelfModelAccuracy`; states nothing about tracking.
 
 ## What is left for Phase 2.1
 
@@ -68,16 +72,25 @@ axiom scse_lambda_1_continuous :
     ∀ traj : SCSETrajectory,
       Continuous (fun t : ℝ => lambda_1 (atTime traj t))
 
-/-- **Theorem 4 (Self-Aligned Evolution — eigenvalue version)**:
-    under SCSE flow, λ_1(t) varies continuously. -/
+/-- **SHELL**: an axiom re-export — the body is `scse_lambda_1_continuous
+    traj`, so the conclusion is exactly the assumed axiom. It derives
+    nothing and cannot fail. Do not cite as "T2 (proved)".
+
+    Statement as written — Theorem 4 (Self-Aligned Evolution, eigenvalue
+    version): under SCSE flow, λ_1(t) varies continuously. -/
 theorem selfaligned_evolution
     (traj : SCSETrajectory) :
     Continuous (fun t : ℝ => lambda_1 (atTime traj t)) :=
   scse_lambda_1_continuous traj
 
-/-- **Corollary**: combining self-aligned evolution with the
-    heat-death-forbidden theorem, λ_1(t) is continuously bounded
-    below by the spectral floor throughout the SCSE trajectory. -/
+/-- **SHELL**: repackages `scse_lambda_1_continuous` together with
+    `heat_death_forbidden_conditional` (itself a composition of the
+    `SCSE.HeatDeathForbidden` axioms). Every component of the conclusion
+    is assumed; nothing is derived.
+
+    Statement as written: combining self-aligned evolution with the
+    heat-death-forbidden theorem, λ_1(t) is continuously bounded below by
+    the spectral floor throughout the SCSE trajectory. -/
 theorem selfaligned_floor_persistence
     (traj : SCSETrajectory)
     (h_SR_init : SelfReferenceClosure (atTime traj 0)) :

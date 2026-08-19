@@ -11,10 +11,10 @@ import SpectralPhysics.BasinConnectivity.SublevelSet
 This file states v0.9's "basin is everything" claim as a `Prop`
 predicate over functionals `F : 𝒦_SR → ℝ`:
 
-  `BasinConnectivity F := ∀ c, IsPathConnected (sublevel F c)`.
+  `BasinConnectivity_superseded_conjecture F := ∀ c, IsPathConnected (sublevel F c)`.
 
 The framework claim under audit is
-`BasinConnectivity SAGFfunctional` — that every sublevel set of the
+`BasinConnectivity_superseded_conjecture SAGFfunctional` — that every sublevel set of the
 SAGF functional is path-connected in the trace-norm topology on
 `𝒦_SR`.
 
@@ -24,7 +24,7 @@ v0.9.2 deferred item G.3.  Downstream files (`PalaisSmaleApproach`,
 the structural obstruction that together justify the
 **CONDITIONAL** verdict.
 
-## Why not just axiomatise `BasinConnectivity SAGFfunctional`?
+## Why not just axiomatise `BasinConnectivity_superseded_conjecture SAGFfunctional`?
 
 That would be the **conclusion-as-axiom** anti-pattern explicitly
 forbidden in the audit discipline.  The whole point of v0.9 line
@@ -34,11 +34,11 @@ and concluding from it would be axiom-smuggling.
 
 Instead, we:
 
-1. State `BasinConnectivity` as a `Prop` predicate.
+1. State `BasinConnectivity_superseded_conjecture` as a `Prop` predicate.
 2. State three *independent* sufficient predicates (coercivity,
    at-most-one-local-minimum, Palais–Smale).
 3. Prove the conditional theorem `coercive ∧ AtMostOneMin ∧ PS →
-   BasinConnectivity` using the **named Palais–Smale closure axiom**
+   BasinConnectivity_superseded_conjecture` using the **named Palais–Smale closure axiom**
    (cited to Palais–Smale 1964 — Morse theory in Hilbert manifolds).
 4. State the Morse counterexample (multiple local minima ⇒
    disconnected sublevel).
@@ -69,7 +69,7 @@ open SpectralPhysics.KSRCompactness
 
 /-- **Basin connectivity** (v0.9 line 16763, open content).
 
-`BasinConnectivity F` says: **every** sublevel set of `F` is
+`BasinConnectivity_superseded_conjecture F` says: **every** sublevel set of `F` is
 path-connected.  This is the v0.9 "basin is everything"
 requirement: the SAGF functional's sublevel structure has no
 disconnected components.
@@ -77,25 +77,25 @@ disconnected components.
 This Prop is *not* a theorem in this repository for any specific
 `F` arising from the v0.9 framework.  It is the explicit open
 content of v0.9.2 deferred §G.3. -/
-def BasinConnectivity (F : KSR → ℝ) : Prop :=
+def BasinConnectivity_superseded_conjecture (F : KSR → ℝ) : Prop :=
   ∀ c : ℝ, IsPathConnected (sublevel F c)
 
 /-- **The v0.9 line 16763 framework claim**, stated as a Prop.
 
 This is the predicate the v0.9 manuscript needs to be true; it is
 **not** asserted as a theorem here. -/
-def SAGFBasinConnected : Prop := BasinConnectivity SAGFfunctional
+def SAGFBasinConnected_superseded_conjecture : Prop := BasinConnectivity_superseded_conjecture SAGFfunctional
 
-/-! ## Trivial closure properties of `BasinConnectivity`
+/-! ## Trivial closure properties of `BasinConnectivity_superseded_conjecture`
 
 These are honest small facts about the predicate, NOT a closure of
 the framework claim. -/
 
 /-- If `F` and `G` agree, their basin-connectivity predicates agree. -/
-theorem BasinConnectivity.congr
+theorem BasinConnectivity_superseded_conjecture.congr
     {F G : KSR → ℝ} (h : ∀ T, F T = G T) :
-    BasinConnectivity F ↔ BasinConnectivity G := by
-  unfold BasinConnectivity sublevel
+    BasinConnectivity_superseded_conjecture F ↔ BasinConnectivity_superseded_conjecture G := by
+  unfold BasinConnectivity_superseded_conjecture sublevel
   constructor
   · intro hF c
     have : { T | G T ≤ c } = { T | F T ≤ c } := by
@@ -110,7 +110,7 @@ theorem BasinConnectivity.congr
     rw [this]
     exact hG c
 
-/-- **Anti-vacuity check**: `BasinConnectivity F` does NOT hold for
+/-- **Anti-vacuity check**: `BasinConnectivity_superseded_conjecture F` does NOT hold for
 the indicator-like functional `F T = if T = KSR.zero then 0 else 1`
 when `c = 1` *unless* every sublevel is itself path-connected — i.e.
 the predicate has real content and is not satisfied by every `F`.
@@ -119,7 +119,7 @@ We state this as a documentation Prop only (proving it requires
 exhibiting two non-joinable points; in the discrete topology
 shadow this is in principle constructable but distracting). -/
 def BasinConnectivity_nonVacuous : Prop :=
-  ∃ F : KSR → ℝ, ¬ BasinConnectivity F
+  ∃ F : KSR → ℝ, ¬ BasinConnectivity_superseded_conjecture F
 
 end SpectralPhysics.BasinConnectivity
 

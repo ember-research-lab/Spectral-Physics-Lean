@@ -49,9 +49,19 @@ four lemmas.
 
 ## Vacuity audit
 
-All axioms here are NON-VACUOUS (they assert concrete chain-level
-isomorphisms, not `∃ _, True`). They are honest "cited literature"
-axioms pending formal proof.
+The axioms in *this file* assert chain-level isomorphisms rather than
+`∃ _, True`, and are honest "cited literature" axioms pending formal
+proof.
+
+**2026-08-18 content-audit note (§2).** Do not generalize that "NON-VACUOUS"
+claim to the rest of the `SigmaMPlHodgePeriod` directory, which is where
+it has been cited from. The five named axioms consumed by
+`MainConditional`/`Verdict` ARE `∃ _, True`-shells, and the headline
+theorems there are vacuous because `chern_pairing_log_ratio D := 0`
+makes `h_pairing_value` unsatisfiable. See `Verdict.lean`'s Headline
+section. Nothing in this file makes the directory's H7 claim
+non-vacuous — the chain-level types here are placeholders, as the
+"What is NOT proved" section above states.
 
 ## References
 

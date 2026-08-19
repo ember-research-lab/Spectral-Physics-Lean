@@ -27,7 +27,7 @@ theorem that discharges it without further structural input.
 
 Instead, this branch:
 
-1. States `BasinConnectivity F` as a `Prop` over functionals
+1. States `BasinConnectivity_superseded_conjecture F` as a `Prop` over functionals
    (`ConnectednessPredicate.lean`).
 2. States the **Morse-theoretic structural obstruction** explicitly:
    two distinct local minima at the same critical value force
@@ -39,14 +39,14 @@ Instead, this branch:
 4. **Proves the conditional closure**:
 
        `Coercive F ∧ AtMostOneLocalMin F ∧ PalaisSmaleCondition F`
-        →  `BasinConnectivity F`
+        →  `BasinConnectivity_superseded_conjecture F`
 
    conditional on the named axiom `palais_smale_morse_basin_closure`
    (Palais–Smale 1964, Palais 1963, Milnor 1963).
 
 The headline equivalence:
 
-  `BasinConnectivity SAGFfunctional ↔`
+  `BasinConnectivity_superseded_conjecture SAGFfunctional ↔`
   `   (Coercive SAGFfunctional ∧ AtMostOneLocalMin SAGFfunctional ∧`
   `    PalaisSmaleCondition SAGFfunctional)`
 
@@ -72,15 +72,15 @@ None of these is discharged for `SAGFfunctional`:
    sublevel just above.  Cite: Morse 1934 Ch. VI; Milnor 1963 §3.
 
 2. **`palais_smale_morse_basin_closure`** (`PalaisSmaleApproach.lean`):
-   `Coercive + AtMostOneLocalMin + PalaisSmale` ⇒ `BasinConnectivity`.
+   `Coercive + AtMostOneLocalMin + PalaisSmale` ⇒ `BasinConnectivity_superseded_conjecture`.
    Cite: Palais–Smale 1964 Theorem 2; Palais 1963 Theorem 4.2;
    Milnor 1963 §3.
 
 ## Anti-pattern compliance
 
-* **NOT** `def BasinConnectivity F := True` — it is `∀ c,
+* **NOT** `def BasinConnectivity_superseded_conjecture F := True` — it is `∀ c,
   IsPathConnected (sublevel F c)`, a real Prop.
-* **NOT** `axiom SAGF_basin_connected : BasinConnectivity SAGFfunctional` —
+* **NOT** `axiom SAGF_basin_connected : BasinConnectivity_superseded_conjecture SAGFfunctional` —
   the framework conclusion is **not** axiomatised.  The named
   axioms are general functional-analysis statements (Morse 1934,
   Palais–Smale 1964) that apply to *any* `F : 𝒦_SR → ℝ`.
@@ -114,7 +114,7 @@ open SpectralPhysics.KSRCompactness
 
 /-- **THE BASIN CONNECTIVITY VERDICT (CONDITIONAL).**
 
-`BasinConnectivity SAGFfunctional ↔`
+`BasinConnectivity_superseded_conjecture SAGFfunctional ↔`
 ` (Coercive SAGFfunctional ∧ AtMostOneLocalMin SAGFfunctional ∧`
 `  PalaisSmaleCondition SAGFfunctional)`
 
@@ -125,22 +125,22 @@ necessary predicate.  We do NOT claim coercivity or PS follow from
 connectivity alone — that is **false** in general — so the
 *forward* statement is the weaker
 
-  `BasinConnectivity SAGFfunctional → AtMostOneLocalMin SAGFfunctional`
+  `BasinConnectivity_superseded_conjecture SAGFfunctional → AtMostOneLocalMin SAGFfunctional`
 
 and the **headline** is the conjunction of the forward (necessity)
 and the reverse (sufficiency, via Palais–Smale 1964):
 
-  `(Coercive ∧ AtMostOneLocalMin ∧ PalaisSmale) → BasinConnectivity`
-  `BasinConnectivity → AtMostOneLocalMin`
+  `(Coercive ∧ AtMostOneLocalMin ∧ PalaisSmale) → BasinConnectivity_superseded_conjecture`
+  `BasinConnectivity_superseded_conjecture → AtMostOneLocalMin`
 
 Both directions are conditional on the corresponding named axioms. -/
 theorem v092_G3_verdict :
     (Coercive SAGFfunctional ∧
      AtMostOneLocalMin SAGFfunctional ∧
      PalaisSmaleCondition SAGFfunctional →
-      BasinConnectivity SAGFfunctional)
+      BasinConnectivity_superseded_conjecture SAGFfunctional)
     ∧
-    (BasinConnectivity SAGFfunctional →
+    (BasinConnectivity_superseded_conjecture SAGFfunctional →
       AtMostOneLocalMin SAGFfunctional) := by
   refine ⟨?_, ?_⟩
   · rintro ⟨h_coercive, h_unique_min, h_PS⟩
@@ -177,7 +177,7 @@ ideal machinery to make `Coercive SAGFfunctional` derivable from
 `KSRCompactness.ksr_compact` + SAGF heat-kernel growth bounds). -/
 theorem SAGF_basin_closure_from_hypotheses
     (h : SAGFPalaisSmaleHypotheses) :
-    BasinConnectivity SAGFfunctional :=
+    BasinConnectivity_superseded_conjecture SAGFfunctional :=
   basin_connected_from_palais_smale SAGFfunctional h.1 h.2.1 h.2.2
 
 /-! ## Coercivity-compactness link to `KSRCompactness`
@@ -193,13 +193,18 @@ We expose the link as a lemma: if `F` is coercive, every sublevel
 set is contained in a compact subset of `𝒦_SR` (conditional on
 `rellich_kondrachov_trace_class`). -/
 
-/-- **Coercivity yields compact sublevels** (conditional on the
-`rellich_kondrachov_trace_class` axiom from `KSRCompactness`). -/
+/-- **Coercivity yields compact sublevels** — REPAIRED-SOUND
+(2026-08-18): conditional on `KSRSobolev s C` being compact, now an
+explicit hypothesis (formerly the axiom
+`rellich_kondrachov_trace_class` from `KSRCompactness`, deleted per
+U1 of `lean-content-audit-2026-08-18` since it derives `False` under
+the discrete placeholder topology). -/
 theorem coercive_sublevels_compact
-    {F : KSR → ℝ} (h_coercive : Coercive F) (c : ℝ) :
+    {F : KSR → ℝ} (h_coercive : Coercive F) (c : ℝ)
+    (h_compact : ∀ s C : ℝ, IsCompact (KSRSobolev s C)) :
     ∃ K : Set KSR, IsCompact K ∧ sublevel F c ⊆ K := by
   obtain ⟨s, C, h_s, h_C, h_sub⟩ := h_coercive c
-  exact ⟨KSRSobolev s C, ksr_compact s C h_s h_C, h_sub⟩
+  exact ⟨KSRSobolev s C, ksr_compact s C h_s h_C (h_compact s C), h_sub⟩
 
 end SpectralPhysics.BasinConnectivity
 

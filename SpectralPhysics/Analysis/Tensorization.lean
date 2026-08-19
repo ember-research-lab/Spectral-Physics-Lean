@@ -250,9 +250,26 @@ theorem continuum_su3_mass_gap
     ∃ (m : ℝ), 0 < m ∧ (3 : ℝ) / 4 ≤ m ^ 2 :=
   continuum_mass_gap_v3 3 (by norm_num) spectral_data h_ricci h_vol h_dim h_antitone
 
-/-- **Summary: the v3 mass gap argument is complete.**
+/-- **SHELL**: satisfied by construction regardless of the physics; do not
+cite as a closure, and do not read it as a Yang–Mills mass-gap result.
 
-The chain is:
+The 2026-08-18 content audit (U6, §2b) classed this SHELL. Every conjunct
+is discharged without reference to any Yang–Mills, Ricci, or spectral
+input:
+
+* conjunct 1 — `⟨Real.sqrt (2/7), Real.sqrt_pos_of_pos (by norm_num), rfl⟩`:
+  it asserts only that `√(2/7)` is a positive real equal to itself.
+* conjunct 2 — likewise for `√(3/24)`.
+* conjunct 3 — `∀ L : ℕ, 0 < L → (0 : ℝ) < 2/7`: ARITHMETIC on a literal
+  with `L` unused, so "the bound 2/7 is independent of lattice size" is
+  not what is being checked; `2/7` is a constant and `L` never appears.
+
+In particular the numbers `2/7` and `3/24` are stated literals here, not
+derived quantities, and nothing links them to `continuum_mass_gap_v3` or
+to any lattice construction. The name `mass_gap_argument_complete` is an
+overclaim.
+
+The literature chain described below is prose, not formalized content:
   O'Neill (Ric >= N/4)
   -> Bakry-Emery (rho_0 >= 12/7 for SU(2))
   -> Zegarlinski (full gap >= rho_0/6 = 2/7, lattice-independent)
@@ -260,9 +277,10 @@ The chain is:
   -> gap passes to continuum (ge_of_tendsto)
   -> mass gap m = sqrt(gap) > 0
 
-Each step is either proved in this formalization or is a standard
-result from the literature (O'Neill 1966, Bakry-Emery 1985,
-Zegarlinski 1992, Cheeger-Colding 1997). -/
+Each step is either proved elsewhere in this formalization or is a
+standard result from the literature (O'Neill 1966, Bakry-Emery 1985,
+Zegarlinski 1992, Cheeger-Colding 1997) — but none of them is invoked by
+the proof below, which is why this decl is SHELL. -/
 theorem mass_gap_argument_complete :
     -- SU(2) has positive mass gap
     (∃ (m : ℝ), 0 < m ∧ m = Real.sqrt (2 / 7)) ∧

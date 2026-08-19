@@ -274,10 +274,21 @@ def ym_mgh_sequence (N : ℕ) (hN : 2 ≤ N)
   h_dim := h_dim
   eigenvalue_antitone := h_anti
 
-/-- **The complete Yang-Mills mass gap from Cheeger-Colding.**
-Given: the lattice sequence satisfies the mGH hypotheses.
-Cheeger-Colding gives: eigenvalue convergence.
-Combined: the continuum theory has mass gap ≥ √(N/4). -/
+/-- **SHELL**: satisfied by construction regardless of the physics; do not
+cite as a closure, and do not read it as a Yang–Mills mass-gap result.
+
+The 2026-08-18 content audit (U6, §2b) classed this SHELL. The conclusion
+`∃ m, 0 < m ∧ (N:ℝ)/4 ≤ m^2` is discharged by the explicit witness
+`m := √(N/4)` together with `Real.sq_sqrt` and `positivity` — i.e. by the
+tautology `(√(N/4))² = N/4`. The `cheeger_colding` application is
+destructured but its gap component `h_gap` is **discarded**, and none of
+`h_ricci`, `h_vol`, `h_dim`, `h_anti` reaches the conclusion. The
+statement therefore holds for any `spectral_data` whatsoever, including
+ones with no gap.
+
+Statement as written: given a lattice sequence satisfying the mGH
+hypotheses, Cheeger–Colding eigenvalue convergence yields a continuum
+mass gap ≥ √(N/4). -/
 theorem ym_mass_gap_from_cheeger_colding (N : ℕ) (hN : 2 ≤ N)
     (spectral_data : ℕ → RiemannianSpectralData)
     (h_ricci : ∀ k, (N : ℝ) / 4 ≤ (spectral_data k).ricci_lower)

@@ -41,13 +41,15 @@ theorem trace_linear (S : SpectralData n) (a b : ℝ) (f g : ℝ -> ℝ) :
     a * spectralTrace S f + b * spectralTrace S g := by
   simp only [spectralTrace, Finset.mul_sum, ← Finset.sum_add_distrib]
 
-/-- **Trace cyclicity / basis-independence** (Theorem 8.2):
-On a *-algebra with state w, w(ab) = w(ba) when the state is tracial.
-This is the abstract form of Tr(AB) = Tr(BA), which guarantees
-the trace does not depend on the choice of eigenbasis.
+/-- **SHELL**: the hypothesis IS the conclusion — the body is literally
+`h_cyclic`. Nothing is derived, and the statement cannot be false. Do not
+cite as a formal verification of Theorem 8.2 or of basis-independence.
 
-In finite dimensions with a faithful state, this is equivalent to:
-the state w is a trace (commutes under the product). -/
+Statement as written — Trace cyclicity / basis-independence (Theorem 8.2):
+on a *-algebra with state w, w(ab) = w(ba) when the state is tracial; the
+abstract form of Tr(AB) = Tr(BA), which would guarantee the trace does not
+depend on the choice of eigenbasis. Traciality is assumed here, not
+established. -/
 theorem trace_cyclic (A : Type*) [StarAlgebraWithState A]
     -- Cyclicity hypothesis (a property of the trace state)
     (h_cyclic : ∀ a b : A, StarAlgebraWithState.state (a * b) =

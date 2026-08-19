@@ -22,14 +22,18 @@ This is the STRUCTURAL REASON for inflation: not "vacuum energy
 drives expansion" but "expansion is what the universe DOES to escape
 degeneracy."
 
-## What is proved
+## What is checked (2026-08-18 content audit, §2 — nothing is "proved" here)
 
-* `degeneracy_breaking_under_SCSE` (T2): along an SCSE trajectory
-  starting from a self-referential kernel, λ_1(t) > 0 for all t.
+* `degeneracy_breaking_under_SCSE` — **SHELL**: a two-line composition of
+  two assumed axioms from `SCSE.HeatDeathForbidden`,
+  `scse_preserves_self_reference` (self-reference is preserved along the
+  flow) and `lambda_floor_exists` (self-reference forces λ_1 ≥ floor > 0).
+  Both the dynamical and the spectral content are assumed; the file
+  supplies only `lt_of_lt_of_le`. Do not describe as "T2 (proved)".
 
-* `inflation_as_degeneracy_breaking` (T2 corollary): the existence
-  of a degeneracy-breaking SCSE trajectory is what makes inflation
-  structurally inevitable in any self-referential cosmology.
+* `inflation_as_degeneracy_breaking` — **SHELL**: contrapositive
+  bookkeeping on the above (`lt_irrefl`). It says nothing about inflation,
+  expansion, or cosmology; the word "inflation" appears only in the name.
 
 ## What is left for Phase 2.1
 
@@ -52,7 +56,14 @@ open SpectralPhysics.SCSE.HeatDeathForbidden
 
 /-! ## Section 1: Main theorem — degeneracy is broken under SCSE. -/
 
-/-- **Theorem 3 (Degeneracy Breaking under SCSE)**: along an SCSE
+/-- **SHELL**: composes two assumed axioms
+    (`scse_preserves_self_reference`, `lambda_floor_exists`) via
+    `lt_of_lt_of_le`. Both the preservation of self-reference along the
+    flow and the positive spectral floor are assumed, so the conclusion
+    is assumed too. Do not cite as "T2 (proved)".
+
+    Statement as written — Theorem 3 (Degeneracy Breaking under SCSE):
+    along an SCSE
     trajectory with self-reference closure at initial time, the
     cosmic Laplacian gap stays bounded below for ALL times.
 
@@ -75,14 +86,16 @@ theorem degeneracy_breaking_under_SCSE
     scse_preserves_self_reference traj t h_SR_init
   exact lt_of_lt_of_le hpos (hfloor _ h_SR_t)
 
-/-- **Corollary (Inflation as degeneracy-breaking)**: the existence
-    of the degeneracy-breaking flow is what makes cosmic expansion
-    structurally inevitable in a self-referential cosmology.
+/-- **SHELL**: the contrapositive of `degeneracy_breaking_under_SCSE` via
+    `lt_irrefl` — itself a shell over two assumed axioms. Nothing about
+    inflation, expansion, or cosmology is expressed; the word "inflation"
+    occurs only in the decl name. Do not cite as "T2 (proved)".
 
-    The cosmic Laplacian eigenvalue cannot persist at zero (no SCSE
-    trajectory can stay at λ_1 = 0); the flow MUST break degeneracy
-    immediately. This is the structural reason for inflation: the
-    universe HAS to expand to maintain the spectral gap. -/
+    Statement as written — Corollary (Inflation as degeneracy-breaking):
+    the cosmic Laplacian eigenvalue cannot persist at zero (no SCSE
+    trajectory can stay at λ_1 = 0). The reading that this is "the
+    structural reason for inflation — the universe HAS to expand to
+    maintain the spectral gap" is prose, not formalized content. -/
 theorem inflation_as_degeneracy_breaking
     (traj : SCSETrajectory)
     (h_SR_init : SelfReferenceClosure (atTime traj 0)) :

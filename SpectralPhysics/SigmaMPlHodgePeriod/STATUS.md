@@ -4,28 +4,42 @@
 **Branch:** `compute/sigma-MPl-hodge-period-AM`
 **Build:** `lake build` succeeds (3301 jobs).
 
+> **2026-08-18 content-audit correction (§2). This directory closes
+> nothing.** Do not cite it as "closes 11% of A_s", as "machine-checked",
+> or as NON-VACUOUS. `chern_pairing_log_ratio D` is the constant `0` while
+> `period_candidate = ln(9/8) > 0`, so hypothesis (d) below is
+> **unsatisfiable** and both headline theorems
+> (`sigma_MPl_hodge_period_AM`, `sigma_MPl_hodge_period_AM_explicit`) are
+> **SHELL** — vacuously true
+> (`lean-content-audit-2026-08-18/VacuityCheck.lean:pairing_hyp_false`).
+> The five "CLOSED-by-literature" axioms are `∃ _, True`-shells importing
+> no literature content, and the two Hodge predicates are `True`-shells.
+> The one non-vacuous decl is `period_candidate_eq_log_9_8`
+> (**DEFINITIONAL**: `log(288/256) = log(9/8)`).
+
 ## TL;DR
 
-This dispatch formalizes the **σ₀/M_Pl as Akrami–Majid braided Hodge
-period** reframe at the **logical-structure level**. The closure of
-v0.9.1's 11% `A_s` gap is reduced to a single numerical hypothesis: that
-the Akrami–Majid braided Chern pairing on the rank-1 Tor⁻¹ (1,1) class
-at the SAGF fixed point `k*` equals `ln(9/8) = ln(288/256)`.
+This dispatch was intended to formalize the **σ₀/M_Pl as Akrami–Majid
+braided Hodge period** reframe at the **logical-structure level**, with
+the closure of v0.9.1's 11% `A_s` gap reduced to a single numerical
+hypothesis: that the Akrami–Majid braided Chern pairing on the rank-1
+Tor⁻¹ (1,1) class at the SAGF fixed point `k*` equals
+`ln(9/8) = ln(288/256)`.
 
-The dispatch is the **v1.0 bridge**: it captures the logical reframe
-with audit-discipline rigor, with empirical closure pending the
-parallel mpmath dispatch.
+Per the audit note above, the reduction is not achieved: with the
+shells in place, no logical structure is captured either. Treat this
+directory as scaffolding.
 
 ## Verdict
 
-**CONDITIONAL** on four hypothesis classes:
+Nominally CONDITIONAL on four hypothesis classes; actual classes:
 
 | Hypothesis class | Status | Citation / source |
 |---|---|---|
-| (a) Akrami–Majid braided HC + Chern character | CLOSED-by-literature | arXiv:math/0406005; J. Algebra 220 (1999) |
-| (b) Hodge filtration stabilization at `k*` | PREDICATE-CONDITIONAL | new predicate; OP3 infrastructure |
-| (c) Kassel Künneth+Tor decomposition | CLOSED-by-literature | Math. Z. 193 (1986) §3 |
-| (d) Numerical pairing value = `ln(9/8)` | DEFERRED | parallel mpmath dispatch |
+| (a) Akrami–Majid braided HC + Chern character | **SHELL** (`∃ _, True`) | arXiv:math/0406005; J. Algebra 220 (1999) — nominal, not load-bearing |
+| (b) Hodge filtration stabilization at `k*` | **SHELL** (`∀ _v, True`) | new predicate; OP3 infrastructure |
+| (c) Kassel Künneth+Tor decomposition | **SHELL** (`∃ _, True`) | Math. Z. 193 (1986) §3 — nominal, not load-bearing |
+| (d) Numerical pairing value = `ln(9/8)` | **UNSATISFIABLE** (`0 = ln(9/8)`), not deferred | no mpmath result can discharge it; the `def` must change first |
 
 ## Files
 
@@ -69,7 +83,7 @@ Chern pairing    ↦  log(dim H_hid / 2⁸)                         (THIS DISPAT
 The numerical closure of the 11% gap then reads
 `S_top_full ≈ 28.09 + 0.118 = 28.21`, matching v0.9.2's revised target.
 
-## Tier-1 lemmas (machine-checked)
+## Lemmas (ARITHMETIC / DEFINITIONAL re-imports — not closures)
 
 | Lemma | File | Statement |
 |---|---|---|
@@ -113,7 +127,10 @@ The numerical closure of the 11% gap then reads
 ```
 
 All five named literature axioms are reachable from at least one
-machine-checked theorem; no axiom is "dead" (declared and never used).
+theorem; no axiom is "dead" (declared and never used). Note this says
+nothing about content: all five are `∃ _, True`-shells (2026-08-18
+audit), so reachability does not make the theorems that reach them
+substantive.
 
 ## Anti-pattern audit (self-check vs the four discipline rules)
 
@@ -185,7 +202,9 @@ wrong structural reading and the 11% gap must come from elsewhere
 (one-loop running, sub-leading instantons, or a v0.9.1 normalization
 error).
 
-Either way, the logical structure is now machine-checked.
+Either way, the logical structure is **not** machine-checked — see the
+2026-08-18 audit note at the top of this file. The headline theorems are
+vacuous, so they discriminate between neither outcome.
 
 ## Update (2026-05-11): parallel mpmath dispatch verdict
 

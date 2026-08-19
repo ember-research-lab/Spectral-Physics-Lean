@@ -129,7 +129,19 @@ theorem T_RH_in_bracket :
     Gorbunov-Panin PLB 700 (2011):
     N_e ≈ 55 + (1/3) ln(T_RH / 10⁹ GeV) + (1/3) ln(H_*/10¹³ GeV)
 
-    For T_RH = 3×10⁹ GeV: N_e ≈ 55 + (1/3) · ln(3) ≈ 55.4. -/
+    For T_RH = 3×10⁹ GeV: N_e ≈ 55 + (1/3) · ln(3) ≈ 55.4.
+
+    **Module ownership note (2026-08-18 content repair,
+    `lean-content-audit-2026-08-18/REGISTER.md` §3):** this is an
+    INDEPENDENT cross-check value from the reheating-temperature
+    route, not the framework's canonical e-fold count. The canonical
+    value is `Ne_AsClosure := 60` in
+    `SpectralPhysics/Cosmology/EfoldMultiplicity.lean` (owned there,
+    fixed by the `A_s`-closure derivation). `55` and `60` are
+    different quantities from different observational routes, both
+    within the ACT DR6-allowed bracket (`N_e_in_bracket` below) — see
+    `EfoldMultiplicity.lean`'s "A fourth reading" note for the full
+    reconciliation; this is not an unresolved contradiction. -/
 noncomputable def N_e_from_T_RH : ℝ := 55
 
 /-- **N_e bracket**: 54 ≤ N_e ≤ 57 (within ACT DR6 2σ range

@@ -96,16 +96,20 @@ axiom of citation.
   cutoff above the IR scale).
 * `WilsonianUniversality R := SpectralUniversality R ↔ RGFlowConverges R`
   — the v0.9 line 1437 *analogy* as a biconditional predicate.
-* **`wilson_polchinski_analogy`** — named axiom asserting
-  `WilsonianUniversality R` for every `R`. Cites Wilson 1971 +
-  Polchinski 1984.
+* **`wilson_polchinski_analogy`** — **SHELL** (2026-08-18 content audit,
+  U6). Declared as a named axiom asserting `WilsonianUniversality R` for
+  every `R` and citing Wilson 1971 + Polchinski 1984, but it is provable
+  outright from this directory's own definitions
+  (`lean-content-audit-2026-08-18/Vacuity.lean:wp_provable`, kernel
+  axioms only). The citation is not load-bearing; do not present this
+  axiom as importing literature content.
 * `rg_flow_from_spectral_universality`,
-  `spectral_universality_from_rg_flow` — the two directions of the
-  biconditional, each a one-liner from the axiom.
+  `spectral_universality_from_rg_flow` — SHELL: `.mp`/`.mpr` of the
+  shell axiom.
 * **`v091_line_1437_conditional_closure`** — combined theorem:
   given the two Kato hypotheses, both `SpectralUniversality R` *and*
-  `RGFlowConverges R` hold. Consumes the Wilson axiom once (forward
-  direction).
+  `RGFlowConverges R` hold. The second conjunct is SHELL (it comes from
+  the shell axiom), so this is **not** a closure of v0.9 line 1437.
 
 ### `Verdict.lean` — packaging
 
@@ -126,8 +130,13 @@ axiom wilson_polchinski_analogy :
     ∀ (R : CutoffFamily), WilsonianUniversality R
 ```
 
-**Category:** Tier 2 — named axiom of citation.
-**Sources:**
+**Category:** **SHELL** (2026-08-18 content audit, U6) — declared as a
+Tier 2 named axiom of citation, but provable outright from the
+definitions in `WilsonPolchinskiConnection.lean` (see
+`lean-content-audit-2026-08-18/Vacuity.lean:wp_provable`). The sources
+below are what the axiom *nominally* cites; none of their content is
+actually assumed or used.
+**Sources (nominal):**
 
 * Wilson, K.G. (1971). *Renormalization group and critical phenomena.*
   Phys. Rev. B **4**, 3174. — RG-flow universality, Pt. I.

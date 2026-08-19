@@ -1,10 +1,29 @@
-# DixonOrderOne — non-associativity obstruction to the Connes order-one axiom
+## 0. STATUS polarity caveat (2026-08-18 content repair — read this first)
 
-**Date:** 2026-05-11
-**Branch:** `compute/dixon-order-one`
-**Target:** v0.9.2 deferred item B.1
-       (v0.9 line 6731; Bochniak-Sitarz dispatch hypothesis)
-**Build:** `lake build SpectralPhysics` succeeds (3238 jobs).
+**U8 is compile-verified UNSOUND and REPAIRED (not LEFT-OPEN).** The 2026-08-18 content
+audit (`lean-content-audit-2026-08-18/REGISTER.md` U8) flagged
+`bochniak_sitarz_zerothOrder_reduction` as possibly false as stated. During the repair the
+witness `D := fun _ => 0` was compiled: `OrderOne (fun _ => 0) LeftMult RightMult` holds
+(both commutators collapse via `L_a 0 = 0 = R_b 0`), so the axiom forced
+`ZerothOrder LeftMult RightMult`, which `not_zerothOrder_canonical_dixon` refutes — `False`
+derived (`spectral_physics/lean-content-audit-2026-08-18/DixonU8False.lean`, manuscript repo).
+
+Actions taken (labels-and-soundness only, no new mathematics):
+* the axiom is **deleted**;
+* `Verdict.zero_map_orderOne` and `Verdict.dixon_reduction_hypothesis_false :
+  ¬ OrderOneImpliesZerothOrder LeftMult RightMult` are proved (kernel axioms only) — the
+  honest negative;
+* the former headline `dixon_order_one_fails : ¬ ∃ D, OrderOne D LeftMult RightMult` is
+  **withdrawn** (it is false — the zero map is a witness) and replaced by
+  `dixon_order_one_unconstrained_has_witness`;
+* `order_one_fails_canonical_dixon` (NonAssocObstruction.lean) is retained but its docstring
+  now says its hypothesis is unsatisfiable (VACUOUS conditional).
+
+What this directory still proves unconditionally: `not_zerothOrder_canonical_dixon`,
+`dixon_has_nonzero_associator`, `dixon_LR_does_not_commute`. What is now OPEN in Lean:
+whether every *genuine* Dirac operator fails order-one — that needs a formalisation of what
+"Dirac-like `D`" means (new content). The sections below predate this repair; where they
+speak of "the named axiom" or "`dixon_order_one_fails`", read them through this caveat.
 
 ## Verdict — **NO** (honest negative)
 

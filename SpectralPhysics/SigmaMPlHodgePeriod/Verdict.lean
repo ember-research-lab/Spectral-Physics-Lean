@@ -15,13 +15,33 @@ import SpectralPhysics.SigmaMPlHodgePeriod.MainConditional
 
 ## Headline
 
-**CONDITIONAL** — closure of the v0.9.1 11% `A_s` gap (equivalently,
-the σ₀/M_Pl reframe) is reduced to the value of the Akrami–Majid
-braided Chern pairing at the SAGF fixed point `k*`. If the parallel
-numerical dispatch (`pre_geometric/akrami_majid_chern_pairing/`)
-confirms that pairing equals `period_candidate = ln(9/8)`, then this
-theorem closes σ₀/M_Pl in v0.9.2 form via
-`sigma_MPl_hodge_period_AM_explicit`.
+> **2026-08-18 content-audit correction (§2). This directory closes
+> nothing, and its headline theorems are VACUOUS as stated.** Do not cite
+> it as "closes 11% of A_s" and do not describe any of it as NON-VACUOUS.
+>
+> * `chern_pairing_log_ratio D` is defined as the constant `0`, while
+>   `period_candidate = ln(9/8) > 0`. So the hypothesis
+>   `h_pairing_value : chern_pairing_log_ratio D = period_candidate` is
+>   **unsatisfiable**, and `sigma_MPl_hodge_period_AM` /
+>   `sigma_MPl_hodge_period_AM_explicit` are **SHELL** — vacuously true
+>   (`lean-content-audit-2026-08-18/VacuityCheck.lean:pairing_hyp_false`).
+> * The five "CLOSED-by-literature" named axioms are **SHELL**: each has
+>   the form `∃ _ : ULift Unit, True` (or is inhabited by `⟨default,
+>   trivial⟩`). They import no literature content, as
+>   `KassellKunnethTor.lean` already says of its own axiom ("downstream
+>   theorems that invoke this name carry NO Kassel content beyond the
+>   tautology").
+> * `HodgeFiltrationStabilizedAtKStar` (`∀ _v, True`) and
+>   `TorMinusOneClassHasIntegerRank` (`True`) are **SHELL** predicates.
+> * The one non-vacuous decl is `period_candidate_eq_log_9_8` —
+>   **DEFINITIONAL**: `log(288/256) = log(9/8)`.
+
+The statement the directory *intends* (not what it proves): closure of
+the v0.9.1 11% `A_s` gap (equivalently, the σ₀/M_Pl reframe) reduced to
+the value of the Akrami–Majid braided Chern pairing at the SAGF fixed
+point `k*`. For that reduction to mean anything,
+`chern_pairing_log_ratio` must first be given a real definition instead
+of `0`.
 
 ## Chain of reductions
 
@@ -36,22 +56,29 @@ Chern pairing     ↦ log(dim H_hid / 2⁸)          (this dispatch's hypothesis
 
 ## Verdict structure
 
-* **(a) Akrami–Majid braided HC + Chern character**: CLOSED-by-literature.
+* **(a) Akrami–Majid braided HC + Chern character**: **SHELL**.
   Two named axioms (`AkramiMajid_braided_HC_existence`,
-  `akrami_majid_chern_character_defined`) citing arXiv:math/0406005.
+  `akrami_majid_chern_character_defined`) nominally citing
+  arXiv:math/0406005, but inhabited outright; they carry no
+  Akrami–Majid content.
 
-* **(b) Hodge filtration stabilization at `k*`**: PREDICATE-CONDITIONAL.
-  New Prop predicate `HodgeFiltrationStabilizedAtKStar`. Re-uses
-  `OP3.lambda1_at_kstar` infrastructure.
+* **(b) Hodge filtration stabilization at `k*`**: **SHELL**.
+  The Prop predicate `HodgeFiltrationStabilizedAtKStar` unfolds to
+  `∀ _v, True` — every `D` satisfies it, so it is not open content.
 
-* **(c) Kassel Künneth+Tor**: CLOSED-by-literature.
-  One named axiom (`kassel_kunneth_tor_decomposition`) citing
-  Kassel 1986 §3 — complementing the trace-level `K3_kassel_residue`
-  already in `CompositionUniqueness.KasparovProductUniqueness`.
+* **(c) Kassel Künneth+Tor**: **SHELL**.
+  The named axiom `kassel_kunneth_tor_decomposition` is
+  `∃ _p, True`, inhabited by `⟨⟨⟨⟩⟩, trivial⟩`; its own docstring says
+  downstream theorems "carry NO Kassel content beyond the tautology".
+  (The trace-level `K3_kassel_residue` in
+  `CompositionUniqueness.KasparovProductUniqueness` is separately
+  flagged UNSOUND at register U2 — do not lean on it either.)
 
-* **(d) Numerical pairing value**: DEFERRED.
-  The hypothesis `h_pairing_value : chern_pairing_log_ratio D = period_candidate`
-  is the predicate that the parallel mpmath dispatch addresses.
+* **(d) Numerical pairing value**: **UNSATISFIABLE**, not deferred.
+  `chern_pairing_log_ratio D := 0` and `period_candidate = ln(9/8) > 0`,
+  so `h_pairing_value : chern_pairing_log_ratio D = period_candidate` is
+  false for every `D`. No mpmath result can discharge it; the `def` has
+  to change first.
 
 ## Anti-pattern audit (Rule 1–4 self-check)
 
@@ -85,16 +112,20 @@ Chern pairing     ↦ log(dim H_hid / 2⁸)          (this dispatch's hypothesis
 
 ## Status
 
-This is the **v1.0 bridge formalization**: it captures the reframe at
-the **logical-structure level**, with empirical closure pending the
-mpmath result on the Akrami–Majid Chern pairing.
+Intended as a "v1.0 bridge formalization" capturing the reframe at the
+logical-structure level, with empirical closure pending the mpmath
+result on the Akrami–Majid Chern pairing. Per the 2026-08-18 content
+audit it does not currently do that: the shells listed in the Headline
+mean no logical structure is captured either. Treat the directory as
+scaffolding, not as a result.
 -/
 
 namespace SpectralPhysics.SigmaMPlHodgePeriod
 
-/-- **Verdict marker**: this module records a CONDITIONAL theorem
-reducing σ₀/M_Pl closure to the Akrami–Majid Chern-pairing numerical
-hypothesis. -/
+/-- **Verdict marker.** The string below is the module's original
+self-description; per the 2026-08-18 content audit it overstates the
+content — the "CONDITIONAL theorem" has an unsatisfiable hypothesis and
+items (a)–(c) are SHELL. See the Headline section of this file. -/
 def verdict_status : String :=
   "CONDITIONAL on (a) AM braided HC literature axioms, " ++
   "(b) Hodge filtration stabilization at k* (new predicate), " ++

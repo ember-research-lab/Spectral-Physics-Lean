@@ -29,12 +29,12 @@ The trace-sector dispersion symbol on metric perturbations
 (Theorem `thm:friedmann-from-sigmaTr`, formalised in
 `SpectralPhysics/Cosmology/SigmaTrDispersion.lean`):
 
-  `σ_tr(Λ; ξ)  =  c₁ · f₂ · Λ² · ξ²  −  6 · f₀ · α_eff · ξ⁴` .
+  `σ_tr(Λ; ξ)  =  c₁ · f₂ · Λ² · ξ²  −  6 · f₀ · α_tr · ξ⁴` .
 
 The IR-dominant Hessian eigenvalue at `k*(M_R)` is `σ_tr` evaluated at
 `Λ = Λ_c` (fixed primitive) and `ξ² = λ_1(M_R)` (the spectral gap):
 
-  `Hess_min(M_R)  =  c₁ f₂ Λ_c² · λ_1(M_R)  −  6 f₀ α_eff · λ_1(M_R)²` .
+  `Hess_min(M_R)  =  c₁ f₂ Λ_c² · λ_1(M_R)  −  6 f₀ α_tr · λ_1(M_R)²` .
 
 ## Main results
 
@@ -98,10 +98,16 @@ def f2 : ℝ := 48 * Real.exp 6
 theorem f2_pos : 0 < f2 := by
   unfold f2; exact mul_pos (by norm_num) (Real.exp_pos _)
 
-/-- `α_eff = 1/120`, higher-curvature regulator coefficient. -/
-def alphaEff : ℝ := 1 / 120
+/-- `α_tr = 1/72`, trace-sector / higher-curvature regulator
+coefficient. **Value corrected 2026-08-18** (`lean-content-repair`,
+§3 of `lean-content-audit-2026-08-18/REGISTER.md`): was `α_eff =
+1/120` (STALE — mirrors the same correction made in
+`SigmaTrDispersion.lean`, which this file intentionally re-declares
+locally rather than importing; see that file's `alphaTr` docstring
+for the full rationale). -/
+def alphaTr : ℝ := 1 / 72
 
-theorem alphaEff_pos : 0 < alphaEff := by unfold alphaEff; norm_num
+theorem alphaTr_pos : 0 < alphaTr := by unfold alphaTr; norm_num
 
 /-- The fixed Connes–Marcolli static cutoff:
 `Λ_c²/M_Pl² = π / (64 · 48 · e⁶) = π / (64 · f₂)`. We work in M_Pl² units
@@ -113,16 +119,16 @@ theorem lambdaCSq_pos : 0 < lambdaCSq := by
   exact div_pos Real.pi_pos (by have := f2_pos; positivity)
 
 /-- The σ_tr crossover momentum squared:
-`ξ_cross²  =  c₁ · f₂ · Λ_c² / (6 · f₀ · α_eff)`. -/
+`ξ_cross²  =  c₁ · f₂ · Λ_c² / (6 · f₀ · α_tr)`. -/
 def xiCrossSq : ℝ :=
-  c1RouteB * f2 * lambdaCSq / (6 * f0 * alphaEff)
+  c1RouteB * f2 * lambdaCSq / (6 * f0 * alphaTr)
 
 theorem xiCrossSq_pos : 0 < xiCrossSq := by
   unfold xiCrossSq
   have hnum : 0 < c1RouteB * f2 * lambdaCSq :=
     mul_pos (mul_pos c1RouteB_pos f2_pos) lambdaCSq_pos
-  have hden : 0 < 6 * f0 * alphaEff :=
-    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaEff_pos
+  have hden : 0 < 6 * f0 * alphaTr :=
+    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaTr_pos
   exact div_pos hnum hden
 
 /-! ## Section 2: the IR-dominant Hessian eigenvalue
@@ -137,7 +143,7 @@ of the Laplacian *is* `λ_1`, so the IR-dominant Hessian eigenvalue is
 /-- The IR-dominant Hessian eigenvalue at the SAGF critical point,
 as a function of the spectral gap `λ_1`. -/
 def hessMin (l1 : ℝ) : ℝ :=
-  c1RouteB * f2 * lambdaCSq * l1 - 6 * f0 * alphaEff * l1 ^ 2
+  c1RouteB * f2 * lambdaCSq * l1 - 6 * f0 * alphaTr * l1 ^ 2
 
 /-- `Hess_min(0) = 0` (trivial vanishing at zero gap). -/
 theorem hessMin_zero : hessMin 0 = 0 := by
@@ -149,18 +155,18 @@ theorem hessMin_pos_in_window (l1 : ℝ)
     (hl1_pos : 0 < l1) (hl1_below : l1 < xiCrossSq) :
     0 < hessMin l1 := by
   unfold hessMin
-  have hden_pos : 0 < 6 * f0 * alphaEff :=
-    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaEff_pos
+  have hden_pos : 0 < 6 * f0 * alphaTr :=
+    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaTr_pos
   -- Goal: c₁ f₂ Λ_c² · l1 - 6 f₀ α_eff · l1² > 0.
   -- Factor: l1 · (c₁ f₂ Λ_c² - 6 f₀ α_eff · l1).
-  have h_inner : 0 < c1RouteB * f2 * lambdaCSq - 6 * f0 * alphaEff * l1 := by
-    have h_lt : l1 * (6 * f0 * alphaEff) < c1RouteB * f2 * lambdaCSq := by
+  have h_inner : 0 < c1RouteB * f2 * lambdaCSq - 6 * f0 * alphaTr * l1 := by
+    have h_lt : l1 * (6 * f0 * alphaTr) < c1RouteB * f2 * lambdaCSq := by
       unfold xiCrossSq at hl1_below
       exact (lt_div_iff₀ hden_pos).mp hl1_below
     linarith
   have h_factor :
-      c1RouteB * f2 * lambdaCSq * l1 - 6 * f0 * alphaEff * l1 ^ 2
-        = l1 * (c1RouteB * f2 * lambdaCSq - 6 * f0 * alphaEff * l1) := by ring
+      c1RouteB * f2 * lambdaCSq * l1 - 6 * f0 * alphaTr * l1 ^ 2
+        = l1 * (c1RouteB * f2 * lambdaCSq - 6 * f0 * alphaTr * l1) := by ring
   rw [h_factor]
   exact mul_pos hl1_pos h_inner
 
@@ -179,25 +185,25 @@ theorem hessMin_strictMono_below_peak :
   have h_l1l_pos : 0 ≤ l1 := h0
   have h_l1'_lt : l1' < xiCrossSq / 2 := hcap
   have h_l1_lt : l1 < xiCrossSq / 2 := lt_trans hlt hcap
-  have hden_pos : 0 < 6 * f0 * alphaEff :=
-    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaEff_pos
-  have h12_pos : 0 < 12 * f0 * alphaEff := by linarith
+  have hden_pos : 0 < 6 * f0 * alphaTr :=
+    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaTr_pos
+  have h12_pos : 0 < 12 * f0 * alphaTr := by linarith
   -- From l1 < ξ_cross²/2 = c₁ f₂ Λ_c² / (12 f₀ α_eff):
   -- 12 f₀ α_eff · l1 < c₁ f₂ Λ_c² ; same for l1'.
-  have h_xiCrossSq_eq : xiCrossSq / 2 = c1RouteB * f2 * lambdaCSq / (12 * f0 * alphaEff) := by
+  have h_xiCrossSq_eq : xiCrossSq / 2 = c1RouteB * f2 * lambdaCSq / (12 * f0 * alphaTr) := by
     unfold xiCrossSq
     field_simp
     ring
-  have h_l1_bound : 12 * f0 * alphaEff * l1 < c1RouteB * f2 * lambdaCSq := by
+  have h_l1_bound : 12 * f0 * alphaTr * l1 < c1RouteB * f2 * lambdaCSq := by
     have h := h_l1_lt
     rw [h_xiCrossSq_eq] at h
-    have : l1 * (12 * f0 * alphaEff) < c1RouteB * f2 * lambdaCSq :=
+    have : l1 * (12 * f0 * alphaTr) < c1RouteB * f2 * lambdaCSq :=
       (lt_div_iff₀ h12_pos).mp h
     linarith
-  have h_l1'_bound : 12 * f0 * alphaEff * l1' < c1RouteB * f2 * lambdaCSq := by
+  have h_l1'_bound : 12 * f0 * alphaTr * l1' < c1RouteB * f2 * lambdaCSq := by
     have h := h_l1'_lt
     rw [h_xiCrossSq_eq] at h
-    have : l1' * (12 * f0 * alphaEff) < c1RouteB * f2 * lambdaCSq :=
+    have : l1' * (12 * f0 * alphaTr) < c1RouteB * f2 * lambdaCSq :=
       (lt_div_iff₀ h12_pos).mp h
     linarith
   -- Strict monotonicity follows from the difference factorisation:
@@ -209,18 +215,18 @@ theorem hessMin_strictMono_below_peak :
   -- 6 f₀ α_eff (l1 + l1') ≤ 12 f₀ α_eff · max(l1, l1') < c₁ f₂ Λ_c².
   have hdiff_pos : 0 < l1' - l1 := by linarith
   have h_inner_pos :
-      0 < c1RouteB * f2 * lambdaCSq - 6 * f0 * alphaEff * (l1 + l1') := by
+      0 < c1RouteB * f2 * lambdaCSq - 6 * f0 * alphaTr * (l1 + l1') := by
     -- 6 f₀ α_eff · (l1 + l1') < 12 f₀ α_eff · l1' (since l1 ≤ l1')
     -- Wait: 6(l1 + l1') ≤ 6(l1' + l1') = 12 l1' when l1 ≤ l1'.
-    have h6sum : 6 * f0 * alphaEff * (l1 + l1') ≤ 12 * f0 * alphaEff * l1' := by
+    have h6sum : 6 * f0 * alphaTr * (l1 + l1') ≤ 12 * f0 * alphaTr * l1' := by
       have h_le : l1 ≤ l1' := le_of_lt hlt
       nlinarith [hden_pos, h_le, h0]
     linarith
   have h_factor :
-      c1RouteB * f2 * lambdaCSq * l1' - 6 * f0 * alphaEff * l1' ^ 2
-        - (c1RouteB * f2 * lambdaCSq * l1 - 6 * f0 * alphaEff * l1 ^ 2)
+      c1RouteB * f2 * lambdaCSq * l1' - 6 * f0 * alphaTr * l1' ^ 2
+        - (c1RouteB * f2 * lambdaCSq * l1 - 6 * f0 * alphaTr * l1 ^ 2)
         = (l1' - l1) * (c1RouteB * f2 * lambdaCSq
-                        - 6 * f0 * alphaEff * (l1 + l1')) := by ring
+                        - 6 * f0 * alphaTr * (l1 + l1')) := by ring
   linarith [mul_pos hdiff_pos h_inner_pos, h_factor]
 
 /-! ## Section 3: the headline co-monotonicity theorem
@@ -300,21 +306,41 @@ theorem windowLoGeV_lt_windowHiGeV : windowLoGeV < windowHiGeV := by
   unfold windowLoGeV windowHiGeV
   norm_num
 
-/-- **Numerical axiom (from Python sweep).**
+/-- **U6, provable outright — DEMOTED from axiom to theorem
+(2026-08-18 content repair, `lean-content-audit-2026-08-18/
+REGISTER.md` U6 / "shape 1: citation-named axiom that is provable
+outright — laundering by naming").**
 
-The function `M_R ↦ λ_1(M_R)` exists and is strictly positive and
-bounded above by `ξ_cross²/2 ≈ 1.09 × 10⁻²` (M_Pl² units) on the
-v0.9 acceptance window.
+This used to be `axiom window_gap_map : WindowGapMap`, presented as
+importing the Python sweep's empirical finding. It does not: the
+`WindowGapMap` structure only requires `lambda1 : ℝ → ℝ` to be
+POSITIVE and bounded by `ξ_cross²/2` — it does NOT require `lambda1`
+to equal (or even approximate) the actual physics formula
+`exp(−κ_2(M_R)/2) · Λ_c²`, nor does it require any dependence on
+`M_R` at all. Any constant function strictly between `0` and
+`ξ_cross²/2` — e.g. `fun _ => xiCrossSq / 4` below — satisfies both
+fields, with zero reference to the Python sweep, `M_R`, or `λ_1`'s
+actual value. So the axiom form was SHELL, not the citation of a
+genuine empirical input: it is trivially provable in Lean without
+consulting the sweep at all, and its "concrete witness"
+`λ_1(M_R) ∈ [10⁻¹²⁸, 10⁻¹¹⁸]` claim was decorative, not load-bearing.
 
-Concrete witness: the Python sweep at
-`yukawa/pre_geometric/correspondence_monotonicity/hess_lambda1_sweep.py`
-shows `λ_1(M_R) ∈ [10⁻¹²⁸, 10⁻¹¹⁸]` (M_Pl² units) for
-`M_R ∈ [3·10¹⁴, 1.5·10¹⁵]` GeV — over 100 orders of magnitude below
-`ξ_cross²/2`.
-
-Reproduce with: `python3 hess_lambda1_sweep.py` from
-`yukawa/pre_geometric/correspondence_monotonicity/`. -/
-axiom window_gap_map : WindowGapMap
+**What is still genuinely load-bearing**: `hess_lambda1_co_monotone`
+(the conditional theorem `∀ W : WindowGapMap, ...`) is SUBSTANTIVE —
+it is not trivially true, and would be false if `hessMin`'s formula
+changed. The Python sweep's actual empirical content — that the
+REAL physics `λ_1(M_R)` genuinely satisfies these bounds — is simply
+not captured by any Lean artifact in this file; that is an honest
+LEFT-OPEN gap (reproducing the sweep in Lean would be new
+verification work, not a content repair), not a soundness defect. -/
+noncomputable def window_gap_map : WindowGapMap where
+  lambda1 := fun _ => xiCrossSq / 4
+  pos := fun _ _ => by
+    have := xiCrossSq_pos
+    linarith
+  small := fun _ _ => by
+    have := xiCrossSq_pos
+    linarith
 
 /-- **Headline corollary in concrete form.**
 On the v0.9 acceptance window, `Hess_min` and `λ_1` are co-monotone. -/

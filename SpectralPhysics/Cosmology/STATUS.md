@@ -98,7 +98,7 @@ as textbook primitives or as framework primitives proven elsewhere.
    (`Triad/SelfReferentialTriad.lean`); positivity inherited.
 3. **`f2 = 48 e⁶`** — defined directly from the framework's Level-1
    faithfulness primitive.
-4. **`alphaEff = 1/120`** — convention from v0.9 line 12219.
+4. **`alphaTr = 1/72`** — trace-sector coefficient `α_tr = α_eff + β_eff/3` (corrected 2026-08-18 from the stale `alphaEff = 1/120`, v0.9 line 12219 convention; content-audit REGISTER §3).
 5. **`MPl = 1`** — chosen as a canonical positive value (results are
    `M_Pl`-equivariant).
 6. **`ConformalFrameTransform`** — class encoding Whitt 1984 +

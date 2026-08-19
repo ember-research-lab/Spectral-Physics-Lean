@@ -89,22 +89,49 @@ def TTSectorBerry (s_TT : ℝ) : Prop :=
 
 /-! ## 2. The crossover-character-exchange axiom -/
 
-/-- **Named axiom (v0.9.1 §`rem:berry-meaning`)** — at the σ_tr-zero
-crossover the framework's two metric sectors (trace and TT) exchange
-character: each picks up a Berry phase `γ = π` on a small loop
-encircling the crossover in the `(σ_tr, σ_TT)` parameter plane. -/
+/-- **SHELL**: provable outright; carries no Berry-phase content and must
+not be cited as literature input.
+
+The 2026-08-18 content audit (U6) showed this "named axiom" is a theorem
+of the surrounding definitions — see
+`lean-content-audit-2026-08-18/VacuityCheck.lean:berry_crossover_provable`,
+which discharges the identical statement with kernel axioms only (and
+without needing `0 < Λ`). Substituting `ξ² = xiCrossSq Λ` into `sigmaTr`
+makes the expression vanish by `ring`; nothing about Berry phases, loops
+in the `(σ_tr, σ_TT)` plane, or character exchange is being assumed.
+
+Kept as an `axiom` rather than demoted to a theorem: the proof, while
+short, is `field_simp`/`ring` rather than a mechanical
+`rfl`/`norm_num`/`decide`, so demoting it is out of scope for this
+labels-only pass.
+
+Statement as written (v0.9.1 §`rem:berry-meaning`, nominal): at the
+σ_tr-zero crossover the framework's two metric sectors exchange
+character, each picking up a Berry phase `γ = π` on a small loop
+encircling the crossover. -/
 axiom prop_berry_crossover :
     ∀ (Λ ξ : ℝ),
       ξ ^ 2 = xiCrossSq Λ →
       sigmaTr Λ ξ = 0
 
-/-- **Tier-1 lemma (audit hook)**: the Berry-crossover axiom is
-exactly the dispersion-symbol vanishing at the crossover
-(`sigmaTr_at_xiCross` from `Cosmology.SigmaTrDispersion`).
+/-- **SHELL**: satisfied by construction regardless of the physics; do not
+cite as a closure.
 
-This lemma is *not* a proof of `prop_berry_crossover` — it shows
-consistency: the named axiom's content matches the existing module's
-already-proved theorem. -/
+Re-exports `sigmaTr_at_xiCross`, which is the algebraic identity
+"substituting `ξ² = xiCrossSq Λ` into `sigmaTr` gives 0" — true by `ring`
+once `xiCrossSq` is unfolded. The 2026-08-18 content audit (U6) confirmed
+this compiles hypothesis-free: `hΛ : 0 < Λ` is inert, i.e. the statement
+holds for every Λ including Λ ≤ 0
+(`lean-content-audit-2026-08-18/VacuityCheck.lean:berry_crossover_provable`).
+
+Consequently it does **not** show that the named axiom
+`prop_berry_crossover` "matches an independently proved theorem" — the
+axiom and this lemma are the same algebraic identity, and both are
+provable outright. There is no consistency check here.
+
+Statement as written: the Berry-crossover axiom is the dispersion-symbol
+vanishing at the crossover (`sigmaTr_at_xiCross` from
+`Cosmology.SigmaTrDispersion`). -/
 theorem prop_berry_crossover_consistency
     (Λ ξ : ℝ) (hΛ : 0 < Λ) (hξ : ξ ^ 2 = xiCrossSq Λ) :
     sigmaTr Λ ξ = 0 :=

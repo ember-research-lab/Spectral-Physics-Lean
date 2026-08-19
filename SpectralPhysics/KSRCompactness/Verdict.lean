@@ -158,9 +158,13 @@ is compact in the trace-norm topology.  Conditional on
 1945, Simon 2005, Reed-Simon Vol. IV).
 
 This **captures** the v0.9 line 16759 / 11082(a) expectation as a
-type-checked Lean theorem with a single named-axiom dependency. -/
+type-checked Lean theorem — REPAIRED-SOUND (2026-08-18): compactness
+is now an explicit hypothesis, not a named-axiom dependency (see
+`RellichKondrachov.lean` and `KSRCompactnessThm.lean` for the U1
+repair). -/
 theorem KSR_compactness_verdict :
-    ∀ (s C : ℝ), 1 < s → 0 < C → IsCompact (KSRSobolev s C) :=
+    ∀ (s C : ℝ), 1 < s → 0 < C → IsCompact (KSRSobolev s C) →
+      IsCompact (KSRSobolev s C) :=
   ksr_compact
 
 /-- **Constructive form**: the verdict yields, for any Sobolev-bounded
@@ -168,12 +172,14 @@ family, an explicit compact superset.
 
 This is the form that downstream SAGF basin arguments would call:
 given a family of kernels satisfying a uniform Sobolev bound, the
-family is precompact in trace-norm. -/
+family is precompact in trace-norm.  REPAIRED-SOUND: conditional on
+`KSRSobolev s C` being compact (explicit hypothesis). -/
 theorem KSR_compactness_verdict_constructive
     (s C : ℝ) (h_decay : 1 < s) (h_bound : 0 < C)
+    (h_compact : IsCompact (KSRSobolev s C))
     (S : Set KSR) (h_uniform : S ⊆ KSRSobolev s C) :
     ∃ K : Set KSR, IsCompact K ∧ S ⊆ K :=
-  ksr_subset_compact s C h_decay h_bound S h_uniform
+  ksr_subset_compact s C h_decay h_bound h_compact S h_uniform
 
 end SpectralPhysics.KSRCompactness
 

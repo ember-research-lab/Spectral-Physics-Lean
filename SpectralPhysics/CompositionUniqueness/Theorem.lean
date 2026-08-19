@@ -128,17 +128,22 @@ theorem three_conditions_trace_unique
 
 /-! ## Scope 3: Kasparov-product narrow uniqueness (re-exported) -/
 
-/-- **Scope 3 re-export (CONDITIONAL on K1, K2, K3)**: within the
-Kasparov-product spectral category, any operation carrying a
-`KasparovProductWitness` satisfies the three-condition predicate.
+/-- **Scope 3 re-export — CONJECTURAL (REPAIRED-SOUND, 2026-08-18)**:
+within the Kasparov-product spectral category, any operation carrying
+a `KasparovProductWitness` AND satisfying K1, K2, K3 as explicit
+hypotheses satisfies the three-condition predicate.
 
-See `KasparovProductUniqueness.lean` for the proof and the three
-named axioms K1 (Mesland-Rennie), K2 (Rosenberg-Schochet),
-K3 (Kassel). -/
+K1, K2, K3 were named axioms (Mesland-Rennie, Rosenberg-Schochet,
+Kassel); the 2026-08-18 content audit (U2) found each derives `False`
+via the `zeroOp` witness, so they are deleted and now explicit
+hypothesis parameters — see `KasparovProductUniqueness.lean`. -/
 theorem kasparov_three_conditions
-    {op : BinaryOpOnSpectra} (h : KasparovProductWitness op) :
+    {op : BinaryOpOnSpectra} (h : KasparovProductWitness op)
+    (K1 : ∀ μ ν : Spectrum, Multiset.card (op μ ν) = Multiset.card μ * Multiset.card ν)
+    (K2 : ∀ μ μ' ν : Spectrum, ν.NonTrivial → op μ ν = op μ' ν → μ = μ')
+    (K3 : HamiltonianAdditivity op) :
     ThreeConditions op :=
-  kasparov_product_satisfies_three_conditions h
+  kasparov_product_satisfies_three_conditions h K1 K2 K3
 
 /-! ## Scope 4: broader uniqueness — HONESTLY OPEN -/
 

@@ -66,6 +66,28 @@ The canonical e-fold count for CMB observables is `Ne_AsClosure`.
 The other two are quantities that v0.9.1 should explicitly relabel:
 mode-activation count and tree-potential attractor, respectively.
 
+## A fourth reading — `N_e_from_T_RH = 55` (reconciled 2026-08-18)
+
+`SpectralPhysics/InflationAsClosure/ReheatingMass.lean` independently
+defines `N_e_from_T_RH := 55`, derived via the Gorbunov-Panin
+reheating-temperature route (`N_e ≈ 55 + (1/3)ln(T_RH/10⁹ GeV) +
+(1/3)ln(H_*/10¹³ GeV)` at `T_RH = 3×10⁹ GeV`) — a DIFFERENT
+observational route from the `A_s`-closure route that fixes
+`Ne_AsClosure := 60` here. The 2026-08-18 content audit
+(`lean-content-audit-2026-08-18/REGISTER.md` §3) flagged `60` vs `55`
+as an unreconciled internal inconsistency. **Module ownership,
+named**: this file (`EfoldMultiplicity.lean`) owns the CANONICAL
+framework value `Ne_AsClosure = 60` (the value used in the trunk's
+`A_s`-closure derivation); `ReheatingMass.lean`'s `N_e_from_T_RH = 55`
+is an INDEPENDENT cross-check via a different observational route
+(reheating temperature) that is *consistent within* the ACT DR6 2σ
+bracket `[54, 57]` (`ReheatingMass.N_e_in_bracket`) but is NOT claimed
+to be numerically equal to `Ne_AsClosure`. The two are not in
+contradiction — they are different quantities from different
+derivations, both within the observationally-allowed range — but
+neither file previously said so explicitly; that omission is what
+this note repairs.
+
 ## References
 
 * Ben-Shalom, "Spectral Physics", v0.9, §"Mode Activation and the

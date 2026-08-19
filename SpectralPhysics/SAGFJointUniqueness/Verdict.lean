@@ -94,10 +94,20 @@ such that:
 * the family preserves the truth value of S2 (Dirac product),
   the only `M_R`-blind substantive constraint among S1-S5.
 
-This is the formal, type-checked H3 verdict — the substantive joint
-system does NOT pin `(M_R, m_1)` without extra-axiomatic input
-(v0.9 `thm:self-consistent`(iv) — spectral-gap maximization,
-explicitly external to S1-S5). -/
+**Class (2026-08-18 content audit, §2).** Conjunct 1 is SUBSTANTIVE but
+thin (injectivity of `t ↦ M_R` on the constructed family). Conjunct 2 is
+**DEFINITIONAL**: `m1_family_S2_invariant` is closed by `rfl`, because
+`constraint_DiracProduct v` is `v.mD1 * v.mD2 * v.mD3 = mD_geo_mean^3`,
+which never mentions `M_R` at all — so S2 is invariant along *any*
+`M_R`-varying family, by inspection of the definition rather than by any
+property of this one. Reading conjunct 2 as evidence that S2 fails to pin
+`M_R` is circular: it is true because S2 was written without `M_R`.
+
+So this decl does **not** establish that "the substantive joint system
+does NOT pin `(M_R, m_1)`" — the S1, S3, S4, S5 constraints are not
+examined here. That stronger claim (v0.9 `thm:self-consistent`(iv),
+spectral-gap maximization being external to S1-S5) is not formalized.
+Do not cite this as "the type-checked H3 verdict". -/
 theorem SAGF_joint_uniqueness_verdict_H3
     (mD1 mD2 mD3 : ℝ) (h1 : 0 < mD1) (h2 : 0 < mD2) (h3 : 0 < mD3) :
     ∃ (family : {t : ℝ // 0 < t} → JointValuation),

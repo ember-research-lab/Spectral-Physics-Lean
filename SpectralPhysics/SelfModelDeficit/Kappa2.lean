@@ -114,21 +114,36 @@ bisection on the Baker-constrained spectrum (50-digit mpmath).  Once
 the Baker form is fixed and `ξ_R` is bisected against the SAGF
 closure, all four values are determined to 30+ digits. -/
 
-/-- Visible-sector second cumulant `κ₂_vis = 9.927069…`, fixed by the
-    Baker form on the 48 Yukawa modes (charged + light-ν + 24 aux at
+/-- **Stated input, not derived** (2026-08-18 content audit, §2). Visible-
+    sector second cumulant `κ₂_vis = 9.927069…`, fixed by the Baker form on
+    the 48 Yukawa modes (charged + light-ν + 24 aux at
     `(288 − S_charged − 10.5)/24`) plus 48 auxiliary modes at depth 6.
     Reported to 4 digits.
+
+    The Baker-form computation that produces this number lives in Python,
+    not in Lean; every theorem below that mentions it is ARITHMETIC over
+    this literal. Together with `kappa2_hid` it is tuned against `Λ_obs`
+    (see the 2026-05-26 audit note in the module header), so it is a
+    Tier-2 input, not a framework output.
 
     **Citation**:
     `pre_geometric/scse_convergence_analysis/scse_extended.py`
     `baker_constrained_xi_vis()`; `Lambda1_refined/scse_refined.py`. -/
 noncomputable def kappa2_vis : ℝ := 9927069 / 1000000  -- 9.927069
 
-/-- Hidden-sector second cumulant `κ₂_hid = 533.585765…`, fixed by the
+/-- **Stated input, not derived; tuned against `Λ_obs`** (2026-08-18
+    content audit, §2). Hidden-sector second cumulant
+    `κ₂_hid = 533.585765…`, fixed by the
     see-saw cascade `(ξ_R, ξ_D, 2ξ_D − ξ_R)` at `ξ_R = 3.7090359…`,
     `ξ_D = 32`, with 96 modes in each of the three blocks.  Population
     variance evaluates to `(2(28.291)²)/3 + 0 = 533.585765`.  Reported
     to 4 digits.
+
+    `ξ_R = 3.7090` is the bisection root tuned so that `κ₂_full` matches
+    the Baker target `2·ln(Λ_c²/Λ_obs)`, so this literal encodes `Λ_obs`.
+    Theorems below that bracket `κ₂_full` near `529.42` are therefore
+    ARITHMETIC re-checks of that tuning, not derivations of it — the
+    chain runs `Λ_obs → κ₂`, not `κ₂ → Λ_obs`.
 
     **Citation**: `Lambda1_refined/scse_refined.py`,
     `kappa2_full_mp` evaluated at the bisected `ξ_R`. -/
@@ -233,13 +248,20 @@ theorem kappa2_above_529_42 : (52942 / 100 : ℝ) < kappa2_full := by
 theorem kappa2_below_529_43 : kappa2_full < 52943 / 100 := by
   rw [kappa2_full_closed_form]; norm_num
 
-/-- Combined: `κ₂_full ∈ (529.42, 529.43)`, a **0.01-unit window**.
-    This is *3-orders-of-magnitude tighter* than the inventory's
-    "1-unit precision" target.
+/-- **ARITHMETIC**: `norm_num` check of stated numeric inputs; it does not
+    derive those inputs.
 
-    The remaining residual (after the 4-digit truncation of the
-    Tier-2 inputs) is bounded by `2·10⁻⁴`, well inside the
-    1-unit-precision goal. -/
+    The content is `529.42 < (96·9.927069 + 288·533.585765)/384 + (3/16)·676
+    < 529.43` — rational arithmetic on the two Tier-2 literals `kappa2_vis`
+    and `kappa2_hid`. Because `kappa2_hid` is tuned (via `ξ_R = 3.7090`)
+    so that this sum hits `2·ln(Λ_c²/Λ_obs)`, the tightness of the window
+    measures the precision of the Python bisection, not the accuracy of a
+    prediction. Do not cite as "closed via LTV" or as a CC closure.
+
+    Statement as written: `κ₂_full ∈ (529.42, 529.43)`, a 0.01-unit window,
+    3 orders of magnitude tighter than the inventory's "1-unit precision"
+    target; residual after 4-digit truncation of the Tier-2 inputs bounded
+    by `2·10⁻⁴`. -/
 theorem kappa2_centiunit_bracket :
     (52942 / 100 : ℝ) < kappa2_full ∧ kappa2_full < 52943 / 100 := by
   exact ⟨kappa2_above_529_42, kappa2_below_529_43⟩

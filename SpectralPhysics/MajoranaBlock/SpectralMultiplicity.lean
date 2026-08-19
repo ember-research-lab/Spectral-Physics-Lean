@@ -202,21 +202,27 @@ theorem dirac_doubling_factor_eq_two : diracDoublingFactor = 2 := by
   unfold diracDoublingFactor
   decide
 
-/-- **Named axiom — Tier 2.**  The Standard Model finite spectral
-triple carries exactly 3 generations.
+/-! **`standardModel_three_generations`** — DELETED as a `∀`-axiom
+(2026-08-18 content repair, REPAIRED-SOUND; U7 in
+`lean-content-audit-2026-08-18/REGISTER.md`).
 
-This is the empirical input: the SM has 3 chiral fermion
-generations, and the finite Hilbert space `H_F` in Connes-Marcolli
-§15 is built as `(C ⊕ H_L ⊕ H_R) ⊗ M_3`, where `M_3` is the
-3-generation flavor space.
+Was: `axiom standardModel_three_generations : ∀ T : FiniteSpectralTriple,
+T.KOdim_eq_six → T.J_sign_triple_KO6 → T.n_generations = 3`. This
+quantified over the *free* structure `FiniteSpectralTriple` — any
+record with `kodim = 6` and the right `J`-signs, regardless of
+`n_generations`. The hostile witness `{kodim:=6, (1,1,-1),
+n_generations:=0}` satisfies both hypotheses and the axiom then
+forces `0 = 3` — `False` (`lean-content-audit-2026-08-18/
+MajoranaFalse.lean`, positive control, recompiled clean before this
+repair). "3 generations" is empirical Standard-Model input, not a
+fact about *every* KO-dim-6, correctly-J-signed record.
 
-**Citation**: Connes-Marcolli (2008) §15.3 ("the sum over
-generations in H_F"); Chamseddine-Connes-Marcolli (2007) §3,
-eq. (3.4). -/
-axiom standardModel_three_generations :
-    ∀ T : FiniteSpectralTriple,
-      T.KOdim_eq_six → T.J_sign_triple_KO6 →
-        T.n_generations = 3
+**Repair**: replaced by the theorem `standardModel_three_generations`
+below, PINNED to the concrete `standardModelTriple` (which has
+`n_generations := 3` by construction) instead of universally
+quantified over `FiniteSpectralTriple` — the `REPAIRED-SOUND` class
+(axiom → pinned to a concrete object). It is declared after
+`standardModelTriple` further down this file. -/
 
 /-- **Named axiom — Tier 2 (Connes-Marcolli 2008 Theorem 1.214).**
 The extended-Dirac multiplicity rule.
@@ -366,5 +372,24 @@ theorem standardModelTriple_not_JQuotient :
   intro h
   exact extendedDirac_and_JQuotient_disjoint standardModelTriple
     ⟨standardModelTriple_uses_extendedDirac, h⟩
+
+/-- **REPAIRED-SOUND (2026-08-18): the Standard Model finite spectral
+triple carries exactly 3 generations — pinned to the concrete
+`standardModelTriple`, not a `∀`-axiom over `FiniteSpectralTriple`.**
+
+This replaces the deleted axiom `standardModel_three_generations`
+(see the note where it used to be declared, above). It is DEFINITIONAL
+(`rfl`): `standardModelTriple.n_generations` unfolds directly to `3`
+from the def. The empirical content — "the SM has 3 generations" —
+now lives entirely in the choice of `n_generations := 3` in
+`standardModelTriple`'s definition, which is honest: this file does
+not derive 3 from anything, it records it as the input, same as
+`kodim := 6` and the `J`-signs above it.
+
+**Citation** (for the modelling choice, not a derivation):
+Connes-Marcolli (2008) §15.3 ("the sum over generations in H_F");
+Chamseddine-Connes-Marcolli (2007) §3, eq. (3.4). -/
+theorem standardModel_three_generations :
+    standardModelTriple.n_generations = 3 := rfl
 
 end SpectralPhysics.MajoranaBlock

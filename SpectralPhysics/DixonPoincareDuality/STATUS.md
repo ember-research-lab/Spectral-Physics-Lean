@@ -160,7 +160,20 @@ Anti-pattern check (rule 3 of the audit discipline):
 
 * `PoincareDuality T` is NOT trivially `True`. It is
   `Function.Bijective (T.intersectionForm)` — a genuine predicate on
-  the carrier.
+  the carrier. **STATUS polarity correction (2026-08-18 content
+  repair, U5 in `lean-content-audit-2026-08-18/REGISTER.md`):** it
+  IS trivially `False` — for EVERY `T`, not just Dixon-canonical
+  ones. `T.intersectionForm : OctonionFactor → (OctonionFactor →
+  OctonionFactor)` can never be surjective, hence never bijective,
+  by a Cantor diagonal argument alone (`poincareDuality_never` in
+  `lean-content-audit-2026-08-18/PDVacuous.lean`, positive control,
+  recompiled clean). Consequently `dixon_pd_obstruction` and
+  `dixon_pd_fails_canonical` below are **SHELL**, not SUBSTANTIVE:
+  they are true, but for a cardinality reason that has nothing to do
+  with non-associativity, Dixon triples, or the Connes/Bochniak–Sitarz
+  mechanism their proofs cite — ANY spectral triple "fails" this PD
+  predicate, Dixon-canonical or not. Do not cite these theorems as a
+  Dixon-specific / non-associativity-specific obstruction result.
 * `WellDefinedOnClasses T` is NOT trivially `True`. After unfolding
   on `canonicalDixonTriple` it becomes the zeroth-order commutation
   predicate `∀ a b x, LeftMult a (RightMult b x) = RightMult b (LeftMult a x)`,

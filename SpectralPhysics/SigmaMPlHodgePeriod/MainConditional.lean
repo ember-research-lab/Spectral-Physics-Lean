@@ -93,9 +93,15 @@ log( ⟨ Ch^br([σ]_hid), τ^br_{1,1} ⟩ / ⟨ Ch^br([σ]_vis), τ^br_{1,1} ⟩
 
 This is a *real-valued function* of the Dirac operator. We do NOT
 construct it numerically here — that requires the Akrami–Majid 2004
-formula (parallel mpmath dispatch). The function is recorded as an
-abstract real-valued function; its **value** is the content of the
-hypothesis `h_pairing_value`. -/
+formula (parallel mpmath dispatch).
+
+**Not abstract — it is the constant `0`** (2026-08-18 content audit, §2).
+The definition below is `fun _D => 0`, not an opaque function. Consequence:
+the hypothesis `h_pairing_value : chern_pairing_log_ratio D =
+period_candidate` reads `0 = log(9/8)`, which is **false**
+(`period_candidate_pos`), so every theorem carrying it is vacuously true.
+See `lean-content-audit-2026-08-18/VacuityCheck.lean:pairing_hyp_false`,
+which proves the hypothesis unsatisfiable. -/
 noncomputable def chern_pairing_log_ratio (_D : DiracOperator) : ℝ := 0
 -- placeholder shell; the *content* enters via h_pairing_value below
 
@@ -128,6 +134,16 @@ then the σ₀/M_Pl logarithm splits as
 The visible part `32 − 6 + S_cutoff_log_term` is the framework-supplied
 target from v0.9 lines 9670–9735.
 
+**SHELL** (2026-08-18 content audit, §2): the hypothesis
+`h_pairing_value` is **unsatisfiable**, so this theorem is vacuously
+true and closes nothing. `chern_pairing_log_ratio D` is defined as the
+constant `0` while `period_candidate = log(9/8) > 0`, so no `D`
+satisfies the hypothesis
+(`lean-content-audit-2026-08-18/VacuityCheck.lean:pairing_hyp_false`).
+Do not cite as a closure of the 11% `A_s` gap or of σ₀/M_Pl, and do not
+describe it as NON-VACUOUS. The other five hypotheses are `True`-shells
+or unused.
+
 **Honest scope**: this theorem says NOTHING about whether
 `h_pairing_value` is *true*. It says: *if* the parallel numerical
 dispatch confirms that the Akrami–Majid pairing equals
@@ -157,12 +173,18 @@ theorem sigma_MPl_hodge_period_AM
 /-! ## 5. Tier-1 corollary: under the same hypotheses, the form is
 explicitly `ln(9/8)`. -/
 
-/-- **Corollary**: under the same hypotheses, the log identity reduces
-to the *explicit* `ln(9/8)` form (using `period_candidate_eq_log_9_8`).
+/-- **SHELL** (inherited): carries the same unsatisfiable
+`h_pairing_value` (`0 = log(9/8)`) as `sigma_MPl_hodge_period_AM`, so it
+is vacuously true and closes nothing. Do not cite as a closure of the
+11% `A_s` gap.
 
-This is the Tier-1 lemma that the period candidate is structurally
-the rational `9/8` (Bott / hidden-mode ratio), *conditional on*
-`h_pairing_value`. -/
+Statement as written: under the same hypotheses, the log identity
+reduces to the explicit `ln(9/8)` form (using
+`period_candidate_eq_log_9_8`).
+
+The genuinely non-vacuous decl in this directory is
+`period_candidate_eq_log_9_8` (DEFINITIONAL: `log(288/256) = log(9/8)`);
+cite that for the rational ratio, not this. -/
 theorem sigma_MPl_hodge_period_AM_explicit
     (D : DiracOperator)
     (S_cutoff_log_term : ℝ)

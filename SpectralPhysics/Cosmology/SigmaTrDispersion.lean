@@ -96,14 +96,22 @@ theorem f2_pos : 0 < f2 := by
   unfold f2
   exact mul_pos (by norm_num) (Real.exp_pos _)
 
-/-- A canonical positive normalisation of `α_eff` (the higher-curvature
-regulator coefficient).  In v0.9 the often-quoted value is
-`α_eff = 1/120`; here we expose it as a *positive* parameter so
-downstream theorems may quantify over it. -/
-def alphaEff : ℝ := 1 / 120
+/-- A canonical positive normalisation of `α_tr` (the trace-sector /
+higher-curvature regulator coefficient).
 
-theorem alphaEff_pos : 0 < alphaEff := by
-  unfold alphaEff; norm_num
+**Value corrected 2026-08-18** (`lean-content-repair`, §3 of
+`lean-content-audit-2026-08-18/REGISTER.md`): this used to be named
+`alphaEff` with value `1/120`, which was STALE — the trunk fixes the
+trace-sector coefficient at `α_tr = 1/72` (branch
+`rung4-resolution-2026-08-17`, `prop:eff-couplings`), matching
+`SeeleyDeWitt/A4Coefficients.lean` and `SeeleyDeWitt/R2Coefficient.lean`
+(`c_{R²} = 1/72`), which already had the correct value — the tree
+disagreed with itself before this repair. We expose it as a *positive*
+parameter so downstream theorems may quantify over it. -/
+def alphaTr : ℝ := 1 / 72
+
+theorem alphaTr_pos : 0 < alphaTr := by
+  unfold alphaTr; norm_num
 
 /-! ## Section 2: The dispersion symbol -/
 
@@ -114,7 +122,7 @@ theorem alphaEff_pos : 0 < alphaEff := by
 We expose `Λ` (the spectral cutoff) as an explicit argument because
 the σ_tr-positive regime is `Λ`-dependent. -/
 def sigmaTr (Λ ξ : ℝ) : ℝ :=
-  c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaEff * ξ^4
+  c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaTr * ξ^4
 
 /-- **Vanishing at zero momentum.** -/
 theorem sigmaTr_zero_at_zero (Λ : ℝ) : sigmaTr Λ 0 = 0 := by
@@ -127,15 +135,15 @@ theorem sigmaTr_zero_at_zero (Λ : ℝ) : sigmaTr Λ 0 = 0 := by
 This is the unique positive root of `σ_tr(Λ; ξ) = 0` in `ξ²` away
 from `ξ² = 0`. -/
 def xiCrossSq (Λ : ℝ) : ℝ :=
-  c1RouteB * f2 * Λ^2 / (6 * f0 * alphaEff)
+  c1RouteB * f2 * Λ^2 / (6 * f0 * alphaTr)
 
 /-- For `Λ > 0`, the crossover scale squared is positive. -/
 theorem xiCrossSq_pos (Λ : ℝ) (hΛ : 0 < Λ) : 0 < xiCrossSq Λ := by
   unfold xiCrossSq
   have hnum : 0 < c1RouteB * f2 * Λ^2 :=
     mul_pos (mul_pos c1RouteB_pos f2_pos) (by positivity)
-  have hden : 0 < 6 * f0 * alphaEff :=
-    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaEff_pos
+  have hden : 0 < 6 * f0 * alphaTr :=
+    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaTr_pos
   exact div_pos hnum hden
 
 /-- **Vanishing at the crossover.**
@@ -144,22 +152,22 @@ If `ξ² = ξ_cross²`, then `σ_tr(Λ; ξ) = 0`. -/
 theorem sigmaTr_at_xiCross (Λ ξ : ℝ) (hΛ : 0 < Λ)
     (hξ : ξ^2 = xiCrossSq Λ) : sigmaTr Λ ξ = 0 := by
   unfold sigmaTr
-  have hden_pos : 0 < 6 * f0 * alphaEff :=
-    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaEff_pos
-  have hden_ne : (6 * f0 * alphaEff) ≠ 0 := ne_of_gt hden_pos
+  have hden_pos : 0 < 6 * f0 * alphaTr :=
+    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaTr_pos
+  have hden_ne : (6 * f0 * alphaTr) ≠ 0 := ne_of_gt hden_pos
   -- Multiply hξ through: 6 f₀ α_eff · ξ² = c₁ f₂ Λ²
-  have hsubst : 6 * f0 * alphaEff * ξ^2 = c1RouteB * f2 * Λ^2 := by
+  have hsubst : 6 * f0 * alphaTr * ξ^2 = c1RouteB * f2 * Λ^2 := by
     rw [hξ]
     unfold xiCrossSq
     have hf0_ne : f0 ≠ 0 := ne_of_gt f0_pos
-    have hα_ne : alphaEff ≠ 0 := ne_of_gt alphaEff_pos
+    have hα_ne : alphaTr ≠ 0 := ne_of_gt alphaTr_pos
     field_simp
   -- σ_tr = c₁ f₂ Λ² ξ² - 6 f₀ α_eff ξ⁴
   --     = c₁ f₂ Λ² ξ² - (6 f₀ α_eff ξ²) · ξ²
   --     = c₁ f₂ Λ² ξ² - (c₁ f₂ Λ²) · ξ²
   --     = 0
-  have : c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaEff * ξ^4
-       = c1RouteB * f2 * Λ^2 * ξ^2 - (6 * f0 * alphaEff * ξ^2) * ξ^2 := by ring
+  have : c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaTr * ξ^4
+       = c1RouteB * f2 * Λ^2 * ξ^2 - (6 * f0 * alphaTr * ξ^2) * ξ^2 := by ring
   rw [this, hsubst]; ring
 
 /-- **Anti-diffusivity below the crossover.**
@@ -171,17 +179,17 @@ theorem sigmaTr_pos_below_crossover (Λ ξ : ℝ) (_hΛ : 0 < Λ)
     0 < sigmaTr Λ ξ := by
   unfold sigmaTr
   -- σ_tr = ξ² · (c₁ f₂ Λ² − 6 f₀ α_eff · ξ²)
-  have hden_pos : 0 < 6 * f0 * alphaEff :=
-    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaEff_pos
+  have hden_pos : 0 < 6 * f0 * alphaTr :=
+    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaTr_pos
   -- Show c₁ f₂ Λ² - 6 f₀ α_eff · ξ² > 0
-  have h_inner : 0 < c1RouteB * f2 * Λ^2 - 6 * f0 * alphaEff * ξ^2 := by
+  have h_inner : 0 < c1RouteB * f2 * Λ^2 - 6 * f0 * alphaTr * ξ^2 := by
     -- ξ² < c₁ f₂ Λ² / (6 f₀ α_eff) ⇒ ξ² · (6 f₀ α_eff) < c₁ f₂ Λ²
-    have hkey : ξ^2 * (6 * f0 * alphaEff) < c1RouteB * f2 * Λ^2 := by
+    have hkey : ξ^2 * (6 * f0 * alphaTr) < c1RouteB * f2 * Λ^2 := by
       unfold xiCrossSq at hξ_below
       exact (lt_div_iff₀ hden_pos).mp hξ_below
     linarith
-  have h_factor : c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaEff * ξ^4 =
-      ξ^2 * (c1RouteB * f2 * Λ^2 - 6 * f0 * alphaEff * ξ^2) := by ring
+  have h_factor : c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaTr * ξ^4 =
+      ξ^2 * (c1RouteB * f2 * Λ^2 - 6 * f0 * alphaTr * ξ^2) := by ring
   rw [h_factor]
   exact mul_pos hξ_pos h_inner
 
@@ -193,35 +201,38 @@ theorem sigmaTr_neg_above_crossover (Λ ξ : ℝ) (hΛ : 0 < Λ)
     (hξ_above : xiCrossSq Λ < ξ^2) :
     sigmaTr Λ ξ < 0 := by
   unfold sigmaTr
-  have hden_pos : 0 < 6 * f0 * alphaEff :=
-    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaEff_pos
+  have hden_pos : 0 < 6 * f0 * alphaTr :=
+    mul_pos (mul_pos (by norm_num : (0:ℝ) < 6) f0_pos) alphaTr_pos
   -- ξ² > xiCrossSq > 0 ⇒ ξ² > 0
   have hξ_pos : 0 < ξ^2 := lt_trans (xiCrossSq_pos Λ hΛ) hξ_above
-  have h_inner : c1RouteB * f2 * Λ^2 - 6 * f0 * alphaEff * ξ^2 < 0 := by
-    have h2 : c1RouteB * f2 * Λ^2 < ξ^2 * (6 * f0 * alphaEff) := by
+  have h_inner : c1RouteB * f2 * Λ^2 - 6 * f0 * alphaTr * ξ^2 < 0 := by
+    have h2 : c1RouteB * f2 * Λ^2 < ξ^2 * (6 * f0 * alphaTr) := by
       unfold xiCrossSq at hξ_above
       exact (div_lt_iff₀ hden_pos).mp hξ_above
     linarith
-  have h_factor : c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaEff * ξ^4 =
-      ξ^2 * (c1RouteB * f2 * Λ^2 - 6 * f0 * alphaEff * ξ^2) := by ring
+  have h_factor : c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaTr * ξ^4 =
+      ξ^2 * (c1RouteB * f2 * Λ^2 - 6 * f0 * alphaTr * ξ^2) := by ring
   rw [h_factor]
   exact mul_neg_of_pos_of_neg hξ_pos h_inner
 
 /-! ## Section 3: The crossover is trans-Planckian on Route B
 
-With `c₁ = 1/2`, `f₂ = 48 e⁶`, `f₀ = τ ≈ 0.276`, `α_eff = 1/120`,
+With `c₁ = 1/2`, `f₂ = 48 e⁶`, `f₀ = τ ≈ 0.276`, `α_tr = 1/72`
+(corrected 2026-08-18 from the stale `1/120`; see `alphaTr`'s
+docstring),
 
-  ξ_cross² / Λ²  =  c₁ · f₂ / (6 · f₀ · α_eff)
-                  =  (1/2) · (48 e⁶) / (6 · τ · (1/120))
-                  =  4 · 120 · e⁶ / (6 · τ)
-                  =  80 · e⁶ / τ
-                  ≈  80 · 403.43 / 0.276
-                  ≈  117 000
+  ξ_cross² / Λ²  =  c₁ · f₂ / (6 · f₀ · α_tr)
+                  =  (1/2) · (48 e⁶) / (6 · τ · (1/72))
+                  =  4 · 72 · e⁶ / (6 · τ)
+                  =  288 · e⁶ / τ
+                  ≈  288 · 403.43 / 0.276
+                  ≈  421 000
 
-so `ξ_cross ≈ 342 · Λ`, i.e. between two and three orders of magnitude
-above the spectral cutoff `Λ`.  This *confirms* the verdict in
-`c1_and_5sector/verdict.md`: the trace mode is anti-diffusive across
-the entire physical IR. -/
+so `ξ_cross ≈ 649 · Λ`, i.e. between two and three orders of magnitude
+above the spectral cutoff `Λ` (larger than the stale `1/120` value's
+≈342·Λ, since a smaller `α_tr` pushes the crossover further out).
+This *confirms* the verdict in `c1_and_5sector/verdict.md`: the trace
+mode is anti-diffusive across the entire physical IR. -/
 
 /-- **Trans-Planckian crossover.**
 
@@ -230,12 +241,12 @@ This realises the verdict that ξ_cross is parametrically above the
 spectral cutoff for Route B's `c₁ = 1/2`. -/
 theorem xiCrossSq_transPlanckian (Λ : ℝ) (hΛ : 0 < Λ) :
     100 * Λ^2 < xiCrossSq Λ := by
-  -- xiCrossSq Λ = (1/2) · 48 e⁶ · Λ² / (6 · τ · (1/120))
-  --             = 24 e⁶ Λ² / (τ/20) = 480 e⁶ Λ² / τ
-  -- We just need 480 e⁶ / τ > 100, i.e. e⁶ / τ > 100/480 = 5/24.
-  -- e⁶ > 400 and τ < 1, so e⁶/τ > 400 ≫ 5/24.
-  unfold xiCrossSq c1RouteB f2 f0 alphaEff
-  -- (1/2 * (48 * exp 6) * Λ^2) / (6 * τ * (1/120))
+  -- xiCrossSq Λ = (1/2) · 48 e⁶ · Λ² / (6 · τ · (1/72))
+  --             = 24 e⁶ Λ² / (τ/12) = 288 e⁶ Λ² / τ
+  -- We just need 288 e⁶ / τ > 100, i.e. e⁶ / τ > 100/288 = 25/72.
+  -- e⁶ > 400 and τ < 1, so e⁶/τ > 400 ≫ 25/72.
+  unfold xiCrossSq c1RouteB f2 f0 alphaTr
+  -- (1/2 * (48 * exp 6) * Λ^2) / (6 * τ * (1/72))
   have hτ_pos : 0 < τ := by
     unfold τ
     have hφ : 0 < φ := by unfold φ; positivity
@@ -265,34 +276,34 @@ theorem xiCrossSq_transPlanckian (Λ : ℝ) (hΛ : 0 < Λ) :
       pow_lt_pow_left₀ he hpos (by norm_num)
     have h_num : (400 : ℝ) < (2.7182818283 : ℝ)^6 := by norm_num
     linarith
-  -- Now we need: (1/2 * (48 * exp 6) * Λ^2) / (6 * τ * (1/120)) > 100 * Λ^2
-  -- Simplify denominator: 6 * τ * (1/120) = τ / 20.
-  -- LHS = (24 * exp 6 * Λ^2) / (τ/20) = (24 * 20 * exp 6 * Λ^2) / τ = 480 * exp 6 * Λ^2 / τ
-  -- Need: 480 * exp 6 / τ > 100, i.e. 480 * exp 6 > 100 * τ
-  -- Since τ < 1 and exp 6 > 400: 480 * exp 6 > 480 * 400 = 192000 > 100 = 100 * 1 > 100 * τ.
+  -- Now we need: (1/2 * (48 * exp 6) * Λ^2) / (6 * τ * (1/72)) > 100 * Λ^2
+  -- Simplify denominator: 6 * τ * (1/72) = τ / 12.
+  -- LHS = (24 * exp 6 * Λ^2) / (τ/12) = (24 * 12 * exp 6 * Λ^2) / τ = 288 * exp 6 * Λ^2 / τ
+  -- Need: 288 * exp 6 / τ > 100, i.e. 288 * exp 6 > 100 * τ
+  -- Since τ < 1 and exp 6 > 400: 288 * exp 6 > 288 * 400 = 115200 > 100 = 100 * 1 > 100 * τ.
   have hΛ2_pos : 0 < Λ^2 := by positivity
-  have hden_pos : 0 < 6 * τ * (1/120) := by
-    have : (0 : ℝ) < 1/120 := by norm_num
+  have hden_pos : 0 < 6 * τ * (1/72) := by
+    have : (0 : ℝ) < 1/72 := by norm_num
     have h6 : (0 : ℝ) < 6 := by norm_num
     exact mul_pos (mul_pos h6 hτ_pos) this
   -- Clear the division: C < A/B ↔ C * B < A (when B > 0).
   rw [lt_div_iff₀ hden_pos]
-  -- 100 * Λ^2 * (6 * τ * (1/120)) < (1/2) * (48 * exp 6) * Λ^2
-  -- LHS = 100 * Λ^2 * τ / 20 = 5 * Λ^2 * τ
+  -- 100 * Λ^2 * (6 * τ * (1/72)) < (1/2) * (48 * exp 6) * Λ^2
+  -- LHS = 100 * Λ^2 * τ / 12 = (25/3) * Λ^2 * τ ≤ 9 * Λ^2 * τ
   -- RHS = 24 * exp 6 * Λ^2
-  -- Need: 5 τ Λ² < 24 (exp 6) Λ²  ↔  5 τ < 24 exp 6  (since Λ² > 0)
-  -- 24 exp 6 > 24 · 400 = 9600 ≫ 5 · 1 = 5.
-  have key : 100 * Λ^2 * (6 * τ * (1 / 120)) ≤ 5 * Λ^2 * τ := by nlinarith
-  have key2 : 5 * Λ^2 * τ < (1 / 2) * (48 * Real.exp 6) * Λ^2 := by
+  -- Need: 9 τ Λ² < 24 (exp 6) Λ²  ↔  9 τ < 24 exp 6  (since Λ² > 0)
+  -- 24 exp 6 > 24 · 400 = 9600 ≫ 9 · 1 = 9.
+  have key : 100 * Λ^2 * (6 * τ * (1 / 72)) ≤ 9 * Λ^2 * τ := by nlinarith [hΛ2_pos, hτ_pos.le]
+  have key2 : 9 * Λ^2 * τ < (1 / 2) * (48 * Real.exp 6) * Λ^2 := by
     have h1 : (1/2 : ℝ) * (48 * Real.exp 6) * Λ^2 = 24 * Real.exp 6 * Λ^2 := by ring
     rw [h1]
-    -- 5 Λ² τ < 24 (exp 6) Λ²  ↔  τ < (24/5) (exp 6) (since Λ² > 0)
-    -- We have τ < 1 < (24/5) · 400 < (24/5) (exp 6).
-    have : 24 * Real.exp 6 * Λ^2 - 5 * Λ^2 * τ
-         = Λ^2 * (24 * Real.exp 6 - 5 * τ) := by ring
-    have h_pos : 0 < 24 * Real.exp 6 - 5 * τ := by
+    -- 9 Λ² τ < 24 (exp 6) Λ²  ↔  τ < (24/9) (exp 6) (since Λ² > 0)
+    -- We have τ < 1 < (24/9) · 400 < (24/9) (exp 6).
+    have : 24 * Real.exp 6 * Λ^2 - 9 * Λ^2 * τ
+         = Λ^2 * (24 * Real.exp 6 - 9 * τ) := by ring
+    have h_pos : 0 < 24 * Real.exp 6 - 9 * τ := by
       have h1 : 24 * Real.exp 6 > 24 * 400 := by linarith
-      have h2 : 5 * τ < 5 * 1 := by linarith
+      have h2 : 9 * τ < 9 * 1 := by linarith
       linarith
     nlinarith [hΛ2_pos, h_pos]
   linarith

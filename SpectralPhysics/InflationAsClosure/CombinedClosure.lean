@@ -186,9 +186,16 @@ noncomputable def required_enhancement : ℝ := 510
 /-- The framework's *delivered* enhancement factor: `5^3 · 2^2 = 500`. -/
 noncomputable def delivered_enhancement : ℝ := 500
 
-/-- **Tier-1 lemma**: the structural residual
-`|delivered_enhancement - required_enhancement| / required_enhancement`
-is bounded by `0.025`. -/
+/-- **ARITHMETIC**: `norm_num` check of two stated numeric inputs; it does
+not derive those inputs.
+
+The content is `|500 − 510| / 510 ≤ 0.025` on the literals
+`delivered_enhancement := 500` and `required_enhancement := 510`. The `510`
+is an external input carried over from
+`pre_geometric/five_sector_inflation_dynamics/` and is not derived
+anywhere in this repository; the `500` is the structural factor. Nothing
+about `A_s` is checked here. Do not cite as a machine-checked A_s
+closure. -/
 theorem structural_residual_le_2_5_percent :
     |delivered_enhancement - required_enhancement| / required_enhancement
       ≤ 0.025 := by
@@ -225,11 +232,27 @@ AsPredicted _ _ _` is asserting the formula relationship. -/
 def AsPredicted (lambdaSigmaKstar c_R2 A_s_pred : ℝ) : Prop :=
   A_s_pred = lambdaSigmaFull lambdaSigmaKstar * 500 * c_R2 * A_s_observed
 
-/-- **HEADLINE conditional theorem** — the framework's **structural
-enhancement factor** `5³ · 2² = 500` closes to within `2.5%` of the
-required `≈ 510`.
+/-- Conjunction of one DEFINITIONAL identity, one ARITHMETIC bound, and one
+DEFINITIONAL rewrite. **Not an `A_s` closure** — do not cite it as one, and
+do not describe it as "A_s machine-checked to 2.4%".
 
-**Honest scope of the formal conclusion (2026-05 pre-push audit).** The
+Class breakdown (2026-08-18 content audit, §2):
+* conjunct (i) `s_trace + s_TT = ln 500` — DEFINITIONAL: `h_trace` and
+  `h_tt` *are* the equations `s_trace = ln 125`, `s_TT = ln 4`, so this is
+  `ln 125 + ln 4 = ln 500` after substitution.
+* conjunct (ii) residual `≤ 0.025` — ARITHMETIC: `norm_num` on the
+  literals 500 and 510 (see `structural_residual_le_2_5_percent`).
+* conjunct (iii) `λ_σ_full = λ_σ_kstar · 500` — DEFINITIONAL: unfolds
+  `lambdaSigmaFull` and substitutes the three integer counts.
+
+`h_kstar`, `h_cR`, `h_starobinsky`, `h_pred` are discarded by the proof
+(`let _ := …`), so they are inert.
+
+Statement as written: the framework's structural enhancement factor
+`5³ · 2² = 500` is within `2.5%` of the required `≈ 510`.
+
+**Honest scope of the formal conclusion (2026-05 pre-push audit; still
+accurate).** The
 three conjuncts below bound the *structural factor* (`s_trace + s_TT =
 ln 500`, residual `≤ 0.025`, `λ_σ_full = λ_σ_kstar · 500`).  They do
 **NOT** themselves bound `|A_s_predicted − A_s_observed| / A_s_observed`

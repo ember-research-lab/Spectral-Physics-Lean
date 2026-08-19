@@ -128,9 +128,27 @@ axiom bochniak_sitarz_PD_obstruction :
     ∀ T : AbstractSpectralTriple,
       IsCanonicalDixon T → PDImpliesWellDefined T
 
-/-! ## Headline verdict theorem -/
+/-! ## Headline verdict theorem
 
-/-- **Verdict (NEGATIVE).** Under the standard Connes §VI.4
+**SHELL caveat (2026-08-18 content repair, U5 in
+`lean-content-audit-2026-08-18/REGISTER.md`, STATUS polarity fix):**
+the two theorems immediately below are TRUE but SHELL, not
+SUBSTANTIVE. `PoincareDuality T` (`PoincareDualityAxiom.lean`) is
+`Function.Bijective T.intersectionForm` with
+`T.intersectionForm : OctonionFactor → (OctonionFactor →
+OctonionFactor)` — never surjective for ANY `T`, by a Cantor diagonal
+argument alone (`poincareDuality_never`, see
+`lean-content-audit-2026-08-18/PDVacuous.lean`). So "no Dixon-canonical
+triple satisfies PD" holds for every triple whatsoever, Dixon or not,
+for a cardinality reason unconnected to non-associativity or the
+Connes/Bochniak–Sitarz mechanism cited in the docstrings below. Do
+not cite `dixon_pd_obstruction` / `dixon_pd_fails_canonical` as
+evidence of a Dixon-specific or non-associativity-specific
+obstruction — see `DixonPoincareDuality/STATUS.md` §"Definitional
+triviality check". -/
+
+/-- **Verdict (NEGATIVE) — SHELL, see the module-level caveat above.**
+Under the standard Connes §VI.4
 formalism for Poincaré duality on real spectral triples, no
 Dixon-canonical abstract spectral triple admits Poincaré duality.
 
@@ -150,8 +168,10 @@ theorem dixon_pd_obstruction :
         IsCanonicalDixon T ∧ PoincareDuality T :=
   PD_fails_for_dixon bochniak_sitarz_PD_obstruction
 
-/-- **Verdict (specialisation).** The canonical Dixon-style spectral
-triple does NOT satisfy Poincaré duality. -/
+/-- **Verdict (specialisation) — SHELL, see the module-level caveat
+above.** The canonical Dixon-style spectral triple does NOT satisfy
+Poincaré duality — true of every triple, not just the canonical
+Dixon one. -/
 theorem dixon_pd_fails_canonical :
     ¬ PoincareDuality canonicalDixonTriple :=
   PD_fails_for_canonical_dixon (connes_PD_definition canonicalDixonTriple)

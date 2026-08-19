@@ -1,15 +1,26 @@
-# InflationAsClosure — `5³ · 2²` closure of `A_s` to 2.4%
+# InflationAsClosure — the `5³ · 2² = 500` vs `510` structural-factor comparison
 
-**Date:** 2026-05-11
+**Date:** 2026-05-11 (corrected 2026-08-18 after the Lean content audit)
 **Branch:** `compute/inflation-As-from-5cubed-2squared`
 **Build:** `lake build` succeeds (2544 jobs in worktree).
 
+> **2026-08-18 content-audit correction (§2).** This directory does **not**
+> contain an `A_s` closure and must not be cited as one. The formal content
+> is: `structural_residual_le_2_5_percent` — **ARITHMETIC** (`norm_num` on
+> the literals `500` and `510`, neither of which is derived here) — plus two
+> DEFINITIONAL identities. `CombinedClosure.lean` already discloses that the
+> transfer to `|A_s_pred − A_s_obs| / A_s_obs` is asserted in prose and is
+> not in the formal conclusion. Separately, the named axiom
+> `prop_berry_crossover` is **SHELL** (provable outright from the `sigmaTr`
+> definitions, U6), so it imports no Berry-phase content. Strip
+> "machine-checked A_s to 2.4%" wherever it appears downstream.
+
 ## TL;DR
 
-This dispatch formalizes the framework's **strongest A_s closure to
-date**: the inflationary scalar amplitude `A_s` closes to within
-**2.4%** of Planck 2018's observed value `A_s_obs ≈ 2.10 × 10⁻⁹`,
-through the structural integer factor
+This dispatch formalizes an integer-factor comparison. The prose claim —
+that the inflationary scalar amplitude `A_s` lands within **2.4%** of
+Planck 2018's observed value `A_s_obs ≈ 2.10 × 10⁻⁹` — rests on the
+structural integer factor
 
 ```
    λ_σ_full / λ_σ_kstar = N_sectors^N_gen · 2^N_pol
@@ -38,11 +49,11 @@ multiplicatively to `λ_σ`:
 
 | Hypothesis class                            | Status                | Citation / source                              |
 |---------------------------------------------|-----------------------|------------------------------------------------|
-| (a) `N_sectors = 5` (Ember reconstruction)  | CLOSED-by-axiom       | v0.9.1 §`thm:ember-reconstruction`            |
-| (b) `N_gen = 3` (Cl(6) min left ideals)     | CLOSED-by-axiom       | Furey 2018, v0.9.1 §`generations-from-Cl6`   |
-| (c) `N_pol = 2` (spin-2 in 4D)              | CLOSED-by-axiom       | Weinberg 1965, Connes 1996                    |
-| (d) Trace Berry: `s_trace = ln 125`         | CLOSED-by-axiom       | `pre_geometric/berry_phase_corrected/`        |
-| (e) TT Berry: `s_TT = ln 4`                 | CLOSED-by-axiom       | `pre_geometric/tt_sector_berry/`              |
+| (a) `N_sectors = 5` (Ember reconstruction)  | assumed (named axiom) | v0.9.1 §`thm:ember-reconstruction`            |
+| (b) `N_gen = 3` (Cl(6) min left ideals)     | assumed (named axiom) | Furey 2018, v0.9.1 §`generations-from-Cl6`   |
+| (c) `N_pol = 2` (spin-2 in 4D)              | assumed (named axiom) | Weinberg 1965, Connes 1996                    |
+| (d) Trace Berry: `s_trace = ln 125`         | assumed (named axiom) | `pre_geometric/berry_phase_corrected/`        |
+| (e) TT Berry: `s_TT = ln 4`                 | assumed (named axiom) | `pre_geometric/tt_sector_berry/`              |
 | (f) `KStarHodgePeriod` + `R2Coefficient` + `ProperEinsteinFrameStarobinsky` | PREDICATE-CONDITIONAL | three Prop-predicate hypotheses                |
 
 ## Files
@@ -85,7 +96,7 @@ Each factor traces to a single named axiom:
   `berry_phase_corrected_trace` (trace) and
   `tt_sector_berry_polarization_ℤ2` (TT).
 
-## Tier-1 lemmas (machine-checked)
+## Lemmas (with 2026-08-18 audit class where corrected)
 
 | Lemma                                       | File                       | Statement                                |
 |---------------------------------------------|----------------------------|------------------------------------------|
@@ -94,7 +105,7 @@ Each factor traces to a single named axiom:
 | `N_pol_count`                               | `FrameworkPrimitives`      | `N_pol = 2`                              |
 | `hurwitz_nontrivial_count_eq_three`         | `FrameworkPrimitives`      | `{2,4,8}.card = N_gauge_sectors`         |
 | `five_cubed_two_squared_eq_500`             | `FrameworkPrimitives`      | `N_sectors^N_gen * 2^N_pol = 500`        |
-| `prop_berry_crossover_consistency`          | `BerryAtSigmaTrZero`       | Berry-axiom matches `sigmaTr_at_xiCross` |
+| `prop_berry_crossover_consistency`          | `BerryAtSigmaTrZero`       | **SHELL** — re-export of `sigmaTr_at_xiCross`; compiles hypothesis-free (`0 < Λ` inert), and the "axiom" it checks against is itself provable outright, so no consistency is established |
 | `trace_sector_contribution_value`           | `TraceSectorContribution`  | `s_trace = ln(N_sectors^N_gen)`          |
 | `trace_contribution_eq_ln_125`              | `TraceSectorContribution`  | `trace_contribution = ln 125`            |
 | `ln_125_eq_three_ln_5`                      | `TraceSectorContribution`  | `ln 125 = 3 ln 5`                        |

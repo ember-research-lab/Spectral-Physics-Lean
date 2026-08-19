@@ -60,13 +60,17 @@ theorem spectralFloor_pos : 0 < spectralFloor := by
 
 /-! ## Section 2: Main theorem — λ_1 ≥ spectralFloor under self-reference. -/
 
-/-- **Theorem 1 (Spectral Floor)**: under self-reference closure,
-    the cosmic Laplacian eigenvalue is bounded below by the spectral
-    floor.
+/-- **SHELL**: restates the imported axiom `lambda_floor_exists` through
+    `Exists.choose_spec`. `spectralFloor` is *defined* as that axiom's
+    chosen witness, so the bound holds by construction and derives
+    nothing. Do not cite as a spectral-floor result.
 
-    This is a T2 RESTATEMENT of the structural content of
-    `lambda_floor_exists`, framing it as a theorem about a derived
-    constant `spectralFloor` rather than an existential. -/
+    Statement as written — Theorem 1 (Spectral Floor): under
+    self-reference closure, the cosmic Laplacian eigenvalue is bounded
+    below by the spectral floor. As the file already notes, this is a
+    restatement of `lambda_floor_exists` framed as a theorem about a
+    derived constant rather than an existential; the physics is entirely
+    in the axiom. -/
 theorem spectral_floor_from_self_reference
     (k : RelationalKernel) (h_SR : SelfReferenceClosure k) :
     spectralFloor ≤ lambda_1 k := by

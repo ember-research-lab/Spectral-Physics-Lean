@@ -183,15 +183,21 @@ theorem complexity_threshold (sys : SelfRefSystem) (m : SelfModel sys)
 
 /-! ### Gödel Incompleteness of the Trace -/
 
-/-- **Spectral Gödel Theorem** (Theorem 11.1): A self-referential system
-with finite capacity τ cannot build a perfect self-model (ε̄ = 0).
+/-- **SHELL**: a positivity shell. `SelfModel` carries `errors_pos`
+(every per-mode error is strictly positive) and `hI` (at least one mode)
+as *structure fields*, so `0 < avgError` is a mean of positive numbers —
+true by construction for every inhabitant, and false for none. Do not
+cite as a formal Gödel/incompleteness result.
 
-Proof: For any self-model with I ≥ 1 modes, the accuracy-integration
-tradeoff gives ε̄ ≥ I·C_min/τ > 0 (since I ≥ 1, C_min > 0, τ < ∞).
-Perfect self-knowledge (ε̄ = 0) is impossible.
+Note in particular that the docstring's stated proof is **not** the proof
+below: the accuracy–integration tradeoff `ε̄ ≥ I·C_min/τ` is never
+invoked; the actual proof is `div_pos` + `Finset.sum_pos` on the
+positivity field. Nothing here shows that a self-model *must* have
+positive errors — that is assumed when the `SelfModel` is built.
 
-This is the spectral analogue of Gödel's incompleteness: the trace
-functional cannot fully characterize itself from within. -/
+Statement as written — Spectral Gödel Theorem (Theorem 11.1): a
+self-referential system with finite capacity τ cannot build a perfect
+self-model (ε̄ = 0), the spectral analogue of Gödel's incompleteness. -/
 theorem godel_trace (sys : SelfRefSystem) (m : SelfModel sys) :
     0 < m.avgError := by
   -- Any self-model with I ≥ 1 modes has positive average error.
@@ -205,8 +211,12 @@ theorem godel_trace (sys : SelfRefSystem) (m : SelfModel sys) :
     · exact ⟨⟨0, m.hI⟩, Finset.mem_univ _⟩
   · exact_mod_cast m.hI
 
-/-- **No perfect self-model exists**: For any system with finite capacity,
-there is no self-model with zero error. -/
+/-- **SHELL** (inherited): `ne_of_gt` on `godel_trace`, which is a
+positivity shell over the `SelfModel.errors_pos` field. Do not cite as a
+formal impossibility result.
+
+Statement as written: for any system with finite capacity, there is no
+self-model with zero error. -/
 theorem no_perfect_self_model (sys : SelfRefSystem) (m : SelfModel sys) :
     m.avgError ≠ 0 :=
   ne_of_gt (godel_trace sys m)

@@ -35,7 +35,19 @@ hypothesis treatment** matching the discipline of
 | `OP3/Lambda1Bound.lean`               | Tier 1, 0 `sorry`, **0 custom axioms**                            |
 | `OP3/CosmologicalConstantMatch.lean`  | Tier 1, 0 `sorry`, **0 custom axioms**                            |
 
-## What got proved (Tier 1, machine-checked)
+> **2026-08-18 content-audit correction (U6).** "Zero custom axioms" is
+> true but was being read as content. It is not. `SCSEHasFixedPoint T`
+> unfolds to `∃ lam, 0 < lam ∧ lam = lambda1Predicted T`, which is
+> inhabited outright by `⟨_, lambda1Predicted_pos T, rfl⟩` — so the two
+> "conditional headline" theorems `lambda1_at_kstar` and
+> `op3_lambda1_matches_observed_conditional` prove with kernel axioms
+> ONLY, with none of their hypotheses doing any work. Both are **SHELL**:
+> satisfied by construction regardless of the physics. Neither may be
+> cited as a closure of OP3 or of the Λ match. The load-bearing content
+> in this directory is DEFINITIONAL (`lambda1Predicted` is
+> `exp(−κ_2/2)·Λ_c²`) plus the thin SUBSTANTIVE monotonicity lemma.
+
+## What is checked (decl classes, not closures)
 
 ### `SCSEClosureSystem.lean`
 
@@ -50,7 +62,9 @@ hypothesis treatment** matching the discipline of
 
 ### `Lambda1Bound.lean`
 
-**`lambda1_at_kstar`** — the **conditional headline theorem**:
+**`lambda1_at_kstar`** — **SHELL** (audit U6); presented below in its
+nominal "conditional headline" form, but its hypotheses are inert and the
+statement proves hypothesis-free:
 ```
 theorem lambda1_at_kstar :
     (T : FiniteSpectralTriple)
@@ -69,7 +83,7 @@ Plus structural corollaries: `lambda1_at_kstar_pos`,
 |---|---|
 | `lambda_obs_pos` | `0 < 8π · ρ_Λ_obs` |
 | `framework_match_iff_kappa2_eq` | tautological biconditional: prediction matches Λ_obs ↔ κ_2(T) = 2 log(Λ_c²/Λ_obs) |
-| `op3_lambda1_matches_observed_conditional` | conditional theorem: predicates + `PredictionMatchesObservation` → ∃ λ_1 = Λ_obs |
+| `op3_lambda1_matches_observed_conditional` | **SHELL** — conclusion `∃ λ > 0, λ = Λ_obs` proves hypothesis-free (`⟨lambda_obs, lambda_obs_pos, rfl⟩`); the named predicates are inert |
 
 ## Named predicates (v0.9 open problems)
 
@@ -185,17 +199,19 @@ The four predicates correspond to (in v0.9's framing):
 
 ## What's closed vs open
 
-### Closed (machine-checked)
+### Checked in Lean (with class — none of these is a closure of OP3)
 
-* Framework constants (`f2_static`, `lambda_c_sq`) are positive.
-* The framework's prediction function `lambda1Predicted` is positive,
-  monotone in κ_2, and definitionally unique.
-* **Conditional** on the three structural predicates,
-  λ_1(k*) = exp(−κ_2(T)/2) · Λ_c² (`lambda1_at_kstar`).
-* The match-iff-cumulant-equation algebraic equivalence
-  (`framework_match_iff_kappa2_eq`).
-* **Conditional** on all four predicates including `PredictionMatchesObservation`,
-  the framework reproduces Λ_obs.
+* Framework constants (`f2_static`, `lambda_c_sq`) are positive —
+  ARITHMETIC/positivity on stated literals.
+* `lambda1Predicted` is positive and definitionally unique —
+  DEFINITIONAL; strictly antitone in κ_2 — SUBSTANTIVE (thin).
+* `lambda1_at_kstar` — **SHELL**, proves hypothesis-free; it does not
+  establish λ_1(k*) = exp(−κ_2(T)/2)·Λ_c² for any physical triple, it
+  restates the definition of `lambda1Predicted`.
+* `framework_match_iff_kappa2_eq` — DEFINITIONAL (algebraic bijectivity
+  of exp; the file already calls it tautological).
+* `op3_lambda1_matches_observed_conditional` — **SHELL**; it does NOT
+  show the framework reproduces Λ_obs.
 
 ### Open (honestly flagged in predicate hypotheses)
 
@@ -265,7 +281,12 @@ the three OP3 files added. No regressions, no broken proofs elsewhere.
 
 ## Verdict
 
-The redemption is complete:
+Superseded in part by the 2026-08-18 content audit (see the U6 note near
+the top). The circularity claims below are still accurate as far as they
+go — the *construction* was fixed — but "honest conditional theorem" (4)
+is wrong: the hypotheses are inert and both headline theorems are SHELL.
+Read (1)–(5) as a record of what the earlier rewrite removed, not as a
+statement that OP3 is closed.
 
 1. **No circular construction.** `κ_2(T)` is a functional of `T`,
    independent of any observational input.

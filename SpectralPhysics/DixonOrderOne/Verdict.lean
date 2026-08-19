@@ -17,21 +17,21 @@ triple — in particular, the standard reduction step that the
 order-one axiom presupposes the zeroth-order commutation
 `[π(a), π'(b)] = 0` — the canonical Dixon-algebra spectral triple,
 in which the algebra acts on itself by left multiplication and the
-opposite acts by right multiplication, **fails the order-one
-axiom for every choice of Dirac operator `D`**.
+opposite acts by right multiplication, fails the **zeroth-order**
+condition unconditionally.
 
-This is the negative resolution of v0.9 line 6731 along the
-canonical NCG path.  It is **honest**: the obstruction is captured
-by a Lean theorem, not by an axiomatised numerical equality.
+**2026-08-18 content repair (audit U8):** the previous headline "fails the
+order-one axiom for every choice of Dirac operator `D`" is WITHDRAWN as
+formalised — with `D` unconstrained the zero map satisfies `OrderOne`
+(`zero_map_orderOne`), and the named axiom that bridged order-one to
+zeroth-order was compile-verified UNSOUND and removed. See the section
+"The former named axiom" below and `STATUS.md` §0.
 
 ## Named axiom
 
-We carry exactly ONE named axiom in this module:
-`bochniak_sitarz_zerothOrder_reduction`.  It asserts the standard
-Connes 1994 §VI.3 / Bochniak-Sitarz 2021 statement that the
-zeroth-order condition is a necessary consequence of the order-one
-axiom in the published real-spectral-triple formalism.  This is a
-GENERAL fact of the Connes program, not a Dixon-specific assertion.
+None (since 2026-08-18). The module now proves
+`dixon_reduction_hypothesis_false : ¬ OrderOneImpliesZerothOrder LeftMult RightMult`
+on kernel axioms only.
 
 The Dixon-specific obstruction (`not_zerothOrder_canonical_dixon`)
 is **unconditional** (Tier 1) and provided in
@@ -40,9 +40,10 @@ is **unconditional** (Tier 1) and provided in
 ## Audit-honest framing
 
 * The integer "obstruction lives" is NOT used as a numerical anchor.
-* The named axiom cites Bochniak-Sitarz / Connes, NOT the framework.
-* The verdict is NEGATIVE (NO closure); the structural content is
-  the obstruction theorem.
+* No named axiom remains; the Connes / Bochniak-Sitarz reduction is
+  cited as literature context only, not consumed.
+* The verdict on the *zeroth-order* condition is NEGATIVE (NO closure)
+  and unconditional; the *order-one* verdict is OPEN in Lean.
 
 ## References
 
@@ -59,47 +60,53 @@ namespace SpectralPhysics.DixonOrderOne
 
 open CayleyDickson
 
-/-! ## Named axiom — Bochniak-Sitarz / Connes reduction -/
+/-! ## The former named axiom — REMOVED 2026-08-18 (compile-verified UNSOUND, audit U8)
 
-/-- **Bochniak-Sitarz / Connes 1994 §VI.3 reduction (named axiom).**
+`axiom bochniak_sitarz_zerothOrder_reduction : OrderOneImpliesZerothOrder LeftMult RightMult`
+used to live here, cited as the Connes 1994 §VI.3 / Bochniak–Sitarz reduction. As formalised —
+`(∃ D, OrderOne D LeftMult RightMult) → ZerothOrder LeftMult RightMult` over an UNCONSTRAINED
+`D : 𝕆 → 𝕆` — it is **false**: the zero map satisfies `OrderOne` vacuously
+(`zero_map_orderOne` below), so the axiom forced `ZerothOrder LeftMult RightMult`, which
+`not_zerothOrder_canonical_dixon` refutes. Hostile witness compiled to `False`:
+`spectral_physics/lean-content-audit-2026-08-18/DixonU8False.lean` (manuscript repo).
 
-In the standard real-spectral-triple formalism, the order-one axiom
-`[[D, π(a)], π'(b)] = 0` is formulated *on top of* the zeroth-order
-condition `[π(a), π'(b)] = 0`.  Equivalently, if for some Dirac `D`
-the order-one axiom holds for `(π, π')`, then the zeroth-order
-condition automatically holds for `(π, π')`.
+The published reduction is a statement about genuine Dirac operators inside the full
+real-spectral-triple axiomatics; the predicate `OrderOne` here carries none of that structure,
+so no citation can license the unconstrained implication. Constraining `D` would be new
+mathematical content (which conditions a "Dirac-like" `D` must satisfy), outside a
+labels-and-soundness repair — the honest negative is recorded instead. -/
 
-This is a GENERAL fact of the published NCG formalism.  We do NOT
-attempt to formalise the full real-spectral-triple axiomatics here;
-we name the implication and consume it once.
+/-- The zero map satisfies the (unconstrained) order-one predicate for the canonical
+Dixon representation: both nested commutators collapse because `L_a 0 = 0 = R_b 0`. -/
+theorem zero_map_orderOne : OrderOne (fun _ => (0 : OctonionFactor)) LeftMult RightMult := by
+  intro a b
+  funext x
+  simp [commutator_apply, LeftMult, RightMult]
 
-Citations:
-* Connes, A., *Noncommutative Geometry* (1994), §VI.3.
-* Bochniak, A., Sitarz, A., arXiv:2001.02613, §II.B. -/
-axiom bochniak_sitarz_zerothOrder_reduction :
-    OrderOneImpliesZerothOrder LeftMult RightMult
+/-- **Honest negative (Tier 1, kernel axioms only).** The reduction hypothesis
+`OrderOneImpliesZerothOrder LeftMult RightMult`, as formalised over unconstrained `D`, is
+FALSE. This is what refuted the former named axiom; it also shows that
+`order_one_fails_canonical_dixon` (NonAssocObstruction.lean) is vacuous as stated — its
+hypothesis is never satisfiable. -/
+theorem dixon_reduction_hypothesis_false :
+    ¬ OrderOneImpliesZerothOrder LeftMult RightMult :=
+  fun h => not_zerothOrder_canonical_dixon (h ⟨_, zero_map_orderOne⟩)
 
 /-! ## Headline verdict theorem -/
 
-/-- **Verdict (NEGATIVE).**  Under the standard NCG order-one
-formalism, the canonical Dixon-algebra spectral triple (algebra acting
-on itself by left multiplication, opposite acting by right
-multiplication) does NOT admit any Dirac operator `D` satisfying the
-order-one axiom.
-
-The chain:
-1. `not_zerothOrder_canonical_dixon` (Tier 1, no axioms beyond the
-   kernel): the zeroth-order condition fails because `[L_a, R_b] ≠ 0`
-   for some `a, b` on the octonion factor (witnessed by the
-   quaternionic non-commutativity through the Cayley-Dickson tower).
-2. `bochniak_sitarz_zerothOrder_reduction` (named axiom, generic):
-   the order-one axiom (for any `D`) implies the zeroth-order
-   condition in the published NCG formalism.
-3. Contrapositive: no `D` satisfies the order-one axiom for
-   the canonical Dixon representation. -/
-theorem dixon_order_one_fails :
-    ¬ ∃ D : OctonionFactor → OctonionFactor, OrderOne D LeftMult RightMult :=
-  order_one_fails_canonical_dixon bochniak_sitarz_zerothOrder_reduction
+/-- **Verdict — WITHDRAWN as formalised (2026-08-18).** The former headline
+`dixon_order_one_fails : ¬ ∃ D, OrderOne D LeftMult RightMult` is FALSE in this
+formalisation: the zero map is a witness (`zero_map_orderOne`). What remains proved,
+unconditionally: the canonical Dixon representation fails the *zeroth-order* condition
+(`not_zerothOrder_canonical_dixon`), the associator is non-zero
+(`dixon_has_nonzero_associator`), and `L_a`, `R_b` do not commute
+(`dixon_LR_does_not_commute`). Whether every *genuine* Dirac operator (a `D` with the
+structure the NCG axioms require — not formalised here) fails order-one is OPEN in Lean;
+the v0.9 line 6731 negative resolution therefore rests on the zeroth-order obstruction plus
+the *unformalised* published reduction, not on a Lean theorem about `D`. -/
+theorem dixon_order_one_unconstrained_has_witness :
+    ∃ D : OctonionFactor → OctonionFactor, OrderOne D LeftMult RightMult :=
+  ⟨_, zero_map_orderOne⟩
 
 /-- **Verdict (positive structural statement).**  The Dixon octonion
 factor exhibits a non-zero associator: there exist `a, x, b ∈ 𝕆` with

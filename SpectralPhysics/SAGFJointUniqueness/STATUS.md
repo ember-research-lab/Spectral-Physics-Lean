@@ -179,16 +179,28 @@ same opaque infrastructure but removes the prior `f2_static` /
 
 ## True placeholders
 
-**0 placeholders.**  Every theorem has substantive content.
+**0 placeholders.**  Every theorem has substantive content — except as
+corrected immediately below.
 
 ## H3 verdict — preserved with honest scope
+
+> **2026-08-18 content-audit correction (§2).** The S2-invariance conjunct
+> of `SAGF_joint_uniqueness_verdict_H3` is **DEFINITIONAL**, not
+> substantive: `m1_family_S2_invariant` closes by `rfl` because
+> `constraint_DiracProduct` never mentions `M_R`. It therefore holds along
+> *any* `M_R`-varying family and is not evidence about this one. The
+> injectivity conjunct is SUBSTANTIVE but thin. The directory does **not**
+> establish that the substantive joint system fails to pin `(M_R, m_1)` —
+> S1/S3/S4/S5 are not examined. Do not cite "the type-checked H3 verdict"
+> as a closure.
 
 The verdict is structurally identical to the prior branch:
 **1-parameter family in `m_1`** with `M_R = M_R(m_1)`.
 
 What changed:
 
-* The **proof scaffolding** no longer uses tautological conjuncts.
+* The **proof scaffolding** no longer uses tautological conjuncts
+  (but see the correction above: the S2 conjunct is still `rfl`).
 * The **constraint count** drops from 9 (prior `JointConstraintSystem`)
   to 5 (this branch's `JointConstraintSystem`).
 * All 5 retained constraints are certified substantive by

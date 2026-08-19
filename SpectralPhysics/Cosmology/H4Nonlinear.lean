@@ -65,17 +65,18 @@ Substituting `ξ_cross² = c₁ f₂ Λ² / (6 f₀ α_eff)` (from
 
   α_eff · ξ_cross⁴  =  c₁² f₂² Λ⁴ / (36 f₀² α_eff)
 
-Substituting the framework primitives c₁ = 1/2, f₂ = 48 e⁶, α_eff =
-1/120:
+Substituting the framework primitives c₁ = 1/2, f₂ = 48 e⁶, α_tr =
+1/72 (trace-sector coefficient, corrected 2026-08-18 from the stale
+1/120; see `SigmaTrDispersion.alphaTr`):
 
-  c₁² f₂² / (36 α_eff)  =  (1/4) · (48 e⁶)² / (36 · (1/120))
-                        =  (1/4) · 2304 e¹² / (3/10)
-                        =  576 e¹² · (10/3)
-                        =  1920 e¹²
+  c₁² f₂² / (36 α_tr)   =  (1/4) · (48 e⁶)² / (36 · (1/72))
+                        =  (1/4) · 2304 e¹² / (1/2)
+                        =  576 e¹² · 2
+                        =  1152 e¹²
 
 Hence the **closed form** is
 
-  C_{h⁴}(Λ)  =  1920 · e¹² · Λ⁴ / τ²   in the framework's primitives.    (***)
+  C_{h⁴}(Λ)  =  1152 · e¹² · Λ⁴ / τ²   in the framework's primitives.    (***)
 
 ## Engineering / experimental implication
 
@@ -83,12 +84,12 @@ The h⁴ coefficient (∞ as `Λ → ∞`) sets the *anharmonic stiffness* of
 the trace-defect mode at resonance.  The corresponding quartic energy
 density for a perturbation of amplitude `h_0` is
 
-  ε_quartic  ~  C_{h⁴}(Λ) · h_0⁴  ~  (1920 e¹² / τ²) · Λ⁴ · h_0⁴ .
+  ε_quartic  ~  C_{h⁴}(Λ) · h_0⁴  ~  (1152 e¹² / τ²) · Λ⁴ · h_0⁴ .
 
 In Planck units (Λ = M_Pl, τ ≈ 0.276):
 
-  ε_quartic / M_Pl⁴  ~  (1920 · 1.626×10⁵ / 0.0762) · h_0⁴
-                    ~  4.1 × 10⁹ · h_0⁴ .
+  ε_quartic / M_Pl⁴  ~  (1152 · 1.626×10⁵ / 0.0762) · h_0⁴
+                    ~  2.5 × 10⁹ · h_0⁴ .
 
 The dimensional estimate in
 `yukawa/output/rigor/RIGOROUS_TRACE_DEFECT_DERIVATION.md` step 10
@@ -98,7 +99,8 @@ quotes
 
 which matches **(**)** with `R² = ξ_cross⁴ Λ²/Λ²`.  The closed form
 above replaces the order-unity prefactor in that estimate with the
-explicit number `1920 e¹² / τ² ≈ 4.1 × 10⁹`.
+explicit number `1152 e¹² / τ² ≈ 2.5 × 10⁹` (was `1920 e¹² / τ² ≈ 4.1 × 10⁹`
+under the stale `α_eff = 1/120`).
 
 ## What this file proves
 
@@ -107,13 +109,13 @@ explicit number `1920 e¹² / τ² ≈ 4.1 × 10⁹`.
 * `h4Coeff_pos` : `C_{h⁴}(Λ) > 0` whenever `Λ > 0` (the quartic
   coupling is *positive*, so the resonant trace defect is
   energetically *bounded* — a stable nonlinear vacuum).
-* `h4Coeff_eq_alphaEff_xiCrossSqSq` : the formula
+* `h4Coeff_eq_alphaTr_xiCrossSqSq` : the formula
   `C_{h⁴}(Λ) = α_eff · (ξ_cross²)²` (consequence of `(**)`).
 * `h4Coeff_closedForm` : the substitution
   `C_{h⁴}(Λ) = c₁² f₂² Λ⁴ / (36 f₀² α_eff)` — closed in primitives.
 * `h4Coeff_routeB_value` : the *numerical* identification with the
   Route-B / framework-primitive constants:
-  `C_{h⁴}(Λ) = 1920 · exp(12) · Λ⁴ / τ²`.
+  `C_{h⁴}(Λ) = 1152 · exp(12) · Λ⁴ / τ²`.
 * `h4_dominates_over_linear_at_resonance` : at ξ = ξ_cross, the
   linear h²-stiffness vanishes (σ_tr = 0), so any nonzero h⁴
   coefficient is the leading contribution to the action.  This is
@@ -152,7 +154,7 @@ This is the per-amplitude quartic coefficient
 projection onto the leading bump-function Fourier mode (cf. the
 docstring of `H4Nonlinear`). -/
 def h4Coeff (Λ : ℝ) : ℝ :=
-  alphaEff * (xiCrossSq Λ)^2
+  alphaTr * (xiCrossSq Λ)^2
 
 /-- **Positivity of the h⁴ coefficient.**
 
@@ -163,14 +165,14 @@ theorem h4Coeff_pos (Λ : ℝ) (hΛ : 0 < Λ) : 0 < h4Coeff Λ := by
   unfold h4Coeff
   have h_xc : 0 < xiCrossSq Λ := xiCrossSq_pos Λ hΛ
   have h_xc_sq : 0 < (xiCrossSq Λ)^2 := by positivity
-  exact mul_pos alphaEff_pos h_xc_sq
+  exact mul_pos alphaTr_pos h_xc_sq
 
 /-- **Restatement using ξ_cross² explicitly.**
 
 `C_{h⁴}(Λ) = α_eff · (ξ_cross²)²`.  This is just the unfolding of
 `h4Coeff` and is recorded for downstream rewrites. -/
-theorem h4Coeff_eq_alphaEff_xiCrossSqSq (Λ : ℝ) :
-    h4Coeff Λ = alphaEff * (xiCrossSq Λ)^2 := rfl
+theorem h4Coeff_eq_alphaTr_xiCrossSqSq (Λ : ℝ) :
+    h4Coeff Λ = alphaTr * (xiCrossSq Λ)^2 := rfl
 
 /-! ## Section 2: Closed form in primitives
 
@@ -189,44 +191,44 @@ This is the headline expression: the h⁴ coefficient in *closed form*
 in the four primitives `c₁, f₂, f₀, α_eff` plus the cutoff Λ.  No
 further dimensional estimate is required. -/
 theorem h4Coeff_closedForm (Λ : ℝ) (hΛ : 0 < Λ) :
-    h4Coeff Λ = c1RouteB^2 * f2^2 * Λ^4 / (36 * f0^2 * alphaEff) := by
+    h4Coeff Λ = c1RouteB^2 * f2^2 * Λ^4 / (36 * f0^2 * alphaTr) := by
   unfold h4Coeff xiCrossSq
   -- (α_eff) * ((c₁ f₂ Λ²) / (6 f₀ α_eff))²
   --   = α_eff * (c₁ f₂ Λ²)² / (6 f₀ α_eff)²
   --   = α_eff * c₁² f₂² Λ⁴ / (36 f₀² α_eff²)
   --   = c₁² f₂² Λ⁴ / (36 f₀² α_eff)
   have hf0 : f0 ≠ 0 := ne_of_gt f0_pos
-  have hα : alphaEff ≠ 0 := ne_of_gt alphaEff_pos
+  have hα : alphaTr ≠ 0 := ne_of_gt alphaTr_pos
   field_simp
   ring
 
 /-! ## Section 3: Numerical identification with Route-B primitives
 
-With `c₁ = 1/2`, `f₂ = 48 · e⁶`, `f₀ = τ`, `α_eff = 1/120`:
+With `c₁ = 1/2`, `f₂ = 48 · e⁶`, `f₀ = τ`, `α_tr = 1/72`:
 
-  c₁² f₂² / (36 f₀² α_eff)
-   =  (1/4) · (48 e⁶)² / (36 · τ² · (1/120))
-   =  (1/4) · 2304 e¹² · 120 / (36 τ²)
-   =  (576 · 120) e¹² / (36 τ²)
-   =  69120 e¹² / (36 τ²)
-   =  1920 e¹² / τ² .
+  c₁² f₂² / (36 f₀² α_tr)
+   =  (1/4) · (48 e⁶)² / (36 · τ² · (1/72))
+   =  (1/4) · 2304 e¹² · 72 / (36 τ²)
+   =  (576 · 72) e¹² / (36 τ²)
+   =  41472 e¹² / (36 τ²)
+   =  1152 e¹² / τ² .
 -/
 
 /-- **The Route-B numerical value of the h⁴ coefficient.**
 
 Substituting the four framework primitives `c₁ = 1/2`, `f₂ = 48 e⁶`,
-`f₀ = τ`, `α_eff = 1/120`, we obtain
+`f₀ = τ`, `α_tr = 1/72`, we obtain
 
-  C_{h⁴}(Λ)  =  1920 · exp(12) · Λ⁴ / τ² .
+  C_{h⁴}(Λ)  =  1152 · exp(12) · Λ⁴ / τ² .
 
 This is the explicit closed form quoted in the docstring. -/
 theorem h4Coeff_routeB_value (Λ : ℝ) (hΛ : 0 < Λ) :
-    h4Coeff Λ = 1920 * Real.exp 12 * Λ^4 / τ^2 := by
+    h4Coeff Λ = 1152 * Real.exp 12 * Λ^4 / τ^2 := by
   rw [h4Coeff_closedForm Λ hΛ]
   -- c₁² f₂² Λ⁴ / (36 f₀² α_eff)
   --   = (1/2)² · (48 e⁶)² · Λ⁴ / (36 · τ² · (1/120))
   -- We unfold the named constants and simplify.
-  unfold c1RouteB f2 f0 alphaEff
+  unfold c1RouteB f2 f0 alphaTr
   -- (1/2)² * (48 * exp 6)² * Λ⁴ / (36 * τ² * (1/120))
   have hτ_pos : 0 < τ := by
     unfold τ
@@ -267,7 +269,7 @@ theorem h4_dominates_over_linear_at_resonance
 
 The single sentence that closes Rank 10 / #18: the h⁴ coefficient at
 ξ_cross is
-  α_eff · ξ_cross⁴   =   c₁² f₂² Λ⁴ / (36 f₀² α_eff)   =   1920 e¹² Λ⁴ / τ² .
+  α_eff · ξ_cross⁴   =   c₁² f₂² Λ⁴ / (36 f₀² α_eff)   =   1152 e¹² Λ⁴ / τ² .
 -/
 
 /-- **HEADLINE THEOREM (Rank 10 / #18).**
@@ -275,10 +277,10 @@ The single sentence that closes Rank 10 / #18: the h⁴ coefficient at
 The nonlinear h⁴ coefficient at the trace-defect resonance ξ_cross,
 defined by `α_eff · ξ_cross(Λ)⁴`, has the closed form
 
-  C_{h⁴}(Λ)  =  1920 · exp(12) · Λ⁴ / τ²
+  C_{h⁴}(Λ)  =  1152 · exp(12) · Λ⁴ / τ²
 
 in the framework's primitives `c₁ = 1/2, f₂ = 48 e⁶, f₀ = τ,
-α_eff = 1/120`.  In particular it is strictly positive for `Λ > 0`,
+α_tr = 1/72`.  In particular it is strictly positive for `Λ > 0`,
 and the linear stiffness `σ_tr(Λ; ξ_cross) = 0` vanishes there, so
 the h⁴ coefficient is the leading contribution to the action at
 resonance.
@@ -288,7 +290,7 @@ chain into an explicit closed-form expression. -/
 theorem h4_coefficient_at_xiCross
     (Λ ξ : ℝ) (hΛ : 0 < Λ) (hξ : ξ^2 = xiCrossSq Λ) :
     sigmaTr Λ ξ = 0 ∧
-    h4Coeff Λ = 1920 * Real.exp 12 * Λ^4 / τ^2 ∧
+    h4Coeff Λ = 1152 * Real.exp 12 * Λ^4 / τ^2 ∧
     0 < h4Coeff Λ := by
   refine ⟨sigmaTr_at_xiCross Λ ξ hΛ hξ,
           h4Coeff_routeB_value Λ hΛ,
@@ -299,12 +301,12 @@ theorem h4_coefficient_at_xiCross
 The Λ⁴ growth means `C_{h⁴}` blows up at high cutoff.  The
 *Planck-units* magnitude (Λ = M_Pl ≡ 1) is
 
-  C_{h⁴}(1)  =  1920 · exp(12) / τ² .
+  C_{h⁴}(1)  =  1152 · exp(12) / τ² .
 
 Since `1 / τ² = (2 + φ)² > 4²·(1/(2+φ))²` is finite (≈ 13.13) and
 `exp(12) ≈ 162754.79`, we have
 
-  C_{h⁴}(1)  ≈  1920 · 162754.79 · 13.13  ≈  4.1 × 10⁹ ,
+  C_{h⁴}(1)  ≈  1152 · 162754.79 · 13.13  ≈  4.1 × 10⁹ ,
 
 *in Planck units*.  This is enormous but *bounded*: the resonance
 has a finite-amplitude attractor at `h_0 ~ (1/C_{h⁴})^{1/4} ≈
@@ -313,18 +315,18 @@ has a finite-amplitude attractor at `h_0 ~ (1/C_{h⁴})^{1/4} ≈
 for substrate-engineering rather than a Planck-scale extrapolation
 artifact.
 
-We record the simple lower bound `C_{h⁴}(1) > 1920 · exp(12)` in
+We record the simple lower bound `C_{h⁴}(1) > 1152 · exp(12)` in
 Lean as a sanity check (`τ² < 1`).  -/
 
 /-- **Sanity bound at Λ = 1.**
 
-In Planck units (`Λ = 1`), `C_{h⁴}(1) > 1920 · exp(12)`.  This
+In Planck units (`Λ = 1`), `C_{h⁴}(1) > 1152 · exp(12)`.  This
 follows from `τ² < 1`. -/
 theorem h4Coeff_at_planck_lower_bound :
-    1920 * Real.exp 12 < h4Coeff 1 := by
+    1152 * Real.exp 12 < h4Coeff 1 := by
   rw [h4Coeff_routeB_value 1 one_pos]
-  -- 1920 * exp 12 * 1^4 / τ^2 = 1920 * exp 12 / τ^2
-  -- We need 1920 * exp 12 < 1920 * exp 12 / τ^2, i.e. τ^2 < 1.
+  -- 1152 * exp 12 * 1^4 / τ^2 = 1152 * exp 12 / τ^2
+  -- We need 1152 * exp 12 < 1152 * exp 12 / τ^2, i.e. τ^2 < 1.
   have hτ_pos : 0 < τ := by
     unfold τ
     have hφ : 0 < φ := by unfold φ; positivity
@@ -340,12 +342,12 @@ theorem h4Coeff_at_planck_lower_bound :
     rw [heq]
     nlinarith [hτ_pos, hτ_lt_one]
   have hexp_pos : 0 < Real.exp 12 := Real.exp_pos _
-  have h_num_pos : 0 < 1920 * Real.exp 12 := by positivity
+  have h_num_pos : 0 < 1152 * Real.exp 12 := by positivity
   have h_one4 : (1:ℝ)^4 = 1 := by norm_num
   rw [h_one4, mul_one]
-  -- Goal: 1920 * exp 12 < 1920 * exp 12 / τ^2
+  -- Goal: 1152 * exp 12 < 1152 * exp 12 / τ^2
   rw [lt_div_iff₀ hτ_sq_pos]
-  -- 1920 * exp 12 * τ^2 < 1920 * exp 12
+  -- 1152 * exp 12 * τ^2 < 1152 * exp 12
   nlinarith [h_num_pos, hτ_sq_lt_one]
 
 end SpectralPhysics.Cosmology

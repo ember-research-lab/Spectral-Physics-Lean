@@ -13,20 +13,24 @@ v0.9 open-problem predicates as hypotheses, the lowest spatial-Laplacian
 eigenvalue `λ_1(k*)` satisfies an algebraic identity in the second
 cumulant `κ_2(T)` of the spectral triple `T`.
 
-## What is proved here
+## Decl classes (2026-08-18 content audit)
 
-* `lambda1_at_kstar`: the **conditional** theorem.  Hypotheses:
-  (i) `VisibleSpectrumFollowsBakerForm T`,
-  (ii) `SCSEHasFixedPoint T`,
-  (iii) `SCSEFixedPointUnique T`.
-  Conclusion: the unique fixed point `λ_1(k*)` equals
-  `exp(−κ_2(T)/2) · Λ_c²` — the *framework's* prediction in terms of
-  the triple's intrinsic data.
+* `lambda1_at_kstar` — **SHELL**.  Nominally conditional on
+  (i) `VisibleSpectrumFollowsBakerForm T`, (ii) `SCSEHasFixedPoint T`,
+  (iii) `SCSEFixedPointUnique T`; in fact none of the three does any work.
+  `SCSEHasFixedPoint T` is inhabited outright and the conclusion is the
+  same ∃-statement with `lambda1Predicted` unfolded, so the statement
+  proves with kernel axioms only.  Do not cite as a closure.
 
-* `lambda1_at_kstar_pos`: positivity, unconditional.
+* `lambda1_at_kstar_pos` — **SHELL**: reads the positivity component
+  straight back out of its own hypothesis.
 
-* `lambda1_at_kstar_monotone_kappa2`: the framework prediction depends
-  monotonically on `κ_2`.
+* `lambda1_at_kstar_unique_value` — **DEFINITIONAL**: equality with
+  `lambda1Predicted T` forces the value; the uniqueness hypothesis is
+  itself a theorem (`scse_uniqueness_definitional`).
+
+* `lambda1_at_kstar_monotone_kappa2` — **SUBSTANTIVE** (thin): strict
+  antitonicity of `exp(−κ/2)·Λ_c²` in κ, via `lambda1Predicted_monotone`.
 
 ## What is NOT claimed here
 
@@ -62,12 +66,24 @@ namespace SpectralPhysics.OP3
 
 /-! ## The conditional headline theorem -/
 
-/-- **Headline theorem (conditional)**: given the three structural
-hypotheses corresponding to v0.9's open problems, the SCSE fixed point
-λ_1(k*) is determined by the triple's second cumulant via
+/-- **SHELL**: cannot be false by construction; do not cite as a closure.
+
+The 2026-08-18 content audit (U6) established that this statement proves
+with kernel axioms only — none of the three hypotheses is doing any work.
+`SCSEHasFixedPoint T` unfolds to `∃ lam, 0 < lam ∧ lam = lambda1Predicted T`,
+which is inhabited outright by `⟨_, lambda1Predicted_pos T, rfl⟩`, and the
+conclusion is the same ∃-statement with `lambda1Predicted` unfolded.  So the
+conclusion holds for every `T` with no hypotheses at all; the "conditional
+headline" framing overstates what is being checked.  What is genuinely
+verified here is that `lambda1Predicted` is definitionally
+`exp(−κ_2(T)/2) · Λ_c²` and positive — a DEFINITIONAL fact, not a
+derivation of λ_1(k*).
+
+Statement as written: given the three structural hypotheses corresponding
+to v0.9's open problems, the SCSE fixed point λ_1(k*) is
 `λ_1(k*) = exp(−κ_2(T) / 2) · Λ_c²`.
 
-Hypotheses:
+Hypotheses (nominal — see the SHELL note above; none is load-bearing):
 
 * `h_baker : VisibleSpectrumFollowsBakerForm T` —
   the depths of `T` follow the Baker linear-form parametrisation
@@ -84,7 +100,7 @@ Hypotheses:
 Conclusion: there exists `λ_1 > 0` (the fixed point) with
 `λ_1 = exp(−κ_2(T) / 2) · Λ_c²`.
 
-This is the **framework prediction in terms of intrinsic data**.
+This restates the framework prediction in terms of intrinsic data.
 No comparison to `Λ_obs` is made here. -/
 theorem lambda1_at_kstar
     (T : FiniteSpectralTriple)

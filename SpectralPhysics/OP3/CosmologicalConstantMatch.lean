@@ -44,6 +44,15 @@ These appear ONLY in this file.  They do NOT enter
 `SCSEClosureSystem.lean` (the framework primitives) or
 `Lambda1Bound.lean` (the conditional headline).
 
+## Decl classes (2026-08-18 content audit)
+
+* `framework_match_iff_kappa2_eq` — **DEFINITIONAL**: an algebraic
+  bijectivity restatement of `lambda1Predicted`; carries no physics.
+* `op3_lambda1_matches_observed_conditional` — **SHELL**: its conclusion
+  proves with kernel axioms only (see that decl's docstring).  Do not cite
+  as a closure of the Λ match.
+* `lambda_obs_pos` — ARITHMETIC/positivity of a stated empirical literal.
+
 ## What is and isn't proved
 
 * `framework_empirically_consistent`: a **biconditional** —
@@ -202,9 +211,18 @@ This is *not* a derivation of `Λ_obs`.  It is a structural conditional:
 IF the SM spectral triple satisfies the four predicates above, THEN
 the framework reproduces `Λ_obs`. -/
 
-/-- **Conditional empirical-match theorem (honest)**.
+/-- **SHELL**: satisfied by construction regardless of the physics; do not
+cite as a closure.
 
-Hypotheses (all named):
+The 2026-08-18 content audit (U6) established that the conclusion
+`∃ lam, 0 < lam ∧ lam = lambda_obs` proves with kernel axioms only — it is
+inhabited by `⟨lambda_obs, lambda_obs_pos, rfl⟩` with no hypotheses at all.
+None of the four hypotheses below is load-bearing (`SCSEHasFixedPoint T` is
+itself inhabited outright).  In particular this decl does NOT establish that
+the framework reproduces Λ_obs; it records that a positive real equal to
+`lambda_obs` exists.
+
+Hypotheses as written (nominal — none is load-bearing):
 
 * `h_baker : VisibleSpectrumFollowsBakerForm T`
   (v0.9 line 10977, open structural condition)

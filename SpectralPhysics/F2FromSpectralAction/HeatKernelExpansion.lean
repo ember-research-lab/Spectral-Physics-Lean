@@ -85,7 +85,9 @@ The scalar coefficient `1/6` in front of `R` in `a_2` is Vassilevich
 named fact: given a spectral triple of positive scalar curvature, the
 `a_2` coefficient exists and is positive. -/
 
-/-- **Theorem (vacuous; replacing audit-caught vacuous axiom)**.
+/-- **SHELL**: `∃ _ : A2Coefficient, True`, satisfied by construction
+(`⟨default, trivial⟩`) regardless of the physics; do not cite as a
+closure or as an import of Vassilevich 2003.
 
 There exists an `A2Coefficient` and `True` holds.
 
@@ -127,18 +129,30 @@ cutoff moments to the heat-kernel coefficients. -/
       `SpectralActionCutoff` triple.
 
     We carry this as a `Prop` since we do not have `Tr f(D²/Λ²)` as a
-    bona-fide Mathlib trace. -/
+    bona-fide Mathlib trace.
+
+    **SHELL** (2026-08-18 content audit, §2). Read the body: the predicate
+    unfolds to `m.f_2 * a2.value > 0`, a positivity statement that follows
+    from the positivity fields already carried by `SpectralActionCutoff`
+    and `A2Coefficient`. It is not the Chamseddine–Connes expansion, it
+    does not mention `Tr f(D²/Λ²)`, `Λ⁴`, `a_0` or `a_4`, and it cannot be
+    false for any inhabitant of those two structures. Do not cite this
+    predicate — or `spectral_action_expansion_holds` — as Tier 1 for
+    `f₂ = 48e⁶`; `F2FromSpectralAction/Verdict.lean` states honestly that
+    `48e⁶` is not derived. -/
 def SpectralActionExpansion
     (m : SpectralActionCutoff) (a2 : A2Coefficient) : Prop :=
-  -- The pairing identity: the Λ² coefficient of the spectral action
-  -- equals `m.f_2 · a2.value`. This is the substantive content of
-  -- the Chamseddine–Connes expansion at the `a_2` order.
+  -- SHELL: a positivity statement, not the expansion. See the docstring.
   m.f_2 * a2.value > 0
 
-/-- The spectral-action expansion at the `a_2` order is positive
-    whenever both `f_2` and the `a_2` coefficient are positive — which
-    is the standing assumption on cutoff function and positive-scalar-
-    curvature manifold. -/
+/-- **SHELL**: satisfied by construction regardless of the physics; do not
+    cite as a closure. It proves `m.f_2 * a2.value > 0` from the positivity
+    fields of the two structure arguments, taking no hypotheses — see
+    `SpectralActionExpansion`, which is a positivity predicate rather than
+    the Chamseddine–Connes expansion it is named for.
+
+    Statement as written: the spectral-action expansion at the `a_2` order
+    is positive whenever both `f_2` and the `a_2` coefficient are positive. -/
 theorem spectral_action_expansion_holds
     (m : SpectralActionCutoff) (a2 : A2Coefficient) :
     SpectralActionExpansion m a2 := by

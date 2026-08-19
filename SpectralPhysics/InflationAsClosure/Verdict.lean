@@ -10,22 +10,39 @@ import SpectralPhysics.InflationAsClosure.TTSectorContribution
 import SpectralPhysics.InflationAsClosure.CombinedClosure
 
 /-!
-# Verdict — `5³ · 2²` closure of `A_s` to 2.4%
+# Verdict — the `5³ · 2² = 500` vs `510` structural-factor comparison
 
 ## Headline
 
-**CONDITIONAL** — the framework's inflationary amplitude `A_s` closes
-to within `2.5%` of the Planck 2018 observed value
-`A_s_obs ≈ 2.10 × 10⁻⁹`, *given* the following six hypothesis classes:
+**Not an `A_s` closure.** The 2026-08-18 content audit (§2) classed the
+Lean content of this directory as follows, and this file's prose has been
+corrected to match:
+
+* `structural_residual_le_2_5_percent` / `verdict_residual_bound` —
+  **ARITHMETIC**: a `norm_num` check that `|500 − 510| / 510 ≤ 0.025` on
+  two stated literals. It does not derive either literal, and it says
+  nothing about `A_s`.
+* `inflation_As_closure` — one DEFINITIONAL identity + that ARITHMETIC
+  bound + one DEFINITIONAL rewrite; four of its six hypotheses are
+  discarded by the proof.
+
+The physical reading — that this residual transfers to
+`|A_s_pred − A_s_obs| / A_s_obs ≈ 2.4%` against the Planck 2018 value
+`A_s_obs ≈ 2.10 × 10⁻⁹` — is asserted in prose only and is **not**
+formalized anywhere in this directory (`CombinedClosure.lean` says so
+itself). Do not cite this directory as "A_s machine-checked to 2.4%".
+
+The prose statement, for the record, is conditional on six hypothesis
+classes:
 
 | Hypothesis class                          | Status                       | Citation / source                              |
 |-------------------------------------------|------------------------------|------------------------------------------------|
-| (a) `N_sectors = 5` (Ember reconstruction)| CLOSED-by-axiom             | v0.9.1 §`thm:ember-reconstruction`            |
-| (b) `N_gen = 3` (Cl(6) min left ideals)   | CLOSED-by-axiom             | Furey 2018, v0.9.1 §`generations-from-Cl6`   |
-| (c) `N_pol = 2` (spin-2 in 4D)            | CLOSED-by-axiom             | Weinberg 1965, Connes 1996                    |
-| (d) Trace Berry: `s_trace = ln 125`        | CLOSED-by-axiom             | `pre_geometric/berry_phase_corrected/`        |
-| (e) TT Berry: `s_TT = ln 4`                | CLOSED-by-axiom             | `pre_geometric/tt_sector_berry/`              |
-| (f) k*-Hodge baseline + R² + Starobinsky   | PREDICATE-CONDITIONAL       | three Prop-predicate hypotheses                |
+| (a) `N_sectors = 5` (Ember reconstruction)| assumed (named axiom)       | v0.9.1 §`thm:ember-reconstruction`            |
+| (b) `N_gen = 3` (Cl(6) min left ideals)   | assumed (named axiom)       | Furey 2018, v0.9.1 §`generations-from-Cl6`   |
+| (c) `N_pol = 2` (spin-2 in 4D)            | assumed (named axiom)       | Weinberg 1965, Connes 1996                    |
+| (d) Trace Berry: `s_trace = ln 125`        | assumed (named axiom)       | `pre_geometric/berry_phase_corrected/`        |
+| (e) TT Berry: `s_TT = ln 4`                | assumed (named axiom)       | `pre_geometric/tt_sector_berry/`              |
+| (f) k*-Hodge baseline + R² + Starobinsky   | inert (discarded by proof)  | three Prop-predicate hypotheses                |
 
 The headline theorem `inflation_As_closure` (in `CombinedClosure.lean`)
 ties all six hypotheses together.
@@ -48,8 +65,9 @@ two polarizations).
   via `five_cubed_two_squared_eq_500`).
 * `required_enhancement = 510` (from the prior dispatch
   `pre_geometric/five_sector_inflation_dynamics/`).
-* `|500 - 510| / 510 ≈ 0.0196 < 0.025` (Tier-1 via
-  `structural_residual_le_2_5_percent`).
+* `|500 - 510| / 510 ≈ 0.0196 < 0.025` (**ARITHMETIC** via
+  `structural_residual_le_2_5_percent` — `norm_num` on the two literals;
+  the `510` is an unverified external input).
 
 ## Reference to prior research dispatches
 
@@ -132,9 +150,10 @@ This dispatch's mechanism rests on five prior research dispatches:
 
 ## Status
 
-This is the **strongest A_s closure the framework has delivered** at
-sub-percent residual level. The mechanism is fully traceable through
-the named-axiom chain to:
+This is **not an A_s closure** (see the Headline section). What the Lean
+delivers is an ARITHMETIC comparison of two stated numbers, `500` and
+`510`. The prose mechanism behind those numbers is traceable through the
+named-axiom chain to:
 
 * the framework's reconstruction theorem (5 sectors);
 * the framework's Cl(6)-generation count (3 generations);
@@ -143,7 +162,14 @@ the named-axiom chain to:
 * the Seeley–DeWitt R² coefficient already proved structurally in
   `SeeleyDeWitt.R2Coefficient`.
 
-**Verdict**: CONDITIONAL on the six hypothesis classes listed above.
+**Verdict**: the formal content is ARITHMETIC + DEFINITIONAL (see the
+Headline section); the `A_s` reading is prose-only and CONDITIONAL on the
+six hypothesis classes listed above.
+
+Also note (2026-08-18 audit, U6): the named axiom `prop_berry_crossover`
+listed under Rule 2 above is **SHELL** — provable outright from the
+`sigmaTr` definitions — so it does not import the v0.9.1
+§`rem:berry-meaning` content its name suggests.
 -/
 
 namespace SpectralPhysics.InflationAsClosure
@@ -159,8 +185,10 @@ def verdict_status : String :=
   "(e) TT-Berry contribution = ln(4), " ++
   "(f) KStarHodgePeriod + R2Coefficient + ProperEinsteinFrameStarobinsky predicates."
 
-/-- **Headline residual bound** (recapitulation of
-`structural_residual_le_2_5_percent`). -/
+/-- **ARITHMETIC**: `norm_num` check of stated numeric inputs
+(`|500 − 510| / 510 ≤ 0.025`); does not derive those inputs and does not
+bound any `A_s` residual. Recapitulates
+`structural_residual_le_2_5_percent`. -/
 theorem verdict_residual_bound :
     |delivered_enhancement - required_enhancement| / required_enhancement
       ≤ 0.025 :=

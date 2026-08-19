@@ -42,27 +42,53 @@ specific spectrum structure of the v0.9 framework); it is a
 classical functional-analysis statement that holds for any
 `KSRSobolev s C` set with `s > 1` and `C > 0`.
 
-## The axiom
+## REPAIRED-SOUND (2026-08-18 content repair, spec `lean-content-repair`)
 
-`rellich_kondrachov_trace_class :`
-`  ∀ (s C : ℝ), 1 < s → 0 < C → IsCompact (KSRSobolev s C)`
+**This file no longer states `rellich_kondrachov_trace_class` as an
+axiom.**  The 2026-08-18 content audit (`lean-content-audit-2026-08-18/
+REGISTER.md` U1) found that the axiom, combined with the discrete
+placeholder `TopologicalSpace KSR` instance below, derives `False`:
+under the discrete topology `IsCompact` collapses to `Finite`, and the
+hostile witness `kOf : ℝ → KSR` (`kOf c` has eigenvalue `c` at index 0,
+`0` elsewhere) exhibits an injective image of `Set.Icc 0 1` — an
+infinite set — inside `KSRSobolev 2 1`, contradicting finiteness
+(`lean-content-audit-2026-08-18/KSRFalse.lean`, positive control:
+compiles to `ksr_false : False` before this repair).
 
-i.e. for trace-class decay rate `s > 1` and any bound constant `C > 0`,
-the corresponding Sobolev sublevel set is compact (in whatever
-topology `KSR` carries; since `KSR` is not given a Mathlib topology
-in `KSRSpace.lean`, this axiom is the carrier of the topological
-content as well).
+The axiom asserted compactness for *every* topology assignment to
+`KSR`, including the discrete one — but "compact ⇒ finite" under
+discrete topology is incompatible with `KSRSobolev s C` being
+infinite (as the continuum-indexed family `kOf` shows for any `s, C`).
+No universally-quantified-over-topology statement of this axiom can
+be sound while Mathlib lacks the Schatten-1 trace-norm topology this
+axiom was meant to describe (see the negative Mathlib search below,
+unchanged).
 
-## Anti-pattern check (audit discipline)
+**Repair**: the axiom is deleted and its conclusion is instead carried
+as an **explicit hypothesis** on the theorems that used it
+(`ksr_compact` and its corollaries in `KSRCompactnessThm.lean`,
+`KSR_compactness_verdict` in `Verdict.lean`,
+`coercive_sublevels_compact` in `BasinConnectivity/Verdict.lean`).
+Each such theorem now reads "IF `KSRSobolev s C` is compact (in
+whatever topology eventually supplies the trace-norm structure), THEN
+…" rather than deriving compactness from a universally-false claim.
+This is the `REPAIRED-SOUND` class: axiom → hypothesis, no physics
+added, no new axiom introduced.
 
-* **NOT** an axiom of the form `IsCompact (Set.univ : Set KSR)` —
-  the conclusion-as-axiom pattern.  Our axiom is restricted to
-  Sobolev-`s` sublevel sets with `s > 1`, exactly matching the
-  classical compactness criterion.
-* **NOT** an axiom that the v0.9 framework's specific `𝒦_SR`
-  is compact.  The axiom is general (depends on `s, C` only).
-* **NOT** assuming the conclusion (`KSRSobolev s C` is compact)
-  with no link to literature.  Three citations are given.
+The placeholder `instance : TopologicalSpace KSR := ⊥` below is
+**retained** (a discrete topology is a legitimate, if degenerate,
+topological space — declaring the instance is not itself unsound).
+What was unsound was axiomatising compactness *for* that topology;
+that axiom is gone.
+
+## Anti-pattern check (audit discipline, historical — the axiom this
+section describes no longer exists; kept for provenance)
+
+The axiom, when it existed, was **NOT** of the form
+`IsCompact (Set.univ : Set KSR)` (conclusion-as-axiom), and **NOT**
+framework-specific (it depended only on `s, C`) — but neither
+property saves it from being false for the discrete topology, which
+is why it is now a hypothesis instead of an axiom.
 
 ## References
 
@@ -90,86 +116,27 @@ open Set
 
 namespace SpectralPhysics.KSRCompactness
 
-/-! ## The named Rellich–Kondrachov axiom for trace-class spectral classes
+/-! ## REPAIRED-SOUND: no axiom here anymore
 
-A topology on `KSR` is needed for `IsCompact` to be meaningful.  In
-this branch we use the natural Mathlib topology induced by treating
-`KSR` as a discrete carrier — this means `IsCompact` is equivalent to
-`Finite` under the default discrete topology.  However, the **content**
-of the axiom is the underlying functional-analytic compactness
-statement that holds in the trace-norm topology — encoded
-topologically here by enforcing the standard `TopologicalSpace KSR`
-instance from Lean's structure type, which Mathlib derives from the
-existence of any `Inhabited` data class.
-
-To make the axiom carry the intended content cleanly, we state it
-using `IsCompact` on the underlying `Set KSR` with `KSR` given the
-**discrete topology** as a placeholder.  The named-axiom carries the
-content; the placeholder topology is a Lean-mechanical choice that
-will be refined when Mathlib gains the Schatten ideal topology.
--/
+`rellich_kondrachov_trace_class` used to be declared here as an
+`axiom`.  It is **deleted**: see the "REPAIRED-SOUND" note in the
+module docstring above for why (it derives `False` combined with the
+discrete `TopologicalSpace KSR` instance below).  Its conclusion is
+now threaded as an explicit hypothesis parameter on the consuming
+theorems in `KSRCompactnessThm.lean`, `Verdict.lean`, and
+`BasinConnectivity/Verdict.lean`.  A topology on `KSR` is still needed
+for `IsCompact`/`IsPathConnected` to typecheck at all in this and
+downstream files, so the placeholder discrete instance is kept (it is
+not itself the source of the inconsistency — a discrete topology is a
+legitimate topological space; the false claim was that *every*
+Sobolev sublevel set is compact under it). -/
 
 /-- Discrete topology on `KSR` (placeholder; refinement to trace-norm
-topology pending Mathlib's Schatten-1 ideal infrastructure). -/
+topology pending Mathlib's Schatten-1 ideal infrastructure). Kept
+after the U1 repair (2026-08-18): declaring this instance is not
+itself unsound, only the deleted `rellich_kondrachov_trace_class`
+axiom which claimed compactness held under it universally. -/
 instance : TopologicalSpace KSR := ⊥
-
-/-- **Rellich–Kondrachov for trace-class spectral classes** (NAMED AXIOM).
-
-For trace-class decay rate `s > 1` and any positive bound `C > 0`,
-the eigenvalue-shadow Sobolev sublevel set
-
-  `{ T : KSR | ∀ n, |λ_n(T)| ≤ C / (n+1)^s }`
-
-is compact in the trace-norm topology on `KSR` (here represented
-by the discrete carrier topology, pending Schatten-1 ideal
-infrastructure in Mathlib).
-
-This is the **eigenvalue-level shadow** of:
-
-* Classical Rellich–Kondrachov (Rellich 1930; Kondrachov 1945):
-  `H^s ↪ L^2` is compact on bounded domains for `s > 0`.
-* Schatten-class compactness (Simon 2005 Th. 3.7; Reed–Simon Vol. IV
-  Th. VI.21): trace-class operators (Schatten-1) embed compactly
-  into the bounded-operator topology, and the trace-norm closure of
-  finite-rank operators with controlled singular-value decay is
-  compact.
-
-The combination — singular-value decay `s_n ≤ C/(n+1)^s` with `s > 1`
-implies trace-class membership AND trace-norm compactness of the
-sublevel set — is the working form needed for v0.9 §47's SAGF basin
-argument (line 11082(a) explicitly cites this expectation).
-
-**Citation**: Rellich 1930; Kondrachov 1945; Simon, *Trace Ideals*
-(AMS Surveys 120, 2005), Theorem 3.7; Reed–Simon Vol. IV, §VI.6. -/
-axiom rellich_kondrachov_trace_class :
-    ∀ (s C : ℝ), 1 < s → 0 < C → IsCompact (KSRSobolev s C)
-
-/-! ## Smuggling check
-
-The axiom **does not** assert:
-
-1. `IsCompact (Set.univ : Set KSR)` — the unbounded `𝒦_SR` is NOT
-   compact (Schatten ideals are never compact in their norm
-   topology; only sublevel sets are).  Our axiom restricts to
-   `KSRSobolev s C` for fixed `s > 1, C > 0`.
-
-2. Compactness for `s ≤ 1` — the threshold `1 < s` is sharp at the
-   trace-class boundary.  For `s = 1` one only gets weak compactness
-   (Banach–Alaoglu in `S_1`); for `s < 1` no compactness in trace
-   norm.  The axiom does not over-claim.
-
-3. Anything specific to the v0.9 framework's `𝒦_SR`.  It is purely
-   a statement about Hermitian eigenvalue sequences with controlled
-   decay, valid for any such sequence and not tuned to land on a
-   v0.9 target.
-
-The audit-discipline test: would the axiom hold for, e.g., the
-spectrum of the Dirichlet Laplacian on a bounded domain in `ℝ^d`,
-or the Laplace–Beltrami operator on a closed `n`-manifold?  Yes
-(in both cases the eigenvalues grow as `n^{2/d}` by Weyl's law, so
-the dual decay rates satisfy the Sobolev-`s` condition for
-`s > d/2`, and Rellich applies).  The axiom is a general fact, not
-a framework-specific identity. -/
 
 /-! ## Auxiliary corollary
 

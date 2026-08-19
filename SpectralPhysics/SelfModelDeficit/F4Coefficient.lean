@@ -83,7 +83,16 @@ noncomputable def kappa1 : ℝ := 6
     (Proposition `prop:faith-tower`). -/
 noncomputable def f_2 : ℝ := (NYuk : ℝ) * Real.exp kappa1
 
-/-- `f₂ = 48 · e⁶`. -/
+/-- **DEFINITIONAL**: unfolds `f_2 := (NYuk : ℝ) * Real.exp kappa1` with
+    `NYuk := 48`, `kappa1 := 6`. It restates the definition and derives
+    neither `48` nor `6`.
+
+    The 2026-08-18 content audit (§2) found this decl cited as if it were
+    a Lean derivation of `f₂ = 48e⁶`. It is not: both the mode count 48
+    and the first cumulant 6 are stated inputs (`NYuk`, `kappa1`), and the
+    Baker-form/`prop:faith-tower` reasoning that fixes them is not in
+    Lean. `F2FromSpectralAction/Verdict.lean` says the same thing honestly
+    ("48e⁶ not derived"). Do not cite as "Lean-formalized" or "closed via". -/
 theorem f_2_value : f_2 = 48 * Real.exp 6 := by
   unfold f_2 NYuk kappa1; norm_num
 

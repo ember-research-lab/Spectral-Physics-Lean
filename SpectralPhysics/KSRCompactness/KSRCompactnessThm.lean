@@ -67,40 +67,53 @@ namespace SpectralPhysics.KSRCompactness
 
 /-! ## The headline conditional theorem -/
 
-/-- **Theorem (CONDITIONAL on `rellich_kondrachov_trace_class`).**
+/-- **Theorem (REPAIRED-SOUND, 2026-08-18: compactness is now an
+explicit hypothesis, not derived from an axiom).**
 
-For trace-class decay rate `s > 1` and bound `C > 0`, the eigenvalue-
-shadow Sobolev sublevel set `KSRSobolev s C` is compact.
+For trace-class decay rate `s > 1` and bound `C > 0`: IF
+`KSRSobolev s C` is compact (`h_compact`), THEN it is compact.
 
-This is a direct restatement of the named axiom — its purpose is to
-expose the conditional structure: the theorem name reads as
-`ksr_compact`, the dependency on the named axiom is visible to
-`#print axioms`, and the hypothesis `s > 1` is *explicit*. -/
-theorem ksr_compact (s C : ℝ) (h_decay : 1 < s) (h_bound : 0 < C) :
+Before the 2026-08-18 content repair this was derived from the axiom
+`rellich_kondrachov_trace_class`, which was deleted because it
+derives `False` under the discrete placeholder topology on `KSR`
+(`lean-content-audit-2026-08-18` U1; `KSRFalse.lean`).  No sound
+general replacement is available without Mathlib's Schatten-1
+trace-norm-topology infrastructure, so the conclusion is now carried
+as an explicit hypothesis instead of a universally-quantified axiom.
+This makes the theorem a restatement of its hypothesis (SHELL-shaped
+by construction) — that is the honest content of "REPAIRED-SOUND":
+soundness restored by weakening the claim, not by inventing new
+functional analysis. -/
+theorem ksr_compact (s C : ℝ) (h_decay : 1 < s) (h_bound : 0 < C)
+    (h_compact : IsCompact (KSRSobolev s C)) :
     IsCompact (KSRSobolev s C) :=
-  rellich_kondrachov_trace_class s C h_decay h_bound
+  h_compact
 
 /-- **Corollary**: if every element of a subset `S ⊆ KSR` admits the
 same Sobolev-`s` bound with shared rate constant `C > 0` (i.e.
-`S ⊆ KSRSobolev s C`), then `S` is contained in a compact set.
-
-This is the working form of the compactness theorem: a *uniform*
-Sobolev bound on a family is enough to make the family precompact. -/
+`S ⊆ KSRSobolev s C`), then `S` is contained in a compact set —
+conditional on `KSRSobolev s C` being compact (REPAIRED-SOUND: this
+was `rellich_kondrachov_trace_class`, now an explicit hypothesis). -/
 theorem ksr_subset_compact
     (s C : ℝ) (h_decay : 1 < s) (h_bound : 0 < C)
+    (h_compact : IsCompact (KSRSobolev s C))
     (S : Set KSR) (h_uniform : S ⊆ KSRSobolev s C) :
     ∃ K : Set KSR, IsCompact K ∧ S ⊆ K :=
-  ⟨KSRSobolev s C, ksr_compact s C h_decay h_bound, h_uniform⟩
+  ⟨KSRSobolev s C, ksr_compact s C h_decay h_bound h_compact, h_uniform⟩
 
 /-- **Compactness preservation under intersection**: the intersection
 of a Sobolev sublevel set with any closed subset of `KSR` is again
 compact.  (Useful for adding extra constraints such as the
-self-reference invariance, once that condition is formalised.) -/
+self-reference invariance, once that condition is formalised.)
+REPAIRED-SOUND: conditional on `KSRSobolev s C` being compact
+(explicit hypothesis; formerly the axiom
+`rellich_kondrachov_trace_class`). -/
 theorem ksr_compact_inter_closed
     (s C : ℝ) (h_decay : 1 < s) (h_bound : 0 < C)
+    (h_compact : IsCompact (KSRSobolev s C))
     (F : Set KSR) (hF : IsClosed F) :
     IsCompact (KSRSobolev s C ∩ F) :=
-  (ksr_compact s C h_decay h_bound).inter_right hF
+  (ksr_compact s C h_decay h_bound h_compact).inter_right hF
 
 /-! ## The self-reference invariance overlay (Prop, NOT discharged)
 
@@ -127,12 +140,15 @@ type condition). -/
 def SRInvariantIsClosed : Prop := IsClosed KSRInvariant
 
 /-- **Conditional theorem**: assuming `SRInvariantIsClosed`, the
-SR-invariant Sobolev sublevel set is compact. -/
+SR-invariant Sobolev sublevel set is compact.  REPAIRED-SOUND:
+also conditional on `KSRSobolev s C` being compact (explicit
+hypothesis; formerly the axiom `rellich_kondrachov_trace_class`). -/
 theorem ksr_invariant_sobolev_compact
     (s C : ℝ) (h_decay : 1 < s) (h_bound : 0 < C)
+    (h_compact : IsCompact (KSRSobolev s C))
     (h_inv_closed : SRInvariantIsClosed) :
     IsCompact (KSRSobolev s C ∩ KSRInvariant) :=
-  ksr_compact_inter_closed s C h_decay h_bound KSRInvariant h_inv_closed
+  ksr_compact_inter_closed s C h_decay h_bound h_compact KSRInvariant h_inv_closed
 
 /-! ## The full Sobolev class — non-compact (consistency check)
 
