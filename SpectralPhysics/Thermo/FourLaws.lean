@@ -22,6 +22,9 @@ heat semigroup e^{-tL}. Thermodynamic quantities are spectral functionals:
 * `zeroth_law` : Thermal equilibrium at common beta is an equivalence relation
 * `first_law` : dU = delta_Q + delta_W (energy decomposition, product rule)
 * `second_law_gibbs_minimizes` : Gibbs state minimizes free energy
+  (NOTE 2026-08-18: the separate `second_law_entropy_increase` axiom was
+  DELETED as compile-verified unsound — see the note in §Second Law below;
+  entropy monotonicity is NOT formalized here)
 * `third_law` : Ground state dominates as beta -> infinity
 
 ## The derivation chain
@@ -102,28 +105,38 @@ theorem first_law_pointwise {n : ℕ} (pop pop' : Fin n → ℝ)
       (pop' k - pop k) * eigenval' k + pop k * (eigenval' k - eigenval k) := by
   ring
 
-/-- **Second Law (Gibbs variational principle)**: Among all probability
-distributions on eigenvalues, the Gibbs distribution p_k = e^{-beta lambda_k}/Z
-uniquely minimizes the free energy F = U - T S = Sigma p_k lambda_k + T Sigma p_k ln p_k.
+/-! ### `second_law_entropy_increase` — DELETED (2026-08-18, review pass of
+`lean-content-repair`; compile-verified UNSOUND)
 
-The entropy increase dS/dt ≥ 0 under heat flow follows from the fact that
-the heat semigroup drives any distribution toward the Gibbs state, which is
-the unique minimum of free energy (= maximum of entropy at fixed energy).
+`axiom second_law_entropy_increase {n} (eigenval) (h_nonneg) (pop)
+(h_prob : ∀ t k, 0 < pop t k) (h_sum_one : ∀ t, ∑ k, pop t k = 1)
+(h_heat_flow : True) : ∀ t1 t2, 0 ≤ t1 → t1 ≤ t2 → S(pop t1) ≤ S(pop t2)`
+used to be declared here, citing Theorem 34.3 (`thm:second-law`, v0.9 line
+11964) with the Klein inequality / semigroup-contractivity proof deferred.
 
-Manuscript: Theorem 34.3 (thm:second-law, line 11964).
+It derives `False`. The heat-flow content sits entirely in the field
+`h_heat_flow : True`, which constrains nothing, so the axiom asserts that
+entropy is non-decreasing along *every* strictly-positive normalised family
+`pop : ℝ → Fin n → ℝ`. The witness
+`pop t k = if t < 1 then 1/2 else (if k = 0 then 9/10 else 1/10)` on
+`Fin 2` is positive and sums to 1, yet its entropy DROPS from `log 2 ≈ 0.693`
+to `≈ 0.325` between `t = 0` and `t = 1` — contradiction. Compiled positive
+control: `spectral_physics/lean-content-audit-2026-08-18/UnsoundCheck.lean`
+(`derive_false : False`, axioms `[propext, Classical.choice, Quot.sound,
+second_law_entropy_increase]`). The 2026-08-18 content audit recorded this
+file as "compiled silently — inconclusive" because the hostile file carried
+no `#print axioms`; the review pass added one and the derivation is real.
 
-Proof requires: Klein inequality + contractivity of heat semigroup (Lindblad).
-These need log-sum inequality infrastructure not yet in our Lean formalization. -/
-axiom second_law_entropy_increase
-    {n : ℕ} (eigenval : Fin n → ℝ) (h_nonneg : ∀ k, 0 ≤ eigenval k)
-    (pop : ℝ → Fin n → ℝ)
-    (h_prob : ∀ t, ∀ k, 0 < pop t k)
-    (h_sum_one : ∀ t, ∑ k : Fin n, pop t k = 1)
-    (h_heat_flow : True) :
-    -- dS/dt >= 0: entropy is non-decreasing under heat flow
-    ∀ t1 t2 : ℝ, 0 ≤ t1 → t1 ≤ t2 →
-      ∑ k : Fin n, -(pop t1 k * Real.log (pop t1 k)) ≤
-      ∑ k : Fin n, -(pop t2 k * Real.log (pop t2 k))
+**Repair (REPAIRED-SOUND, labels-and-soundness only):** the axiom is deleted.
+It had **zero consumers** — no declaration in this file and no other module
+referenced it — so nothing downstream changes. Restating it soundly needs an
+actual heat-flow hypothesis on `pop` (that it solves the semigroup evolution)
+plus the Klein-inequality infrastructure; that is new mathematical content,
+not a content repair, and is left OPEN. The physical second law for this
+framework therefore has **no Lean artifact**: do not cite `Thermo/FourLaws`
+for entropy monotonicity. What this file still contains is the
+Gibbs-variational, first-law and third-law material listed in the module
+header. -/
 
 /-- **Third Law**: As beta -> infinity, the system concentrates on the
 ground state. For a connected structure (unique ground state, g_0 = 1),
