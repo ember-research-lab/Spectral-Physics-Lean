@@ -27,7 +27,7 @@ under Route B's `c₁ = 1/2` (heat-kernel / Lichnerowicz–York).
 
 ### `SigmaTrDispersion.lean`
 
-1. `c1RouteB_pos`, `f0_pos`, `f2_pos`, `alphaEff_pos` — positivity of all
+1. `c1RouteB_pos`, `f0_pos`, `f2_pos`, `alphaTr_pos` — positivity of all
    the framework primitives.
 2. `sigmaTr_zero_at_zero` — `σ_tr(Λ; 0) = 0`.
 3. `xiCrossSq_pos` — the crossover momentum-squared is positive.

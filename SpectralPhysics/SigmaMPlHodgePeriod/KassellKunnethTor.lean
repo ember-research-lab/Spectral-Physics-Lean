@@ -18,12 +18,17 @@ period carrier for σ₀/M_Pl.
 
 ## Re-use from `CompositionUniqueness/KasparovProductUniqueness`
 
-The existing module already cites Kassel 1986 as the K3 axiom for the
+**2026-08-18 content repair:** `K3_kassel_residue` was DELETED there (audit
+U2 — it derived `False` via the `zeroOp` witness) and now survives only as a
+hypothesis parameter. Nothing below inherits content from it; the references
+to it in this file are historical.
+
+That module used to cite Kassel 1986 as the K3 axiom for the
 spectrum-side shadow of NC residue multiplicativity:
 ```
 K3_kassel_residue : ∀ {op}, KasparovProductWitness op → HamiltonianAdditivity op
 ```
-That axiom is the *trace-level* shadow. Here we add the
+That (now deleted) axiom was the *trace-level* shadow. Here we add the
 *cohomology-level* shadow: the existence of the Tor⁻¹ component of
 the Künneth sequence.
 
@@ -31,7 +36,7 @@ the Künneth sequence.
 
 A single named axiom `kassel_kunneth_tor_decomposition`, citing
 Kassel 1986 §3 explicitly, for the *cohomology-level* statement.
-This complements (does not duplicate) `K3_kassel_residue`.
+This complements (does not duplicate) the former `K3_kassel_residue`.
 
 ## References
 
@@ -39,7 +44,7 @@ This complements (does not duplicate) `K3_kassel_residue`.
   489–515. §3 is the parity-shifted long exact sequence; the Tor⁻¹
   term in degree 4 carries the candidate (1,1) class.
 * Internal: `SpectralPhysics.CompositionUniqueness.KasparovProductUniqueness`
-  — `K3_kassel_residue` (trace-level shadow).
+  — `K3_kassel_residue` (trace-level shadow; DELETED 2026-08-18, audit U2).
 -/
 
 namespace SpectralPhysics.SigmaMPlHodgePeriod

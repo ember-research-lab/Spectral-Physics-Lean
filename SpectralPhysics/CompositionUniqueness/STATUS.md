@@ -1,5 +1,30 @@
 # CompositionUniqueness — Honest STATUS
 
+## 0. REPAIRED-SOUND (2026-08-18 content repair — read this first)
+
+The three named axioms `K1_mesland_rennie_card`,
+`K2_rosenberg_schochet_cancel`, `K3_kassel_residue` described throughout this
+file **no longer exist**. The 2026-08-18 content audit
+(`lean-content-audit-2026-08-18/REGISTER.md` U2) compile-verified that EACH
+derives `False` on its own, via the `zeroOp` witness (`KasparovProductWitness`
+constrains only `symm`, since its `is_kk_product` field is `True`); positive
+control `lean-content-audit-2026-08-18/K1Unsound.lean`.
+
+**Repair**: the three axioms are DELETED and their statements are now explicit
+hypothesis parameters (`K1`, `K2`, `K3`) on
+`kasparov_product_satisfies_three_conditions`,
+`kasparov_product_trace_eq_additive` and the `kasparov_three_conditions`
+re-export. The Kasparov (Scope 3) part of this directory is therefore
+**CONJECTURAL**: nothing here discharges K1/K2/K3 for any concrete `op`, and
+`open:kasparov-uniqueness` in the trunk stays open. Everything below this
+section describes the pre-repair axiom-based form — including the
+`#print axioms` listings in §"Axiom census", which are stale: post-repair
+`kasparov_three_conditions` and `kasparov_product_trace_eq_additive` depend on
+kernel axioms only, with the former axioms moved into their statements as
+hypotheses.
+
+---
+
 **Branch**: `compute/composition-uniqueness` (this file)
 **Target**: v0.9 line 16783 hand-wavy admission
 **Path**: A (per `pre_geometric/v091_refactor/composition_decision.md`)

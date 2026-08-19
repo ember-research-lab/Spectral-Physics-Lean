@@ -26,13 +26,21 @@ spectral theory.
 | ---------------------------- | ----------------------------------- |
 | `KSRSpace.lean`              | Tier 1, 0 `sorry`, 0 custom axioms  |
 | `SobolevControl.lean`        | Tier 1, 0 `sorry`, 0 custom axioms  |
-| `RellichKondrachov.lean`     | Tier 2 — 1 named axiom, full citation |
-| `KSRCompactnessThm.lean`     | Tier 2 conditional on the named axiom |
+| `RellichKondrachov.lean`     | 0 custom axioms since 2026-08-18 (U1 repair: the named axiom was DELETED) |
+| `KSRCompactnessThm.lean`     | conditional on an explicit compactness *hypothesis* (not an axiom) |
 | `Verdict.lean`               | this file                           |
 
-## Named axioms (1 total)
+## Named axioms (0 total since the 2026-08-18 content repair)
 
-### `rellich_kondrachov_trace_class` (`RellichKondrachov.lean`)
+### `rellich_kondrachov_trace_class` (`RellichKondrachov.lean`) — **DELETED**
+
+> **REPAIRED-SOUND (2026-08-18, audit U1).** This axiom no longer exists.
+> Together with the discrete placeholder `TopologicalSpace KSR` instance it
+> derives `False` (positive control:
+> `lean-content-audit-2026-08-18/KSRFalse.lean`). Its conclusion is now an
+> explicit hypothesis on every theorem that used it. The description below
+> is kept for provenance only — read every "conditional on the named axiom"
+> in this file as "conditional on the corresponding hypothesis argument".
 
 > `∀ (s C : ℝ), 1 < s → 0 < C → IsCompact (KSRSobolev s C)`
 
@@ -59,16 +67,22 @@ compactness of `KSRSobolev s C`).  See `RellichKondrachov.lean`
 ## Headline theorem
 
 ```
-theorem ksr_compact (s C : ℝ) (h_decay : 1 < s) (h_bound : 0 < C) :
+theorem ksr_compact (s C : ℝ) (h_decay : 1 < s) (h_bound : 0 < C)
+    (h_compact : IsCompact (KSRSobolev s C)) :
     IsCompact (KSRSobolev s C)
 ```
 
-Conditional on the named axiom; **derives** the bounded Sobolev
-sublevel set compactness for the v0.9 framework's `𝒦_SR`.
+Since the U1 repair this **restates its own hypothesis**: it derives
+nothing about `𝒦_SR`.  Compactness of Sobolev sublevel sets is an
+input a caller must supply, not a result of this directory.
 
 ## What is closed vs open
 
-### Closed (machine-checked, conditional on 1 named axiom)
+### Conditional on an explicit compactness hypothesis (NOT a closure)
+
+Each item below now takes `IsCompact (KSRSobolev s C)` as an argument, so
+none of them closes anything about `𝒦_SR`; they are plumbing around a
+hypothesis.  Do not describe them as machine-checked compactness results.
 
 * `ksr_compact`: bounded Sobolev sublevel sets are compact for `s > 1`.
 * `ksr_subset_compact`: any uniformly Sobolev-bounded subset is

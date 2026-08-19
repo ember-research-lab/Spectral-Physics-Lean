@@ -92,7 +92,13 @@ the former cannot hold for any D.
 
 We do NOT prove this implication from scratch — it requires the full
 NCG axiom system (KO-dimension, J-structure, ε signs, regularity)
-which is far beyond this file's scope.  We name it and consume it. -/
+which is far beyond this file's scope.
+
+**2026-08-18 (audit U8, review pass).** Nor is it consumed any more: as
+formalised over an UNCONSTRAINED `D`, `OrderOneImpliesZerothOrder LeftMult
+RightMult` is FALSE (`Verdict.dixon_reduction_hypothesis_false`, kernel
+axioms only — the zero map satisfies `OrderOne` while zeroth-order fails).
+The predicate is kept only so that honest negative can be stated. -/
 
 /-- The standard Connes-1994 §VI.3 reduction, stated as a predicate
 on a (representation, opposite-representation) pair.
@@ -104,19 +110,24 @@ def OrderOneImpliesZerothOrder
     (π π' : OctonionFactor → (OctonionFactor → OctonionFactor)) : Prop :=
   (∃ D, OrderOne D π π') → ZerothOrder π π'
 
-/-- **Conditional — VACUOUS as stated (2026-08-18, audit U8).**  Under the
-hypothesis `OrderOneImpliesZerothOrder LeftMult RightMult`, the canonical Dixon
-representation fails the order-one predicate for every `D`. But that hypothesis is
-FALSE in this formalisation (`Verdict.dixon_reduction_hypothesis_false`: the zero map
-satisfies `OrderOne` vacuously while zeroth-order fails), so this theorem has no
-satisfiable instance. It is kept as the structural contrapositive only; the published
-Connes 1994 §VI.3 reduction concerns genuine Dirac operators, a structure `OrderOne`
-does not carry. Do not cite as an order-one obstruction. -/
-theorem order_one_fails_canonical_dixon
-    (h_reduce : OrderOneImpliesZerothOrder LeftMult RightMult) :
-    ¬ ∃ D, OrderOne D LeftMult RightMult := by
-  intro hexists
-  exact not_zerothOrder_canonical_dixon (h_reduce hexists)
+/-! ### `order_one_fails_canonical_dixon` — DELETED (2026-08-18 review pass)
+
+`theorem order_one_fails_canonical_dixon (h_reduce : OrderOneImpliesZerothOrder
+LeftMult RightMult) : ¬ ∃ D, OrderOne D LeftMult RightMult` used to live here.
+Its hypothesis is refuted in this repository
+(`Verdict.dixon_reduction_hypothesis_false`), so the theorem was a vacuous
+conditional: it could never be instantiated, while its NAME asserted the
+withdrawn headline (`Verdict.dixon_order_one_fails`, also deleted — the zero
+map is a counterexample). A docstring caveat on a decl whose name reads as a
+closure is exactly the laundering pattern the 2026-08-18 content audit exists
+to remove, and nothing consumed it, so it is deleted rather than relabelled.
+
+What remains, unconditionally: `not_zerothOrder_canonical_dixon` (the genuine
+algebraic obstruction, below/above), `dixon_has_nonzero_associator`,
+`dixon_LR_does_not_commute`, and the honest negative
+`Verdict.dixon_reduction_hypothesis_false`. Whether every *genuine* Dirac
+operator fails order-one is OPEN in Lean (it needs a formalisation of
+"Dirac-like `D`", which is new content, not a repair). -/
 
 /-! ## Headline statements for downstream consumers -/
 

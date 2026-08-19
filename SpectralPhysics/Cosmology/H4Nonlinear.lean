@@ -306,11 +306,11 @@ The Λ⁴ growth means `C_{h⁴}` blows up at high cutoff.  The
 Since `1 / τ² = (2 + φ)² > 4²·(1/(2+φ))²` is finite (≈ 13.13) and
 `exp(12) ≈ 162754.79`, we have
 
-  C_{h⁴}(1)  ≈  1152 · 162754.79 · 13.13  ≈  4.1 × 10⁹ ,
+  C_{h⁴}(1)  ≈  1152 · 162754.79 · 13.13  ≈  2.5 × 10⁹ ,
 
 *in Planck units*.  This is enormous but *bounded*: the resonance
 has a finite-amplitude attractor at `h_0 ~ (1/C_{h⁴})^{1/4} ≈
-0.0044` Planck units (`≈ 5 × 10¹⁶ GeV` in energy units), well below
+0.0045` Planck units (`≈ 5 × 10¹⁶ GeV` in energy units), well below
 `Λ` itself, confirming that the resonance is *physically realizable*
 for substrate-engineering rather than a Planck-scale extrapolation
 artifact.

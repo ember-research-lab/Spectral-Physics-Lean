@@ -85,9 +85,9 @@ theorem zero_map_orderOne : OrderOne (fun _ => (0 : OctonionFactor)) LeftMult Ri
 
 /-- **Honest negative (Tier 1, kernel axioms only).** The reduction hypothesis
 `OrderOneImpliesZerothOrder LeftMult RightMult`, as formalised over unconstrained `D`, is
-FALSE. This is what refuted the former named axiom; it also shows that
-`order_one_fails_canonical_dixon` (NonAssocObstruction.lean) is vacuous as stated — its
-hypothesis is never satisfiable. -/
+FALSE. This is what refuted the former named axiom; it is also why the vacuous
+conditional `order_one_fails_canonical_dixon` was deleted from
+`NonAssocObstruction.lean` (its hypothesis is never satisfiable). -/
 theorem dixon_reduction_hypothesis_false :
     ¬ OrderOneImpliesZerothOrder LeftMult RightMult :=
   fun h => not_zerothOrder_canonical_dixon (h ⟨_, zero_map_orderOne⟩)

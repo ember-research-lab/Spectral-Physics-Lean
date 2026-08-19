@@ -30,9 +30,14 @@ These three are stated as predicates (Prop) and the theorem reads:
   `   (h_palais_smale : PalaisSmaleCondition F) :`
   `  BasinConnectivity_superseded_conjecture F`
 
-This is closed via the **named axiom**
-`palais_smale_morse_basin_closure` (Palais–Smale 1964 §3) — the
-generalised Morse theory in Hilbert manifolds.
+This is **not closed**: the implication is asserted by the named axiom
+`palais_smale_morse_basin_closure` (Palais–Smale 1964 §3, generalised Morse
+theory in Hilbert manifolds), and its conclusion
+`BasinConnectivity_superseded_conjecture F` is refutable for every `F` in
+the placeholder discrete topology this directory inherits
+(`lean-content-audit-2026-08-18` U4, `BasinFalse.lean`), so the axiom's
+hypotheses are unsatisfiable rather than discharged. Do not cite this
+directory as closing the basin claim; see `STATUS.md` §0.
 
 ## References
 

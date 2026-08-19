@@ -1,4 +1,23 @@
 # MajoranaBlock — (1,1)_0 ζ̃-Residue Multiplicity Discriminator
+
+## 0. REPAIRED-SOUND (2026-08-18 content repair — read this first)
+
+`standardModel_three_generations` is **no longer a `∀`-axiom**. As
+`∀ T : FiniteSpectralTriple, T.KOdim_eq_six → T.J_sign_triple_KO6 →
+T.n_generations = 3` it quantified over the FREE structure, so the witness
+`{kodim := 6, signs (1,1,-1), n_generations := 0}` forced `0 = 3` — `False`
+(audit U7, positive control
+`lean-content-audit-2026-08-18/MajoranaFalse.lean`).
+
+**Repair**: the axiom is deleted; `standardModel_three_generations` is now the
+theorem `standardModelTriple.n_generations = 3 := rfl`, PINNED to the concrete
+`standardModelTriple`. Its class is DEFINITIONAL: the empirical "3 generations"
+input lives in the `n_generations := 3` field of that definition, and nothing
+in this directory derives it. Wherever the sections below call
+`standardModel_three_generations` a "Tier-2 named axiom", read "definitional
+restatement of a recorded modelling input".
+
+---
 ## REDEMPTION REWRITE — honest predicate-over-operator-algebra formalization
 
 **Date:** 2026-05-10

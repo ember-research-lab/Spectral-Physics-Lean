@@ -16,8 +16,9 @@ Actions taken (labels-and-soundness only, no new mathematics):
 * the former headline `dixon_order_one_fails : ¬ ∃ D, OrderOne D LeftMult RightMult` is
   **withdrawn** (it is false — the zero map is a witness) and replaced by
   `dixon_order_one_unconstrained_has_witness`;
-* `order_one_fails_canonical_dixon` (NonAssocObstruction.lean) is retained but its docstring
-  now says its hypothesis is unsatisfiable (VACUOUS conditional).
+* `order_one_fails_canonical_dixon` (NonAssocObstruction.lean) is **deleted** (review pass,
+  2026-08-18): its hypothesis is refuted by `dixon_reduction_hypothesis_false`, so it was a
+  vacuous conditional whose name still read as the withdrawn headline. Nothing consumed it.
 
 What this directory still proves unconditionally: `not_zerothOrder_canonical_dixon`,
 `dixon_has_nonzero_associator`, `dixon_LR_does_not_commute`. What is now OPEN in Lean:
@@ -129,7 +130,7 @@ The axiom is the *forward* shadow of a published reduction; it is
 | ------------------------------------------------------------ | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `ZerothOrder π π'`                                           | `OrderOneCondition.lean`          | Definition of the zeroth-order commutation condition.                                                                                      |
 | `OrderOne D π π'`                                            | `OrderOneCondition.lean`          | Definition of the Connes order-one axiom.                                                                                                  |
-| `OrderOneImpliesZerothOrder π π'`                            | `NonAssocObstruction.lean`        | The published reduction, stated as a `Prop` so that any consumer of `order_one_fails_canonical_dixon` must explicitly invoke it.           |
+| `OrderOneImpliesZerothOrder π π'`                            | `NonAssocObstruction.lean`        | The published reduction, stated as a `Prop`. Since 2026-08-18 it is only used to state its own refutation (`dixon_reduction_hypothesis_false`); it is FALSE as formalised over unconstrained `D`. |
 
 ## Sorries
 

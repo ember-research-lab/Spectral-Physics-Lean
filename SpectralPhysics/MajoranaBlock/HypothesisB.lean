@@ -145,7 +145,7 @@ theorem standardModelTriple_JSC_multiplicity_structural :
     standardModelTriple_J_signs
     standardModelTriple_uses_extendedDirac
 
-/-- **Tier 1 / DEFINITIONAL (REPAIRED-SOUND, 2026-08-18).**
+/-- **DEFINITIONAL (REPAIRED-SOUND, 2026-08-18).**
 
 The Standard Model has exactly 3 generations.  This restates
 `standardModel_three_generations`, which is now `rfl`-provable at the
@@ -157,16 +157,17 @@ theorem standardModelTriple_n_generations_eq :
     standardModelTriple.n_generations = 3 :=
   standardModel_three_generations
 
-/-- **Tier 1, given Tier-2 axioms.**
+/-- **ARITHMETIC / DEFINITIONAL (relabelled 2026-08-18, review pass).**
 
-The integer 6 *emerges* from the product `diracDoublingFactor *
-n_generations = 2 * 3`.  The first factor is pinned down by the
-named axiom `dirac_doubling_factor_eq_two`, the second by the
-named axiom `standardModel_three_generations`.
-
-This is the redemption of the audit-caught `6 = 6` theorem: the
-integer 6 is no longer a definition, it is computed from named
-operator-algebra inputs. -/
+`6` is the product `diracDoublingFactor * n_generations = 2 * 3`, but both
+factors are now recorded inputs rather than derived quantities:
+`dirac_doubling_factor_eq_two` is `decide` on a `def`, and
+`standardModel_three_generations` is `rfl` on the `n_generations := 3` field
+of `standardModelTriple` (the former `∀`-axiom was deleted as unsound, audit
+U7). So the integer 6 does not *emerge* from operator-algebra content here —
+it is `2 * 3` on two stated literals. This is still an improvement on the
+audit-caught `6 = 6` version (the two factors are at least named separately),
+but do not cite it as a derivation of the multiplicity. -/
 theorem standardModelTriple_JSC_multiplicity_eq_six :
     JSC_multiplicity standardModelTriple
         standardModelTriple_KOdim

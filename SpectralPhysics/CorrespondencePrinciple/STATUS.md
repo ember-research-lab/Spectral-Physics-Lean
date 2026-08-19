@@ -1,5 +1,25 @@
 # compute/correspondence-principle-monotonicity — STATUS
 
+## 0. 2026-08-18 content repair (read this first)
+
+Two changes from the audit (`lean-content-audit-2026-08-18/REGISTER.md`):
+
+* **U6 / DEMOTED** — `window_gap_map` was `axiom window_gap_map : WindowGapMap`,
+  presented as importing the Python sweep. It is **provable outright** (the
+  structure only asks for a positive `lambda1` bounded by `ξ_cross²/2`; the
+  constant `fun _ => ξ_cross²/4` satisfies it), so it is now a
+  `noncomputable def` with that witness. Nothing in Lean references the sweep,
+  `M_R`, or the real `λ_1`: `window_co_monotone` is therefore a statement about
+  a constant placeholder map, not about the physics. The sweep's empirical
+  content is honestly LEFT-OPEN.
+* **§3 / stale constant** — `alphaEff := 1/120` is now `alphaTr := 1/72`
+  (trace-sector coefficient; the tree previously disagreed with
+  `SeeleyDeWitt`). Read `alphaEff_pos` below as `alphaTr_pos`.
+
+Sections below predate the repair.
+
+---
+
 ## Branch
 `compute/correspondence-principle-monotonicity` (off `master`).
 
@@ -35,7 +55,7 @@ the *linear regime* throughout the window, since
 ## Lean theorems
 
 In `HessLambda1Monotonicity.lean`:
-* `c1RouteB_pos`, `f0_pos`, `f2_pos`, `alphaEff_pos`,
+* `c1RouteB_pos`, `f0_pos`, `f2_pos`, `alphaTr_pos` (was `alphaEff_pos`),
   `lambdaCSq_pos`, `xiCrossSq_pos` — positivity of primitives
 * `hessMin_zero` — `Hess_min(0) = 0`
 * `hessMin_pos_in_window` — `Hess_min > 0` for `0 < λ_1 < ξ_cross²`
@@ -45,8 +65,9 @@ In `HessLambda1Monotonicity.lean`:
   window satisfying `λ_1(M_R) < λ_1(M_R')` give
   `Hess_min(M_R) < Hess_min(M_R')`
 * `hess_lambda1_eq_of_eq` — symmetric form
-* `window_co_monotone` — concrete corollary instantiated at the
-  axiomatised `window_gap_map`
+* `window_co_monotone` — concrete corollary instantiated at
+  `window_gap_map`, which since 2026-08-18 is a *provable placeholder def*
+  (constant `λ_1 := ξ_cross²/4`), not an axiom citing the Python sweep
 
 In `Verdict.lean`:
 * `MonotonicityVerdict` (inductive: coMonotone | counterMonotone | nonMonotone)
@@ -65,6 +86,9 @@ In `Verdict.lean`:
 **None.**
 
 ## Named axioms
+**None since 2026-08-18** (see §0). The entry below is provenance for the
+former axiom, now a provable `def`:
+
 1. `window_gap_map : WindowGapMap` (in
    `HessLambda1Monotonicity.lean`)
 
@@ -154,4 +178,6 @@ calculational fact — co-monotonicity — is established here.
       caveat flagged explicitly)
 - [x] Python computation in
       `yukawa/pre_geometric/correspondence_monotonicity/`
-- [x] Lean axiom (`window_gap_map`) cites the Python computation
+- [~] Lean axiom (`window_gap_map`) cites the Python computation — **retracted
+      2026-08-18**: the citation was decorative; the statement is provable
+      without the sweep, and is now a `def` (audit U6)

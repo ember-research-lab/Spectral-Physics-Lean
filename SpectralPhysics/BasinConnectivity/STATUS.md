@@ -79,9 +79,10 @@ zero `admit`, zero `True` placeholders.
 ### Coercivity–compactness link
 
 * `coercive_sublevels_compact` — `Coercive F` implies every sublevel
-  set is contained in a compact subset of `𝒦_SR` (conditional on
-  the inherited `rellich_kondrachov_trace_class` axiom from
-  `KSRCompactness/`).
+  set is contained in a compact subset of `𝒦_SR`, conditional on an
+  explicit `h_compact` hypothesis argument (2026-08-18 U1 repair: the
+  inherited `rellich_kondrachov_trace_class` axiom from `KSRCompactness/`
+  was DELETED — it derived `False`).
 
 ### Unconditionally proved (ZERO custom axioms)
 
@@ -181,9 +182,11 @@ by the audit-discipline brief.
 * `SAGF_basin_closure_from_hypotheses`
 * `v092_G3_verdict` (forward direction)
 
-### Closed conditionally on `rellich_kondrachov_trace_class` (inherited)
+### Conditional on an explicit compactness hypothesis (inherited; NOT a closure)
 
-* `coercive_sublevels_compact`
+* `coercive_sublevels_compact` — takes `h_compact` as an argument since the
+  2026-08-18 U1 repair; the former `rellich_kondrachov_trace_class` axiom is
+  gone, so nothing here is closed by it.
 
 ### Honestly open (predicate hypotheses, NOT axiomatised)
 

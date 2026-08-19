@@ -223,16 +223,26 @@ docstring),
 
   ξ_cross² / Λ²  =  c₁ · f₂ / (6 · f₀ · α_tr)
                   =  (1/2) · (48 e⁶) / (6 · τ · (1/72))
-                  =  4 · 72 · e⁶ / (6 · τ)
+                  =  24 · 72 · e⁶ / (6 · τ)
                   =  288 · e⁶ / τ
                   ≈  288 · 403.43 / 0.276
                   ≈  421 000
 
 so `ξ_cross ≈ 649 · Λ`, i.e. between two and three orders of magnitude
-above the spectral cutoff `Λ` (larger than the stale `1/120` value's
-≈342·Λ, since a smaller `α_tr` pushes the crossover further out).
-This *confirms* the verdict in `c1_and_5sector/verdict.md`: the trace
-mode is anti-diffusive across the entire physical IR. -/
+above the spectral cutoff `Λ`.  This *confirms* the verdict in
+`c1_and_5sector/verdict.md`: the trace mode is anti-diffusive across
+the entire physical IR.
+
+**Direction of the α_tr correction (review pass, 2026-08-18).**
+`α_tr = 1/72` is LARGER than the stale `α_eff = 1/120`, and
+`ξ_cross² ∝ 1/α`, so the corrected crossover moves *inward*: with
+`1/120` the same formula gives `480 e⁶/τ ≈ 7.0 × 10⁵`, i.e.
+`ξ_cross ≈ 838 · Λ`, versus `≈ 649 · Λ` now.  (The pre-repair text in
+this docstring quoted `80 e⁶/τ ≈ 117 000`, `≈ 342 · Λ`: that was a
+factor-6 arithmetic slip in the prose — the proof comments below the
+old text already used the correct `480 e⁶/τ` — so it is not the
+comparison point.)  Both values are far above `Λ`; the verdict is
+unchanged. -/
 
 /-- **Trans-Planckian crossover.**
 
