@@ -113,7 +113,10 @@ class CSRepScaling
 
       `T_2(SU(3) | 16) = 2`,  i.e.  `2 · T_2 = 4`.
 
-    This is a Tier 1 result from `SO10Decomposition.lean`. -/
+    **ARITHMETIC** — `SO10Decomposition.dynkin_SU3_in_16` discharges
+    `doubleDynkinSum = 4` by `decide` on the fixed decomposition list; it is
+    decidable evaluation, not a representation-theoretic derivation. Do not
+    cite as Tier-1 content (content-repair-2b). -/
 def doubleDynkin_SU3_in_16 : ℕ := doubleDynkinSum
 
 @[simp] theorem doubleDynkin_SU3_in_16_eq : doubleDynkin_SU3_in_16 = 4 :=
