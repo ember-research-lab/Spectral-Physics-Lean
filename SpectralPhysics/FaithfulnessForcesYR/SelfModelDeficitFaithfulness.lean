@@ -99,8 +99,8 @@ we show the standing closure does not do this. -/
 /-- The Majorana scale as a function of the Yukawa coupling and VEV. -/
 def majoranaScale (yR : ℝ) (vR : ℝ) : ℝ := yR * vR
 
-/-- **Tier 1.**  The JSC eigenvalue equals the Majorana scale.  This
-    is a definitional restatement, recorded for clarity. -/
+/-- **DEFINITIONAL** (`rfl`). The JSC eigenvalue equals the Majorana scale
+    by unfolding `jscSpectralData` / `majoranaScale`. Not a selection result. -/
 theorem jsc_eigenvalue_eq_majorana_scale
     (yR : ℝ) (hyR : 0 ≤ yR) (i : Fin majoranaMult) :
     (jscSpectralData yR hyR).eigenvalues i =
@@ -109,19 +109,18 @@ theorem jsc_eigenvalue_eq_majorana_scale
 
 /-! ## Visible-sector faithfulness is independent of the JSC scale -/
 
-/-- The visible sector spectrum, modelled abstractly as a fixed
-    `List ℝ` of charged-Yukawa eigenvalues.  None of these depends
-    on `y_R`. -/
+/-- **SHELL** — abstract placeholder. The visible sector spectrum is modelled
+    as a fixed `List ℝ` of charged-Yukawa eigenvalues; here instantiated as
+    the empty list. None of these (would) depend on `y_R`. The emptiness is
+    intentional for Reading E: constancy in `y_R` is what matters, not the
+    concrete charged-Yukawa entries. Do not cite as a measured spectrum. -/
 def visibleSpectrum : List ℝ := []  -- abstract placeholder; the
 -- specific entries do not matter for Reading E.  The point is that
 -- the visible spectrum is *constant* in `y_R`.
 
-/-- **Tier 1 — visible spectrum is constant in `y_R`.**
-
-The visible-sector spectrum is, by construction, the list of
-charged-fermion Yukawa eigenvalues.  These do not depend on the
-Majorana coupling `y_R`.  Hence faithfulness on the visible algebra
-gives no constraint on `y_R`. -/
+/-- **SHELL** (`X = X := rfl`). Vacuous constancy of `visibleSpectrum` in
+`y_R` — the term does not mention `y_R`. Records the modelling choice that
+visible-sector faithfulness gives no constraint on `y_R`; not Tier-1 content. -/
 theorem visibleSpectrum_independent_of_yR
     (yR : ℝ) :
     visibleSpectrum = visibleSpectrum := rfl
@@ -134,26 +133,25 @@ input theorem (`zeta_visible_value` in
 not derived from faithfulness.  Hence faithfulness does not force
 the closure to single out a specific `M_R`. -/
 
-/-- A predicate "the 288 closure holds at `M_R`".  In the standing
-    formalisation this predicate is *constant* in `M_R` (the value
-    288 is fixed, see `zeta_visible_value`). -/
+/-- **SHELL** — predicate "the 288 closure holds at `M_R`". Body is
+    `∃ z, z = -288`, constant in `_M_R`. Encodes that the standing
+    formalisation treats 288 as a fixed input (see `zeta_visible_value`),
+    not a derived pin of `M_R`. Do not cite as a fitted-spectrum theorem. -/
 def closure288Holds (_M_R : ℝ) : Prop :=
   ∃ z : ℝ, z = -(288 : ℝ)
 
-/-- **Tier 1 — the 288 closure holds at every `M_R`.**
-
-In the standing formalisation, `zeta_visible_value` proves the
-existence of `z = -288` independently of any `M_R` parameter.
-Hence the closure is satisfied at *every* `M_R`, and (by
-`majoranaScale yR vR = M_R`) at *every* `y_R`. -/
+/-- **SHELL / ARITHMETIC** (`⟨-288, rfl⟩`). In the standing formalisation the
+existence of `z = -288` is independent of any `M_R` parameter, so the shell
+predicate holds at every `M_R`. This is the DEGENERATE shape of Reading E,
+not a Tier-1 derivation of the 288 value. -/
 theorem closure288_holds_at_every_M_R (M_R : ℝ) :
     closure288Holds M_R :=
   ⟨-288, rfl⟩
 
-/-- **Tier 1 — the closure does not pin `M_R`.**
-
-For any two `M_R₁ ≠ M_R₂`, the closure holds at *both*.  Hence the
-288 closure cannot, by itself, single out a unique Majorana scale. -/
+/-- **SHELL**. For any two `M_R₁, M_R₂`, the shell predicate holds at both.
+Hence the 288 placeholder cannot, by itself, single out a unique Majorana
+scale. Retarget citations of "288 as fitted" honesty to this decl / the
+Reading E NO verdict — not to a Tier-1 closure. -/
 theorem closure288_does_not_pin_M_R
     (M_R₁ M_R₂ : ℝ) :
     closure288Holds M_R₁ ∧ closure288Holds M_R₂ :=
