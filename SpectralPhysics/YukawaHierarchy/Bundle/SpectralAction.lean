@@ -36,14 +36,16 @@ The **`BridgeConjecture`** then says: matching the gauge-sector contribution
 to the Yukawa-sector contribution, with appropriate normalization by
 `dim(16)`, gives `y_c/y_τ = ν/dim(16)`.
 
-## Tier classification
+## Decl classification (content-repair-2b)
 
-* **Tier 3 (hypothesised)**: the spectral-action heat-kernel expansion
-  itself. Connes-Chamseddine 1996 / Connes-Marcolli 2008. We carry it
-  as `class SpectralActionExpansion`.
-* **Tier 1 (proved)**: once the expansion is granted, the algebraic
-  identification of the Λ⁰ coefficient with `c_2(P_SM)` and the
-  `Tier 1` conclusion `y_c/y_τ = 3/16`.
+* **SHELL / Tier-3 hypothesis**: the spectral-action heat-kernel expansion
+  itself (`class SpectralActionExpansion`). Connes-Chamseddine 1996 /
+  Connes-Marcolli 2008 — not proved here.
+* **DEFINITIONAL / ARITHMETIC**: once a matching hypothesis is *granted*,
+  the cross-multiplicative identity yields `y_c/y_τ = 3/16`. That identity
+  is not a Tier-1 derivation of the ratio; do not cite the header as a
+  "Tier 1 conclusion `y_c/y_τ = 3/16`". Retarget to `BridgeConjecture`
+  (open) or to the named arithmetic decls below.
 
 ## References
 
@@ -125,7 +127,7 @@ class PontryaginCoefficientIsCharge
     (SpectralActionExpansion.a_4_pontryagin (P := physicalSM_SU3) (data := data) (Y := Y))
     = (physicalSM_SU3.chargeNumber : ℝ) * K
 
-/-! ## Tier 1: assembling the bridge
+/-! ## Assembling the bridge (DEFINITIONAL / ARITHMETIC)
 
 Once we grant:
   1. The spectral action's `a_4` carries a Pontryagin term proportional to
@@ -133,19 +135,21 @@ Once we grant:
   2. The Yukawa-sector enters via `a_2 ∝ Tr_F(D_F²)`,
   3. Some normalization condition equating the gauge and Yukawa
      contributions modulo `dim(16)`,
-the conjecture `y_c/y_τ = c_2(P)/dim(16) = 3/16` follows.
+the conjecture `y_c/y_τ = c_2(P)/dim(16) = 3/16` follows *algebraically*.
 
-We extract this final algebraic step. -/
+We extract this final algebraic step — class **DEFINITIONAL / ARITHMETIC**,
+not a Tier-1 physics derivation. -/
 
-/-- **Tier 1 — algebraic substitution.**  If the framework's matching
-    condition holds in the form
+/-- **DEFINITIONAL / ARITHMETIC** — cross-multiplicative identity. If the
+    framework's matching condition holds in the form
 
       `y_c · dim(16) = K · c_2(P_SM)`           and             `y_τ = K`
 
     then `y_c / y_τ = c_2(P_SM) / dim(16)`.
 
-    This is a cross-multiplicative identity: `(y_c · A = K · B) ∧ (y_τ = K)
-    ⇔ (y_c · A = y_τ · B) ⇔ (y_c/y_τ = B/A)` for nonzero `A, K`. -/
+    Equivalent rewrite: `(y_c · A = K · B) ∧ (y_τ = K)
+    ⇔ (y_c · A = y_τ · B) ⇔ (y_c/y_τ = B/A)` for nonzero `A, K`.
+    Do not cite as a Tier-1 derivation of the Yukawa ratio. -/
 theorem ratio_from_spectral_action_normalization
     (y_c y_τ K : ℝ) (hK : K ≠ 0)
     (h_yc : y_c * (dimSpinor16 : ℝ) = K * (physicalSM_SU3.chargeNumber : ℝ))
@@ -158,9 +162,9 @@ theorem ratio_from_spectral_action_normalization
   rw [div_eq_div_iff hK hdim]
   linarith
 
-/-- **Tier 1 — algebraic corollary.**  Specialising the cross-multiplication
-    identity with the bundle's specific charge `c_2(P_SM) = 3` and
-    `dim(16) = 16` gives `y_c / y_τ = 3 / 16`. -/
+/-- **ARITHMETIC** — specialising the cross-multiplication identity with
+    `c_2(P_SM) = 3` and `dim(16) = 16` gives `y_c / y_τ = 3 / 16`.
+    Same class as the parent identity; not a Tier-1 selection theorem. -/
 theorem ratio_eq_three_sixteenths
     (y_c y_τ K : ℝ) (hK : K ≠ 0)
     (h_yc : y_c * (dimSpinor16 : ℝ) = K * (physicalSM_SU3.chargeNumber : ℝ))
@@ -175,10 +179,11 @@ theorem ratio_eq_three_sixteenths
 
 /-! ## Bridge to `BridgeConjecture` from `Bundle/ChernSimons.lean` -/
 
-/-- **Tier 1 — packaging instance.**  Constructor showing how to instantiate
-    a `BridgeConjecture y_c y_τ` *given* the matching condition is supplied.
-    This does NOT prove `BridgeConjecture` from first principles — the matching
-    condition itself is the open question. -/
+/-- **SHELL / DEFINITIONAL** — packaging instance. Constructor showing how to
+    instantiate a `BridgeConjecture y_c y_τ` *given* the matching condition.
+    Does NOT prove `BridgeConjecture` from first principles — the matching
+    condition is open. `cs_value` discharges by `simp` on
+    `ChernSimons3Form.ofPhysicalSM` (`boundaryIntegral := 3`, rfl). -/
 theorem bridgeConjecture_from_spectralAction
     (y_c y_τ K : ℝ) (hK : K ≠ 0)
     (h_yc : y_c * (dimSpinor16 : ℝ) = K * (physicalSM_SU3.chargeNumber : ℝ))
@@ -199,19 +204,12 @@ theorem bridgeConjecture_from_spectralAction
 
 /-! ## The complete chain — final theorem -/
 
-/-- **Tier 1 — algebraic substitution (top-level packaging).**
-
-    *Caveat (from audit):* this is an **algebraic identity**, not a
-    derivation. The hypothesis `y_c · 16 = K · 3 ∧ y_τ = K` is
-    cross-multiplicatively equivalent to the conclusion `y_c/y_τ = 3/16`.
-    The actual *content* (whether the spectral action *produces*
-    these hypotheses from first principles) is the Tier-3 conjecture
-    in `BridgeConjecture` / `SpectralActionExpansion` /
-    `PontryaginCoefficientIsCharge`.
-
-    What this theorem **does** provide: a clean wrapper showing that
-    *if* the spectral-action machinery delivers the matching condition,
-    *then* `y_c / y_τ = 3 / 16` follows formally. -/
+/-- **DEFINITIONAL / ARITHMETIC** — top-level packaging of the cross-multiplicative
+    identity. Hypothesis `y_c · 16 = K · 3 ∧ y_τ = K` is equivalent to
+    `y_c/y_τ = 3/16`. Whether the spectral action *produces* those hypotheses
+    is the open Tier-3 content in `BridgeConjecture` /
+    `SpectralActionExpansion` / `PontryaginCoefficientIsCharge`.
+    Not a Tier-1 conclusion of the ratio. -/
 theorem main_yukawa_ratio_theorem
     (y_c y_τ K : ℝ) (hK : K ≠ 0)
     (h_yc : y_c * (dimSpinor16 : ℝ) = K * (physicalSM_SU3.chargeNumber : ℝ))
@@ -233,8 +231,9 @@ This pins the absolute scale via `y_τ`, leaving only the ratio fixed
 by topology — exactly the user's "y_τ direction is the lone free
 parameter" picture from earlier sessions. -/
 
-/-- **Tier 1.**  The framework's full normalization condition
-    `y_c · dim(16) = y_τ · c_2(P_SM)` is equivalent to `y_c/y_τ = 3/16`. -/
+/-- **DEFINITIONAL / ARITHMETIC** — `y_c · dim(16) = y_τ · c_2(P_SM)` iff
+    `y_c/y_τ = 3/16` (charge `= 3`, dim `= 16`). Equivalence of two writings
+    of the same matching hypothesis; not a Tier-1 derivation of the ratio. -/
 theorem normalization_iff_ratio
     (y_c y_τ : ℝ) (hτ : y_τ ≠ 0) :
     y_c * (dimSpinor16 : ℝ) = y_τ * (physicalSM_SU3.chargeNumber : ℝ)

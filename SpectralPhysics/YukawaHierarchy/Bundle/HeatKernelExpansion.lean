@@ -33,12 +33,12 @@ topological data and the framework's Yukawa structure.
 * Proves the leading-order coefficients match `Tr_F(D_F^{2k})`.
 * Connects to `Bundle/SpectralActionConcrete.lean`'s `K` constant.
 
-## Tier classification
+## Decl classification (content-repair-2b)
 
-* **Tier 1 (proved)**: the Taylor expansion identity for finite-dim
-  Hermitian operators (a polynomial identity, easy from `exp_eq`).
-* **Tier 3 (deferred)**: the manifold-side heat kernel and its product
-  with the F-side. Requires Mathlib `Topology.Heat` infrastructure.
+* **ARITHMETIC / DEFINITIONAL**: finite-dim Taylor / coefficient rewrites.
+* **SHELL**: `smFinData.trace4 = trace6 := 0` placeholders (disclosed
+  2026-06-09); any consumer of `t²`/`t³` terms would be silently wrong.
+* **SHELL / Tier-3 deferred**: manifold-side heat kernel (Mathlib gap).
 -/
 
 namespace SpectralPhysics.YukawaHierarchy.Bundle
@@ -142,10 +142,9 @@ theorem trace2_framework_bound :
             + (22 * (2935/1000000000))^2 + (9270/1000000)^2) ≥ 0 := by positivity
   linarith
 
-/-- **Tier 1.**  The Λ² coefficient of the spectral action with the
-    framework's GUT Yukawas, on a flat manifold (curvature = 0), is
-
-      `lambda2Coefficient(smFinData, 0) = -trDFsq(frameworkGUT_Real)`. -/
+/-- **DEFINITIONAL** — unfolds `lambda2Coefficient` / `smFinData` at
+    curvature 0. Note `smFinData.trace4 = trace6 := 0` are placeholders
+    (see def); this decl does not consume them. -/
 theorem lambda2_at_framework_flat :
     lambda2Coefficient smFinData 0
     = -frameworkGUT_Real.trDFsq := by
@@ -185,13 +184,9 @@ Concretely:
 
 The factor `V_M / (4π)² = 1/6` for unit-S⁴, giving the `/6`. -/
 
-/-- **Tier 1.**  `(1/6) · lambda2Coefficient(smFinData, R_{S⁴}) = a2`.
-
-    This identity holds by construction of the two sides:
-    `lambda2Coefficient smFinData (s4_scalar_curvature 1)
-     = -trDFsq - 384·12/6 = -trDFsq - 768`, and
-    `RealValuedConsistency.a2 = -128 - trDFsq/6`; dividing the former
-    by 6 gives the latter (768/6 = 128). -/
+/-- **ARITHMETIC / DEFINITIONAL** — `(1/6) · lambda2Coefficient(smFinData, R_{S⁴}) = a2`
+    by construction of both sides. Does not discharge the `trace4 = trace6 := 0`
+    placeholders in `smFinData`. -/
 theorem a2_from_lambda2 :
     (1/6 : ℝ) * lambda2Coefficient smFinData (s4_scalar_curvature 1)
     = frameworkGUT_Real.a2 := by
@@ -199,10 +194,9 @@ theorem a2_from_lambda2 :
   rw [lambda2_S4_unit_radius]
   ring
 
-/-- **Tier 1 — the heat-kernel-expansion bridge to Theorem A.**
-
-    On unit-S⁴ × F with the framework Yukawas (y_t = 1), the
-    spectral-action `a_2` coefficient equals `-179 - trRemainder/6`. -/
+/-- **SHELL** — re-export of `frameworkGUT_Real.a2_at_top_one`. On unit-S⁴ × F
+    with `y_t = 1`, `a_2 = -179 - trRemainder/6`. Not an independent heat-kernel
+    derivation; placeholders `trace4`/`trace6` unused. -/
 theorem heat_kernel_a2_matches (h : frameworkGUT_Real.y_t = 1) :
     frameworkGUT_Real.a2 = -179 - frameworkGUT_Real.trRemainder / 6 := by
   exact frameworkGUT_Real.a2_at_top_one h
@@ -210,8 +204,8 @@ theorem heat_kernel_a2_matches (h : frameworkGUT_Real.y_t = 1) :
 /-- The framework's Yukawa value `y_t = 1` is built into `frameworkGUT_Real`. -/
 @[simp] theorem framework_yt_eq_one : frameworkGUT_Real.y_t = 1 := rfl
 
-/-- **Tier 1 — final bridge.**  Combining heat-kernel expansion + Theorem A:
-    the Λ² spectral-action coefficient at `frameworkGUT_Real` is integer-near. -/
+/-- **ARITHMETIC** — `|a2 - (-179)| < 1/100` from `trRemainder` bound.
+    Relies on the shell re-export above; do not cite as heat-kernel content. -/
 theorem lambda2_integer_near :
     |frameworkGUT_Real.a2 - (-179)| < (1 : ℝ) / 100 := by
   have h := heat_kernel_a2_matches framework_yt_eq_one

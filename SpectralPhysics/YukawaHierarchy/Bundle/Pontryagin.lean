@@ -30,13 +30,13 @@ A clean Lean statement of:
 These are the bridge between the topological side (`Bundle/`) and the
 representation-theoretic side (`SO10Decomposition`, `MultiplicityRatio`).
 
-## Tier classification
+## Decl classification (content-repair-2b)
 
-* **Tier 1 (proved)**: identifications between
-  `bundle.chargeNumber` and named structural quantities (decidable
-  equalities for specific bundles).
-* **Tier 3 (hypothesised)**: the analytic content (Chern-Weil, integration)
-  is encoded as `class` predicates with no proof.
+* **DEFINITIONAL**: `SecondChernCharacter.value` is set to `chargeNumber`
+  by construction (`ofPhysicalSM := ⟨3⟩`, etc.); `c2_…_eq_charge` is `rfl`.
+  Do not cite as a computed Chern character.
+* **SHELL / Tier-3 hypothesis**: Chern-Weil / Stokes analytic content
+  (`class ChernWeilStokes`) — no proof here.
 -/
 
 namespace SpectralPhysics.YukawaHierarchy.Bundle
@@ -70,14 +70,14 @@ def ofPhysicalSM : SecondChernCharacter physicalSM_SU3 := ⟨3⟩
 
 end SecondChernCharacter
 
-/-! ## Tier-1 identifications -/
+/-! ## DEFINITIONAL identifications (`value := charge`) -/
 
-/-- **Tier 1.**  The second Chern character of `BPST_SU3` equals its
-    bundle charge number. -/
+/-- **DEFINITIONAL** (`rfl`). `ofBPST_SU3.value` was set to the charge. -/
 theorem c2_BPST_SU3_eq_charge :
     SecondChernCharacter.ofBPST_SU3.value = BPST_SU3.chargeNumber := rfl
 
-/-- **Tier 1.**  Same for the physical SM bundle. -/
+/-- **DEFINITIONAL** (`rfl`). `ofPhysicalSM.value := charge` by construction
+    (`⟨3⟩`); not a Pontryagin-number computation. -/
 theorem c2_physicalSM_eq_charge :
     SecondChernCharacter.ofPhysicalSM.value = physicalSM_SU3.chargeNumber := rfl
 
@@ -113,11 +113,9 @@ instance : ChernWeilStokes physicalSM_SU3
 
 /-! ## Connection to `BridgeConjecture` (the bundle side of `r_c/r_τ = 3/16`) -/
 
-/-- **Tier 1 (organisational).**  Express the `BridgeConjecture` numerator
-    `(ChernSimons3Form.ofPhysicalSM).boundaryIntegral` as the bundle's
-    second Chern character. This is the cleanest way to read the bridge:
-
-        `y_c / y_τ = c_2(P_SM) / dim(16) = 3/16`. -/
+/-- **DEFINITIONAL** — both sides are the constant `3` by construction of
+    `ofPhysicalSM` / `SecondChernCharacter.ofPhysicalSM`. Organisational
+    rewrite only; not a Tier-1 bridge to `y_c/y_τ = 3/16`. -/
 theorem bridge_numerator_via_c2 :
     (ChernSimons3Form.ofPhysicalSM).boundaryIntegral
     = (SecondChernCharacter.ofPhysicalSM.value : ℝ) := by
