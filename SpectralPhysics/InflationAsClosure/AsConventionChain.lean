@@ -9,6 +9,26 @@ import Mathlib.Data.Real.Sqrt
 /-!
 # A_s Factor-4.5 Convention Chain — Phase 3 Lean Formalization
 
+## STATUS (2026-08-18): ARITHMETIC PILOT ONLY — HYPOTHESIS FALSIFIED-AS-FIT
+
+* This file proves an arithmetic bracket (`3 · √2 · 53/50 ∈ [4.49, 4.51]`) and its
+  agreement with the HARDCODED `A_s_framework := 9.4e-9`. It proves nothing about
+  physics; the physical derivation lived in a 2026-05 phase-2.1 note that trunk
+  (`spectral-physics.tex`, v1.0+) never adopted — trunk keeps the metric-mode
+  residual as an OPEN O(1) normalisation (`open:As-normalisation-cosmic`) and the live
+  A_s figure is the Berry-enhanced closure (`InflationAsClosure`, Stress Test 11).
+* On 2026-08-17 the trace-sector coefficient was corrected (α_tr = α_eff + β_eff/3 =
+  1/72; manuscript `prop:eff-couplings`), which moves the metric-mode estimate to
+  ≈ 5.65e-9 (residual 2.69). The three "convention factors" here are α-independent,
+  so under that correction `convention_chain_closes_residual` becomes FALSE for the
+  corrected residual. A genuine convention explanation would have survived a
+  coefficient fix; this one did not → recorded in trunk as FALSIFIED-AS-FIT (T3
+  hypothesis, not a closure). The theorem below is left as a true statement about
+  the OLD hardcoded number, kept for history; do NOT cite it as a closure of A_s.
+* Downstream: `CMBObservables.lean` previously read "closed via AsConventionChain";
+  corrected to "open (arithmetic pilot only)". Audit trail:
+  `~/ember-tasks/as-alpha-tr-rederive/output/SUMMARY.md`.
+
 Mechanizes the convention-chain closure of Open Question
 `oq:As-normalisation` from v0.9.2 manuscript line 9277.
 
@@ -152,7 +172,10 @@ theorem convention_chain_in_bracket :
 
 /-! ## Section 4: Closure of `oq:As-normalisation`. -/
 
-/-- The framework's A_s value (manuscript v0.9.2 sec:As-metric-mode). -/
+/-- The framework's OLD metric-mode A_s value (manuscript v0.9.2 sec:As-metric-mode,
+α_eff = 1/120). SUPERSEDED 2026-08-18: with the corrected trace-sector coefficient
+α_tr = 1/72 the metric-mode estimate is ≈ 5.65e-9. Kept as the historical input of
+the arithmetic bracket below; not a live framework value. -/
 noncomputable def A_s_framework : ℝ := 9.4e-9
 
 /-- Planck 2018 observed A_s. -/
