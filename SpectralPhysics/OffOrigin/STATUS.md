@@ -54,7 +54,7 @@ capacity-route theorem).
 | `informationContent_M2_invariant` | CLOSED given `frozen` |
 | `symmetricPart_add_antisymm` / `triple_invariant_M2_invariant` (C2) | CLOSED |
 | `loop_reads_arrow_implies_forward_origin` | **CLOSED** (no open hole): `LoopReadsArrow → ForwardOriginExists`, the reduction |
-| `forward_origin` | **PROVED from `loop_reads_arrow`** (body has no open hole; depends on `sorryAx` only transitively via `loop_reads_arrow`) |
+| `forward_origin` | **discharged in-body from `loop_reads_arrow`** (body has no open hole; depends on `sorryAx` only transitively via `loop_reads_arrow`) |
 | `loop_reads_arrow` | **OPEN** (the file's single `sorry`; narrowed — NAMES the `sym ∘ Im` channel via `IsSymImTilt`, strictly stronger than the bare ℤ/2 non-spectral selector) |
 
 `grep -c sorry EtaDirIndependence.lean` = **1** (the tactic on `loop_reads_arrow`;
