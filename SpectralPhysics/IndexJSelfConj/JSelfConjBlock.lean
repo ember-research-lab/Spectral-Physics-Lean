@@ -36,14 +36,13 @@ Key structural integers in the J-self-conjugate sector of (1,1)_0 = ν_R:
 We carefully distinguish each — only one is the AS chiral index of the
 sector, and a priori none equals 8.
 
-## Tier classification
+## Decl classification (content-repair-2b)
 
-* **Tier 1**: dimension counts of sub-blocks (proved by `decide`).
-* **Tier 1**: structural identification of `(1,1)_0` as J-self-conjugate
-  (cherry-picked from `MajoranaSelfRef.JSelfConjugate`).
-* **Tier 3**: the Clifford-algebra-irrep dimension `dim_R Cl(0,6) = 8`
-  is named as an axiom (Atiyah–Bott–Shapiro; cf. Lawson–Michelsohn,
-  *Spin Geometry*, Ch. I §5).
+* **ARITHMETIC**: dimension counts via `decide` / `rfl`.
+* **DEFINITIONAL / SHELL**: `dim_Cl06_irrep_eq_eight : (8:ℕ) = 8 := rfl`
+  — literature content (Lawson–Michelsohn I.4.3) is NOT formalized; only
+  the arithmetic tautology remains (prior vacuous-axiom remediation).
+* Re-exports of `MajoranaSelfRef.JSelfConjugate` keep their upstream class.
 
 ## References
 
@@ -68,13 +67,11 @@ lives in `MajoranaSelfRef.JSelfConjugate`. -/
 /-- The J-self-conjugate locus: ν_R = (1,1)_0. -/
 def jsc_subrep : GaugeRep := repNu_R
 
-/-- **Tier 1 (re-export).**  The J-self-conjugate locus is J-self-
-    conjugate. -/
+/-- **SHELL** (re-export of `repNu_R_is_JSelfConj`). -/
 theorem jsc_subrep_is_JSelfConj : GaugeRep.isJSelfConjugate jsc_subrep :=
   repNu_R_is_JSelfConj
 
-/-- **Tier 1.**  All other sub-reps of the SO(10) 16 are NOT
-    J-self-conjugate. -/
+/-- **SHELL** (re-export of the five upstream non-JSC facts). -/
 theorem jsc_subrep_unique :
     ¬ GaugeRep.isJSelfConjugate repQ_L ∧
     ¬ GaugeRep.isJSelfConjugate repU_Rc ∧
@@ -122,7 +119,7 @@ def majoranaDoubling : ℕ := 2
 def jsc_total_majorana_count : ℕ :=
   numGenerations * majoranaDoubling * jsc_realDim_per_block
 
-/-- **Tier 1.** The J-self-conjugate Majorana state count = 6. -/
+/-- **ARITHMETIC** (`decide` on `3 * 2 * 1`). -/
 theorem jsc_total_majorana_count_eq_six :
     jsc_total_majorana_count = 6 := by
   unfold jsc_total_majorana_count numGenerations majoranaDoubling
@@ -139,33 +136,19 @@ matrices.  Equivalently, its unique irreducible real representation
 Reference:  Lawson–Michelsohn 1989, Theorem I.4.3 and Table I.4.3
 (Bott periodicity table: `Cl_{p,q}` for `q − p ≡ 6 (mod 8)`). -/
 
-/-- **Theorem (tautology, trivial; replacing audit-caught vacuous axiom)**.
+/-- **ARITHMETIC / SHELL** (`8 = 8 := rfl`).
 
-`(8 : ℕ) = 8`.
-
-**Audit history (2026-05 cheating-pattern remediation)**: previously
-declared as `axiom dim_Cl06_irrep_eq_eight` with inline comment
-"-- placeholder shape" and docstring claiming Lawson–Michelsohn
-Theorem I.4.3. The statement `8 = 8` is `rfl`; the literature-named
-axiom was a vacuous-marker (Pattern 2: reflexive-tautology). Converted
-to theorem to make the audit trail honest.
-
-The PHYSICAL CONTENT (Cl(0,6) ≅ M_8(ℝ) so the unique irreducible real
-representation has dimension 8) is from Lawson–Michelsohn Theorem I.4.3
-but is NOT formalized here — only the arithmetic `8 = 8`. To actually
-import the Lawson–Michelsohn content, define a `Cliff06Algebra` type,
-prove the matrix-algebra isomorphism, and derive the spinor dimension
-constructively.
-
-Reference for the physical content (NOT a Lean import):
-* Lawson–Michelsohn 1989, *Spin Geometry*, Theorem I.4.3 and Table
-  I.4.3 (Bott periodicity for Cl_{p,q} with q − p ≡ 6 (mod 8)). -/
+Audit history (2026-05 cheating-pattern remediation): previously
+`axiom dim_Cl06_irrep_eq_eight` claiming Lawson–Michelsohn I.4.3; the
+statement is `rfl`. Converted to theorem. Physical content
+(Cl(0,6) ≅ M_8(ℝ)) is NOT formalized here — only the arithmetic tautology.
+Do not cite as a Tier-1 Clifford-dimension theorem (content-repair-2b). -/
 theorem dim_Cl06_irrep_eq_eight : (8 : ℕ) = 8 := rfl
 
-/-- The candidate Clifford-spinor dimension at KO-dim 6. -/
+/-- The candidate Clifford-spinor dimension at KO-dim 6 (stated input `:= 8`). -/
 def cliffSpinor_KO6_dim : ℕ := 8
 
-/-- **Tier 1 (definitional).**  The Cl(0,6) spinor dimension is 8. -/
+/-- **DEFINITIONAL** (`rfl` on `cliffSpinor_KO6_dim := 8`). -/
 theorem cliffSpinor_KO6_dim_eq : cliffSpinor_KO6_dim = 8 := rfl
 
 /-! ## The four candidate "structural" integers
@@ -191,25 +174,25 @@ def value : StructuralCandidate → ℕ
 
 end StructuralCandidate
 
-/-- **Tier 1.**  `majoranaCount.value = 6`. -/
+/-- **ARITHMETIC** — unfolds to `jsc_total_majorana_count_eq_six`. -/
 @[simp] theorem majorana_value_eq :
     StructuralCandidate.majoranaCount.value = 6 := by
   unfold StructuralCandidate.value
   exact jsc_total_majorana_count_eq_six
 
-/-- **Tier 1.**  `numGen.value = 3`. -/
+/-- **DEFINITIONAL** (`rfl`). -/
 @[simp] theorem numGen_value_eq :
     StructuralCandidate.numGen.value = 3 := rfl
 
-/-- **Tier 1.**  `subrepDim.value = 1`. -/
+/-- **DEFINITIONAL** (`rfl`). -/
 @[simp] theorem subrepDim_value_eq :
     StructuralCandidate.subrepDim.value = 1 := rfl
 
-/-- **Tier 1.**  `cliffSpinor.value = 8`. -/
+/-- **DEFINITIONAL** (`rfl` on stated `cliffSpinor_KO6_dim := 8`). -/
 @[simp] theorem cliffSpinor_value_eq :
     StructuralCandidate.cliffSpinor.value = 8 := rfl
 
-/-- **Tier 1.**  Among the four candidates, only `cliffSpinor` equals 8.
+/-- **ARITHMETIC** — among the four candidates, only `cliffSpinor` equals 8.
 
     This is the exact discriminator the verdict file uses: matching the
     exponent `8` in `y_R ≈ τ^8` would *require* identifying the relevant
