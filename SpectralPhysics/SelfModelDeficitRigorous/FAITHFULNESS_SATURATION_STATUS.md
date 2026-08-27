@@ -27,6 +27,9 @@ The circulant carrier is `√mₖ = M(1 + ε·cos(θ + 2πk/3))`. Proved closed 
 * `breakingNormSq_eq` : `‖(1−P₃)v‖² = (3/2)M²ε²`, `θ`-free (from `Σcos²=3/2`).
 * `breakingNorm_eq_carrierNorm_iff` : `‖(1−P₃)v‖ = ‖P₃v‖ ⟺ ε² = 2` (M,θ-free).
 * `koide_of_epsilonSq_two` : `ε² = 2 ⟹ K = 2/3` (via `KoideFormula.circulant_implies_koide`).
+  (2026-08-27: `KoideFormula.koide_signed` proves the same value on the *signed*
+  root spectrum with no positivity hypotheses; rewiring this corollary to it —
+  which would drop the `hp0/hp1/hp2` chamber fields — is a follow-up, not done here.)
 * `cabibbo_leading_of_saturation` / `cabibbo_full_of_saturation` : the same
   `≥` pinch on the inter-unit channel forces `λ/(1−λ)=τ ⟹ λ₀=τ/(1+τ) = cabibboLeading`,
   and `λ = (150−23√5)/440` via `cabibbo_closed_form`.
