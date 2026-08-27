@@ -19,7 +19,14 @@ import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.Positivity
 
 /-!
-# The frame-relative orientation invariant σ_P — no-gos + 3×3 orientation lemma
+# The frame-relative ARROW invariant σ_P — no-gos + 3×3 orientation lemma
+
+Per `lem:polar-odd-sector`: σ_P and the Θ-parity/transpose-bit instruments in this
+file read the ARROW (A1), not the A4 orientation — the file/lemma names below
+("orientation invariant", "orientation lemma") are the pre-existing Lean labels and
+are left as identifiers per the labels-only repair scope, but the *physical* reading
+they report is the ARROW, not the orientation observable. Stated once here as the
+rule applied (not re-litigated per-occurrence below).
 
 Formalizes the instrument layer of the Krein bridge (companion note:
 `spectral_physics/off-origin-directed-side/krein-orientation-note.tex`, spec:
@@ -363,7 +370,8 @@ private theorem sign_three_mul (c : ℝ) : Real.sign (3 * c) = Real.sign c := by
 
 /-- **Orientation lemma (iii) — `sigma_reads_sign`.** `σ_P(H(a,b,c)) = sign c`:
 the frame-relative invariant reads exactly the bit the spectrum cannot
-(cf. `multiset_blind_to_sign`). -/
+(cf. `multiset_blind_to_sign`). Per `lem:polar-odd-sector` the bit read is the
+ARROW (A1), not the A4 orientation — see the module-header note above. -/
 theorem sigma_reads_sign (a b c : ℝ) : sigmaP (Hmat a b c) = Real.sign c := by
   unfold sigmaP
   rw [trace_pairing, sign_three_mul]

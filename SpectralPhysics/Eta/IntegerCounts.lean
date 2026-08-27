@@ -122,57 +122,30 @@ theorem classCrossingCount_eq_card_of_subset
   congr 1
   exact Finset.inter_eq_left.mpr h
 
-/-! ## Named axiom: APS / Bismut-Freed Majorana doubling
+/-! ## Named placeholder: APS / Bismut-Freed Majorana doubling
 
-This is the SINGLE non-kernel axiom of this branch. -/
+Class **ARITHMETIC / SHELL** (`⟨2, rfl⟩`) — not a non-kernel axiom. -/
 
-/-- **The Bismut-Freed Majorana doubling factor.**
+/-- **ARITHMETIC / SHELL** (`⟨2, rfl⟩`). Named PLACEHOLDER for the APS /
+Bismut–Freed doubling factor on KO-dim 6 J-paired finite spectral triples.
 
-For a finite spectral triple of KO-dim 6 with J-self-conjugate
-structure (the framework's `D_F`), each spectral-flow crossing of the
-parameter-dependent operator `D_F(s)` on the σ- or r-axis pairs with
-its J-conjugate.  The η-jump magnitude is therefore *twice* the
-underlying signed-spectral-flow count.
+Soundness-hygiene (2026-05-27): `∃ apsFactor, apsFactor = 2` is trivially
+provable, so this is a `theorem`, not an `axiom`. The literature content
+(APS index theorem for KO-dim 6; Bismut–Freed 1986 Thm 2.10; APS 1976 II
+eq. (2.2)) remains NOT formalized — do not cite as an "APS axiom" /
+Tier-1 index result (content-repair-2b).
 
-We formalise this as the **existence** of a doubling factor of 2 for
-the APS η-jump formula on KO-dim 6 J-paired finite spectral triples.
-
-**Citations (load-bearing):**
-
-* Bismut–Freed (1986), Theorem 2.10 and eq. (2.42).  The proof there is
-  for chirality-graded Dirac operators; the KO-dim 6 J-pairing is the
-  fiberwise lift of that grading.
-* Atiyah–Patodi–Singer (1976) Part II, §2, eq. (2.2): the η-spectral-
-  flow identity `Δη = 2 · SF` for self-adjoint Fredholm families with
-  a self-conjugation symmetry.
-
-**What this axiom does NOT do.**
-
-* It does NOT compute `Δη_F` for the specific spectral-physics `D_F`.
-* It does NOT assert any of the integers 12, 144, 168, 768.
-* It does NOT involve `S.card` for any subset `S`.
-
-It asserts ONLY: the *existence of a positive real coefficient of 2*
-linking the η-jump of a KO-dim 6 J-paired triple to the count of
-spectral-flow crossings.
-
-A future "closing" branch would replace this axiom with the formal APS
-index theorem for KO-dim 6 finite spectral triples — which requires
-the APS index theorem in Mathlib (not currently available). -/
--- SOUNDNESS-HYGIENE FIX (2026-05-27): `∃ apsFactor:ℕ, apsFactor = 2` is trivially
--- provable (`⟨2, rfl⟩`), so per RIGOROUS_WORKFLOW it must be a `theorem`, not an
--- `axiom` (the `axiom` keyword is for non-derivable assertions). The literature
--- content (APS index theorem for KO-dim 6) remains NOT formalized — this is a
--- named PLACEHOLDER reification, not a proof of the index theorem.
+Does NOT compute `Δη_F`, does NOT assert 12/144/168/768, does NOT involve
+`S.card`. Asserts only the existence of the coefficient 2 as a trivial
+witness. -/
 theorem aps_bismut_freed_majorana_doubling :
     ∃ apsFactor : ℕ, apsFactor = 2 := ⟨2, rfl⟩
 
-/-- The APS / Bismut-Freed doubling factor, extracted from the named
-    axiom.  By construction `aps_factor = 2`. -/
+/-- **DEFINITIONAL** — extracted witness of the shell above; `= 2` by construction. -/
 noncomputable def apsFactor : ℕ :=
   Classical.choose aps_bismut_freed_majorana_doubling
 
-/-- The APS factor equals 2 (by extraction from the axiom). -/
+/-- **DEFINITIONAL** (`Classical.choose_spec`). -/
 theorem apsFactor_eq_two : apsFactor = 2 :=
   Classical.choose_spec aps_bismut_freed_majorana_doubling
 

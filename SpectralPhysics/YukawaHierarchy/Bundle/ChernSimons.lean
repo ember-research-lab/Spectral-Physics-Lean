@@ -77,12 +77,15 @@ def ofBPST_SU2 : ChernSimons3Form BPST_SU2 := ⟨1⟩
     index 1 for SU(2) ⊂ SU(3)) has boundary integral 1. -/
 def ofBPST_SU3 : ChernSimons3Form BPST_SU3 := ⟨1⟩
 
-/-- The CS form of the physical SM bundle (charge ν = 3) has boundary
-    integral equal to its charge. -/
+/-- **DEFINITIONAL** — CS form of the physical SM bundle. `boundaryIntegral`
+    is set to the charge `3` by construction (`⟨3⟩`); not an integration theorem.
+    Downstream `cs_value` fields discharge by `rfl` / `simp` on this def. -/
 def ofPhysicalSM : ChernSimons3Form physicalSM_SU3 := ⟨3⟩
 
+/-- **DEFINITIONAL** (`rfl`). -/
 @[simp] theorem ofBPST_SU3_value : (ofBPST_SU3).boundaryIntegral = 1 := rfl
 
+/-- **DEFINITIONAL** (`rfl` on `ofPhysicalSM := ⟨3⟩`). -/
 @[simp] theorem ofPhysicalSM_value : (ofPhysicalSM).boundaryIntegral = 3 := rfl
 
 end ChernSimons3Form
@@ -110,7 +113,10 @@ class CSRepScaling
 
       `T_2(SU(3) | 16) = 2`,  i.e.  `2 · T_2 = 4`.
 
-    This is a Tier 1 result from `SO10Decomposition.lean`. -/
+    **ARITHMETIC** — `SO10Decomposition.dynkin_SU3_in_16` discharges
+    `doubleDynkinSum = 4` by `decide` on the fixed decomposition list; it is
+    decidable evaluation, not a representation-theoretic derivation. Do not
+    cite as Tier-1 content (content-repair-2b). -/
 def doubleDynkin_SU3_in_16 : ℕ := doubleDynkinSum
 
 @[simp] theorem doubleDynkin_SU3_in_16_eq : doubleDynkin_SU3_in_16 = 4 :=
@@ -149,18 +155,18 @@ def ofBPST_SU3_in16 : ChernSimons3Form BPST_SU3 :=
     This is the **central open conjecture**. The data `csImpliesInstanton`
     states the bridge as a `Prop`, to be filled in later. -/
 class BridgeConjecture (y_c y_τ : ℝ) where
-  /-- The CS form at the SM bundle: `physicalSM_curvature` has CS integral 3. -/
+  /-- **DEFINITIONAL discharge** — equals `ofPhysicalSM_value` (`⟨3⟩`, rfl).
+      Not an independent CS-integral computation. -/
   cs_value : (ChernSimons3Form.ofPhysicalSM).boundaryIntegral = 3
-  /-- Bridge from CS to ratio: `y_c / y_τ = (CS value) / dim(16)`. -/
+  /-- Bridge from CS to ratio: `y_c / y_τ = (CS value) / dim(16)`.
+      This conjunct is the open content; `cs_value` is not. -/
   cs_to_ratio : y_τ ≠ 0 → y_c / y_τ
                 = (ChernSimons3Form.ofPhysicalSM).boundaryIntegral
                   / (dimSpinor16 : ℝ)
 
-/-- **Tier 1 / 3.**  Given the `BridgeConjecture` and a Real-side ratio,
-    the framework's `InstantonHypothesis` (with `ν_total = 3`) follows:
-    the CS-class value identifies with `ν_total` from `InstantonCounting.lean`.
-
-    Stated entirely in `ℝ` to avoid cast headaches. -/
+/-- **SHELL** (hypothesis restatement). Given `BridgeConjecture`, rewrites
+    the ratio using `cs_value` (`= 3` by definition of `ofPhysicalSM`).
+    Not a Tier-1 derivation of `y_c/y_τ`. -/
 theorem bridgeConjecture_implies_real_ratio
     (y_c y_τ : ℝ)
     (hτ : y_τ ≠ 0)
@@ -169,7 +175,7 @@ theorem bridgeConjecture_implies_real_ratio
   have hcs : (ChernSimons3Form.ofPhysicalSM).boundaryIntegral = 3 := h.cs_value
   rw [h.cs_to_ratio hτ, hcs]
 
-/-- The structural identity in `ℝ`: `3 / dim(16) = 3 / 16`. -/
+/-- **ARITHMETIC** — `3 / dim(16) = 3 / 16` via `dimSpinor16 = 16`. -/
 theorem real_ratio_eq_three_sixteenths :
     (3 : ℝ) / (dimSpinor16 : ℝ) = 3 / 16 := by
   rw [show (dimSpinor16 : ℝ) = 16 from by

@@ -63,8 +63,11 @@ noncomputable def antisymmetricPart (M : Matrix (Fin 3) (Fin 3) ℝ) :
     Matrix (Fin 3) (Fin 3) ℝ :=
   (2 : ℝ)⁻¹ • (M - Mᵀ)
 
-/-- The frame-relative orientation invariant, real form (locked convention):
-`σ_P(G) = sign ⟨R, A⟩_F = sign tr(Rᵀ A)` with `A` the antisymmetric part of `G`. -/
+/-- The frame-relative ARROW invariant, real form (locked convention):
+`σ_P(G) = sign ⟨R, A⟩_F = sign tr(Rᵀ A)` with `A` the antisymmetric part of `G`.
+Per `lem:polar-odd-sector`, σ_P reads the ARROW (A1), not the A4 orientation —
+the earlier "orientation invariant" name identified the wrong trunk observable
+(semantic mislabel, not a proof defect). -/
 noncomputable def sigmaPReal (G : Matrix (Fin 3) (Fin 3) ℝ) : ℝ :=
   Real.sign (Matrix.trace (Rrᵀ * antisymmetricPart G))
 

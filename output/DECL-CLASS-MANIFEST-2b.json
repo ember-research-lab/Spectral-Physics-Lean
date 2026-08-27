@@ -1,0 +1,2586 @@
+{
+ "spec": "lean-content-repair-2b",
+ "date": "2026-08-18",
+ "branch": "fix/lean-content-repair-2b-2026-08-18",
+ "base": "main @ 4d70853",
+ "regenerated_by": "review lane (2026-08-18) — the impl-lane scanner matched English words inside docstrings as decls and predated commit 670abeb, so EtaDirIndependence.lean was missing",
+ "note": "Comment-aware scan of every theorem/lemma/axiom/def/abbrev/instance/structure/class in the touched files. \"class\" is the adjudicated decl class where the review lane re-derived it (see output/hostile/ClassAudit2b.lean for the #print-axioms + rfl/decide positive controls); UNADJUDICATED marks decls in a touched file that were not on the site list. \"action\" is RELABELLED where the docstring sha changed between main and HEAD, UNCHANGED otherwise.",
+ "counts": {
+  "files": 17,
+  "decls": 256,
+  "by_class": {
+   "UNADJUDICATED": 192,
+   "LEFT-OPEN": 4,
+   "SHELL": 16,
+   "ARITHMETIC": 12,
+   "DEFINITIONAL": 29,
+   "SUBSTANTIVE": 3
+  },
+  "by_action": {
+   "UNCHANGED": 194,
+   "RELABELLED": 62
+  }
+ },
+ "entries": [
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 57,
+   "name": "circulant",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "0aec588b59abea6f",
+   "docstring_sha256_16_after": "0aec588b59abea6f"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 61,
+   "name": "rootOfUnity",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e87cc83d373bde27",
+   "docstring_sha256_16_after": "e87cc83d373bde27"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 67,
+   "name": "circulantEigenvalue",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8ae2a8e0a9261ade",
+   "docstring_sha256_16_after": "8ae2a8e0a9261ade"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 74,
+   "name": "TriadMassMatrix",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "39bf8fef5a5b5e96",
+   "docstring_sha256_16_after": "39bf8fef5a5b5e96"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 95,
+   "name": "triad_mass_sum",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "0e98015f0a4cbe5b",
+   "docstring_sha256_16_after": "0e98015f0a4cbe5b"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 101,
+   "name": "triad_mass_splitting",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8177a3621c3a9059",
+   "docstring_sha256_16_after": "8177a3621c3a9059"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 106,
+   "name": "koideRatio",
+   "kind": "def",
+   "class": "LEFT-OPEN",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "c8e35996ad967456",
+   "docstring_sha256_16_after": "c8e35996ad967456"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 114,
+   "name": "koide_from_circulant",
+   "kind": "theorem",
+   "class": "LEFT-OPEN",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "51606bcf12609919",
+   "docstring_sha256_16_after": "4a2fdfe0ac20a9bd"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/CirculantMatrix.lean",
+   "line": 123,
+   "name": "circulant_sqrt_sum_identity",
+   "kind": "theorem",
+   "class": "LEFT-OPEN",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "78cd0ca95454a243",
+   "docstring_sha256_16_after": "c90ad909c3404a0e"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 51,
+   "name": "no_zero_divisors_implies_division",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "710e4cad291190d0",
+   "docstring_sha256_16_after": "710e4cad291190d0"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 77,
+   "name": "ObservationAlgebra",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "aeb54bac99046af5",
+   "docstring_sha256_16_after": "aeb54bac99046af5"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 93,
+   "name": "SelfReferentiallyClosed",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "799419ca591ac15b",
+   "docstring_sha256_16_after": "799419ca591ac15b"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 153,
+   "name": "tower_terminates_at_octonions",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 166,
+   "name": "real_insufficient",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8148a65c14d33666",
+   "docstring_sha256_16_after": "8148a65c14d33666"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 183,
+   "name": "complex_insufficient",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "b27bc2f0e2542e42",
+   "docstring_sha256_16_after": "b27bc2f0e2542e42"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 200,
+   "name": "quaternion_insufficient_for_real",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 213,
+   "name": "tower_terminates_by_zero_divisors",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "921be3efeac434e2",
+   "docstring_sha256_16_after": "921be3efeac434e2"
+  },
+  {
+   "file": "SpectralPhysics/Algebra/Forcing.lean",
+   "line": 245,
+   "name": "forcing_contains_octonions",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "59b8254dae754092",
+   "docstring_sha256_16_after": "b92f1ae8e9a114b0"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 57,
+   "name": "HodgeClass",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 72,
+   "name": "isZero",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3d4705d983f6c5c1",
+   "docstring_sha256_16_after": "3d4705d983f6c5c1"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 75,
+   "name": "zero_iff_isZero",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 82,
+   "name": "smul",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "84c06539b96d0f9e",
+   "docstring_sha256_16_after": "84c06539b96d0f9e"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 92,
+   "name": "AlgCycleClass",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "5c2873ddd5f4211d",
+   "docstring_sha256_16_after": "5c2873ddd5f4211d"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 122,
+   "name": "integrationPairing",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e78e676f0a2db5fb",
+   "docstring_sha256_16_after": "e78e676f0a2db5fb"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 127,
+   "name": "hodgeNormSq",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "7544503efb2f514a",
+   "docstring_sha256_16_after": "7544503efb2f514a"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 131,
+   "name": "hodgeNormSq_pos",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3feb2641da9d643d",
+   "docstring_sha256_16_after": "3feb2641da9d643d"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 150,
+   "name": "HodgeDetermination",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "b52dc83b18dce6dd",
+   "docstring_sha256_16_after": "b52dc83b18dce6dd"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 155,
+   "name": "hodgeDetermination",
+   "kind": "instance",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "387a458404d9e943",
+   "docstring_sha256_16_after": "387a458404d9e943"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 182,
+   "name": "HodgeFaithful",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "600fab97cef47a17",
+   "docstring_sha256_16_after": "600fab97cef47a17"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 197,
+   "name": "HodgeSectorFaithful",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "584fa4d93ae90c5a",
+   "docstring_sha256_16_after": "584fa4d93ae90c5a"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 223,
+   "name": "ProjectiveAlgClosure",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "263fda2787b8956e",
+   "docstring_sha256_16_after": "263fda2787b8956e"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 235,
+   "name": "hodge_from_spanning",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "7b8b3e6bd1a5e0c3",
+   "docstring_sha256_16_after": "7b8b3e6bd1a5e0c3"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 271,
+   "name": "faithful_from_spanning",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8a8ed56c71cd6196",
+   "docstring_sha256_16_after": "8a8ed56c71cd6196"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 338,
+   "name": "lefschetz_1_1",
+   "kind": "axiom",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "ceef402ba427b511",
+   "docstring_sha256_16_after": "ceef402ba427b511"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 347,
+   "name": "hodge_abelian_lefschetz_classes",
+   "kind": "axiom",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "d1dbc3f0ba07dfa5",
+   "docstring_sha256_16_after": "d1dbc3f0ba07dfa5"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 375,
+   "name": "Triangulation",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "b7a3a8c04cc92323",
+   "docstring_sha256_16_after": "b7a3a8c04cc92323"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 390,
+   "name": "ghost_prevention",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "4b5fdd2b80d17ef2",
+   "docstring_sha256_16_after": "4b5fdd2b80d17ef2"
+  },
+  {
+   "file": "SpectralPhysics/Conjectures/Hodge.lean",
+   "line": 429,
+   "name": "voisin_counterexample_is_below_threshold",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "03fd8c250bdcf1b9",
+   "docstring_sha256_16_after": "0023da443e23f648"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 104,
+   "name": "classCrossingCount",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "1bff0e6bd1c0e1b9",
+   "docstring_sha256_16_after": "1bff0e6bd1c0e1b9"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 117,
+   "name": "classCrossingCount_eq_card_of_subset",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "c5ccfdd3ec2af5cd",
+   "docstring_sha256_16_after": "c5ccfdd3ec2af5cd"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 141,
+   "name": "aps_bismut_freed_majorana_doubling",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": "99c5d7ff066ed6cc"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 145,
+   "name": "apsFactor",
+   "kind": "def",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "6bbbb6e65279adf6",
+   "docstring_sha256_16_after": "b978ebeaeed23717"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 149,
+   "name": "apsFactor_eq_two",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "30ec3248b881aa21",
+   "docstring_sha256_16_after": "2cd1c46effaa67bb"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 164,
+   "name": "etaJumpMagnitude",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "2f0f50d0f8abad5a",
+   "docstring_sha256_16_after": "2f0f50d0f8abad5a"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 171,
+   "name": "etaJumpMagnitude_of_subset_crossings",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "9cc22f1600e598a9",
+   "docstring_sha256_16_after": "9cc22f1600e598a9"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 200,
+   "name": "etaJump_GUT",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3271c8419080c13d",
+   "docstring_sha256_16_after": "3271c8419080c13d"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 211,
+   "name": "etaJump_QCD",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "dd1436d46e211e74",
+   "docstring_sha256_16_after": "dd1436d46e211e74"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 222,
+   "name": "etaJump_EW",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3a0978aa791160d8",
+   "docstring_sha256_16_after": "3a0978aa791160d8"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 233,
+   "name": "etaJump_full",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "40e633823c344f4e",
+   "docstring_sha256_16_after": "40e633823c344f4e"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 246,
+   "name": "qcdCrossings_subset_ewCrossings",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3d74408639aa39fb",
+   "docstring_sha256_16_after": "3d74408639aa39fb"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 257,
+   "name": "etaJump_QCD_le_EW",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "d4c9ccf8ab6eacdc",
+   "docstring_sha256_16_after": "d4c9ccf8ab6eacdc"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 267,
+   "name": "etaJump_QCD_lt_EW",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "7e6719167a6864a7",
+   "docstring_sha256_16_after": "7e6719167a6864a7"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 278,
+   "name": "etaJump_EW_minus_QCD",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "04de9369761f7460",
+   "docstring_sha256_16_after": "04de9369761f7460"
+  },
+  {
+   "file": "SpectralPhysics/Eta/IntegerCounts.lean",
+   "line": 293,
+   "name": "etaJump_full_eq_four_visible",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "851ad5f9da7d746c",
+   "docstring_sha256_16_after": "851ad5f9da7d746c"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 100,
+   "name": "MajoranaSpectrum",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "a7f5e31b8da4450e",
+   "docstring_sha256_16_after": "a7f5e31b8da4450e"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 116,
+   "name": "etaSum",
+   "kind": "def",
+   "class": "DEFINITIONAL",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "6faf706ecf89b257",
+   "docstring_sha256_16_after": "6faf706ecf89b257"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 122,
+   "name": "etaSum_eq_zero",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "2c083239004b5770",
+   "docstring_sha256_16_after": "2697b8329330e6aa"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 128,
+   "name": "etaInvariant",
+   "kind": "def",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "35d6539d8695b5c3",
+   "docstring_sha256_16_after": "eea699921ec28f88"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 131,
+   "name": "etaInvariant_eq_zero",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "48682797fd1d877c",
+   "docstring_sha256_16_after": "084e02cd8595b904"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 146,
+   "name": "nuR_spectrum",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "519d7b697b97d0c8",
+   "docstring_sha256_16_after": "519d7b697b97d0c8"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 154,
+   "name": "nuR_etaSum_eq_zero",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "6c472b12b1098053",
+   "docstring_sha256_16_after": "077dd67d0221e3b6"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 159,
+   "name": "nuR_etaInvariant_eq_zero",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "b306ba24c1071d2f",
+   "docstring_sha256_16_after": "ac198f93cc16fae6"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 165,
+   "name": "nuR_etaInvariant_ne_eight",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "95c13692ccd32c09",
+   "docstring_sha256_16_after": "5b035dc577979715"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 172,
+   "name": "nuR_eta_SM",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "b72754fd479cdf30",
+   "docstring_sha256_16_after": "32df18c16bcf3976"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 189,
+   "name": "nuR_etaSum_universally_zero",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "6ad2b77dc46d8397",
+   "docstring_sha256_16_after": "b2027a3b04185a28"
+  },
+  {
+   "file": "SpectralPhysics/EtaJSelfConj/EtaInvariant.lean",
+   "line": 196,
+   "name": "nuR_no_regularization_gives_eight",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "8fdb875451722e2f",
+   "docstring_sha256_16_after": "2e9675a0ad3397c8"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 97,
+   "name": "jscSpectrumList",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "181a1a613b6b37ee",
+   "docstring_sha256_16_after": "181a1a613b6b37ee"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 102,
+   "name": "jscSpectrumList_length",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "46a9f6dfd7d22a63",
+   "docstring_sha256_16_after": "bf37f627982c58d7"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 109,
+   "name": "jscSpectrumList_const",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "1bfe0168d54ee83d",
+   "docstring_sha256_16_after": "b22ea020eaf03429"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 117,
+   "name": "compositeSpectrum",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "289b5728ab681ade",
+   "docstring_sha256_16_after": "289b5728ab681ade"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 121,
+   "name": "compositeSpectrum_length",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "33b5a758d6b6a601",
+   "docstring_sha256_16_after": "a616fa4207351df7"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 138,
+   "name": "compositeSpectrum_injective_in_yR",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "e09e9234378a0627",
+   "docstring_sha256_16_after": "669f3c488cfb901d"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 178,
+   "name": "composition_faithful_at_every_yR",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "17d02ae9a3aca459",
+   "docstring_sha256_16_after": "d63922b5fa114c13"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 194,
+   "name": "composition_faithfulness_does_not_force_yR",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e12c5e8fff89fdd6",
+   "docstring_sha256_16_after": "e12c5e8fff89fdd6"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/CompositionFaithfulness.lean",
+   "line": 213,
+   "name": "composition_has_no_preferred_yR",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "1e583193c924475a",
+   "docstring_sha256_16_after": "1e583193c924475a"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 100,
+   "name": "majoranaScale",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "87fb3725b4d8a9d0",
+   "docstring_sha256_16_after": "87fb3725b4d8a9d0"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 104,
+   "name": "jsc_eigenvalue_eq_majorana_scale",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "36f873d48db7f0f7",
+   "docstring_sha256_16_after": "e4d190c443d42743"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 117,
+   "name": "visibleSpectrum",
+   "kind": "def",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "570f4485a62eca8c",
+   "docstring_sha256_16_after": "93f8ce5346b61747"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 124,
+   "name": "visibleSpectrum_independent_of_yR",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "4d17cd837a986aae",
+   "docstring_sha256_16_after": "460d55a058f8ab6e"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 140,
+   "name": "closure288Holds",
+   "kind": "def",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "4b74ac911a766da2",
+   "docstring_sha256_16_after": "cf4095777f599883"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 147,
+   "name": "closure288_holds_at_every_M_R",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "21f39b16c8f2f3cc",
+   "docstring_sha256_16_after": "39fc251c5a92b227"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 155,
+   "name": "closure288_does_not_pin_M_R",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "75dbc6d65849524a",
+   "docstring_sha256_16_after": "1a879dc38a17746e"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 176,
+   "name": "self_model_deficit_faithfulness_does_not_force_yR",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "28911d750c5b87ff",
+   "docstring_sha256_16_after": "28911d750c5b87ff"
+  },
+  {
+   "file": "SpectralPhysics/FaithfulnessForcesYR/SelfModelDeficitFaithfulness.lean",
+   "line": 188,
+   "name": "reading_E_admits_continuum_of_yR",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "5972f550a70bc984",
+   "docstring_sha256_16_after": "5972f550a70bc984"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 68,
+   "name": "jsc_subrep",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "2ebebcb235a3e1f8",
+   "docstring_sha256_16_after": "2ebebcb235a3e1f8"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 71,
+   "name": "jsc_subrep_is_JSelfConj",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "457deb9a9a48acf8",
+   "docstring_sha256_16_after": "c73a962165906de0"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 75,
+   "name": "jsc_subrep_unique",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "2ae85b45c10acf6e",
+   "docstring_sha256_16_after": "5354818c57310705"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 107,
+   "name": "jsc_realDim_per_block",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "af6e620a2cd7f61b",
+   "docstring_sha256_16_after": "af6e620a2cd7f61b"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 110,
+   "name": "numGenerations",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "9462ad08fe45ebf0",
+   "docstring_sha256_16_after": "9462ad08fe45ebf0"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 113,
+   "name": "majoranaDoubling",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "82fb285e9bcb1d5a",
+   "docstring_sha256_16_after": "82fb285e9bcb1d5a"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 119,
+   "name": "jsc_total_majorana_count",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "4412a993f08bd9fc",
+   "docstring_sha256_16_after": "4412a993f08bd9fc"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 123,
+   "name": "jsc_total_majorana_count_eq_six",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "3c2583e1f8716a44",
+   "docstring_sha256_16_after": "9ef0e796be79f196"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 146,
+   "name": "dim_Cl06_irrep_eq_eight",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "c71e49376241e88e",
+   "docstring_sha256_16_after": "6187ef651e7ea98c"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 149,
+   "name": "cliffSpinor_KO6_dim",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "e19811ba89095efa",
+   "docstring_sha256_16_after": "56cafe0d8e31e2c6"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 152,
+   "name": "cliffSpinor_KO6_dim_eq",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "dd70bb7240446ce5",
+   "docstring_sha256_16_after": "9b0e2f46e0a7485a"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 169,
+   "name": "value",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "ee175643728191aa",
+   "docstring_sha256_16_after": "ee175643728191aa"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 178,
+   "name": "majorana_value_eq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "929d5bafa9002ecf",
+   "docstring_sha256_16_after": "343ad1748080893b"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 184,
+   "name": "numGen_value_eq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "437a75f1cc0ad541",
+   "docstring_sha256_16_after": "11cea04c6b1dc0e1"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 188,
+   "name": "subrepDim_value_eq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "7960af06f1e3cd73",
+   "docstring_sha256_16_after": "11cea04c6b1dc0e1"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 192,
+   "name": "cliffSpinor_value_eq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "64392dd2ff633c66",
+   "docstring_sha256_16_after": "55f5afdfd6120c0b"
+  },
+  {
+   "file": "SpectralPhysics/IndexJSelfConj/JSelfConjBlock.lean",
+   "line": 200,
+   "name": "only_cliffSpinor_equals_eight",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "d433b0e90b215bfa",
+   "docstring_sha256_16_after": "022688816ef4eb4d"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 114,
+   "name": "specMultiset",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "57807137559e9ffc",
+   "docstring_sha256_16_after": "57807137559e9ffc"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 121,
+   "name": "RecordClass",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "cb83fbd4e76c09d5",
+   "docstring_sha256_16_after": "cb83fbd4e76c09d5"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 128,
+   "name": "TracePowerClass",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "b6b05a78fffb422a",
+   "docstring_sha256_16_after": "b6b05a78fffb422a"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 133,
+   "name": "specMultiset_transpose",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "19cc3eb29e5482b6",
+   "docstring_sha256_16_after": "19cc3eb29e5482b6"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 144,
+   "name": "record_transpose_invariant",
+   "kind": "theorem",
+   "class": "SUBSTANTIVE",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "c5185ffd86195f90",
+   "docstring_sha256_16_after": "14e01cb2fb7994c1"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 153,
+   "name": "tracePower_transpose_invariant",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "f2d3b382ec7bdfa5",
+   "docstring_sha256_16_after": "f2d3b382ec7bdfa5"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 165,
+   "name": "recordClass_comp",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "a6004f95e8b8c01e",
+   "docstring_sha256_16_after": "a6004f95e8b8c01e"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 194,
+   "name": "PowerSumSpectralMapping",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "29a8c81b1003e676",
+   "docstring_sha256_16_after": "29a8c81b1003e676"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 200,
+   "name": "powerSum_one",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "409a8366443829bc",
+   "docstring_sha256_16_after": "409a8366443829bc"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 213,
+   "name": "NewtonMultisetReconstruction",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "7b6dd762065280aa",
+   "docstring_sha256_16_after": "7b6dd762065280aa"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 219,
+   "name": "tracePowerClass_subset_recordClass",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "bb6be23306faa708",
+   "docstring_sha256_16_after": "bb6be23306faa708"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 231,
+   "name": "recordClass_subset_tracePowerClass",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "7e006d7cf7d065f1",
+   "docstring_sha256_16_after": "7e006d7cf7d065f1"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 257,
+   "name": "trace_mem_recordClass",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "229c735de2e8ac45",
+   "docstring_sha256_16_after": "229c735de2e8ac45"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 264,
+   "name": "det_mem_recordClass",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "445d5dc4275d65f0",
+   "docstring_sha256_16_after": "445d5dc4275d65f0"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 277,
+   "name": "negLogDet",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "411752f841dcc5d1",
+   "docstring_sha256_16_after": "411752f841dcc5d1"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 281,
+   "name": "negLogDet_mem_recordClass",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "5cfe9560c2b4527c",
+   "docstring_sha256_16_after": "5cfe9560c2b4527c"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 295,
+   "name": "informationContent_eq_negLogDet",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "de28719bca646c80",
+   "docstring_sha256_16_after": "de28719bca646c80"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 310,
+   "name": "negZetaPrimeAtZero_eq_negLogDet",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8faef9b981dc4a1d",
+   "docstring_sha256_16_after": "8faef9b981dc4a1d"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 329,
+   "name": "heatTrace",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "2e8dd0c45c61395b",
+   "docstring_sha256_16_after": "2e8dd0c45c61395b"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 334,
+   "name": "exp_eq_one_add_of_sq_eq_zero",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8b26bbd5e350cd61",
+   "docstring_sha256_16_after": "8b26bbd5e350cd61"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 355,
+   "name": "heatTrace_diagonal",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "5cbcd677fdd91e64",
+   "docstring_sha256_16_after": "5cbcd677fdd91e64"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 368,
+   "name": "specMultiset_diagonal",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "dcbe5f310377b3d3",
+   "docstring_sha256_16_after": "dcbe5f310377b3d3"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 395,
+   "name": "HeatTraceSpectralMapping",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "450e99f993e1f349",
+   "docstring_sha256_16_after": "450e99f993e1f349"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 402,
+   "name": "heatTraceSpectralMapping_diagonal",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e46e9329e903221a",
+   "docstring_sha256_16_after": "e46e9329e903221a"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 420,
+   "name": "heatTrace_mem_recordClass",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "144c6a6ec4f07208",
+   "docstring_sha256_16_after": "144c6a6ec4f07208"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 428,
+   "name": "gibbsTerm",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "c57085a24f04ad10",
+   "docstring_sha256_16_after": "c57085a24f04ad10"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 433,
+   "name": "spectralEntropyOf",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "856e1262a5d5cda1",
+   "docstring_sha256_16_after": "856e1262a5d5cda1"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 441,
+   "name": "IStar",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e984a0ba51920599",
+   "docstring_sha256_16_after": "e984a0ba51920599"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 447,
+   "name": "IStar_mem_recordClass",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "28cd9a088f6d4ba7",
+   "docstring_sha256_16_after": "28cd9a088f6d4ba7"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 457,
+   "name": "doddDiag",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "4d8eaa3502f81d54",
+   "docstring_sha256_16_after": "4d8eaa3502f81d54"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 467,
+   "name": "doddDeformed",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "be11ba78605f4b39",
+   "docstring_sha256_16_after": "be11ba78605f4b39"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 471,
+   "name": "dodd_charpoly_eq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e6d0bb193727dfe0",
+   "docstring_sha256_16_after": "e6d0bb193727dfe0"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 485,
+   "name": "dodd_specMultiset_eq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "64fb57a8c9811d31",
+   "docstring_sha256_16_after": "64fb57a8c9811d31"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 491,
+   "name": "records_agree_dodd",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "4eeb11b30ce47b6d",
+   "docstring_sha256_16_after": "4eeb11b30ce47b6d"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 498,
+   "name": "dodd_ne",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "4b4b027469dc9b3a",
+   "docstring_sha256_16_after": "4b4b027469dc9b3a"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 509,
+   "name": "dodd_directed_content",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "dea836a70e3dddb2",
+   "docstring_sha256_16_after": "dea836a70e3dddb2"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 526,
+   "name": "dodd_exists",
+   "kind": "theorem",
+   "class": "SUBSTANTIVE",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "7810e0311f837200",
+   "docstring_sha256_16_after": "7810e0311f837200"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 541,
+   "name": "record_reconstruction_impossible",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "52ceb2adb6b12322",
+   "docstring_sha256_16_after": "52ceb2adb6b12322"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 558,
+   "name": "deficit_two_routes",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "99b1ac78784c3715",
+   "docstring_sha256_16_after": "99b1ac78784c3715"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 577,
+   "name": "nilp",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "64427e0f928c654c",
+   "docstring_sha256_16_after": "64427e0f928c654c"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 579,
+   "name": "nilp_sq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 584,
+   "name": "smul_nilp_sq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 588,
+   "name": "neg_smul_doddDeformed_decomp",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 597,
+   "name": "heatTrace_doddDeformed",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "21b9e1ead7acd82e",
+   "docstring_sha256_16_after": "21b9e1ead7acd82e"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 618,
+   "name": "heatTrace_doddDiag",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "1fce1c2b17664f0d",
+   "docstring_sha256_16_after": "1fce1c2b17664f0d"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 631,
+   "name": "heatTrace_blind_on_archetype",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "d50f582f5d29864f",
+   "docstring_sha256_16_after": "d50f582f5d29864f"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/DoddExistence.lean",
+   "line": 638,
+   "name": "heatTraceSpectralMapping_archetype",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "9f8248a7c2e22ff0",
+   "docstring_sha256_16_after": "9f8248a7c2e22ff0"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 53,
+   "name": "M2Deformation",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "982cbf0875c66c0d",
+   "docstring_sha256_16_after": "982cbf0875c66c0d"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 60,
+   "name": "spectral_functional_M2_invariant",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "a500b27567f7fa60",
+   "docstring_sha256_16_after": "a500b27567f7fa60"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 66,
+   "name": "informationContent_M2_invariant",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "cc6855cd69693dc6",
+   "docstring_sha256_16_after": "cc6855cd69693dc6"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 73,
+   "name": "NonSpectral",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "2c649bdc5e6d788b",
+   "docstring_sha256_16_after": "2c649bdc5e6d788b"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 79,
+   "name": "ForwardOriginExists",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "f987a236fef2c2db",
+   "docstring_sha256_16_after": "f987a236fef2c2db"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 98,
+   "name": "IsSymImTilt",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e21bb312b21602f5",
+   "docstring_sha256_16_after": "e21bb312b21602f5"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 107,
+   "name": "LoopReadsArrow",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3f34c89283c62b81",
+   "docstring_sha256_16_after": "3f34c89283c62b81"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 114,
+   "name": "loop_reads_arrow_implies_forward_origin",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8ab37ff5f3378c1a",
+   "docstring_sha256_16_after": "8ab37ff5f3378c1a"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 123,
+   "name": "loop_reads_arrow",
+   "kind": "theorem",
+   "class": "LEFT-OPEN",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "f73baed9fd6f15d2",
+   "docstring_sha256_16_after": "f73baed9fd6f15d2"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 128,
+   "name": "forward_origin",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "12b2f0604914eee4",
+   "docstring_sha256_16_after": "8bd27623837d373b"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 149,
+   "name": "symmetricPart",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "a4e5685f02a7153b",
+   "docstring_sha256_16_after": "a4e5685f02a7153b"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 154,
+   "name": "symmetricPart_add_antisymm",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "765f6d16e22c3f6e",
+   "docstring_sha256_16_after": "765f6d16e22c3f6e"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/EtaDirIndependence.lean",
+   "line": 167,
+   "name": "triple_invariant_M2_invariant",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "f51eeea20103aff7",
+   "docstring_sha256_16_after": "f51eeea20103aff7"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 53,
+   "name": "Pr",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "66818bc6c2e4f412",
+   "docstring_sha256_16_after": "66818bc6c2e4f412"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 58,
+   "name": "Rr",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "42fded8e07bf2567",
+   "docstring_sha256_16_after": "42fded8e07bf2567"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 62,
+   "name": "antisymmetricPart",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "f1a06537fb1dcb2d",
+   "docstring_sha256_16_after": "f1a06537fb1dcb2d"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 71,
+   "name": "sigmaPReal",
+   "kind": "def",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "8c11fad3b6004984",
+   "docstring_sha256_16_after": "1e204355922b65ca"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 78,
+   "name": "markovGen",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "a5ab8386a2ec7819",
+   "docstring_sha256_16_after": "a5ab8386a2ec7819"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 83,
+   "name": "markovGen_entries",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3adce2e3fdbbbfaa",
+   "docstring_sha256_16_after": "3adce2e3fdbbbfaa"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 94,
+   "name": "Rr_entries",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e0030ec28e725e72",
+   "docstring_sha256_16_after": "e0030ec28e725e72"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 101,
+   "name": "markovGen_transpose",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "76e2f63bc210c7ad",
+   "docstring_sha256_16_after": "76e2f63bc210c7ad"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 110,
+   "name": "markovGen_antisymmetricPart",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "790a7c7beeff0155",
+   "docstring_sha256_16_after": "790a7c7beeff0155"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 120,
+   "name": "detailed_balance_iff_symm",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e4871fa03c9ddd78",
+   "docstring_sha256_16_after": "e4871fa03c9ddd78"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 151,
+   "name": "trace_Rr_pairing",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "00aa05537b5441b2",
+   "docstring_sha256_16_after": "00aa05537b5441b2"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 161,
+   "name": "sigma_eq_current_sign",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "d9c3cca639fe7825",
+   "docstring_sha256_16_after": "d9c3cca639fe7825"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/MarkovCycle.lean",
+   "line": 175,
+   "name": "detailed_balance_iff_sigma_zero",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "63569cf6123b4516",
+   "docstring_sha256_16_after": "63569cf6123b4516"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 101,
+   "name": "hermitize",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "56b26d016d4505d9",
+   "docstring_sha256_16_after": "56b26d016d4505d9"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 107,
+   "name": "hermitize_isHermitian",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "388556566091139a",
+   "docstring_sha256_16_after": "388556566091139a"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 120,
+   "name": "neg_one_pow_prod_shift",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e962362c0dcaf2e1",
+   "docstring_sha256_16_after": "e962362c0dcaf2e1"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 137,
+   "name": "antisymm_charpoly_roots_neg",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "0748357b7a32d1e0",
+   "docstring_sha256_16_after": "0748357b7a32d1e0"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 176,
+   "name": "skew_hermitization_spec_symmetric",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "a385c449f3496c69",
+   "docstring_sha256_16_after": "a385c449f3496c69"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 188,
+   "name": "rootsSignature",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "45e435611ca5e341",
+   "docstring_sha256_16_after": "45e435611ca5e341"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 194,
+   "name": "skew_plain_signature_zero",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "6ece12e14a599fc2",
+   "docstring_sha256_16_after": "6ece12e14a599fc2"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 220,
+   "name": "pfaffian_odd_dim_zero",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "b5a450ce2459a91b",
+   "docstring_sha256_16_after": "b5a450ce2459a91b"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 236,
+   "name": "P3",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "302268e8f20fb637",
+   "docstring_sha256_16_after": "302268e8f20fb637"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 241,
+   "name": "Hmat",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e17a405ff1ddc3ac",
+   "docstring_sha256_16_after": "e17a405ff1ddc3ac"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 249,
+   "name": "sigmaP",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "287605fe7675adcd",
+   "docstring_sha256_16_after": "287605fe7675adcd"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 254,
+   "name": "Hmat_entries",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "a42112367b49b08f",
+   "docstring_sha256_16_after": "a42112367b49b08f"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 266,
+   "name": "Hmat_isHermitian",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "69339d4b9803593e",
+   "docstring_sha256_16_after": "69339d4b9803593e"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 275,
+   "name": "Hmat_transpose",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "0d3a6d7e4f8f287f",
+   "docstring_sha256_16_after": "0d3a6d7e4f8f287f"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 282,
+   "name": "eigval",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "c6199ef25bd6be34",
+   "docstring_sha256_16_after": "c6199ef25bd6be34"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 285,
+   "name": "eigval_zero",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 289,
+   "name": "eigval_one",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 296,
+   "name": "eigval_two",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 308,
+   "name": "circulant_eigenvalues",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "987e9e9f8b990bff",
+   "docstring_sha256_16_after": "987e9e9f8b990bff"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 332,
+   "name": "circulant_roots",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "aa38643fc30c3d4a",
+   "docstring_sha256_16_after": "aa38643fc30c3d4a"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 351,
+   "name": "multiset_blind_to_sign",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8120e9d6d12f807b",
+   "docstring_sha256_16_after": "8120e9d6d12f807b"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 357,
+   "name": "trace_pairing",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "98f66d57aa818118",
+   "docstring_sha256_16_after": "98f66d57aa818118"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 365,
+   "name": "sign_three_mul",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "1cfeb370dd1084ca",
+   "docstring_sha256_16_after": "1cfeb370dd1084ca"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 375,
+   "name": "sigma_reads_sign",
+   "kind": "theorem",
+   "class": "SUBSTANTIVE",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "02f8285d646b7632",
+   "docstring_sha256_16_after": "8074ccb302a70212"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 384,
+   "name": "sigma_transpose_odd",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "007cce61b44fa511",
+   "docstring_sha256_16_after": "007cce61b44fa511"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 402,
+   "name": "sigma_transpose_odd_circulant",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "1b4197e32cf55bd1",
+   "docstring_sha256_16_after": "1b4197e32cf55bd1"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 411,
+   "name": "sigma_symmetric_stable",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "cddce3a5dcaf1c8e",
+   "docstring_sha256_16_after": "cddce3a5dcaf1c8e"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 423,
+   "name": "sigma_circulant_symmetric_stable",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "8d75e7abe3d83018",
+   "docstring_sha256_16_after": "8d75e7abe3d83018"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 440,
+   "name": "spectrum_at_note_point",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "00eb546b64210947",
+   "docstring_sha256_16_after": "00eb546b64210947"
+  },
+  {
+   "file": "SpectralPhysics/OffOrigin/OrientationLemma.lean",
+   "line": 450,
+   "name": "note_lambda_brackets",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "332ebc2f8a898c3f",
+   "docstring_sha256_16_after": "332ebc2f8a898c3f"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 63,
+   "name": "ChernSimons3Form",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "4710ea97d5db5c3d",
+   "docstring_sha256_16_after": "4710ea97d5db5c3d"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 74,
+   "name": "ofBPST_SU2",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "32f769789ae26858",
+   "docstring_sha256_16_after": "32f769789ae26858"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 78,
+   "name": "ofBPST_SU3",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "4aefbf4b0080b390",
+   "docstring_sha256_16_after": "4aefbf4b0080b390"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 83,
+   "name": "ofPhysicalSM",
+   "kind": "def",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "9c6b7cfdca4dbf02",
+   "docstring_sha256_16_after": "11c4f71e8e811184"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 86,
+   "name": "ofBPST_SU3_value",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": "11cea04c6b1dc0e1"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 89,
+   "name": "ofPhysicalSM_value",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": "90cd3adf44701d6e"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 103,
+   "name": "CSRepScaling",
+   "kind": "class",
+   "class": "DEFINITIONAL",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "915129626a71bfb6",
+   "docstring_sha256_16_after": "915129626a71bfb6"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 120,
+   "name": "doubleDynkin_SU3_in_16",
+   "kind": "def",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "054deb94d292ad94",
+   "docstring_sha256_16_after": "b93ad3b58af8e668"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 122,
+   "name": "doubleDynkin_SU3_in_16_eq",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 128,
+   "name": "ofBPST_SU3_in16",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3f02ee06a26d608e",
+   "docstring_sha256_16_after": "3f02ee06a26d608e"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 131,
+   "name": "ofBPST_SU3_in16_value",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 157,
+   "name": "BridgeConjecture",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "976733a4efeb1f27",
+   "docstring_sha256_16_after": "976733a4efeb1f27"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 170,
+   "name": "bridgeConjecture_implies_real_ratio",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "c260a16dccbf2246",
+   "docstring_sha256_16_after": "0d6e5a026c42551d"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/ChernSimons.lean",
+   "line": 179,
+   "name": "real_ratio_eq_three_sixteenths",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "4eabd25a19746684",
+   "docstring_sha256_16_after": "93b68da62b17bb98"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 58,
+   "name": "FinSpectralData",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "9ec8afcb864ab814",
+   "docstring_sha256_16_after": "9ec8afcb864ab814"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 75,
+   "name": "heatKernelTrace",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "aae7f00ed6a3bd13",
+   "docstring_sha256_16_after": "aae7f00ed6a3bd13"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 79,
+   "name": "heatKernelTrace_zero",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "c11219c943e8ce5f",
+   "docstring_sha256_16_after": "c11219c943e8ce5f"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 89,
+   "name": "heatKernelTrace_deriv_zero",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "02492838a6db61f0",
+   "docstring_sha256_16_after": "02492838a6db61f0"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 105,
+   "name": "smFinData",
+   "kind": "def",
+   "class": "SHELL",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "c9ab623126626ac0",
+   "docstring_sha256_16_after": "c9ab623126626ac0"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 113,
+   "name": "smFinData_trace2",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "e8e18cc0a42acf55",
+   "docstring_sha256_16_after": "e8e18cc0a42acf55"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 122,
+   "name": "lambda2Coefficient",
+   "kind": "def",
+   "class": "DEFINITIONAL",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "9ef4d43d5db4ec6d",
+   "docstring_sha256_16_after": "9ef4d43d5db4ec6d"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 131,
+   "name": "trace2_framework_bound",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "23bf4806e80cb3d9",
+   "docstring_sha256_16_after": "23bf4806e80cb3d9"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 148,
+   "name": "lambda2_at_framework_flat",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "dec502a822e530ad",
+   "docstring_sha256_16_after": "79d580a6d42ca3cb"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 162,
+   "name": "s4_scalar_curvature",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "2ffb69d8fe082f04",
+   "docstring_sha256_16_after": "2ffb69d8fe082f04"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 166,
+   "name": "lambda2_S4_unit_radius",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "ae200861bf93b74b",
+   "docstring_sha256_16_after": "ae200861bf93b74b"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 190,
+   "name": "a2_from_lambda2",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "1acbba7d9f1a2311",
+   "docstring_sha256_16_after": "4138092d0769781b"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 200,
+   "name": "heat_kernel_a2_matches",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "37fe1ebc3af4b773",
+   "docstring_sha256_16_after": "3d4ff59e7e9bafbb"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 205,
+   "name": "framework_yt_eq_one",
+   "kind": "theorem",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "9e25e85d7077d700",
+   "docstring_sha256_16_after": "9e25e85d7077d700"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/HeatKernelExpansion.lean",
+   "line": 209,
+   "name": "lambda2_integer_near",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "66775fbecd39c4a8",
+   "docstring_sha256_16_after": "2602c869f997fab4"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 49,
+   "name": "SecondChernCharacter",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "6ea99d7ce32cef0b",
+   "docstring_sha256_16_after": "6ea99d7ce32cef0b"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 60,
+   "name": "ofBPST_SU2",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "bcfc9183fb7e8ebc",
+   "docstring_sha256_16_after": "bcfc9183fb7e8ebc"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 63,
+   "name": "ofBPST_SU3",
+   "kind": "def",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "84669632364be489",
+   "docstring_sha256_16_after": "84669632364be489"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 66,
+   "name": "ofPhysicalSM",
+   "kind": "def",
+   "class": "DEFINITIONAL",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "a060458fc42f585c",
+   "docstring_sha256_16_after": "a060458fc42f585c"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 68,
+   "name": "ofBPST_SU3_value",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 69,
+   "name": "ofPhysicalSM_value",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": null,
+   "docstring_sha256_16_after": null
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 76,
+   "name": "c2_BPST_SU3_eq_charge",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "13e06e580f3834ff",
+   "docstring_sha256_16_after": "6af322044ad6d2d8"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 81,
+   "name": "c2_physicalSM_eq_charge",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "1d469027b5f478a6",
+   "docstring_sha256_16_after": "3f75154e6d4de44c"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 94,
+   "name": "ChernWeilStokes",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "02d15343e1dfe131",
+   "docstring_sha256_16_after": "02d15343e1dfe131"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/Pontryagin.lean",
+   "line": 119,
+   "name": "bridge_numerator_via_c2",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "86f8083e30dcd571",
+   "docstring_sha256_16_after": "0e1480d4ac3f2b3c"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 67,
+   "name": "CutoffMoments",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "1ab5fe9d28cb4930",
+   "docstring_sha256_16_after": "1ab5fe9d28cb4930"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 77,
+   "name": "SpectralActionData",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "eb34aca9e137e358",
+   "docstring_sha256_16_after": "eb34aca9e137e358"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 97,
+   "name": "SpectralActionExpansion",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "c1e627c2c448be08",
+   "docstring_sha256_16_after": "c1e627c2c448be08"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 120,
+   "name": "PontryaginCoefficientIsCharge",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "6b0b95c943785eeb",
+   "docstring_sha256_16_after": "6b0b95c943785eeb"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 153,
+   "name": "ratio_from_spectral_action_normalization",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "63158b8d07646a3b",
+   "docstring_sha256_16_after": "0f1593ecbde54ece"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 168,
+   "name": "ratio_eq_three_sixteenths",
+   "kind": "theorem",
+   "class": "ARITHMETIC",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "9fb8d2655c4c6791",
+   "docstring_sha256_16_after": "eb975dafe1a07449"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 187,
+   "name": "bridgeConjecture_from_spectralAction",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "1afcb8ceda80cae9",
+   "docstring_sha256_16_after": "01f54768de837492"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 213,
+   "name": "main_yukawa_ratio_theorem",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "ff3cbce842a32df1",
+   "docstring_sha256_16_after": "64f471566980eefc"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralAction.lean",
+   "line": 237,
+   "name": "normalization_iff_ratio",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "603c1b66bdfe379a",
+   "docstring_sha256_16_after": "72fbd025395aafd1"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralActionConcrete.lean",
+   "line": 78,
+   "name": "SpectralActionNormalization",
+   "kind": "structure",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "726f2b01736ee7f2",
+   "docstring_sha256_16_after": "726f2b01736ee7f2"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralActionConcrete.lean",
+   "line": 96,
+   "name": "KIdentification",
+   "kind": "class",
+   "class": "UNADJUDICATED",
+   "action": "UNCHANGED",
+   "docstring_sha256_16_before": "3bed0a088454fc5c",
+   "docstring_sha256_16_after": "3bed0a088454fc5c"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralActionConcrete.lean",
+   "line": 128,
+   "name": "bridge_clean_form",
+   "kind": "theorem",
+   "class": "DEFINITIONAL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "155308a4142e338d",
+   "docstring_sha256_16_after": "397fdbe1764c8ed8"
+  },
+  {
+   "file": "SpectralPhysics/YukawaHierarchy/Bundle/SpectralActionConcrete.lean",
+   "line": 155,
+   "name": "yukawa_ratio_from_spectral_structure",
+   "kind": "theorem",
+   "class": "SHELL",
+   "action": "RELABELLED",
+   "docstring_sha256_16_before": "e56de60d30b20f45",
+   "docstring_sha256_16_after": "dc0911d0f05e64c3"
+  }
+ ]
+}

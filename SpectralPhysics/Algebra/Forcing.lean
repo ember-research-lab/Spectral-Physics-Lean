@@ -231,14 +231,17 @@ theorem tower_terminates_by_zero_divisors :
 -- PART IV: ASSEMBLY
 -- ═══════════════════════════════════════════════════════════════════════
 
-/-- **The Forcing Theorem (conditional)**: Under the hypotheses that
-(1) meta-observation forces CD doubling,
-(2) the tower terminates at 𝕆 (no composition algebra past dim 8),
-the observation algebra contains 𝕆.
+/-- **SHELL** (`True := trivial`). Named scaffolding for the Forcing Theorem.
 
-The full theorem A_obs = ℂ ⊗ ℍ ⊗ 𝕆 additionally requires the
-CD entanglement lemma and no-retraction proposition (Part III of blueprint).
-These are left for future work. -/
+Under intended hypotheses (meta-observation forces CD doubling; tower
+terminates at 𝕆) the observation algebra would contain 𝕆. As formalized,
+both hypotheses and the conclusion are the constant `True`; the proof is
+`trivial`. Do not cite as a proved containment of the octonions
+(content-repair-2b). Trunk already honest at L2420 — keep Lean label matched.
+
+The full statement `A_obs = ℂ ⊗ ℍ ⊗ 𝕆` additionally requires the CD
+entanglement lemma and no-retraction proposition (blueprint Part III) —
+LEFT-OPEN. -/
 theorem forcing_contains_octonions
     -- Hypothesis: if A is too small, meta-observation forces doubling
     (h_double : ∀ (n : ℕ), n < 8 →

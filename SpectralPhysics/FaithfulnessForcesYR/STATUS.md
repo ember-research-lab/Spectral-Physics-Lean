@@ -29,7 +29,9 @@ This is the fifth honest negative on the `y_R`-from-(1,1)_0 question:
 
 ### Reading A — Trivial reconstruction (`AxiomThreeRestricted.lean`)
 
-Pre-existing partial work.  All theorems Tier 1, sorry-free.
+Pre-existing partial work.  Theorems are finite-dim ARITHMETIC /
+DEFINITIONAL / SHELL (Reading A is the honest DEGENERATE verdict);
+sorry-free. Do not cite as Tier-1 framework content.
 
 * `axiom_three_faithful_at_every_yR` — finite-dim spectral
   determination is automatic for every `y_R ≥ 0`.
@@ -97,13 +99,13 @@ also commutes with every constant scalar, so cannot single out one.
 
 ### Reading E — Self-Model Deficit + Faithfulness (`SelfModelDeficitFaithfulness.lean`)
 
-* `jsc_eigenvalue_eq_majorana_scale` — `λ_JSC = M_R = y_R · v_R`.
-* `visibleSpectrum_independent_of_yR` — visible spectrum is constant
-  in `y_R` (typing).
-* `closure288_holds_at_every_M_R` — the `-ζ'_vis(0) = 288` value is
-  derivable for every `M_R` (the value is `M_R`-independent in the
-  standing formalisation).
-* `closure288_does_not_pin_M_R` — closure satisfied at any pair.
+* `jsc_eigenvalue_eq_majorana_scale` — DEFINITIONAL (`rfl`).
+* `visibleSpectrum` — SHELL (`:= []` placeholder); `visibleSpectrum_independent_of_yR`
+  is `X = X := rfl`.
+* `closure288Holds` — SHELL (`∃ z, z = -288`); `closure288_holds_at_every_M_R`
+  is `⟨-288, rfl⟩`. Encodes M_R-independence of the standing formalisation,
+  not a derivation of 288.
+* `closure288_does_not_pin_M_R` — SHELL (both sides of the shell predicate).
 * `self_model_deficit_faithfulness_does_not_force_yR` — joint
   faithfulness-plus-closure satisfied at every `y_R`.
 * `reading_E_admits_continuum_of_yR` — both readings simultaneously
@@ -144,7 +146,9 @@ This dispatch introduces **zero new axioms**.  It cites:
 
 ## Sorries categorized
 
-**None** in this directory.  All Tier 1.  No `True` placeholders.
+**None** in this directory.  Reading-E shells (`visibleSpectrum := []`,
+`closure288Holds := ∃z, z = -288`) are intentional DEGENERATE witnesses,
+not Tier-1 content — see decl classes in the `.lean` files (content-repair-2b).
 
 ## Per-reading verdict summary
 

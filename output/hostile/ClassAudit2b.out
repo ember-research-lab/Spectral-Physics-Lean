@@ -1,0 +1,33 @@
+'SpectralPhysics.Eta.IntegerCounts.aps_bismut_freed_majorana_doubling' does not depend on any axioms
+'SpectralPhysics.Eta.IntegerCounts.apsFactor_eq_two' depends on axioms: [Classical.choice]
+'SpectralPhysics.EtaJSelfConj.MajoranaSpectrum.etaSum_eq_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.EtaJSelfConj.nuR_etaInvariant_ne_eight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.IndexJSelfConj.dim_Cl06_irrep_eq_eight' does not depend on any axioms
+'SpectralPhysics.IndexJSelfConj.jsc_total_majorana_count_eq_six' does not depend on any axioms
+'forcing_contains_octonions' does not depend on any axioms
+'voisin_counterexample_is_below_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.YukawaHierarchy.Bundle.ChernSimons3Form.ofPhysicalSM_value' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.YukawaHierarchy.Bundle.c2_physicalSM_eq_charge' does not depend on any axioms
+'SpectralPhysics.YukawaHierarchy.Bundle.main_yukawa_ratio_theorem' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.FaithfulnessForcesYR.closure288_holds_at_every_M_R' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.FaithfulnessForcesYR.visibleSpectrum_independent_of_yR' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.CirculantMatrix.koide_from_circulant' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.OffOrigin.forward_origin' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'SpectralPhysics.OffOrigin.dodd_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.OffOrigin.record_transpose_invariant' depends on axioms: [propext, Classical.choice, Quot.sound]
+forcing_contains_octonions : (∀ n < 8, True) → (∀ (n : ℕ), 16 ≤ n → True) → True
+voisin_counterexample_is_below_threshold : ∀ (p dim : ℕ) (is_kahler not_projective : Prop),
+  is_kahler → not_projective → ¬ProjectiveAlgClosure p dim → True

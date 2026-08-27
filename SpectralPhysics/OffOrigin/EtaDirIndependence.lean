@@ -19,7 +19,7 @@ STATUS (do NOT upgrade without an adversarial audit: vacuity check + `#print axi
   hypothesis** `frozen` (a pure-M2 deformation fixes the visible eigenvalue spectrum). The
   remaining work is to *derive* `frozen` from non-normal operator theory (numerical range /
   nilpotent-in-eigenbasis) — verdict for that operator-theoretic statement: **OPEN**.
-- `forward_origin` : **PROVED from `loop_reads_arrow`** (no open hole in its body). The old
+- `forward_origin` : **discharged in-body from `loop_reads_arrow`** (no open hole in its body). The old
   single opaque obligation is split (2026-07 tilt probe): the matrix-level content is CLOSED
   in `OffOrigin/ForwardOriginSplit.lean`, and the residue is the strictly-narrower
   `loop_reads_arrow` (does the physical loop read the `sym ∘ Im` parity-mixing channel?),
@@ -123,7 +123,7 @@ but does not answer. Carries the single open obligation of this file. -/
 theorem loop_reads_arrow : LoopReadsArrow := by
   sorry -- OPEN (narrowed): does the physical loop read `sym ∘ Im` of its own kernel?
 
-/-- `forward_origin` is now PROVED (no open hole in its body) FROM `loop_reads_arrow` via
+/-- `forward_origin` is discharged in its body FROM `loop_reads_arrow` (no open hole in the body) via
 the reduction above. The only open obligation in the file is `loop_reads_arrow`. -/
 theorem forward_origin : ForwardOriginExists :=
   loop_reads_arrow_implies_forward_origin loop_reads_arrow

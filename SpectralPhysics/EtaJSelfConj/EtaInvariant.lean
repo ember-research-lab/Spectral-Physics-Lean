@@ -56,16 +56,13 @@ In other words: the J-self-conjugacy that picks ν_R as the structural
 locus of `y_R` *also* makes the η-invariant of that locus vanish.
 There is no information in η to deliver the integer 8.
 
-## Tier classification
+## Decl classification (content-repair-2b)
 
-* **Tier 1 (proved here)**: the model η-invariant of any
-  `Majorana-paired` spectrum is identically 0 at every regularisation
-  parameter `s` with `Re s > 0`.
-* **Tier 1 (proved here)**: the η-limit at `s = 0+` exists and equals 0.
-* **Tier 3 (named axiom)**: that the actual `D_F`-spectrum on the
-  J-self-conjugate sub-block IS Majorana-paired in this model sense.
-  This is the standard NCG content of KO-dim-6 (Connes–Marcolli §15.4,
-  Atiyah–Patodi–Singer 1975).
+* **DEFINITIONAL**: `etaSum := A - A` (positives sum minus itself); every
+  `etaSum_eq_zero` / `etaInvariant_eq_zero` corollary is `ring` / unfold.
+  Do not cite as a Tier-1 computation of the physical η-invariant.
+* **SHELL / Tier-3**: that the actual `D_F`-spectrum on the J-self-conjugate
+  sub-block IS Majorana-paired in this model sense (Connes–Marcolli §15.4).
 
 ## References
 
@@ -92,7 +89,8 @@ open SpectralPhysics.MajoranaSelfRef
 We model the spectrum of `D_F |_{J-self-conj}` as a finite list of
 positive eigenvalues; the J-self-conjugacy then *adds* their negatives.
 This captures the structural content of "every λ has its −λ" (the
-KO-dim-6 charge-conjugation pairing) in a fully formal, Tier-1 way. -/
+KO-dim-6 charge-conjugation pairing) as a DEFINITIONAL model — the
+cancellation below is `A − A`, not a computed η. -/
 
 /-- A Majorana-paired spectrum is given by its list of POSITIVE
     eigenvalues `λ₁, …, λ_n`; the full spectrum is `±λ₁, …, ±λ_n`.
@@ -119,21 +117,17 @@ noncomputable def etaSum (S : MajoranaSpectrum) (s : ℝ) : ℝ :=
   (S.positives.map (fun x => Real.rpow x (-s))).sum
     - (S.positives.map (fun x => Real.rpow x (-s))).sum
 
-/-- **Tier 1 — the structural cancellation.**
-    The Majorana η-sum is identically zero, term-by-term, for *every*
-    real regularisation parameter `s`.
-
-    Proof: by construction, `etaSum = A - A = 0`. -/
+/-- **DEFINITIONAL** — `etaSum = A - A = 0` by construction, for every `s`.
+    Not a Tier-1 evaluation of a physical η-invariant. -/
 theorem etaSum_eq_zero (S : MajoranaSpectrum) (s : ℝ) :
     S.etaSum s = 0 := by
   unfold etaSum; ring
 
-/-- **Tier 1 — the η-invariant at `s = 0`.**
-    The η-invariant is `lim_{s → 0+} etaSum s`.  Since `etaSum s = 0`
-    for every `s`, the limit is trivially 0. -/
+/-- **DEFINITIONAL** — `etaInvariant := etaSum 0`; zero by the shell above.
+    No actual `lim_{s→0+}` is taken. -/
 noncomputable def etaInvariant (S : MajoranaSpectrum) : ℝ := S.etaSum 0
 
-/-- **Tier 1.**  The Majorana η-invariant equals 0. -/
+/-- **DEFINITIONAL** — unfolds to `etaSum_eq_zero`. -/
 @[simp] theorem etaInvariant_eq_zero (S : MajoranaSpectrum) :
     S.etaInvariant = 0 := by
   unfold etaInvariant; exact etaSum_eq_zero S 0
@@ -156,28 +150,25 @@ def nuR_spectrum (Ngen : ℕ) (MR : ℝ) (h : 0 < MR) : MajoranaSpectrum :=
       rcases List.mem_replicate.mp hx with ⟨_, rfl⟩
       exact h }
 
-/-- **Tier 1.**  The η-sum on the J-self-conjugate (1,1)_0 sector
-    vanishes identically, *for every* number of generations `Ngen`,
-    every Majorana mass `MR > 0`, and every regularisation `s`. -/
+/-- **DEFINITIONAL** — instance of `etaSum_eq_zero` on `nuR_spectrum`. -/
 theorem nuR_etaSum_eq_zero (Ngen : ℕ) (MR : ℝ) (h : 0 < MR) (s : ℝ) :
     (nuR_spectrum Ngen MR h).etaSum s = 0 :=
   MajoranaSpectrum.etaSum_eq_zero _ s
 
-/-- **Tier 1.**  The η-invariant of the J-self-conjugate (1,1)_0
-    sector is identically 0 (independent of `Ngen` and `MR`). -/
+/-- **DEFINITIONAL** — instance of `etaInvariant_eq_zero`. -/
 @[simp] theorem nuR_etaInvariant_eq_zero (Ngen : ℕ) (MR : ℝ) (h : 0 < MR) :
     (nuR_spectrum Ngen MR h).etaInvariant = 0 :=
   MajoranaSpectrum.etaInvariant_eq_zero _
 
-/-- **Tier 1.**  The η-invariant of the J-self-conjugate sector is
-    NOT 8 — it is identically 0. -/
+/-- **ARITHMETIC** — `0 ≠ 8` after the definitional cancellation. Records the
+    honest negative that this model cannot deliver the integer 8. -/
 theorem nuR_etaInvariant_ne_eight
     (Ngen : ℕ) (MR : ℝ) (h : 0 < MR) :
     (nuR_spectrum Ngen MR h).etaInvariant ≠ 8 := by
   rw [nuR_etaInvariant_eq_zero]
   norm_num
 
-/-- **Tier 1.**  Even in the SM regime (3 generations), η = 0. -/
+/-- **DEFINITIONAL** — SM-regime specialisation (`Ngen = 3`). -/
 @[simp] theorem nuR_eta_SM (MR : ℝ) (h : 0 < MR) :
     (nuR_spectrum 3 MR h).etaInvariant = 0 :=
   nuR_etaInvariant_eq_zero 3 MR h
@@ -194,18 +185,14 @@ operators on odd-dim manifolds) require the spectrum to be
 **asymmetric** — i.e. *not* Majorana-paired.  KO-dim 6 + J-self-
 conjugacy enforces precisely the symmetric pairing. -/
 
-/-- **Tier 1 — robustness:** for *any* choice of regularisation `s`
-    (not only `s = 0`), the η-sum is 0.  This rules out trying to
-    extract an `8` from a non-trivial regularisation. -/
+/-- **DEFINITIONAL** — ∀-quantified re-export of `nuR_etaSum_eq_zero`. -/
 theorem nuR_etaSum_universally_zero
     (Ngen : ℕ) (MR : ℝ) (h : 0 < MR) :
     ∀ s : ℝ, (nuR_spectrum Ngen MR h).etaSum s = 0 := by
   intro s
   exact nuR_etaSum_eq_zero Ngen MR h s
 
-/-- **Tier 1.**  The η-invariant of the ν_R sector cannot equal 8
-    under any regularisation choice (because the unregularised
-    pairing already cancels). -/
+/-- **ARITHMETIC** — `0 ≠ 8` for every `s`, after the definitional cancel. -/
 theorem nuR_no_regularization_gives_eight
     (Ngen : ℕ) (MR : ℝ) (h : 0 < MR) :
     ∀ s : ℝ, (nuR_spectrum Ngen MR h).etaSum s ≠ 8 := by

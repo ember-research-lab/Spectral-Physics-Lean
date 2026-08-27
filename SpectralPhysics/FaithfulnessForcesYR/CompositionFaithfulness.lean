@@ -97,13 +97,15 @@ functions).
 def jscSpectrumList (yR : ℝ) : List ℝ :=
   List.replicate majoranaMult (yR * vR_placeholder)
 
-/-- **Tier 1.** The JSC spectrum has length `majoranaMult = 6`. -/
+/-- **ARITHMETIC** (`List.length_replicate`). Length of the constant JSC list equals
+`majoranaMult = 6`. Not a framework selection result — do not cite as Tier 1 content. -/
 theorem jscSpectrumList_length (yR : ℝ) :
     (jscSpectrumList yR).length = majoranaMult := by
   unfold jscSpectrumList
   simp [List.length_replicate]
 
-/-- **Tier 1.** Every entry of the JSC spectrum equals `y_R · v_R`. -/
+/-- **DEFINITIONAL** (`List.eq_of_mem_replicate`). Every entry of the JSC list equals
+`y_R · v_R` by construction of `List.replicate`. -/
 theorem jscSpectrumList_const (yR : ℝ) :
     ∀ x ∈ jscSpectrumList yR, x = yR * vR_placeholder := by
   intro x hx
@@ -115,19 +117,21 @@ theorem jscSpectrumList_const (yR : ℝ) :
 def compositeSpectrum (yR : ℝ) (S_vis : List ℝ) : List ℝ :=
   jscSpectrumList yR ++ S_vis
 
-/-- **Tier 1.** The composite spectrum has length `6 + |S_vis|`. -/
+/-- **ARITHMETIC** (`List.length_append`). Composite length is `6 + |S_vis|`. -/
 theorem compositeSpectrum_length (yR : ℝ) (S_vis : List ℝ) :
     (compositeSpectrum yR S_vis).length = majoranaMult + S_vis.length := by
   unfold compositeSpectrum
   rw [List.length_append, jscSpectrumList_length]
 
-/-- **Tier 1.**  The composite spectrum at `y_R₁` and `y_R₂` differ
-    on the JSC block whenever `y_R₁ ≠ y_R₂`.  In particular
-    the composite spectrum is **injective in `y_R`** — no two distinct
-    Yukawas give the same composite spectrum.
+/-- **ARITHMETIC** (list-head injectivity). The composite spectrum at `y_R₁` and
+    `y_R₂` differ on the JSC block whenever `y_R₁ ≠ y_R₂`. In particular the
+    composite list is injective in `y_R`.
 
-    Hence faithfulness in the composition is preserved at *every*
-    `y_R > 0`, not at a unique one.
+    Combined with `composition_faithful_at_every_yR`, this is the structural
+    reason Reading C is **DEGENERATE / NO** (file header): faithfulness holds
+    at *every* `y_R > 0`, not at a unique one. Do not cite as a Tier-1 / trunk
+    "Framework theorem" selection result — retarget to this file's DEGENERATE/NO
+    verdict (L59) or `STATUS.md` Reading C.
 
     Proof: the head of the composite list is the first JSC eigenvalue
     `y_R · v_R` (the JSC block has length 6, so it sits at position 0). -/
@@ -164,14 +168,13 @@ spectrum determines the eigenvalue list (this is
 `6 + |S_vis|`).  Hence **every** positive `y_R` is faithful for the
 composition — the composition is silent on `y_R`. -/
 
-/-- **Tier 1 — composition is faithful at every `y_R > 0`.**
+/-- **SHELL** — re-export of `axiom_three_faithful_at_every_yR` (Reading A).
 
-For every positive `y_R`, the composite spectrum is determined by
-its trace functional (this is the finite-dim spectral-determination
-theorem applied to the spectral data of length `6 + |S_vis|`).
-Composition therefore gives no constraint on `y_R`.  Coupled with
-`compositeSpectrum_injective_in_yR`, every positive `y_R` produces
-a distinct, *separately* faithful composite. -/
+For every positive `y_R`, finite-dim spectral determination on the JSC
+block holds; the visible piece is unused. Composition therefore gives no
+constraint on `y_R`. Coupled with `compositeSpectrum_injective_in_yR`,
+every positive `y_R` produces a distinct, separately faithful composite —
+the DEGENERATE/NO content of Reading C, not a Tier-1 selection theorem. -/
 theorem composition_faithful_at_every_yR
     (yR : ℝ) (hyR : 0 ≤ yR)
     (S_vis : List ℝ) :

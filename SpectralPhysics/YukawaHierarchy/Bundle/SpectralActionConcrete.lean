@@ -51,11 +51,12 @@ in the appropriate normalization**.
   combined with the matching condition, gives exactly the
   `y_c · dim(16) = K · c_2(P_SM)` form.
 
-## Tier classification
+## Decl classification (content-repair-2b)
 
-* **Tier 1**: the algebraic equivalences linking `K`, `mult`, and `Tr_F`.
-* **Tier 3**: the precise spectral-action expansion that gives `K` its
-  numerical value. Carried as `class CutoffNormalization`.
+* **DEFINITIONAL / ARITHMETIC**: algebraic equivalences linking `K`,
+  `mult`, and `Tr_F` (including `y_c/y_τ = 3/16` as an `iff` rewrite).
+* **SHELL**: `KIdentification` is vacuous (disclosed 2026-06-09).
+* **SHELL / Tier-3**: spectral-action expansion that would pin `K`.
 
 ## References
 
@@ -122,8 +123,8 @@ encodes the topology; the multiplicity ratio `N_c = 3` is the numerical
 coincidence that the SM has `N_gen = N_c`, *not* an extra factor in the
 matching. -/
 
-/-- **Tier 1 (clean form).**  `BridgeConjecture` normalization in its
-    cleanest form: `16 y_c = 3 y_τ` (equivalent to `y_c/y_τ = 3/16`). -/
+/-- **DEFINITIONAL / ARITHMETIC** — re-export of `normalization_iff_ratio`:
+    `16 y_c = 3 y_τ` ↔ `y_c/y_τ = 3/16`. Not a Tier-1 derivation of the ratio. -/
 theorem bridge_clean_form
     (y_c y_τ : ℝ) (hτ : y_τ ≠ 0) :
     y_c * (dimSpinor16 : ℝ) = y_τ * (physicalSM_SU3.chargeNumber : ℝ)
@@ -144,21 +145,13 @@ Spectral action's Λ⁰ Pontryagin  ↦  16 y_c = 3 K           (via gauge secto
 The two arrows correspond to the Tier-3 hypotheses
 `KIdentification` and `PontryaginCoefficientIsCharge`. -/
 
-/-- **Tier 1 — algebraic packaging.** Restates `bridge_clean_form` in
-    a form that takes the spectral-action data and normalisation as
-    arguments. The conclusion `y_c/y_τ = 3/16` comes from the `iff` in
-    `bridge_clean_form` applied to the supplied matching hypothesis;
-    the matching hypothesis itself is *not* derived here.
+/-- **SHELL / DEFINITIONAL** — restates `bridge_clean_form` with decorative
+    typeclass arguments. Conclusion `y_c/y_τ = 3/16` comes from the `iff`
+    applied to the supplied matching hypothesis; the hypothesis is not derived.
 
-    **Decorative-typeclass disclosure (2026-06-09 hygiene pass)**: the
-    instance arguments `[SpectralActionExpansion ...]` and
-    `[PontryaginCoefficientIsCharge ...]` are DECORATIVE — the proof
-    never uses them. The entire logical load is carried by the explicit
-    hypotheses `h_yτ : y_τ = K` and `h_yc_norm : y_c·16 = K·3`, which
-    are the conclusion in cross-multiplied form (same caveat as the
-    self-flag on `main_yukawa_ratio_theorem` in `SpectralAction.lean`).
-    The typeclass names suggest the spectral action supplies the
-    hypotheses; nothing here establishes that. -/
+    Decorative-typeclass disclosure (2026-06-09): `[SpectralActionExpansion …]`
+    and `[PontryaginCoefficientIsCharge …]` are unused; load is on
+    `h_yτ` / `h_yc_norm` alone. -/
 theorem yukawa_ratio_from_spectral_structure
     (data : SpectralActionData physicalSM_SU3)
     (norm : SpectralActionNormalization data)
