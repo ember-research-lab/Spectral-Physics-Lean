@@ -28,7 +28,13 @@
 import SpectralPhysics.Axioms.RelationalStructure
 import SpectralPhysics.Axioms.Laplacian
 import SpectralPhysics.Axioms.Composition
+-- Connes' relative spectrum (finite-dim gauge quotient) + Laplacian-as-matrix bridge
+import SpectralPhysics.Axioms.RelativeSpectrum
+-- Axiom 3 incl. the two-piece self-model map (ζ_L, Spec_N(A)) — 2026-09-06 form
 import SpectralPhysics.Axioms.SelfRefClosure
+-- Vacuity tests for the two-piece faithfulness predicate (triangle {0,3,3};
+-- weighted cospectral pair on which the one-piece map fails)
+import SpectralPhysics.Examples.SelfModelVacuity
 import SpectralPhysics.Algebra.CayleyDickson
 import SpectralPhysics.Algebra.Hurwitz
 import SpectralPhysics.Algebra.DoublingMap
