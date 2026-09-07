@@ -5,58 +5,42 @@ Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.SelfModelDeficitRigorous.Theorem
 import SpectralPhysics.SelfModelDeficitUnconditional.PredicateInventory
+import SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum
 import SpectralPhysics.SelfModelDeficitUnconditional.CapacityBound
 import SpectralPhysics.SelfModelDeficitUnconditional.NaturalityBound
 import SpectralPhysics.SelfModelDeficitUnconditional.MellinFunctionalDet
 
 /-!
-# v0.9.2 Headline — Self-Model Deficit reduced to three named axioms
+# v0.9.2 Headline — Self-Model Deficit, *conditional* sandwich
 
-This file proves the v0.9.2 headline result for v0.9 Proposition 23.10:
-the visible-sector functional determinant of the spectral-physics
-algebra equals 288, **modulo three named literature axioms**:
+The former `self_model_deficit_unconditional*` family took
+`IsPhysicalSpectrum V` and concluded `negZetaPrimeAtZero V = 288`.
+The only documented model of that predicate was
+`informationContent V = 288`, so those theorems were
+hypothesis=conclusion shells.
 
-* `BekensteinInformationBound` (Bekenstein 1981)
-* `NaturalityCoherence` (Mac Lane §VII, 1998)
-* `mellin_heat_kernel_finite_spectrum_log_sum` ≡ `MellinRegularization`
-  (Connes–Marcolli §1.7, 2008; Berline–Getzler–Vergne 1992)
+**2026-09-06.**  The opaque predicate and the two literature axioms
+that it guarded are deleted.  The 288 result is the existing
+sandwich from `SelfModelDeficitRigorous.Theorem` (lines 170–176 of
+`Theorem.lean`), re-exported here under `_conditional` names:
 
-Compared to v0.9.1, the v0.9.2 progress is:
+    CompletenessAtLevel2 S (negZetaPrimeAtZero V) →
+    SectorFaithfulNoDeadWeight S (negZetaPrimeAtZero V) →
+    negZetaPrimeAtZero V = 288
 
-| | v0.9.1 status | v0.9.2 status |
-|---|---|---|
-| Open Prop predicates | 2 (CompletenessAtLevel2, SectorFaithfulNoDeadWeight) | 0 |
-| Named literature axioms | 1 (Mellin) | 3 (Bekenstein + Mac Lane + Mellin) |
-| Numerical-target axioms | 0 | 0 |
-
-The reduction "two unnamed open predicates ⇒ three named literature
-axioms" is the v0.9.2 progress that v0.9.2 deferred item C.1 requests.
+The manuscript treats `−ζ̃′_vis(0) = 288` as H4, a Tier-3 posit
+(`CapacityPosit288`) — not a derivation.  This module does not
+discharge that posit.
 
 ## What is NOT claimed
 
-* This is **not** an unconditional proof.  The three named axioms are
-  genuinely literature-level open (operator-algebraic translations of
-  Bekenstein 1981 and Mac Lane 1998 to sectored finite-dim
-  C*-algebras), with 6–12 month research-project closure estimates.
-* No new numerical axiom is introduced; 288 enters via the
-  combinatorial `dim H_hid = 384 − 96` of `SectorDecomposition.lean`,
-  not as a named target.
-
-## Audit trail (updated 2026-06-12, SOUNDNESS FIX 2)
-
-`#print axioms self_model_deficit_unconditional` shows the three
-non-kernel axioms (verified 2026-06-12):
-
-* `SpectralPhysics.SelfModelDeficitUnconditional.CapacityBound.BekensteinInformationBound`
-* `SpectralPhysics.SelfModelDeficitUnconditional.NaturalityBound.NaturalityCoherence`
-* `SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum.IsPhysicalSpectrum`
-
-plus kernel `propext`, `Classical.choice`, `Quot.sound`.
-
-Two named literature axioms plus the physicality predicate symbol, no
-others.  ALL headline forms are conditional on `IsPhysicalSpectrum V`
-(the prior `∀ V` forms were provably false — see PhysicalSpectrum.lean
-and AXIOM-SOUNDNESS-SWEEP.md item 0b).
+* Not an unconditional proof.
+* Not a Bekenstein / Mac Lane discharge of the two bounds.
+* No theorem here has a hypothesis definitionally equal, or equal
+  under a documented model of an opaque predicate, to its conclusion.
+  The two sandwich hypotheses are genuine inequalities; their
+  conjunction is equivalent to the conclusion only via `le_antisymm`
+  plus combinatorial `dim H_hid = 288`.
 -/
 
 namespace SpectralPhysics.SelfModelDeficitUnconditional.UnconditionalGoal
@@ -67,90 +51,61 @@ open SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
 open SpectralPhysics.SelfModelDeficitRigorous.CompletenessBound
 open SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessBound
 open SpectralPhysics.SelfModelDeficitRigorous.Theorem
-open SpectralPhysics.SelfModelDeficitUnconditional.CapacityBound
-open SpectralPhysics.SelfModelDeficitUnconditional.NaturalityBound
-open SpectralPhysics.SelfModelDeficitUnconditional.MellinFunctionalDet
 
-/-- **v0.9.2 headline — visible-sector ζ̃'(0) equality, parameter form**.
+/-- **Conditional headline — parameter form.**
 
-For **any** sectored *-algebra `S` and **any** finite visible
-spectrum `V`, the Mellin-regularised `−ζ̃'_vis(0)` equals
-`(dim H_hid : ℝ)`.
+For any sectored `*`-algebra `S` and any finite visible spectrum `V`,
+if both named Level-2 bounds hold at `−ζ̃'_vis(0)`, then
+`−ζ̃'_vis(0) = dim H_hid`.
 
-This theorem depends on **three named literature axioms** (Bekenstein,
-Mac Lane, Connes–Marcolli) plus the standard Lean kernel axioms;
-no other axioms are introduced.
+This is `self_model_deficit_theorem` (the honest sandwich), renamed
+from the retired `_unconditional_param`. -/
+theorem self_model_deficit_conditional_param
+    (S : SectoredStarAlgebra) (V : VisibleSpectrum)
+    (h_completeness : CompletenessAtLevel2 S (negZetaPrimeAtZero V))
+    (h_sector : SectorFaithfulNoDeadWeight S (negZetaPrimeAtZero V)) :
+    negZetaPrimeAtZero V = (S.dimHid : ℝ) :=
+  self_model_deficit_theorem S V h_completeness h_sector
 
-It strengthens the v0.9.1 conditional theorem
-`self_model_deficit_theorem` by replacing the two unnamed Prop-
-hypothesis arguments with discharges from the named literature
-axioms. -/
-theorem self_model_deficit_unconditional_param
-    (V : VisibleSpectrum)
-    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
-    negZetaPrimeAtZero V = (spectralPhysicsSectoredAlgebra.dimHid : ℝ) :=
-  self_model_deficit_theorem spectralPhysicsSectoredAlgebra V
-    (completenessAtLevel2_negZetaPrimeAtZero V h_phys)
-    (sectorFaithfulNoDeadWeight_negZetaPrimeAtZero V h_phys)
-
-/-- **v0.9.2 headline — equality in `informationContent` form**. -/
-theorem self_model_deficit_unconditional_explicit_param
-    (V : VisibleSpectrum)
-    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
-    informationContent V = (spectralPhysicsSectoredAlgebra.dimHid : ℝ) := by
+/-- **Conditional headline — `informationContent` form of the
+parameter equality.** -/
+theorem self_model_deficit_conditional_explicit_param
+    (S : SectoredStarAlgebra) (V : VisibleSpectrum)
+    (h_completeness : CompletenessAtLevel2 S (negZetaPrimeAtZero V))
+    (h_sector : SectorFaithfulNoDeadWeight S (negZetaPrimeAtZero V)) :
+    informationContent V = (S.dimHid : ℝ) := by
   have h_eq := negZetaPrimeAtZero_eq V
   rw [← h_eq]
-  exact self_model_deficit_unconditional_param V h_phys
+  exact self_model_deficit_conditional_param S V h_completeness h_sector
 
-/-- **v0.9.2 headline — specialised to the spectral-physics decomposition**.
+/-- **Conditional headline — specialised to the spectral-physics
+decomposition.**
 
-At the canonical `spectralPhysicsSectoredAlgebra` (whose hidden
-dimension is the combinatorial 288), the Mellin-regularised
-`−ζ̃'_vis(0)` equals **288**.
+If both named Level-2 bounds hold at the canonical algebra
+(`dim H_hid = 288` combinatorially), then `−ζ̃'_vis(0) = 288`.
 
-This is the v0.9 Proposition 23.10 prediction
-`ζ̃'(0) = 288` reduced from **10 open cross-refs** (v0.9 lines 8464,
-8753, 8767, 9036, 9157, 9201, 9204, 14910, 16672, 16723) to **three
-named literature axioms** (Bekenstein 1981, Mac Lane 1998,
-Connes–Marcolli 2008).
-
-The verdict for v0.9.2 is **PARTIAL**: not closure, but a measurable
-reduction in the open content with explicit, cited axioms. -/
-theorem self_model_deficit_unconditional
+This is `self_model_deficit_theorem_288`, renamed from the retired
+`self_model_deficit_unconditional`.  It is **not** manuscript H4
+discharged; H4 remains the Tier-3 posit `CapacityPosit288`. -/
+theorem self_model_deficit_conditional
     (V : VisibleSpectrum)
-    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
-    negZetaPrimeAtZero V = (288 : ℝ) := by
-  have h := self_model_deficit_unconditional_param V h_phys
-  rw [h, spectralPhysicsSectoredAlgebra_dimHid]
-  norm_cast
+    (h_completeness :
+      CompletenessAtLevel2 spectralPhysicsSectoredAlgebra (negZetaPrimeAtZero V))
+    (h_sector :
+      SectorFaithfulNoDeadWeight spectralPhysicsSectoredAlgebra (negZetaPrimeAtZero V)) :
+    negZetaPrimeAtZero V = (288 : ℝ) :=
+  self_model_deficit_theorem_288 V h_completeness h_sector
 
 /-- Variant in `informationContent` form. -/
-theorem self_model_deficit_unconditional_explicit
+theorem self_model_deficit_conditional_explicit
     (V : VisibleSpectrum)
-    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
+    (h_completeness :
+      CompletenessAtLevel2 spectralPhysicsSectoredAlgebra (negZetaPrimeAtZero V))
+    (h_sector :
+      SectorFaithfulNoDeadWeight spectralPhysicsSectoredAlgebra (negZetaPrimeAtZero V)) :
     informationContent V = (288 : ℝ) := by
   have h_eq := negZetaPrimeAtZero_eq V
   rw [← h_eq]
-  exact self_model_deficit_unconditional V h_phys
-
-/-! ### `#print axioms` audit (compile-time)
-
-The following declarations explicitly check that the v0.9.2 headline
-depends only on the three named literature axioms plus kernel
-axioms.  See `STATUS.md` for the verified output text.
-
-SOUNDNESS FIX 2 (2026-06-12): all headline forms are now conditional on
-`IsPhysicalSpectrum V` — the prior unconditional-in-`V` forms asserted
-`informationContent V = 288` for ARBITRARY spectra, which is provably
-false (`informationContent` is a concrete sum).  See
-PhysicalSpectrum.lean for the falsifier record and consistency model. -/
-
--- Sanity: the parametric form factors through the predicate inventory
-example (V : VisibleSpectrum)
-    (h_phys : PhysicalSpectrum.IsPhysicalSpectrum V) :
-    (negZetaPrimeAtZero V ≤ (spectralPhysicsSectoredAlgebra.dimHid : ℝ)) ∧
-      ((spectralPhysicsSectoredAlgebra.dimHid : ℝ) ≤ negZetaPrimeAtZero V) :=
-  ⟨negZetaPrimeAtZero_le_dimHid V h_phys,
-   dimHid_le_negZetaPrimeAtZero V h_phys⟩
+  exact self_model_deficit_conditional V h_completeness h_sector
 
 end SpectralPhysics.SelfModelDeficitUnconditional.UnconditionalGoal

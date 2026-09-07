@@ -1,60 +1,61 @@
 import SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
+import Mathlib.Tactic.NormNum
 
-/-! # The physicality predicate for visible spectra
+/-! # Named posit for visible-sector capacity (manuscript H4)
 
-## Why this file exists (SOUNDNESS FIX 2, 2026-06-12)
+## Why this file exists (2026-09-06, lane A)
 
-The 2026-05-27 soundness fix restricted `BekensteinInformationBound` and
-`NaturalityCoherence` from a free `c : ℝ` to `negZetaPrimeAtZero V` — but
-left `V : VisibleSpectrum` universally quantified.  Since
-`VisibleSpectrum` is *arbitrary* finite spectral data and
-`negZetaPrimeAtZero_eq : negZetaPrimeAtZero V = informationContent V` is a
-theorem with `informationContent` a concrete sum, `NaturalityCoherence`
-alone still derived `False`: the single-mode spectrum with `y = 1` has
-`informationContent = 0`, against the asserted `288 ≤ 0`.  (Machine-checked
-falsifier 2026-06-12: `still_inconsistent : False` with axiom set
-`[propext, Classical.choice, Quot.sound, NaturalityCoherence]`, no
-`sorryAx`; recorded in `results/AXIOM-SOUNDNESS-SWEEP.md`.)
+`IsPhysicalSpectrum : VisibleSpectrum → Prop` was an **undefined
+predicate symbol**.  The only documented consistency model was
+`IsPhysicalSpectrum V := (informationContent V = 288)`.  Under that
+model the 2026-06-12 headline theorems were hypothesis=conclusion
+shells: the "physicality" hypothesis *was* the 288 conclusion.
 
-The physics never claimed the bounds for arbitrary spectra: the
-manuscript's Steps 3–4 (completeness / sector-faithfulness, v0.9 §8458–8468)
-apply to the spectrum *realized at the SCSE fixed point*.  This file names
-that restriction.
+The manuscript (`thm:ember-reconstruction` H4) treats
+`−ζ̃′_vis(0) = 288` as a **Tier-3 POSIT**, not a derivation.  This
+file names that posit.  It is **not** an axiom and is **not** proved
+for the SM visible spectrum.
 
-## The predicate
+## What replaced the opaque predicate
 
-`IsPhysicalSpectrum V` is an **undefined predicate symbol** — no
-introduction rule is (or may be) provided in this development.  It marks
-the hypothesis "V is the visible spectrum realized at the self-consistent
-fixed point", whose formal characterization is exactly the open
-operator-algebraic content of v0.9.2 deferred item C.1.
+The honest 288 sandwich already lives at
+`SelfModelDeficitRigorous.Theorem.self_model_deficit_theorem_288`:
 
-## Consistency of the resulting axiom set
+* `CompletenessAtLevel2 S (negZetaPrimeAtZero V)`
+* `SectorFaithfulNoDeadWeight S (negZetaPrimeAtZero V)`
+* `⇒ negZetaPrimeAtZero V = 288`
 
-The set `{IsPhysicalSpectrum, BekensteinInformationBound,
-NaturalityCoherence}` (the latter two conditional on the former) is
-satisfiable relative to the ambient theory: interpret
-`IsPhysicalSpectrum V := (informationContent V = 288)`.  Under this
-interpretation both conditional axioms are theorems (via
-`negZetaPrimeAtZero_eq`), and the interpreting class is nonempty —
-`witnessSpectrum` below has `informationContent = 288`.  No falsifying
-instantiation exists because the counterexample spectra cannot be proven
-physical.
+Those two hypotheses are jointly equivalent to the conclusion via
+`le_antisymm` plus the combinatorial `dim H_hid = 288`; they are
+**not** definitionally the conclusion, and they are **not** the
+conclusion under a hidden model of an opaque predicate.
+
+`CapacityPosit288` below is the manuscript H4 posit as a *named
+definition*, so it can be assumed or refuted per spectrum.  It is
+not discharged anywhere in this repository.
 -/
 
 namespace SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum
 
 open SpectralPhysics.SelfModelDeficitRigorous.SpectralZeta
 
-/-- "V is the visible spectrum realized at the SCSE fixed point."
-Undefined predicate symbol; see module docstring.  The two capacity
-axioms (`BekensteinInformationBound`, `NaturalityCoherence`) are
-conditional on this predicate — that conditionality IS the honest
-formal residue of the manuscript's Steps 3–4. -/
-axiom IsPhysicalSpectrum : VisibleSpectrum → Prop
+/-- **Manuscript H4, Tier 3 posit — NOT derived.**
 
-/-- Nonemptiness witness for the consistency model: the single-mode
-spectrum with `y = e^{−288}` has information content exactly 288. -/
+`−ζ̃′_vis(0) = 288` is the reconstruction-capacity posit of
+`thm:ember-reconstruction` H4.  This definition names it.  It is
+not an axiom, not a theorem for the SM visible spectrum, and not
+discharged from Bekenstein / Mac Lane / Mellin.
+
+A theorem concluding `negZetaPrimeAtZero V = 288` from
+`CapacityPosit288 V` would be a hypothesis=conclusion shell; do not
+write one.  The honest 288 result is the two-sided sandwich
+`self_model_deficit_theorem_288`. -/
+def CapacityPosit288 (V : VisibleSpectrum) : Prop :=
+  negZetaPrimeAtZero V = (288 : ℝ)
+
+/-- Nonemptiness witness for the *numeric* 288 on a toy one-mode
+spectrum (`y = e^{−288}`).  This is **not** the SM visible spectrum
+and does **not** derive manuscript H4. -/
 noncomputable def witnessSpectrum : VisibleSpectrum where
   numModes := 1
   mult := fun _ => 1
@@ -64,5 +65,32 @@ noncomputable def witnessSpectrum : VisibleSpectrum where
 theorem witnessSpectrum_content :
     informationContent witnessSpectrum = 288 := by
   simp [informationContent, witnessSpectrum, Real.log_exp]
+
+/-- The posit holds of the toy one-mode spectrum, via the Mellin
+alias `negZetaPrimeAtZero = informationContent`.  Still not H4 for
+the SM spectrum. -/
+theorem witnessSpectrum_CapacityPosit288 :
+    CapacityPosit288 witnessSpectrum := by
+  unfold CapacityPosit288
+  rw [negZetaPrimeAtZero_eq]
+  exact witnessSpectrum_content
+
+/-- Single-mode `y = 1` spectrum: `informationContent = 0`.
+Admissible as a `VisibleSpectrum` (no physicality filter). -/
+noncomputable def counterexampleSpectrum : VisibleSpectrum where
+  numModes := 1
+  mult := fun _ => 1
+  yukawa := fun _ => 1
+  yukawa_pos := fun _ => one_pos
+
+theorem counterexampleSpectrum_content :
+    informationContent counterexampleSpectrum = 0 := by
+  simp [informationContent, counterexampleSpectrum, Real.log_one]
+
+theorem counterexampleSpectrum_not_CapacityPosit288 :
+    ¬ CapacityPosit288 counterexampleSpectrum := by
+  unfold CapacityPosit288
+  rw [negZetaPrimeAtZero_eq, counterexampleSpectrum_content]
+  norm_num
 
 end SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum

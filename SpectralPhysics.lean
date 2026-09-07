@@ -150,11 +150,11 @@ import SpectralPhysics.SelfModelDeficitRigorous.Theorem
 -- guarded by IsSelfModeledChannel.  See FaithfulnessSaturation.lean header.
 import SpectralPhysics.SelfModelDeficitRigorous.FaithfulnessSaturation
 
--- ═══ SELF-MODEL DEFICIT — UNCONDITIONAL (v0.9.2 C.1 dispatch) ═══
--- Reduces the v0.9.1 two open Prop-predicates to three named literature
--- axioms (Bekenstein 1981, Mac Lane 1998, Connes–Marcolli 2008).
--- Verdict: PARTIAL — 2 open predicates → 0 open predicates + 2 more
--- named axioms.  See SelfModelDeficitUnconditional/STATUS.md.
+-- ═══ SELF-MODEL DEFICIT — CONDITIONAL SANDWICH (v0.9.2 C.1) ═══
+-- CompletenessAtLevel2 + SectorFaithfulNoDeadWeight ⇒ 288.
+-- IsPhysicalSpectrum / Bekenstein / Naturality axioms deleted 2026-09-06
+-- (opaque-predicate shells). H4 is CapacityPosit288, Tier-3 posit, not derived.
+-- See SelfModelDeficitUnconditional/STATUS.md.
 import SpectralPhysics.SelfModelDeficitUnconditional.PredicateInventory
 import SpectralPhysics.SelfModelDeficitUnconditional.PhysicalSpectrum
 import SpectralPhysics.SelfModelDeficitUnconditional.CapacityBound

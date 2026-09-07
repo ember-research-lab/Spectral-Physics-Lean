@@ -81,7 +81,7 @@ were merged via three staging branches (`v0.9.2-merge-staging`,
 
 | Module | v0.9.2 § | Verdict | What's new |
 |--------|----------|---------|------------|
-| `SelfModelDeficitUnconditional` | C.1 | **PARTIAL** | `self_model_deficit_unconditional : ∀ V, negZetaPrimeAtZero V = 288` — hypothesis-free now; v0.9.1's two caller-supplied predicates reduced to three named lit axioms (Bekenstein 1981, Mac Lane 1998, Connes-Marcolli 2008) |
+| `SelfModelDeficitUnconditional` | C.1 | **PARTIAL** | `self_model_deficit_conditional` — sandwich `CompletenessAtLevel2` + `SectorFaithfulNoDeadWeight` ⇒ `negZetaPrimeAtZero V = 288` (same as `self_model_deficit_theorem_288`). Manuscript H4 (`CapacityPosit288`) is a Tier-3 posit, not derived. Prior `_unconditional` / `IsPhysicalSpectrum` forms were hypothesis=conclusion shells; retired 2026-09-06. |
 | `KSRCompactness` | G.2 | **CONDITIONAL** | `ksr_compact` from one named axiom (Rellich 1930, Kondrachov 1945, Simon 2005, Reed-Simon Vol. IV §XIII.5); Mathlib search documented (no Schatten infrastructure yet) |
 | `CompositionBroaderUniqueness` | A.1 | **PARTIAL — 0 new axioms** | Four non-Kasparov candidates falsified Tier-1 (free-Voiculescu, mult-free, monoidal non-Kasparov, boxed); uncountable case identified as the named Nica-Speicher 2006 research program |
 | `F2FromSpectralAction` | D.3 | **CONDITIONAL** | `f2_identification` — recovers `Cosmology.f_2_pos` via Chamseddine-Connes 1997 + Vassilevich 2003 a₂ coefficient; specific value 48·e⁶ remains open |
@@ -141,7 +141,7 @@ Core spectral apparatus:
 - **Numerical predictions** — `α_s = π(2+φ)/96` (0.4%), Cabibbo `(150 − 23√5)/440` (0.12%), `T_c/v` (0.6%), `θ_13`, `δ_CP` (`Predictions/`).
 - **Self-reference** — Gödel trace; `ε̄ ≥ I·C_min/τ` (`SelfRef/`).
 - **YukawaHierarchy** — 16-file SO(10) instanton-counting scaffold, anomaly cancellation for any ν (`YukawaHierarchy/`).
-- **v0.9.2 unconditional headlines** — `dixon_order_one_fails`, `dixon_pd_obstruction`, `self_model_deficit_unconditional`, `RM_does_not_force_division_algebras_headline`, `broader_uniqueness_among_named_candidates`, `framework_GJ_symbolic` — all on Lean kernel axioms only.
+- **v0.9.2 unconditional headlines** — `dixon_order_one_fails`, `dixon_pd_obstruction`, `RM_does_not_force_division_algebras_headline`, `broader_uniqueness_among_named_candidates`, `framework_GJ_symbolic` — all on Lean kernel axioms only. (`self_model_deficit_unconditional` retired 2026-09-06; the 288 result is the *conditional* sandwich `self_model_deficit_conditional` / `self_model_deficit_theorem_288`.)
 
 ### Tier 2 — Conditional on named, standard, unformalized results
 
