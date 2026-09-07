@@ -69,6 +69,7 @@ used to live here, cited as the Connes 1994 §VI.3 / Bochniak–Sitarz reduction
 (`zero_map_orderOne` below), so the axiom forced `ZerothOrder LeftMult RightMult`, which
 `not_zerothOrder_canonical_dixon` refutes. Hostile witness compiled to `False`:
 `spectral_physics/lean-content-audit-2026-08-18/DixonU8False.lean` (manuscript repo).
+Verified 2026-09-06: `hostile/U8-DixonU8False.lean` unknown-identifier.
 
 The published reduction is a statement about genuine Dirac operators inside the full
 real-spectral-triple axiomatics; the predicate `OrderOne` here carries none of that structure,
