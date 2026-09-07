@@ -136,7 +136,12 @@ not a content repair, and is left OPEN. The physical second law for this
 framework therefore has **no Lean artifact**: do not cite `Thermo/FourLaws`
 for entropy monotonicity. What this file still contains is the
 Gibbs-variational, first-law and third-law material listed in the module
-header. -/
+header.
+
+Verified 2026-09-06 (lane B, U9): `hostile/U9-UnsoundCheck.lean` is
+`Unknown identifier second_law_entropy_increase`. Heat-flow content was
+not added (`h_heat_flow : True` cannot be repaired without new math).
+Entropy monotonicity remains **OPEN**. -/
 
 /-- **Third Law**: As beta -> infinity, the system concentrates on the
 ground state. For a connected structure (unique ground state, g_0 = 1),
