@@ -41,3 +41,29 @@ QFT/Yang–Mills** (manuscript honest) — confirmed clean. Keep green; guard wi
 
 ## Sequencing
 P0 → then P1 ∥ P2; P3 is maintenance. P0 is the gate.
+
+---
+
+## P4 — Obligations queued from research passes (append-only; newest first)
+
+Forward obligations named by a research pass and gated by Aaron. Distinct from P0–P3, which
+remediate existing defects. Format: `obligation — shape — why it is worth Lean time — source`.
+
+### 2026-08-26 — birth-of-geometry × wave-trace keystone decomposition (Aaron D5)
+Source: `~/ember-review/artifacts-2026-08-24/BOG-WAVETRACE-THEOREMS-2026-08-25.md` §5; review
+`~/ember-review/REVIEW-2026-08-25-bog-wavetrace-keystone.md`.
+
+- **C5(a)–(e) — PRIORITY.** Finite-dimensional Clifford algebra + parity (`Mathlib.LinearAlgebra.
+  CliffordAlgebra`, `Matrix.trace`). The first sub-principal wave invariant of the framework
+  operator is **even** w.r.t. `γ₅ ⊗ γ_F`, so the unweighted trace is parity-blind at that order.
+  *Why:* it is the cheapest item on this list **and** it converts the odd-selector statement from
+  a hunch into a theorem — the named object the axiom-3 / arrow / Yukawa threads all converge on.
+- C3(a) lattice characterization; C3(b) two-sided bound — finite sums.
+- C4(a) multiplicativity + triad value; C4(b) gradient formula and critical set — entropy gradient.
+- C4(c) shift-freedom ODE.
+- C2(b) — the finite-dimensional counterexamples to ζ-factorization; trivial to formalize as
+  witnesses. (The manuscript statement they refute was corrected 2026-08-26.)
+
+**Not Lean targets:** C1(b) is T1 *modulo a citation* (Hörmander 1968, scalar-phase FIO), not a
+formalization gap. C1(b′) on general M is the one literature-conditional item (nonzero-period
+Dirac trace formula, Jakobson–Strohmaier) — it stays a citation obligation, not a proof target.
