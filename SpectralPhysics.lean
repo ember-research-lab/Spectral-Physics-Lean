@@ -310,8 +310,8 @@ import SpectralPhysics.Kappa2FromSpectrum.LightMassesContribution
 import SpectralPhysics.Kappa2FromSpectrum.Bracket
 import SpectralPhysics.Kappa2FromSpectrum.Verdict
 -- ═══ K_SR COMPACTNESS (v0.9.2 G.2 — v0.9 lines 16759, 11082(a)) ═══
--- Conditional on 1 named axiom (Rellich 1930, Kondrachov 1945, Simon 2005,
--- Reed-Simon Vol. IV).  See KSRCompactness/Verdict.lean and STATUS.md.
+-- Compactness is a named hypothesis on [TopologicalSpace KSR]; the
+-- Rellich–Kondrachov axiom and the ⊥ instance are deleted (U1).
 import SpectralPhysics.KSRCompactness.Verdict
 -- ═══ f_2 FROM SPECTRAL ACTION (v0.9.2 D.3 — v0.9 line 14742) ═══
 -- Conditional on 2 named literature predicates (Chamseddine-Connes 1997,

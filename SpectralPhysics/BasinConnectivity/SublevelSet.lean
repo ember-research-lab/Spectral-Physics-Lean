@@ -60,6 +60,8 @@ namespace SpectralPhysics.BasinConnectivity
 
 open SpectralPhysics.KSRCompactness
 
+variable [TopologicalSpace KSR]
+
 /-! ## The SAGF functional carrier
 
 Per v0.9 §47, the SAGF functional `F : 𝒦_SR → ℝ` is the

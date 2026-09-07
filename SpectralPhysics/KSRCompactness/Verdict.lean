@@ -158,6 +158,8 @@ noncomputable section
 
 namespace SpectralPhysics.KSRCompactness
 
+variable [TopologicalSpace KSR]
+
 /-! ## Headline verdict (type-checked)
 
 A single re-export that names this module's conditional closure

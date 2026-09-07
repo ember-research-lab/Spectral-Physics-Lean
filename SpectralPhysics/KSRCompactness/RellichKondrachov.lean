@@ -75,11 +75,12 @@ whatever topology eventually supplies the trace-norm structure), THEN
 This is the `REPAIRED-SOUND` class: axiom → hypothesis, no physics
 added, no new axiom introduced.
 
-The placeholder `instance : TopologicalSpace KSR := ⊥` below is
-**retained** (a discrete topology is a legitimate, if degenerate,
-topological space — declaring the instance is not itself unsound).
-What was unsound was axiomatising compactness *for* that topology;
-that axiom is gone.
+The placeholder `instance : TopologicalSpace KSR := ⊥` is **removed**
+(2026-09-06 lane B). Compactness is a named hypothesis on a caller-
+supplied topology (`variable [TopologicalSpace KSR]` in
+`KSRCompactnessThm.lean` and dependents). Instantiating that
+parameter with `⊥` cannot discharge compactness of an infinite
+Sobolev class.
 
 ## Anti-pattern check (audit discipline, historical — the axiom this
 section describes no longer exists; kept for provenance)
@@ -116,27 +117,15 @@ open Set
 
 namespace SpectralPhysics.KSRCompactness
 
-/-! ## REPAIRED-SOUND: no axiom here anymore
+/-! ## REPAIRED-SOUND: no axiom here anymore; ⊥ instance removed 2026-09-06
 
 `rellich_kondrachov_trace_class` used to be declared here as an
-`axiom`.  It is **deleted**: see the "REPAIRED-SOUND" note in the
-module docstring above for why (it derives `False` combined with the
-discrete `TopologicalSpace KSR` instance below).  Its conclusion is
-now threaded as an explicit hypothesis parameter on the consuming
-theorems in `KSRCompactnessThm.lean`, `Verdict.lean`, and
-`BasinConnectivity/Verdict.lean`.  A topology on `KSR` is still needed
-for `IsCompact`/`IsPathConnected` to typecheck at all in this and
-downstream files, so the placeholder discrete instance is kept (it is
-not itself the source of the inconsistency — a discrete topology is a
-legitimate topological space; the false claim was that *every*
-Sobolev sublevel set is compact under it). -/
-
-/-- Discrete topology on `KSR` (placeholder; refinement to trace-norm
-topology pending Mathlib's Schatten-1 ideal infrastructure). Kept
-after the U1 repair (2026-08-18): declaring this instance is not
-itself unsound, only the deleted `rellich_kondrachov_trace_class`
-axiom which claimed compactness held under it universally. -/
-instance : TopologicalSpace KSR := ⊥
+`axiom`.  It is **deleted** (2026-08-18): it derived `False` combined
+with `instance : TopologicalSpace KSR := ⊥`. Compactness is now an
+explicit hypothesis on consuming theorems. The discrete instance is
+**removed** (2026-09-06 lane B, U1): topology is a named instance
+parameter `[TopologicalSpace KSR]` on those theorems, not a global
+`⊥`. -/
 
 /-! ## Auxiliary corollary
 

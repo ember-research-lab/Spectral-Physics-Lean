@@ -1,0 +1,22 @@
+'SpectralPhysics.KSRCompactness.ksr_compact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.KSRCompactness.ksr_subset_compact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.KSRCompactness.ksr_compact_inter_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.KSRCompactness.ksr_invariant_sobolev_compact' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.KSRCompactness.KSR_compactness_verdict' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.KSRCompactness.KSR_compactness_verdict_constructive' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.BasinConnectivity.coercive_sublevels_compact' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.BasinConnectivity.v092_G3_verdict' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ morse_two_minima_disconnect,
+ palais_smale_morse_basin_closure]
+'SpectralPhysics.BasinConnectivity.SAGF_basin_closure_from_hypotheses' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ palais_smale_morse_basin_closure]

@@ -65,6 +65,8 @@ namespace SpectralPhysics.BasinConnectivity
 
 open SpectralPhysics.KSRCompactness
 
+variable [TopologicalSpace KSR]
+
 /-! ## The headline open predicate -/
 
 /-- **Basin connectivity** (v0.9 line 16763, open content).
