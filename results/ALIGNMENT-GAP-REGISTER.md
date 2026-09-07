@@ -157,6 +157,12 @@ the Lean to match any of them** — matching re-introduces the defect.
    both `sorry` (sorryAx); `circulant_implies_koide` is *false as written* (no `ε²=2`); manuscript Remark
    11872 concedes `ε=√2` is a fit; the status claim "`norm_num` discharges it" is false. **Highest priority.**
    Revise to: K=2/3 is conditional on the `ε²=2` (Cayley-Dickson) input — Tier 2, and the Lean is unproved.
+   **UPDATE 2026-08-27**: `circulant_implies_koide` is now proved sorry-free (kernel-only axioms) as the
+   *chamber-restricted* conditional, and the positivity hypotheses have been removed entirely by
+   `koide_signed_general` (`K = 1/3 + ε²/6` for all `θ`, all `ε`, `M > 0`) with corollary `koide_signed`
+   (`ε² = 2 ⟹ K = 2/3`) — the manuscript's `thm:koide` repair: the self-reference operator is the *Hermitian
+   circulant root operator*, whose eigenvalues are the SIGNED `√mₖ`, so no branch selection is needed. The
+   `ε² = 2` input remains an empirical fit (Tier 2) — that part of the gap is unchanged.
 2. **κ₂ / CC magnitude tuned to `Λ_obs`** — `κ₂_hid`/`ξ_R` solved backward from `2·ln(Λ_c²/Λ_obs)`; the CC
    *magnitude* is not a prediction. **OP21 is mislabeled** as a single A-type formalization gap — split it
    (visible cumulant + means = A; hidden cumulant = B-circular).

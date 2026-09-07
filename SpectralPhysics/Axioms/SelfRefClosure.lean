@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.Axioms.Laplacian
+import SpectralPhysics.Axioms.RelativeSpectrum
 import Mathlib.Algebra.Star.Basic
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.LinearAlgebra.TensorProduct.Basic
@@ -27,12 +28,35 @@ import Mathlib.Order.Interval.Finset.Fin
   5. Stability above the complexity threshold I*
   6. Instance: Spectral physics (trace on observation algebra)
   7. Abstract interface for external instances (Hodge, etc.)
+  8. **Axiom 3 in the manuscript's 2026-09-06 form (Spectral Faithfulness):**
+     the TWO-PIECE self-model map
+       M : (A, H, L) ↦ (ζ_L, Spec_N(A))
+     and the faithfulness predicate "M admits a reconstruction operator R
+     with R ∘ M = id" (`SelfModelMap.SpectrallyFaithful`). Finite
+     dimensions: ζ_L = the eigenvalue list (`zetaPiece`), Spec_N(A) = the
+     gauge class of the eigenbasis-to-A-basis unitary
+     (`Axioms/RelativeSpectrum.lean`). The reconstruction is a theorem
+     (`reconstruct_selfModel`, T1: the matrix spectral theorem).
 
-  Dependencies: Axioms/RelationalStructure, Axioms/Laplacian
+  STATUS OF SECTIONS 1–7 (2026-09-06): these encode the EARLIER, trace-state
+  statement of Axiom 3 (three conditions on the trace as a state on A_obs)
+  and the ONE-PIECE first component only: `SpectralData n` is the sorted
+  eigenvalue list = ζ_L in finite dimensions, and `SpectralDetermination`
+  says that the trace functional determines that list. The manuscript
+  (`ax:self-ref`, `def:self-model-map-axioms-stub`) now states the axiom
+  on the pair (ζ_L, Spec_N(A)); Section 8 is the authoritative encoding.
+  Sections 1–7 are kept because downstream modules import them; they are
+  not deleted or re-derived here.
+
+  Dependencies: Axioms/RelationalStructure, Axioms/Laplacian,
+                Axioms/RelativeSpectrum
 
   References:
     Manuscript v0.8, lines 285-304 (Axiom 3)
     Manuscript v0.8, lines 5485-5491 (Algebraic closure definition)
+    Manuscript main c558e6e (2026-09-06): §"Axiom 3: Spectral Faithfulness",
+      Definition def:self-model-map-axioms-stub, Axiom ax:self-ref
+    Connes, "A unitary invariant in Riemannian geometry", arXiv:0810.2091, Def 2.5
 -/
 
 -- ============================================================================
@@ -75,7 +99,10 @@ class StarAlgebraWithState (A : Type*) extends Mul A, Add A, Star A, Zero A wher
   - Spectrum recovery: SpectralDetermination
 -/
 
-/-- The spectral data of a self-adjoint operator. -/
+/-- The spectral data of a self-adjoint operator.
+
+2026-09-06: this is the FIRST PIECE ONLY of the self-model map (ζ_L as a sorted
+eigenvalue list). The two-piece map lives in Section 8 (`SelfModelMap.selfModel`). -/
 structure SpectralData (n : ℕ) where
   /-- Eigenvalues, indexed -/
   eigenvalues : Fin n → ℝ
@@ -97,6 +124,13 @@ def spectralTrace (S : SpectralData n) (g : ℝ → ℝ) : ℝ :=
 
   Finite dim: theorem (Newton's identities).
   Infinite dim: genuine constraint (forces compact resolvent).
+
+  2026-09-06: this is a ONE-PIECE statement (trace data ⇒ eigenvalue list). It
+  says nothing about the relative spectrum; in particular it does NOT assert
+  that the eigenvalue list determines the structure — that assertion is
+  false (cospectral pairs; see `Examples/SelfModelVacuity.lean`,
+  `not_zetaFaithful_pair`). The faithfulness of Axiom 3 is
+  `SelfModelMap.SpectrallyFaithful` (Section 8).
 -/
 class SpectralDetermination (S : SpectralData n) : Prop where
   determines : ∀ S' : SpectralData n,
@@ -332,3 +366,175 @@ structure CompletenessInstance where
   metaObs : MetaObservable Algebra
   isClosed : @AlgebraicallyClosed Algebra metaObs
   isFaithful : @TraceFaithful Algebra algState
+
+-- ============================================================================
+-- SECTION 8: AXIOM 3 (2026-09-06 FORM) — THE TWO-PIECE SELF-MODEL MAP
+-- ============================================================================
+
+/-
+  Manuscript (main c558e6e, `def:self-model-map-axioms-stub`, `ax:self-ref`):
+
+    M : (A, H, L) ↦ (ζ_L, Spec_N(A))
+
+  A physical relational structure is one whose self-model map admits a
+  reconstruction operator R with R ∘ M = id.
+
+  Finite-dimensional encoding (matches `RelationalStructure`: X finite):
+    * A finite spectral triple is a Hermitian matrix L in the labelled
+      A-basis δ̂_x (`FiniteTriple X`); a relational structure gives one via
+      `RelationalStructure.laplacianMatrix` (Axioms/RelativeSpectrum.lean).
+    * Piece 1, `zetaPiece T = T.2.eigenvalues : X → ℝ` — mathlib's eigenvalue
+      list of the Hermitian matrix (sorted decreasingly and transported along a
+      fixed enumeration of X, so equal lists ⇔ equal charpoly ⇔ equal spectrum
+      with multiplicity: `Matrix.IsHermitian.eigenvalues_eq_eigenvalues_iff`).
+      In finite dimensions this IS ζ_L: ζ_L(s) = Σ λ_k^{-s} is determined by
+      and determines the list.
+    * Piece 2, `⟦eigenChart T⟧ : RelativeSpectrum X` — the gauge class of
+      mathlib's eigenvector unitary, labelled by the eigenvalues.
+    * `reconstruct` : (ζ, Spec_N) ↦ Σ_t t · f_t = L. `reconstruct_selfModel`
+      (T1) is the matrix spectral theorem; hence `SpectrallyFaithful` holds
+      for every class of finite triples, while the one-piece predicate
+      `ZetaFaithful` fails on any cospectral pair (`not_zetaFaithful_of_cospectral`).
+
+  Not formalised here: infinite dimensions, meromorphic ζ, Connes'
+  reconstruction theorem on manifolds, and clause (ii) (naturality) of
+  `ax:self-ref`.
+-/
+
+open Matrix
+
+noncomputable section
+
+namespace SelfModelMap
+
+variable {X : Type*} [Fintype X] [DecidableEq X]
+
+/-- The two-piece self-model `(ζ_L, Spec_N(A))` of a finite spectral triple. -/
+@[ext]
+structure SelfModel (X : Type*) [Fintype X] [DecidableEq X] where
+  /-- Piece 1: the eigenvalue list (finite ζ_L). -/
+  zeta : X → ℝ
+  /-- Piece 2: the relative spectrum (gauge class of the eigenbasis chart). -/
+  relSpec : RelativeSpectrum X
+
+/-- A finite spectral triple `(A, H, L)` with `A = C(X)` diagonal in the labelled
+basis of `H = ℂ^X`: the data is the Hermitian matrix `L`. -/
+abbrev FiniteTriple (X : Type*) [Fintype X] [DecidableEq X] := {L : Matrix X X ℂ // L.IsHermitian}
+
+instance : Inhabited (FiniteTriple X) := ⟨⟨0, Matrix.isHermitian_zero⟩⟩
+
+/-- The eigen-chart of a finite triple: mathlib's eigenvalue labelling and
+eigenvector unitary (a choice; its gauge class is canonical). -/
+def eigenChart (T : FiniteTriple X) : EigenChart X :=
+  ⟨T.2.eigenvalues, (T.2.eigenvectorUnitary : Matrix X X ℂ), T.2.eigenvectorUnitary.2⟩
+
+/-- **The self-model map** `M : (A, H, L) ↦ (ζ_L, Spec_N(A))`. -/
+def selfModel (T : FiniteTriple X) : SelfModel X :=
+  ⟨T.2.eigenvalues, ⟦eigenChart T⟧⟩
+
+/-- The ONE-PIECE map `L ↦ ζ_L` (eigenvalue list only) — the form superseded on
+2026-09-06; kept as the object the vacuity tests refute. -/
+def zetaPiece (T : FiniteTriple X) : X → ℝ := T.2.eigenvalues
+
+/-- Reconstruction from the two pieces: `L = Σ_{t ∈ spectrum} t · f_t`, with `f_t`
+the eigenprojections carried by the relative spectrum. -/
+def reconstruct (m : SelfModel X) : Matrix X X ℂ :=
+  ∑ t ∈ Finset.univ.image m.zeta, (t : ℂ) • m.relSpec.proj t
+
+/-- [T1] `R ∘ M = id` on finite triples (matrix spectral theorem). -/
+theorem reconstruct_selfModel (T : FiniteTriple X) : reconstruct (selfModel T) = T.1 := by
+  set U : Matrix X X ℂ := (T.2.eigenvectorUnitary : Matrix X X ℂ) with hU
+  have key : ∑ t ∈ Finset.univ.image T.2.eigenvalues, (t : ℂ) • indicator T.2.eigenvalues t
+      = diagonal (RCLike.ofReal ∘ T.2.eigenvalues) := by
+    ext i j
+    simp only [Matrix.sum_apply, Matrix.smul_apply, indicator, diagonal_apply, smul_eq_mul]
+    by_cases hij : i = j
+    · subst hij
+      simp only [if_true, mul_ite, mul_one, mul_zero]
+      rw [Finset.sum_ite_eq]
+      simp
+    · simp [hij]
+  calc reconstruct (selfModel T)
+      = ∑ t ∈ Finset.univ.image T.2.eigenvalues,
+          (t : ℂ) • (U * indicator T.2.eigenvalues t * star U) := rfl
+    _ = U * (∑ t ∈ Finset.univ.image T.2.eigenvalues, (t : ℂ) • indicator T.2.eigenvalues t)
+          * star U := by
+        rw [Finset.mul_sum, Finset.sum_mul]
+        refine Finset.sum_congr rfl fun t _ => ?_
+        rw [Matrix.mul_smul, Matrix.smul_mul]
+    _ = U * diagonal (RCLike.ofReal ∘ T.2.eigenvalues) * star U := by rw [key]
+    _ = T.1 := by
+        conv_rhs => rw [T.2.spectral_theorem]
+        rfl
+
+/-- "The map `M` admits a reconstruction operator on the class `𝒞`":
+`∃ R, ∀ T ∈ 𝒞, R (M T) = T` — clause (i) of `ax:self-ref`. -/
+def AdmitsReconstruction {β : Type*} (M : FiniteTriple X → β) (𝒞 : Set (FiniteTriple X)) : Prop :=
+  ∃ R : β → FiniteTriple X, ∀ T ∈ 𝒞, R (M T) = T
+
+/-- [T1] Admitting a reconstruction operator on `𝒞` is exactly injectivity on `𝒞`. -/
+theorem admitsReconstruction_iff_injOn {β : Type*} (M : FiniteTriple X → β)
+    (𝒞 : Set (FiniteTriple X)) : AdmitsReconstruction M 𝒞 ↔ Set.InjOn M 𝒞 := by
+  constructor
+  · rintro ⟨R, hR⟩ a ha b hb hab
+    rw [← hR a ha, ← hR b hb, hab]
+  · intro hinj
+    exact ⟨Function.invFunOn M 𝒞, fun T hT => hinj.leftInvOn_invFunOn hT⟩
+
+/-- **Axiom 3, Spectral Faithfulness (clause (i))**, finite form: the two-piece
+self-model map admits a reconstruction operator on the class `𝒞`. -/
+def SpectrallyFaithful (𝒞 : Set (FiniteTriple X)) : Prop := AdmitsReconstruction selfModel 𝒞
+
+/-- The one-piece (ζ-only) faithfulness predicate — the superseded form. -/
+def ZetaFaithful (𝒞 : Set (FiniteTriple X)) : Prop := AdmitsReconstruction zetaPiece 𝒞
+
+/-- The reconstruction operator `R`, as a map into finite triples. -/
+def reconstructionOperator (m : SelfModel X) : FiniteTriple X :=
+  if h : (reconstruct m).IsHermitian then ⟨reconstruct m, h⟩ else default
+
+theorem reconstructionOperator_selfModel (T : FiniteTriple X) :
+    reconstructionOperator (selfModel T) = T := by
+  have h : (reconstruct (selfModel T)).IsHermitian := by rw [reconstruct_selfModel]; exact T.2
+  unfold reconstructionOperator
+  rw [dif_pos h]
+  exact Subtype.ext (reconstruct_selfModel T)
+
+/-- [T1] Every class of finite triples is spectrally faithful for the two-piece map:
+in finite dimensions Axiom 3 (i) is a theorem, not a constraint. -/
+theorem spectrallyFaithful (𝒞 : Set (FiniteTriple X)) : SpectrallyFaithful 𝒞 :=
+  ⟨reconstructionOperator, fun T _ => reconstructionOperator_selfModel T⟩
+
+/-- [T1] The two-piece self-model map is injective. -/
+theorem selfModel_injective : Function.Injective (selfModel (X := X)) := fun a b h => by
+  have := congrArg reconstructionOperator h
+  rwa [reconstructionOperator_selfModel, reconstructionOperator_selfModel] at this
+
+/-- [T1] The one-piece map is NOT faithful on any cospectral pair of distinct triples. -/
+theorem not_zetaFaithful_of_cospectral {T T' : FiniteTriple X} (hne : T ≠ T')
+    (hz : zetaPiece T = zetaPiece T') : ¬ ZetaFaithful {T, T'} := by
+  rintro ⟨R, hR⟩
+  apply hne
+  rw [← hR T (by simp), ← hR T' (by simp), hz]
+
+/-- [T1] On a cospectral pair of distinct triples the SECOND piece is what separates. -/
+theorem relSpec_ne_of_cospectral {T T' : FiniteTriple X} (hne : T ≠ T')
+    (hz : zetaPiece T = zetaPiece T') : (selfModel T).relSpec ≠ (selfModel T').relSpec := by
+  intro h
+  exact hne (selfModel_injective (SelfModel.ext hz h))
+
+end SelfModelMap
+
+namespace RelationalStructure
+
+/-- The finite spectral triple `(C(X), L²(X, μ), 𝓛)` of a relational structure,
+in the orthonormal basis `δ̂_x`. -/
+def toFiniteTriple (S : RelationalStructure) : SelfModelMap.FiniteTriple S.X :=
+  ⟨S.laplacianMatrix, S.laplacianMatrix_isHermitian⟩
+
+/-- The self-model `M(X, μ, k) = (ζ_𝓛, Spec_N(C(X)))` of a relational structure. -/
+def selfModel (S : RelationalStructure) : SelfModelMap.SelfModel S.X :=
+  SelfModelMap.selfModel S.toFiniteTriple
+
+end RelationalStructure
+
+end

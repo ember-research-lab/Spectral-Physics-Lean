@@ -15,6 +15,8 @@ Lattice measurement: 0.6478 ± 0.006. Agreement: 0.6%.
 ## Derivation
 
 1. Critical condition from I* crossing: T_c² = E_gap² / δ
+   (2026-09-03: UNSUPPORTED AS WRITTEN — the manuscript proof's matching equation gives
+   T_c² = E_gap²; the δ is not derived. `ewRatio` below is a definition, not a derived value.)
 2. Mode counting: v² = (2/3) · E_gap² (2 of 3 triad modes condense)
 3. Combining: T_c/v = √(3/(2δ))
 

@@ -21,13 +21,22 @@ of a circulant mass matrix automatically satisfy the Koide sum rule.
   amplitude ε² = 2 in √mₖ = M(1 + ε cos(θ + 2πk/3)), K = 2/3 (proved).
   Circulant structure alone does NOT force K = 2/3; the general value is
   K = 1/3 + ε²/6, and ε = √2 is an empirical fit, not a theorem.
+* `koide_signed_general` : the SIGNED-spectrum identity — for the Hermitian
+  circulant root operator, `K = 1/3 + ε²/6` for every `θ` and every `ε ≥ 0`,
+  with NO positivity hypothesis on the individual roots.
+* `koide_signed` : its `ε² = 2` corollary, `K = 2/3` (again positivity-free).
 * `koide_approx` : Numerical agreement with measured lepton masses
 
 ## The derivation chain
 
 1. Triad {O, S, R} has Z_3 cyclic symmetry
-2. Mass matrix in the symmetric basis is circulant: M = a I + b C + b* C^2
-3. Sqrt-mass eigenvalues: √m_k = M(1 + ε cos(θ + 2πk/3)), k = 0,1,2
+2. The self-reference operator in the symmetric basis is the ROOT operator
+   P = a I + b C + b* C^2 (a real, b complex) — a self-adjoint Hermitian
+   circulant, NOT the mass matrix; its eigenvalues are the signed √m_k
+   (the masses are m_k = μ_k², μ_k = a + 2|b| cos(arg b + 2πk/3))
+3. Signed eigenvalues √m_k = M(1 + ε cos(θ + 2πk/3)), k = 0,1,2, with
+   ε ≥ 0 unrestricted; one root is negative when ε > 1 and
+   θ mod 2π/3 ∈ (π/12, 7π/12)
 4. Direct computation: (sum m_k) / (sum sqrt(m_k))^2 = 1/3 + ε²/6,
    which equals 2/3 IFF ε² = 2 (the conditional proved in this file)
 
@@ -47,7 +56,22 @@ namespace SpectralPhysics.KoideFormula
 def koideRatio (m1 m2 m3 : ℝ) (h1 : 0 < m1) (h2 : 0 < m2) (h3 : 0 < m3) : ℝ :=
   (m1 + m2 + m3) / (Real.sqrt m1 + Real.sqrt m2 + Real.sqrt m3) ^ 2
 
+/-- Koide's functional evaluated on the **signed root vector** `(r₁, r₂, r₃)`:
+    `K = (r₁² + r₂² + r₃²) / (r₁ + r₂ + r₃)²`.
+
+    The `rₖ` are the eigenvalues of the Hermitian circulant root operator
+    `P = a·I + b·C + conj b·C²` (manuscript convention `eq:circulant`,
+    2026-08-27): real but **signed**, with `mₖ = rₖ²`. No square roots are
+    taken here, so no positivity of the roots is assumed — unlike
+    `koideRatio`, which reconstructs `√mₖ` and therefore lives in the
+    all-positive chamber. -/
+def koideRatioSigned (r1 r2 r3 : ℝ) : ℝ :=
+  (r1 ^ 2 + r2 ^ 2 + r3 ^ 2) / (r1 + r2 + r3) ^ 2
+
 /-- **Koide identity from the circulant parameterization — CONDITIONAL form (proved).**
+
+    Chamber-restricted form; the signed-spectrum statement without positivity is
+    `koide_signed_general` / `koide_signed` (2026-08-27).
 
     STATUS (2026-06-27 manuscript↔Lean sync audit): the earlier statement of
     this theorem (`circulant ⇒ K = 2/3`, with a `sorry`) was the one
@@ -143,6 +167,85 @@ theorem circulant_implies_koide
   have hM' : M ≠ 0 := ne_of_gt hM
   field_simp
   ring
+
+/-- **Signed-spectrum Koide identity — unconditional in `ε` and `θ`.**
+
+    The self-reference operator is the Hermitian circulant
+    `P = a·I + b·C + conj b·C²` (`a : ℝ`, `b : ℂ`), which is self-adjoint and
+    therefore has REAL eigenvalues `μₖ = a + 2|b|·cos(arg b + 2πk/3)` — signed,
+    not necessarily positive. `P` is the ROOT operator: `μₖ = √mₖ` up to sign,
+    `mₖ = μₖ²`. Writing `μₖ = M(1 + ε cos(θ + 2πk/3))`, Koide's functional on
+    the signed root vector is
+    `K = (Σ μₖ²)/(Σ μₖ)² = 1/3 + ε²/6`,
+    for EVERY `θ` and EVERY `ε` (no branch selection, no `0 < 1 + ε cos`).
+    The only hypothesis is `M > 0`, which is what makes the denominator
+    `Σ μₖ = 3M` nonzero.
+
+    This is the manuscript's repaired `thm:koide` (2026-08-27): the positivity
+    hypotheses of `circulant_implies_koide` were an artifact of reconstructing
+    `√mₖ` from `mₖ`, not of the physics. Only the two cyclic cosine sums
+    `Σ cos = 0` and `Σ cos² = 3/2` are used. -/
+theorem koide_signed_general (M ε θ : ℝ) (hM : 0 < M) :
+    koideRatioSigned (M * (1 + ε * Real.cos θ))
+      (M * (1 + ε * Real.cos (θ + 2 * Real.pi / 3)))
+      (M * (1 + ε * Real.cos (θ + 4 * Real.pi / 3)))
+      = 1 / 3 + ε ^ 2 / 6 := by
+  -- Special-angle constants: cos/sin at 2π/3 and 4π/3.
+  have hcos23 : Real.cos (2 * Real.pi / 3) = -(1 / 2) := by
+    rw [show 2 * Real.pi / 3 = Real.pi - Real.pi / 3 by ring, Real.cos_sub, Real.cos_pi,
+      Real.sin_pi, Real.cos_pi_div_three]
+    ring
+  have hsin23 : Real.sin (2 * Real.pi / 3) = Real.sqrt 3 / 2 := by
+    rw [show 2 * Real.pi / 3 = Real.pi - Real.pi / 3 by ring, Real.sin_sub, Real.cos_pi,
+      Real.sin_pi, Real.sin_pi_div_three]
+    ring
+  have hcos43 : Real.cos (4 * Real.pi / 3) = -(1 / 2) := by
+    rw [show 4 * Real.pi / 3 = Real.pi + Real.pi / 3 by ring, Real.cos_add, Real.cos_pi,
+      Real.sin_pi, Real.cos_pi_div_three]
+    ring
+  have hsin43 : Real.sin (4 * Real.pi / 3) = -(Real.sqrt 3 / 2) := by
+    rw [show 4 * Real.pi / 3 = Real.pi + Real.pi / 3 by ring, Real.sin_add, Real.cos_pi,
+      Real.sin_pi, Real.sin_pi_div_three]
+    ring
+  -- Per-angle cosine-addition expansions.
+  have hC1 : Real.cos (θ + 2 * Real.pi / 3)
+      = Real.cos θ * -(1 / 2) - Real.sin θ * (Real.sqrt 3 / 2) := by
+    rw [Real.cos_add, hcos23, hsin23]
+  have hC2 : Real.cos (θ + 4 * Real.pi / 3)
+      = Real.cos θ * -(1 / 2) - Real.sin θ * -(Real.sqrt 3 / 2) := by
+    rw [Real.cos_add, hcos43, hsin43]
+  have hpyth : Real.sin θ ^ 2 + Real.cos θ ^ 2 = 1 := Real.sin_sq_add_cos_sq θ
+  have hsqrt3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  -- Denominator: Σ μₖ = 3M   (uses Σ cos = 0). Signed, so no absolute values.
+  have hden : M * (1 + ε * Real.cos θ) + M * (1 + ε * Real.cos (θ + 2 * Real.pi / 3))
+      + M * (1 + ε * Real.cos (θ + 4 * Real.pi / 3)) = 3 * M := by
+    rw [hC1, hC2]; ring
+  -- Numerator: Σ μₖ² = M²(3 + (3/2)ε²)  (uses Σ cos = 0 and Σ cos² = 3/2).
+  have hnum : (M * (1 + ε * Real.cos θ)) ^ 2
+      + (M * (1 + ε * Real.cos (θ + 2 * Real.pi / 3))) ^ 2
+      + (M * (1 + ε * Real.cos (θ + 4 * Real.pi / 3))) ^ 2
+      = M ^ 2 * (3 + 3 / 2 * ε ^ 2) := by
+    rw [hC1, hC2]
+    linear_combination (3 / 2) * M ^ 2 * ε ^ 2 * hpyth
+      + (1 / 2) * M ^ 2 * ε ^ 2 * Real.sin θ ^ 2 * hsqrt3
+  -- Assemble: M²(3 + (3/2)ε²) / (3M)² = 1/3 + ε²/6.
+  unfold koideRatioSigned
+  rw [hden, hnum]
+  have hM' : M ≠ 0 := ne_of_gt hM
+  field_simp
+  ring
+
+/-- **Koide `K = 2/3` on the signed spectrum**, with no positivity hypotheses:
+    the `ε² = 2` specialization of `koide_signed_general`. As there, `ε = √2`
+    remains an empirical input (manuscript `rem:koide-eps-honest`); what is new
+    is that the identity no longer needs the roots to lie in the positive
+    chamber. -/
+theorem koide_signed (M ε θ : ℝ) (hM : 0 < M) (hε : ε ^ 2 = 2) :
+    koideRatioSigned (M * (1 + ε * Real.cos θ))
+      (M * (1 + ε * Real.cos (θ + 2 * Real.pi / 3)))
+      (M * (1 + ε * Real.cos (θ + 4 * Real.pi / 3)))
+      = 2 / 3 := by
+  rw [koide_signed_general M ε θ hM, hε]; norm_num
 
 /-- **Koide ratio numerical check**: Using measured lepton masses
     m_e = 0.511 MeV, m_mu = 105.66 MeV, m_tau = 1776.86 MeV,
