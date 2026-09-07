@@ -1,0 +1,20 @@
+hostile/U2-K1Unsound.lean:4:75: error: Application type mismatch: The argument
+  trivial
+has type
+  True
+but is expected to have type
+  ∀ (μ ν : Spectrum), Multiset.card (zeroOp.toFun μ ν) = Multiset.card μ * Multiset.card ν
+in the application
+  { symm := fun x x_1 => rfl, card_mul := trivial }
+hostile/U2-K1Unsound.lean:6:12: error(lean.unknownIdentifier): Unknown identifier `K1_mesland_rennie_card`
+hostile/U2-K1Unsound.lean:5:33: error: unsolved goals
+⊢ False
+hostile/U2-K1Unsound.lean:9:12: error(lean.unknownIdentifier): Unknown identifier `K2_rosenberg_schochet_cancel`
+hostile/U2-K1Unsound.lean:8:33: error: unsolved goals
+⊢ False
+hostile/U2-K1Unsound.lean:14:12: error(lean.unknownIdentifier): Unknown identifier `K3_kassel_residue`
+hostile/U2-K1Unsound.lean:13:33: error: unsolved goals
+⊢ False
+'false_from_K1' depends on axioms: [sorryAx]
+'false_from_K2' depends on axioms: [sorryAx]
+'false_from_K3' depends on axioms: [sorryAx]

@@ -185,8 +185,8 @@ import SpectralPhysics.SelfModelDeficit.Kappa2Partial
 -- distinct scopes:
 --   Scope 1 (named candidates)  : CLOSED mod two Minkowski-cancel axioms
 --   Scope 2 (trace channel)     : CLOSED unconditionally (zero new axioms)
---   Scope 3 (Kasparov narrow)   : CONDITIONAL on K1+K2+K3 (Mesland-Rennie 2013,
---                                 Rosenberg-Schochet 1987, Kassel 1986)
+--   Scope 3 (Kasparov narrow)   : OPEN — Mesland-Rennie / Rosenberg-Schochet /
+--                                 Kassel UNFORMALISED literature (U2 2026-09-06)
 --   Scope 4 (broader pointwise) : HONESTLY OPEN, recorded as predicate
 -- See CompositionUniqueness/STATUS.md for the full accounting.
 import SpectralPhysics.CompositionUniqueness.SpectralOperations
