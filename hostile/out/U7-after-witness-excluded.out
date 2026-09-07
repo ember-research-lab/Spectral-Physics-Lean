@@ -1,0 +1,15 @@
+'SpectralPhysics.MajoranaBlock.standardModel_three_generations' does not depend on any axioms
+'SpectralPhysics.MajoranaBlock.HypothesisB.standardModelTriple_n_generations_eq' does not depend on any axioms
+'SpectralPhysics.MajoranaBlock.HypothesisB.standardModelTriple_JSC_multiplicity_eq_six' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ connes_marcolli_2008_thm_1_214]
+'SpectralPhysics.MajoranaBlock.Discriminator.standardModelTriple_JSC_multiplicity_is_six' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ connes_marcolli_2008_thm_1_214]
+'SpectralPhysics.MajoranaBlock.Discriminator.framework_predicts_hypothesisB_with_multiplicity_six' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ connes_marcolli_2008_thm_1_214]
+'SpectralPhysics.MajoranaBlock.Discriminator.standardModelTriple_verdict' does not depend on any axioms

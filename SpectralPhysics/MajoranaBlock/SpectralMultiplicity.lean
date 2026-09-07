@@ -388,7 +388,12 @@ not derive 3 from anything, it records it as the input, same as
 
 **Citation** (for the modelling choice, not a derivation):
 Connes-Marcolli (2008) §15.3 ("the sum over generations in H_F");
-Chamseddine-Connes-Marcolli (2007) §3, eq. (3.4). -/
+Chamseddine-Connes-Marcolli (2007) §3, eq. (3.4).
+
+Verified 2026-09-06 (lane B, U7): hostile
+`hostile/U7-MajoranaFalse.lean` no longer typechecks against this
+theorem (it is not a `∀`-axiom). The `n_generations := 0` record is
+a valid `FiniteSpectralTriple` and does not yield `False`. -/
 theorem standardModel_three_generations :
     standardModelTriple.n_generations = 3 := rfl
 
