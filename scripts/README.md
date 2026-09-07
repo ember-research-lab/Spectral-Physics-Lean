@@ -19,6 +19,9 @@ Scans for the canonical cheating patterns:
 - Pattern 5: `def MyPredicate := True` (predicate-shell laundering)
 - Pattern 6: explicit `placeholder` markers in axiom docstrings
 - Pattern 7: `is_kk_product : True`-style structure fields
+- Pattern 8: free numeric parameter in an (in)equality
+- Pattern 9: free structure variable in an (in)equality with no Prop-hyp binder
+- Pattern 10: opaque `→ Prop` / `: Prop` axiom symbols, and axioms whose only Prop-hyps are those symbols (Pattern 9 gap: structure binder + inequality guarded only by such a hyp)
 
 Returns a list of files/lines + remediation suggestions.
 
