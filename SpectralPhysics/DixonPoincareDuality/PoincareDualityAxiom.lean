@@ -47,7 +47,11 @@ namespace SpectralPhysics.DixonPoincareDuality
 
 open SpectralPhysics.DixonOrderOne
 
-/-- **Poincaré duality** for an abstract spectral-triple carrier.
+/-- -- VACUOUS: `PoincareDuality T` holds for no `T`.
+`T.intersectionForm : 𝕆 → (𝕆 → 𝕆)` is never surjective (Cantor).
+Retained because dependents exist; do not cite as a Dixon obstruction.
+
+**Poincaré duality** for an abstract spectral-triple carrier.
 
 `PoincareDuality T` is the assertion that the K-theoretic
 intersection map, viewed as `a ↦ T.intersectionForm a`, is a
@@ -92,7 +96,9 @@ is the published Connes 1994 §VI.4 construction: PD is *defined*
 as nondegeneracy of a pairing that lives on the K-theory quotient,
 so it presupposes that the pairing has descended there at all. -/
 
-/-- The published Connes §VI.4 reduction, stated as a predicate.
+/-- -- VACUOUS: antecedent `PoincareDuality T` is uninhabited (Cantor).
+
+The published Connes §VI.4 reduction, stated as a predicate.
 
 `PDImpliesWellDefined T` says: if `T` satisfies the PD predicate
 (intersection form is bijective), then the intersection form

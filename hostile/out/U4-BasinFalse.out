@@ -1,0 +1,16 @@
+hostile/U4-BasinFalse.lean:10:50: error: Function expected at
+  BasinConnectivity
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  F
+
+Hint: The identifier `BasinConnectivity` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+hostile/U4-BasinFalse.lean:26:35: error: don't know how to synthesize placeholder for argument `F`
+context:
+h : SAGFPalaisSmaleHypotheses
+⊢ KSR → ℝ
+'basinConnectivity_false' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'sagf_hyps_false' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'morse_provable' depends on axioms: [propext, Classical.choice, Quot.sound]

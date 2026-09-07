@@ -86,7 +86,10 @@ open SpectralPhysics.DixonOrderOne
 
 /-! ## Named axioms — Connes §VI.4 + Bochniak–Sitarz reductions -/
 
-/-- **Connes 1994 §VI.4 PD definition (named axiom).**
+/-- -- VACUOUS: `PoincareDuality T` holds for no `T`; this implication
+is true of every `T` by false antecedent. Not deleted: dependents exist.
+
+**Connes 1994 §VI.4 PD definition (named axiom).**
 
 In the published Connes real-spectral-triple formalism, Poincaré
 duality is *defined* as non-degeneracy of the K-theoretic
@@ -107,7 +110,10 @@ Citation: Connes, A., *Noncommutative Geometry* (1994), §VI.4. -/
 axiom connes_PD_definition :
     ∀ T : AbstractSpectralTriple, PDImpliesWellDefined T
 
-/-- **Bochniak–Sitarz / Connes §VI.4 PD obstruction reduction
+/-- -- VACUOUS: `PoincareDuality T` holds for no `T`; this implication
+is true of every Dixon-canonical `T` by false antecedent. Not deleted.
+
+**Bochniak–Sitarz / Connes §VI.4 PD obstruction reduction
 (named axiom).**
 
 The Connes §VI.4 reduction `PDImpliesWellDefined` applies uniformly
@@ -147,7 +153,9 @@ evidence of a Dixon-specific or non-associativity-specific
 obstruction — see `DixonPoincareDuality/STATUS.md` §"Definitional
 triviality check". -/
 
-/-- **Verdict (NEGATIVE) — SHELL, see the module-level caveat above.**
+/-- -- VACUOUS: true for a Cantor reason, not Dixon non-associativity.
+
+**Verdict (NEGATIVE) — SHELL, see the module-level caveat above.**
 Under the standard Connes §VI.4
 formalism for Poincaré duality on real spectral triples, no
 Dixon-canonical abstract spectral triple admits Poincaré duality.
@@ -168,7 +176,9 @@ theorem dixon_pd_obstruction :
         IsCanonicalDixon T ∧ PoincareDuality T :=
   PD_fails_for_dixon bochniak_sitarz_PD_obstruction
 
-/-- **Verdict (specialisation) — SHELL, see the module-level caveat
+/-- -- VACUOUS: true of every triple (Cantor), not just the canonical Dixon one.
+
+**Verdict (specialisation) — SHELL, see the module-level caveat
 above.** The canonical Dixon-style spectral triple does NOT satisfy
 Poincaré duality — true of every triple, not just the canonical
 Dixon one. -/

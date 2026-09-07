@@ -1,0 +1,3 @@
+'poincareDuality_never' depends on axioms: [propext, Classical.choice, Quot.sound]
+'connes_PD_definition_vacuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'dixon_pd_obstruction_shell' depends on axioms: [propext, Classical.choice, Quot.sound]
