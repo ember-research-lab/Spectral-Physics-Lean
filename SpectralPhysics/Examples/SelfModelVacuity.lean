@@ -6,6 +6,7 @@ Authors: Aaron Ben-Shalom
 import SpectralPhysics.Axioms.SelfRefClosure
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Tactic.FinCases
 
 /-!
@@ -34,12 +35,16 @@ nor trivially false. For Axiom 3 in its 2026-09-06 form this file proves:
 
 ## Honest scope
 
-* The pair in (ii) is a WEIGHTED cospectral pair (3 vertices). The smallest
-  unweighted Laplacian-cospectral non-isomorphic pair lives on 6 vertices; its
-  charpoly identity would need a symbolic 6×6 determinant in Lean and was not
-  attempted. Weighted kernels are exactly Axiom 1's objects, so the pair is a
-  genuine instance of the manuscript's class, and non-isomorphism is visible
-  from the edge count (3 vs 2) — it is not a relabelling.
+* The pair in (ii) is a WEIGHTED cospectral pair (3 vertices). Weighted
+  kernels are exactly Axiom 1's objects, so the pair is a genuine instance of
+  the manuscript's class, and non-isomorphism is visible from the edge count
+  (3 vs 2) — it is not a relabelling.
+* Section 4 records an unweighted 6-vertex pair (A edges
+  `{02,03,04,05,14,15,23}`, B edges `{02,04,05,12,14,15,23}`) by a computable
+  Newton–Girard certificate: equal traces of `Aᵏ` and `Bᵏ` for `k = 1..6`
+  over `Matrix (Fin 6) (Fin 6) ℤ`, discharged by `decide`. It does **not**
+  invoke the noncomputable `charpoly`, and it does not decide the A-side
+  gauge / reconstruction question.
 * (ii) shows separation via reconstruction (`R ∘ M = id`), not by computing the
   eigenprojections of the two structures explicitly.
 * Nothing here concerns infinite dimensions or naturality (clause (ii)).
@@ -241,6 +246,81 @@ end SelfModelVacuity
 
 end
 
+-- ============================================================================
+-- SECTION 4: UNWEIGHTED 6-VERTEX PAIR — COMPUTABLE POWER-SUM CERTIFICATE
+-- ============================================================================
+-- Must live outside `noncomputable section`: `charpoly` is noncomputable
+-- (`native_decide` on it fails). Newton–Girard: equal traces of the first
+-- n powers of two n×n matrices over ℤ determine the characteristic
+-- polynomials. Discharged by kernel `decide` on `Matrix (Fin 6) (Fin 6) ℤ`.
+-- A edges {02,03,04,05,14,15,23}; B edges {02,04,05,12,14,15,23}.
+-- Does NOT decide the A-side gauge / reconstruction question.
+
+namespace SelfModelVacuity
+
+open Matrix
+
+/-- Unweighted Laplacian of graph A (6 vertices). -/
+def sixLapA : Matrix (Fin 6) (Fin 6) ℤ :=
+  !![4, 0, -1, -1, -1, -1;
+     0, 2, 0, 0, -1, -1;
+     -1, 0, 2, -1, 0, 0;
+     -1, 0, -1, 2, 0, 0;
+     -1, -1, 0, 0, 2, 0;
+     -1, -1, 0, 0, 0, 2]
+
+/-- Unweighted Laplacian of graph B (6 vertices). -/
+def sixLapB : Matrix (Fin 6) (Fin 6) ℤ :=
+  !![3, 0, -1, 0, -1, -1;
+     0, 3, -1, 0, -1, -1;
+     -1, -1, 3, -1, 0, 0;
+     0, 0, -1, 1, 0, 0;
+     -1, -1, 0, 0, 2, 0;
+     -1, -1, 0, 0, 0, 2]
+
+def sixLapA2 := sixLapA * sixLapA
+def sixLapA3 := sixLapA2 * sixLapA
+def sixLapA4 := sixLapA3 * sixLapA
+def sixLapA5 := sixLapA4 * sixLapA
+def sixLapA6 := sixLapA5 * sixLapA
+def sixLapB2 := sixLapB * sixLapB
+def sixLapB3 := sixLapB2 * sixLapB
+def sixLapB4 := sixLapB3 * sixLapB
+def sixLapB5 := sixLapB4 * sixLapB
+def sixLapB6 := sixLapB5 * sixLapB
+
+theorem sixA_tr1 : sixLapA.trace = 14 := by decide
+theorem sixB_tr1 : sixLapB.trace = 14 := by decide
+theorem sixA_tr2 : sixLapA2.trace = 50 := by decide
+theorem sixB_tr2 : sixLapB2.trace = 50 := by decide
+theorem sixA_tr3 : sixLapA3.trace = 206 := by decide
+theorem sixB_tr3 : sixLapB3.trace = 206 := by decide
+theorem sixA_tr4 : sixLapA4.trace = 930 := by decide
+theorem sixB_tr4 : sixLapB4.trace = 930 := by decide
+theorem sixA_tr5 : sixLapA5.trace = 4454 := by decide
+theorem sixB_tr5 : sixLapB5.trace = 4454 := by decide
+theorem sixA_tr6 : sixLapA6.trace = 22130 := by decide
+theorem sixB_tr6 : sixLapB6.trace = 22130 := by decide
+
+/-- [T1] Newton–Girard certificate: equal traces of `Aᵏ`, `Bᵏ` for
+`k = 1..6`. Does not invoke `charpoly`. Not a reconstruction / gauge
+statement. -/
+theorem six_vertex_laplacian_cospectral :
+    sixLapA.trace = sixLapB.trace ∧
+    sixLapA2.trace = sixLapB2.trace ∧
+    sixLapA3.trace = sixLapB3.trace ∧
+    sixLapA4.trace = sixLapB4.trace ∧
+    sixLapA5.trace = sixLapB5.trace ∧
+    sixLapA6.trace = sixLapB6.trace :=
+  ⟨by rw [sixA_tr1, sixB_tr1],
+   by rw [sixA_tr2, sixB_tr2],
+   by rw [sixA_tr3, sixB_tr3],
+   by rw [sixA_tr4, sixB_tr4],
+   by rw [sixA_tr5, sixB_tr5],
+   by rw [sixA_tr6, sixB_tr6]⟩
+
+end SelfModelVacuity
+
 -- Axiom audit (RIGOROUS_WORKFLOW.md): kernel axioms only, no sorryAx.
 #print axioms SelfModelVacuity.triangle_spectrum
 #print axioms SelfModelVacuity.triangle_spectrallyFaithful
@@ -250,3 +330,4 @@ end
 #print axioms SelfModelVacuity.pair_spectrallyFaithful
 #print axioms SelfModelVacuity.pair_selfModel_ne
 #print axioms SelfModelVacuity.pair_relSpec_ne
+#print axioms SelfModelVacuity.six_vertex_laplacian_cospectral
