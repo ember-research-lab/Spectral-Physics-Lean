@@ -304,11 +304,11 @@ No theorems. No `#print axioms`. `lake build` job count: **3360**.
 
 ---
 
-## 7. 6-vertex Laplacian-cospectral pair — DONE
+## 7. 6-vertex Laplacian power-trace pair — DONE
 
 **Commit:** this report commit (`docs(lean): REPORT lane A — SMDU shell removal + Pattern 10 verified`).
 
-Stash `lane-A in-progress 6-vertex pair` used `native_decide` on `sixLapA.charpoly = sixLapB.charpoly` and failed (`charpoly` is noncomputable). Replaced by a computable Newton–Girard certificate: equal traces of `Aᵏ` and `Bᵏ` for `k = 1..6` over `Matrix (Fin 6) (Fin 6) ℤ`, each discharged by kernel `decide`, **outside** the file's `noncomputable section`. Does not invoke `charpoly`. Does not decide reconstruction / gauge.
+Stash `lane-A in-progress 6-vertex pair` used `native_decide` on `sixLapA.charpoly = sixLapB.charpoly` and failed (`charpoly` is noncomputable). Replaced by a computable Newton–Girard certificate: equal traces of `Aᵏ` and `Bᵏ` for `k = 1..6` over `Matrix (Fin 6) (Fin 6) ℤ`, each discharged by kernel `decide`, **outside** the file's `noncomputable section`. Does not invoke `charpoly`. Does not decide reconstruction / gauge. Renamed 2026-09-08 from `six_vertex_laplacian_cospectral` to `six_vertex_laplacian_power_traces_eq` because the theorem proves six power-trace equalities only; the Newton–Girard step to equal charpoly / cospectrality is not formalised.
 
 Command: `lake env lean SpectralPhysics/Examples/SelfModelVacuity.lean` (exit 0)
 
@@ -321,7 +321,7 @@ Command: `lake env lean SpectralPhysics/Examples/SelfModelVacuity.lean` (exit 0)
 'SelfModelVacuity.pair_spectrallyFaithful' depends on axioms: [propext, Classical.choice, Quot.sound]
 'SelfModelVacuity.pair_selfModel_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
 'SelfModelVacuity.pair_relSpec_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
-'SelfModelVacuity.six_vertex_laplacian_cospectral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SelfModelVacuity.six_vertex_laplacian_power_traces_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
 ```
 
 `lake build` (includes this file):
@@ -329,7 +329,7 @@ Command: `lake env lean SpectralPhysics/Examples/SelfModelVacuity.lean` (exit 0)
 ```
 ℹ [3358/3360] Built SpectralPhysics.Examples.SelfModelVacuity (21s)
 ...
-info: SpectralPhysics/Examples/SelfModelVacuity.lean:333:0: 'SelfModelVacuity.six_vertex_laplacian_cospectral' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: SpectralPhysics/Examples/SelfModelVacuity.lean:336:0: 'SelfModelVacuity.six_vertex_laplacian_power_traces_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
 ✔ [3359/3360] Built SpectralPhysics (3.1s)
 Build completed successfully (3360 jobs).
 ```

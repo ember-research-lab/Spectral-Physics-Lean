@@ -302,10 +302,13 @@ theorem sixB_tr5 : sixLapB5.trace = 4454 := by decide
 theorem sixA_tr6 : sixLapA6.trace = 22130 := by decide
 theorem sixB_tr6 : sixLapB6.trace = 22130 := by decide
 
-/-- [T1] Newton–Girard certificate: equal traces of `Aᵏ`, `Bᵏ` for
-`k = 1..6`. Does not invoke `charpoly`. Not a reconstruction / gauge
-statement. -/
-theorem six_vertex_laplacian_cospectral :
+/-- Proves six power-trace equalities: `trace (Aᵏ) = trace (Bᵏ)` for
+`k = 1..6` over `Matrix (Fin 6) (Fin 6) ℤ`. Does **not** prove the
+Newton–Girard implication from those equalities to equal characteristic
+polynomials (cospectrality); does not prove reconstruction or gauge.
+Renamed 2026-09-08 from `six_vertex_laplacian_cospectral` to stop
+over-stating. -/
+theorem six_vertex_laplacian_power_traces_eq :
     sixLapA.trace = sixLapB.trace ∧
     sixLapA2.trace = sixLapB2.trace ∧
     sixLapA3.trace = sixLapB3.trace ∧
@@ -330,4 +333,4 @@ end SelfModelVacuity
 #print axioms SelfModelVacuity.pair_spectrallyFaithful
 #print axioms SelfModelVacuity.pair_selfModel_ne
 #print axioms SelfModelVacuity.pair_relSpec_ne
-#print axioms SelfModelVacuity.six_vertex_laplacian_cospectral
+#print axioms SelfModelVacuity.six_vertex_laplacian_power_traces_eq
