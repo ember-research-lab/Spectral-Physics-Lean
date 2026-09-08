@@ -110,6 +110,8 @@ namespace SpectralPhysics.BasinConnectivity
 
 open SpectralPhysics.KSRCompactness
 
+variable [TopologicalSpace KSR]
+
 /-! ## The headline equivalence (modulo named axioms) -/
 
 /-- **THE BASIN CONNECTIVITY VERDICT (CONDITIONAL).**

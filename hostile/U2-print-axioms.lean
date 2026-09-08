@@ -1,0 +1,9 @@
+import SpectralPhysics.CompositionUniqueness.Theorem
+open SpectralPhysics.CompositionUniqueness
+
+#print axioms kasparov_product_satisfies_three_conditions
+#print axioms kasparov_product_trace_eq_additive
+#print axioms kasparov_three_conditions
+#print axioms additive_is_unique_among_three_named
+#print axioms three_conditions_force_trace_law
+#print axioms composition_unique_conditional_on_broader

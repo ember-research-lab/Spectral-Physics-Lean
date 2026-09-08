@@ -45,6 +45,8 @@ namespace SpectralPhysics.BasinConnectivity
 
 open SpectralPhysics.KSRCompactness
 
+variable [TopologicalSpace KSR]
+
 /-! ## Local-minimum predicate
 
 A point `T₀ : KSR` is a **local minimum** of `F` if there is some

@@ -1,0 +1,3 @@
+hostile/U2-after-zeroOp.lean:16:27: error: unsolved goals
+μ ν : Spectrum
+⊢ μ = 0 ∨ ν = 0

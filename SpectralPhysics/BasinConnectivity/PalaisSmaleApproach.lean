@@ -61,6 +61,8 @@ namespace SpectralPhysics.BasinConnectivity
 
 open SpectralPhysics.KSRCompactness
 
+variable [TopologicalSpace KSR]
+
 /-! ## The three predicate carriers -/
 
 /-- **Coercivity** (the v0.9.2 G.3 first predicate).

@@ -1,3 +1,11 @@
+## 0a. VERIFIED already-fixed (2026-09-06 lane B)
+
+Hostile `hostile/U8-DixonU8False.lean` against current code: **does
+not compile** (`Unknown identifier bochniak_sitarz_zerothOrder_reduction`).
+Axiom already deleted 2026-08-18; order-one-for-every-D is **OPEN**.
+After-file `hostile/U8-after-print-axioms.lean` compiles: zero map
+satisfies `OrderOne`; `¬ OrderOneImpliesZerothOrder` is kernel-only.
+
 ## 0. STATUS polarity caveat (2026-08-18 content repair — read this first)
 
 **U8 is compile-verified UNSOUND and REPAIRED (not LEFT-OPEN).** The 2026-08-18 content

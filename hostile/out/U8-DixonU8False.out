@@ -1,0 +1,3 @@
+hostile/U8-DixonU8False.lean:9:8: error: `SpectralPhysics.DixonOrderOne.zero_map_orderOne` has already been declared
+hostile/U8-DixonU8False.lean:16:5: error(lean.unknownIdentifier): Unknown identifier `bochniak_sitarz_zerothOrder_reduction`
+'SpectralPhysics.DixonOrderOne.u8_false' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

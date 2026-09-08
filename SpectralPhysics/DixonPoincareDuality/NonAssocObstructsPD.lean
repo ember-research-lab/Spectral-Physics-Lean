@@ -78,7 +78,9 @@ open SpectralPhysics.DixonOrderOne
 
 /-! ## PD-fail on the canonical Dixon triple -/
 
-/-- **Tier 1 conditional.** Under the standard Connes §VI.4
+/-- -- VACUOUS: `PoincareDuality canonicalDixonTriple` is uninhabited (Cantor).
+
+**Tier 1 conditional.** Under the standard Connes §VI.4
 reduction (`PDImpliesWellDefined`), if the canonical Dixon triple
 satisfied Poincaré duality, then the zeroth-order commutation
 `[LeftMult a, RightMult b] = 0` would hold for all `a, b`. -/
@@ -91,7 +93,9 @@ theorem PD_implies_zerothOrder_canonical
   rw [wellDefinedOnClasses_canonical_iff_zerothOrder] at h_wd
   exact h_wd
 
-/-- **Tier 1 conditional.** Under the standard Connes §VI.4
+/-- -- VACUOUS: `PoincareDuality` holds for no triple (Cantor).
+
+**Tier 1 conditional.** Under the standard Connes §VI.4
 reduction, the canonical Dixon triple does NOT satisfy Poincaré
 duality.
 
@@ -118,7 +122,9 @@ left/right-multiplication actions on `𝕆`. -/
 def IsCanonicalDixon (T : AbstractSpectralTriple) : Prop :=
   T.π = LeftMult ∧ T.π' = RightMult
 
-/-- **Tier 1 conditional.**  Under the standard Connes §VI.4
+/-- -- VACUOUS: `PoincareDuality` holds for no triple (Cantor).
+
+**Tier 1 conditional.**  Under the standard Connes §VI.4
 reduction (applied uniformly), there is NO Dixon-canonical
 abstract spectral triple `T` that satisfies Poincaré duality.
 

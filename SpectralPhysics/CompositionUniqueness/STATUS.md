@@ -1,5 +1,15 @@
 # CompositionUniqueness — Honest STATUS
 
+## 0a. OPEN (2026-09-06 lane B — read this first)
+
+Hostile `hostile/U2-K1Unsound.lean` against current code: **does not
+compile** (`Unknown identifier` K1/K2/K3). Axioms already deleted
+2026-08-18. Remaining gap: `is_kk_product : True` still admitted
+`zeroOp`. **This pass** replaces that field by `card_mul` (weakest
+zeroOp-excluding hypothesis; FLAG for Aaron) and relabels Scope 3
+**OPEN**. Mesland–Rennie / Rosenberg–Schochet / Kassel are
+**UNFORMALISED literature**. No new `axiom`. No `sorry`.
+
 ## 0. REPAIRED-SOUND (2026-08-18 content repair — read this first)
 
 The three named axioms `K1_mesland_rennie_card`,

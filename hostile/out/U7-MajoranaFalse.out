@@ -1,0 +1,10 @@
+hostile/U7-MajoranaFalse.lean:10:12: error: Function expected at
+  standardModel_three_generations
+but this term has type
+  standardModelTriple.n_generations = 3
+
+Note: Expected a function because this term is being applied to the argument
+  hostile
+hostile/U7-MajoranaFalse.lean:9:48: error: unsolved goals
+⊢ False
+'false_from_three_generations' depends on axioms: [sorryAx]

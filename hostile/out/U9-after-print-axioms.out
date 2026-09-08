@@ -1,0 +1,7 @@
+'SpectralPhysics.Thermo.zeroth_law' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.Thermo.first_law' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.Thermo.first_law_pointwise' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.Thermo.third_law_ground_state_dominates' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.Thermo.partitionFunction_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.Thermo.partition_function_lower_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.Thermo.partition_excess_decay' depends on axioms: [propext, Classical.choice, Quot.sound]

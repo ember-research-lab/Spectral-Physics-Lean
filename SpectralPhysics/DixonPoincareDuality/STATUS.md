@@ -154,6 +154,14 @@ are **not** assertions of the Dixon-specific obstruction. Specifically:
 
 **0 True placeholders.**
 
+## 0a. `-- VACUOUS:` dependents (2026-09-06 lane B)
+
+Hostile `hostile/U5-PDVacuous.lean` still compiles: `PoincareDuality`
+is uninhabited for every `T` (Cantor). Dependents are marked
+`-- VACUOUS:` in docstrings and **not deleted**.
+`not_wellDefinedOnClasses_canonical_dixon` is the non-vacuous
+algebraic negative (zeroth-order / associator).
+
 ## Definitional triviality check
 
 Anti-pattern check (rule 3 of the audit discipline):

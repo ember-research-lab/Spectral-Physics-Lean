@@ -1,5 +1,20 @@
 # MajoranaBlock — (1,1)_0 ζ̃-Residue Multiplicity Discriminator
 
+## 0a. VERIFIED already-fixed (2026-09-06 lane B)
+
+Hostile-before `hostile/U7-ThreeGenFalse.lean` re-declares the deleted
+`∀`-axiom locally and derives `False` (`0 = 3`) from
+`n_generations := 0`; `#print axioms u7_false` is
+`[propext, standardModel_three_generations_forall]` (no `sorryAx`).
+
+Hostile `hostile/U7-MajoranaFalse.lean` against current code: **does
+not compile** (`Function expected at standardModel_three_generations`
+— the identifier is now `standardModelTriple.n_generations = 3`, not
+a `∀`-axiom). The 3-generation input is the field
+`standardModelTriple.n_generations := 3` (`SpectralMultiplicity.lean`).
+After-file `hostile/U7-after-witness-excluded.lean` compiles: the
+`n_generations := 0` record exists and does not force `0 = 3`.
+
 ## 0. REPAIRED-SOUND (2026-08-18 content repair — read this first)
 
 `standardModel_three_generations` is **no longer a `∀`-axiom**. As

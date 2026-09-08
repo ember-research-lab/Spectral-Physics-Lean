@@ -1,0 +1,3 @@
+hostile/U1-after-no-bot.lean:12:15: error(lean.unknownIdentifier): Unknown identifier `rellich_kondrachov_trace_class`
+hostile/U1-after-no-bot.lean:11:34: error: unsolved goals
+⊢ False

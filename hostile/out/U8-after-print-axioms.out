@@ -1,0 +1,9 @@
+'SpectralPhysics.DixonOrderOne.zero_map_orderOne' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.DixonOrderOne.dixon_reduction_hypothesis_false' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.DixonOrderOne.dixon_order_one_unconstrained_has_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.DixonOrderOne.dixon_has_nonzero_associator' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.DixonOrderOne.dixon_LR_does_not_commute' depends on axioms: [propext, Classical.choice, Quot.sound]

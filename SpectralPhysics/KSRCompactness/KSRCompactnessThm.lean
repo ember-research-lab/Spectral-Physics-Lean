@@ -65,6 +65,11 @@ open Set
 
 namespace SpectralPhysics.KSRCompactness
 
+/-! Topology on `KSR` is a caller-supplied parameter (U1, 2026-09-06).
+No global `⊥` instance. Compactness of Sobolev classes is a named
+hypothesis relative to this topology. -/
+variable [TopologicalSpace KSR]
+
 /-! ## The headline conditional theorem -/
 
 /-- **Theorem (REPAIRED-SOUND, 2026-08-18: compactness is now an

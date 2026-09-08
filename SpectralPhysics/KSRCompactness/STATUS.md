@@ -1,5 +1,12 @@
 # K_SR Compactness — Honest STATUS
 
+## 0a. ⊥ instance removed (2026-09-06 lane B)
+
+Axiom `rellich_kondrachov_trace_class` already deleted 2026-08-18.
+The remaining `instance : TopologicalSpace KSR := ⊥` is **removed**.
+Compactness is a named hypothesis on `[TopologicalSpace KSR]`.
+Hostile `hostile/U1-KSRFalse.lean` unknown-identifier on the axiom.
+
 ## 0. REPAIRED-SOUND (2026-08-18 content repair — read this first)
 
 The named axiom `rellich_kondrachov_trace_class` described throughout

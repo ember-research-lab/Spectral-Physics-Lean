@@ -83,11 +83,10 @@ open SpectralPhysics.CompositionUniqueness
 /-! ## The `IsKasparov` predicate
 
 A binary operation `op` "is Kasparov" iff there exists a
-`KasparovProductWitness` for it.  This is **not** `:= True`: the
-KasparovProductWitness structure has substantive content —
-symmetry and the KK-product marker — already established as
-non-trivial in v0.9.1's
-`CompositionUniqueness/KasparovProductUniqueness.lean`.
+`KasparovProductWitness` for it.  This is **not** `:= True`: as of
+2026-09-06 the witness carries `symm` and `card_mul` (the former
+K1; excludes the U2 `zeroOp` witness). Mesland–Rennie remains
+UNFORMALISED; `IsKasparov` is not a KK-equivalence predicate.
 
 The honest open question is whether every three-condition
 operation admits such a witness.  -/

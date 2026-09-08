@@ -185,8 +185,8 @@ import SpectralPhysics.SelfModelDeficit.Kappa2Partial
 -- distinct scopes:
 --   Scope 1 (named candidates)  : CLOSED mod two Minkowski-cancel axioms
 --   Scope 2 (trace channel)     : CLOSED unconditionally (zero new axioms)
---   Scope 3 (Kasparov narrow)   : CONDITIONAL on K1+K2+K3 (Mesland-Rennie 2013,
---                                 Rosenberg-Schochet 1987, Kassel 1986)
+--   Scope 3 (Kasparov narrow)   : OPEN — Mesland-Rennie / Rosenberg-Schochet /
+--                                 Kassel UNFORMALISED literature (U2 2026-09-06)
 --   Scope 4 (broader pointwise) : HONESTLY OPEN, recorded as predicate
 -- See CompositionUniqueness/STATUS.md for the full accounting.
 import SpectralPhysics.CompositionUniqueness.SpectralOperations
@@ -310,8 +310,8 @@ import SpectralPhysics.Kappa2FromSpectrum.LightMassesContribution
 import SpectralPhysics.Kappa2FromSpectrum.Bracket
 import SpectralPhysics.Kappa2FromSpectrum.Verdict
 -- ═══ K_SR COMPACTNESS (v0.9.2 G.2 — v0.9 lines 16759, 11082(a)) ═══
--- Conditional on 1 named axiom (Rellich 1930, Kondrachov 1945, Simon 2005,
--- Reed-Simon Vol. IV).  See KSRCompactness/Verdict.lean and STATUS.md.
+-- Compactness is a named hypothesis on [TopologicalSpace KSR]; the
+-- Rellich–Kondrachov axiom and the ⊥ instance are deleted (U1).
 import SpectralPhysics.KSRCompactness.Verdict
 -- ═══ f_2 FROM SPECTRAL ACTION (v0.9.2 D.3 — v0.9 line 14742) ═══
 -- Conditional on 2 named literature predicates (Chamseddine-Connes 1997,

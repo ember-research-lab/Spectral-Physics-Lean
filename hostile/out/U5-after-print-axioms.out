@@ -1,0 +1,32 @@
+'SpectralPhysics.DixonPoincareDuality.connes_PD_definition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ connes_PD_definition]
+'SpectralPhysics.DixonPoincareDuality.bochniak_sitarz_PD_obstruction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ bochniak_sitarz_PD_obstruction]
+'SpectralPhysics.DixonPoincareDuality.dixon_pd_obstruction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ bochniak_sitarz_PD_obstruction]
+'SpectralPhysics.DixonPoincareDuality.dixon_pd_fails_canonical' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ connes_PD_definition]
+'SpectralPhysics.DixonPoincareDuality.PD_fails_for_dixon' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SpectralPhysics.DixonPoincareDuality.PD_fails_for_canonical_dixon' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.DixonPoincareDuality.PD_implies_zerothOrder_canonical' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.DixonPoincareDuality.not_wellDefinedOnClasses_canonical_dixon' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.DixonPoincareDuality.dixon_pd_has_nonzero_associator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SpectralPhysics.DixonPoincareDuality.dixon_pd_not_wellDefined' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

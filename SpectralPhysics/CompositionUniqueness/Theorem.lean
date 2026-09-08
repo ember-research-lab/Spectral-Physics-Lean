@@ -29,13 +29,14 @@ Any binary operation on spectra satisfying Hamiltonian additivity
 agrees with additive convolution on the trace functional.  **Zero
 new axioms.**
 
-## Scope 3 (CONDITIONAL on K1+K2+K3) — Kasparov-product narrow
+## Scope 3 (OPEN) — Kasparov-product narrow
 
-Within the category of Kasparov-product spectral operations
-(witnessed by `KasparovProductWitness`), the three-condition
-predicate is necessarily satisfied.  Uses K1 (Mesland-Rennie),
-K2 (Rosenberg-Schochet), K3 (Kassel).  This corresponds to Path A
-in `composition_decision.md`.
+Unconditional Kasparov uniqueness is **OPEN**. Mesland–Rennie
+2014/2016, Rosenberg–Schochet 1987, and Kassel 1987/1989 are
+**UNFORMALISED literature**. The implication theorem below takes
+a `KasparovProductWitness` (now carrying `card_mul`, the former
+K1, so the U2 `zeroOp` witness is excluded) plus explicit K2/K3
+hypotheses; nothing in this repo discharges those hypotheses.
 
 ## Scope 4 (OPEN) — broader pointwise uniqueness
 
@@ -128,22 +129,17 @@ theorem three_conditions_trace_unique
 
 /-! ## Scope 3: Kasparov-product narrow uniqueness (re-exported) -/
 
-/-- **Scope 3 re-export — CONJECTURAL (REPAIRED-SOUND, 2026-08-18)**:
-within the Kasparov-product spectral category, any operation carrying
-a `KasparovProductWitness` AND satisfying K1, K2, K3 as explicit
-hypotheses satisfies the three-condition predicate.
-
-K1, K2, K3 were named axioms (Mesland-Rennie, Rosenberg-Schochet,
-Kassel); the 2026-08-18 content audit (U2) found each derives `False`
-via the `zeroOp` witness, so they are deleted and now explicit
-hypothesis parameters — see `KasparovProductUniqueness.lean`. -/
+/-- **Scope 3 re-export — OPEN (2026-09-06).** Implication only:
+`KasparovProductWitness` (carries `card_mul`) plus K2/K3 hypotheses
+yields `ThreeConditions`. Mesland–Rennie / Rosenberg–Schochet /
+Kassel remain **UNFORMALISED literature**. See
+`KasparovProductUniqueness.lean`. -/
 theorem kasparov_three_conditions
     {op : BinaryOpOnSpectra} (h : KasparovProductWitness op)
-    (K1 : ∀ μ ν : Spectrum, Multiset.card (op μ ν) = Multiset.card μ * Multiset.card ν)
     (K2 : ∀ μ μ' ν : Spectrum, ν.NonTrivial → op μ ν = op μ' ν → μ = μ')
     (K3 : HamiltonianAdditivity op) :
     ThreeConditions op :=
-  kasparov_product_satisfies_three_conditions h K1 K2 K3
+  kasparov_product_satisfies_three_conditions h K2 K3
 
 /-! ## Scope 4: broader uniqueness — HONESTLY OPEN -/
 
