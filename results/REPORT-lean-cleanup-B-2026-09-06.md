@@ -4,7 +4,7 @@
 **Branch:** `lean-cleanup-B-2026-09-06`
 **Date:** 2026-09-07
 **Scope of this lane:** rows U1, U4, U5, U7, U8, U9.
-**Explicitly out of this lane:** row **U2** (`KasparovProductUniqueness` axioms K1/K2/K3) is **NOT DONE** in this lane. A prior commit `1ee37aa` on the branch is not this lane's deliverable and is not claimed here.
+**U2:** row **U2** (`KasparovProductUniqueness` axioms K1/K2/K3) is **DONE** in commit `1ee37aa` (earlier lane-B run); this report pass did NOT re-verify it. Status: DONE (1ee37aa), unverified by this pass; FLAG card_mul choice for Aaron; uniqueness OPEN.
 
 **`lake build` (this session, after U4/U5/U7 commits):**
 
@@ -340,9 +340,7 @@ Build completed successfully (3358 jobs).
 
 ## U2 — KasparovProductUniqueness K1/K2/K3
 
-**Status:** NOT DONE in this lane.
-
-This lane does not claim, close, or re-audit `KasparovProductUniqueness` axioms K1/K2/K3. Existing branch commit `1ee37aa` is outside this report's claimed rows.
+**Status:** DONE in commit `1ee37aa` (earlier lane-B run); this report pass did NOT re-verify it. Status: DONE (1ee37aa), unverified by this pass; FLAG card_mul choice for Aaron; uniqueness OPEN.
 
 ---
 
@@ -356,6 +354,6 @@ This lane does not claim, close, or re-audit `KasparovProductUniqueness` axioms 
 | U7 | ALREADY-FIXED | `66f74e6` + `631ed5f` (hostile-before) |
 | U8 | ALREADY-FIXED | `fd5f418` |
 | U9 | ALREADY-FIXED | `ad2f2f9` |
-| U2 | **NOT DONE in this lane** | — |
+| U2 | DONE (1ee37aa), unverified by this pass; FLAG card_mul choice for Aaron; uniqueness OPEN | `1ee37aa` |
 
 Do not merge to main. This report does not claim a CI/gate verdict beyond the pasted `lake build` line above.
