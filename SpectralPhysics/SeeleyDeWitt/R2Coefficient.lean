@@ -80,7 +80,7 @@ def kodim6 : SignTriple :=
 Provable because the signs are `rfl` on their `def`s. This does NOT
 formalize CCM 2008 Theorem 1.214; do not cite it as such.
 
-**Named axiom (CCM 2008 Theorem 1.214).**  In KO-dimension 6, the
+**Formerly a named axiom (CCM 2008 Theorem 1.214).**  In KO-dimension 6, the
     sign-triple is `(+1, +1, -1)`.  This is the sign-table input we
     rely on; no proof is given here. -/
 theorem ccm2008_kodim6_sign_triple :

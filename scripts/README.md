@@ -60,6 +60,11 @@ it (this is how `morse_two_minima_disconnect` slipped through, 2026-09-07→10),
 keep writing hostile files. It also cannot see a shell definition behind a clean
 proof. The regex and elaboration checks above cover some of that.
 
+Scope limits (Grok cross-check, 2026-09-10): the census only lists theorems and axioms, so an
+unused `sorry` `def` goes unreported (any theorem that uses it is caught). Shell
+detection covers two syntactic shapes only; bare `rfl` proofs are flagged
+`PROOF_TRIVIAL` but not gated. Only modules under `SpectralPhysics/` are scanned.
+
 ### CI integration
 
 Add to your pre-commit hook or CI pipeline:

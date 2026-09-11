@@ -228,7 +228,7 @@ quantified over `FiniteSpectralTriple` — the `REPAIRED-SOUND` class
 Provable because it is arithmetic on definitions (`⟨_, rfl⟩`); it does not
 formalize Connes–Marcolli Theorem 1.214. Do not cite it as such.
 
-**Named axiom — Tier 2 (Connes-Marcolli 2008 Theorem 1.214).**
+**Formerly a named axiom — Tier 2 (Connes-Marcolli 2008 Theorem 1.214).**
 The extended-Dirac multiplicity rule.
 
 For a finite spectral triple `T` with KO-dim 6, real-structure
@@ -266,7 +266,7 @@ theorem connes_marcolli_2008_thm_1_214 :
 Provable because the conclusion `∃ m, m = 1` is trivially true. This does
 NOT formalize a J-quotient multiplicity result; do not cite it as such.
 
-**Named axiom — Tier 3 (NON-STANDARD).**  The J-quotient
+**Formerly a named axiom — Tier 3 (NON-STANDARD).**  The J-quotient
 collapse rule for the (1,1)_0 sub-block.
 
 If a (hypothetical, non-standard) finite spectral triple uses

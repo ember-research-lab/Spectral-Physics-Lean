@@ -173,7 +173,7 @@ private theorem P5_const (c₀ : SMCouplings) (t₁ t₂ : ℝ) :
 Provable because `SMRGEquationsOn` contains no β-function, so a constant
 trajectory satisfies it; this is not the two-loop RGE. Do not cite it as such.
 
-**Named axiom — Machacek–Vaughn 1983/1984/1985 (1-loop and 2-loop).**
+**Formerly a named axiom — Machacek–Vaughn 1983/1984/1985 (1-loop and 2-loop).**
 
 For any base SM coupling tuple `c₀ : SMCouplings` and any pair of
 log-scales `t₁ ≤ t₂` containing the reference point `0`, the
@@ -195,7 +195,7 @@ Provable because `SMRGEquationsOn` contains no β-function, so a constant
 trajectory satisfies it; this is not the Ford–Jones–Stevenson–Stephens
 trajectory-extension result. Do not cite it as such.
 
-**Named axiom — Ford–Jones–Stevenson–Stephens 1992.**
+**Formerly a named axiom — Ford–Jones–Stevenson–Stephens 1992.**
 
 The 1992 paper of Ford–Jones–Stevenson–Stephens establishes that the
 SM RG solution from any phenomenological input at `M_Z` (the

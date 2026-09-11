@@ -143,7 +143,7 @@ Provable because it is an existential over a nonempty interval; it pins no
 value. This does NOT formalize the Planck 2018 measurement; do not cite it
 as such.
 
-**Named axiom (Planck 2018)** — the observed scalar amplitude of
+**Formerly a named axiom (Planck 2018)** — the observed scalar amplitude of
 the primordial power spectrum, from Planck 2018 results VI.
 
 Reference: Planck Collaboration (2020), A&A 641, A6, Table 2,

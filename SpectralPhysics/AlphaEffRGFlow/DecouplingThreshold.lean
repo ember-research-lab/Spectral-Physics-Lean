@@ -162,7 +162,7 @@ Provable because the conclusion follows from the continuity already in the
 hypothesis. This does NOT formalize the Manohar–Wise decoupling theorem; do
 not cite it as such.
 
-**Named axiom — Manohar–Wise (2000), *Heavy Quark Physics***.
+**Formerly a named axiom — Manohar–Wise (2000), *Heavy Quark Physics***.
 
 For any SM trajectory `c` solving the SM RG equations on a log-scale
 window `[t₁, t₂]` containing all four threshold scales

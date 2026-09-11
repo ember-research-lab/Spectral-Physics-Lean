@@ -29,7 +29,8 @@ ROOT = Path(__file__).resolve().parent.parent
 CENSUS_LEAN = ROOT / "scripts" / "census" / "Census.lean"
 BASELINE = ROOT / "scripts" / "census" / "baseline.json"
 SHELL_FLAGS = {"TRUE_CONCL", "DECOUPLED_WITNESS"}
-NATIVE_MARK = "._native."
+NATIVE_MARK = "._native."  # aux axioms native_decide emits on this toolchain
+TRUST_COMPILER = {"Lean.ofReduceBool", "Lean.trustCompiler"}
 
 
 def run_census() -> tuple[set[str], list[list[str]]]:
@@ -60,7 +61,7 @@ def summarize(modules: set[str], rows: list[list[str]]) -> dict[str, list[str]]:
             sorry.append(name)
         if SHELL_FLAGS & set(flags.split(",")):
             shell.append(name)
-        if any(NATIVE_MARK in d for d in dep_set):
+        if dep_set & TRUST_COMPILER or any(NATIVE_MARK in d for d in dep_set):
             native.append(name)
     files = {
         "SpectralPhysics." + ".".join(p.relative_to(ROOT / "SpectralPhysics").with_suffix("").parts)
