@@ -153,11 +153,13 @@ private def indiscretePath (x y : KSR) : @Path KSR ⊤ x y :=
     (@ContinuousMap.mk _ _ _ ⊤ (fun t => if (t : ℝ) = 1 then y else x) continuous_top)
     (by simp) (by simp)
 
+omit [TopologicalSpace KSR] in
 /-- **Honest negative [T1]**: `MorseObstruction` is NOT universal over
 topologies. Under `⊤` (every set path-connected) with `F ≡ 0`, the points
 `KSR.zero ≠ ksrOther` are two local minima at value `0`, yet every sublevel
 is path-connected. This is exactly the statement of the deleted axiom,
-negated. -/
+negated. (`omit`: the section instance would otherwise be auto-included as an
+unused binder.) -/
 theorem morse_obstruction_not_universal :
     ¬ ∀ (t : TopologicalSpace KSR) (F : KSR → ℝ), @MorseObstruction t F := by
   intro h
