@@ -135,8 +135,10 @@ and the reverse (sufficiency, via Palais–Smale 1964):
   `(Coercive ∧ AtMostOneLocalMin ∧ PalaisSmale) → BasinConnectivity_superseded_conjecture`
   `BasinConnectivity_superseded_conjecture → AtMostOneLocalMin`
 
-Both directions are conditional on the corresponding named axioms. -/
-theorem v092_G3_verdict :
+Both directions are conditional on the corresponding named axioms; the
+forward direction takes `MorseObstruction SAGFfunctional` as a hypothesis
+(the former Morse axiom was deleted as UNSOUND, 2026-09-10). -/
+theorem v092_G3_verdict (hM : MorseObstruction SAGFfunctional) :
     (Coercive SAGFfunctional ∧
      AtMostOneLocalMin SAGFfunctional ∧
      PalaisSmaleCondition SAGFfunctional →
@@ -149,7 +151,7 @@ theorem v092_G3_verdict :
     exact basin_connected_from_palais_smale
       SAGFfunctional h_coercive h_unique_min h_PS
   · intro h_BC
-    exact at_most_one_min_of_basin_connectivity SAGFfunctional h_BC
+    exact at_most_one_min_of_basin_connectivity SAGFfunctional hM h_BC
 
 /-! ## The genuine-openness consistency check
 

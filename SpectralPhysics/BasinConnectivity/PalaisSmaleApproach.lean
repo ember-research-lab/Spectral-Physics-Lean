@@ -175,12 +175,14 @@ If `BasinConnectivity_superseded_conjecture F` holds, then `AtMostOneLocalMin F`
 sublevel sets are all path-connected must have at most one local
 minimum at each value.
 
-This is the contrapositive of `basin_connectivity_fails_of_two_minima`. -/
+This is the contrapositive of `basin_connectivity_fails_of_two_minima`,
+conditional on the named hypothesis `MorseObstruction F` (2026-09-10). -/
 theorem at_most_one_min_of_basin_connectivity
-    (F : KSR → ℝ) (h : BasinConnectivity_superseded_conjecture F) :
+    (F : KSR → ℝ) (hM : MorseObstruction F)
+    (h : BasinConnectivity_superseded_conjecture F) :
     AtMostOneLocalMin F := by
   intro cStar h_two
-  exact basin_connectivity_fails_of_two_minima F h_two h
+  exact basin_connectivity_fails_of_two_minima F hM h_two h
 
 end SpectralPhysics.BasinConnectivity
 
