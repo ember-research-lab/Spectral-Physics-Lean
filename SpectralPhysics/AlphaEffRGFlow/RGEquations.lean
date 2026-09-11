@@ -192,7 +192,8 @@ theorem machacek_vaughn_two_loop_exists :
 
 /-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
 Provable because `SMRGEquationsOn` contains no β-function, so a constant
-trajectory satisfies it; this is not the two-loop RGE. Do not cite it as such.
+trajectory satisfies it; this is not the Ford–Jones–Stevenson–Stephens
+trajectory-extension result. Do not cite it as such.
 
 **Named axiom — Ford–Jones–Stevenson–Stephens 1992.**
 

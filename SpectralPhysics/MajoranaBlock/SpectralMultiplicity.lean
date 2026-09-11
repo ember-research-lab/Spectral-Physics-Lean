@@ -263,7 +263,8 @@ theorem connes_marcolli_2008_thm_1_214 :
   fun _ _ _ _ => ⟨_, rfl, by simp [jscPerGenerationModes]⟩
 
 /-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
-Provable because the conclusion `∃ m, m = 1` is trivially true.
+Provable because the conclusion `∃ m, m = 1` is trivially true. This does
+NOT formalize a J-quotient multiplicity result; do not cite it as such.
 
 **Named axiom — Tier 3 (NON-STANDARD).**  The J-quotient
 collapse rule for the (1,1)_0 sub-block.
