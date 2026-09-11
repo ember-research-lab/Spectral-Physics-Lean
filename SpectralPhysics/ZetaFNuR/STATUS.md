@@ -1,5 +1,12 @@
 # `compute/zeta-F-nuR-regularized` — STATUS
 
+> ✅ **UN-QUARANTINED 2026-09-10 (soundness census).** `multB_eq_NCG` and
+> `cross_branch_alignment` now cite
+> `HypothesisB.standardModelTriple_JSC_multiplicity_eq_six` (the
+> `JSC_multiplicity` port below), and all four files are imported by the
+> root `SpectralPhysics.lean`, so `lake build` checks them. The 05-26 note
+> below is kept for history.
+>
 > ⚠️ **QUARANTINED — ORPHANED & BROKEN (2026-05-26 pre-push audit).**
 > This entire module chain (`JRestrictedZeta`, `ResidueAtZero`,
 > `Verdict`, `ClosureRefinement`) is **NOT imported by the root

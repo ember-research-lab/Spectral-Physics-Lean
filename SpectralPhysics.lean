@@ -430,3 +430,26 @@ import SpectralPhysics.OffOrigin.DoddExistence
 -- the split; the narrowed residue (loop_reads_arrow) stays in EtaDirIndependence,
 -- which remains OUT of the root build.
 import SpectralPhysics.OffOrigin.ForwardOriginSplit
+
+-- ═══ FORMERLY ORPHANED MODULES (2026-09-10 soundness census) ═══
+-- These compiled (or, for ZetaFNuR, were quarantined as broken since the
+-- 2026-05-10 MajoranaBlock refactor) but were not imported here, so `lake build`
+-- never checked them. ZetaFNuR is ported to `JSC_multiplicity` (its STATUS TODO).
+-- OffOrigin/EtaDirIndependence.lean stays OUT by design (OPEN `forward_origin`).
+import SpectralPhysics.Analysis.FiedlerGap
+import SpectralPhysics.Analysis.RayleighQuotient
+import SpectralPhysics.Cosmology.EfoldMultiplicity
+import SpectralPhysics.EtaJSelfConj.APSIndex
+import SpectralPhysics.EtaJSelfConj.EtaInvariant
+import SpectralPhysics.EtaJSelfConj.SpectralFlow
+import SpectralPhysics.EtaJSelfConj.Verdict
+import SpectralPhysics.QFT.EuclideanCovariance
+import SpectralPhysics.QFT.MassGapIdentification
+import SpectralPhysics.QFT.NonTriviality
+import SpectralPhysics.QFT.ThermodynamicLimit
+import SpectralPhysics.SelfModelDeficit.SeeSawCancel
+import SpectralPhysics.SelfModelDeficit.ZetaPrimeZero
+import SpectralPhysics.ZetaFNuR.ClosureRefinement
+import SpectralPhysics.ZetaFNuR.JRestrictedZeta
+import SpectralPhysics.ZetaFNuR.ResidueAtZero
+import SpectralPhysics.ZetaFNuR.Verdict

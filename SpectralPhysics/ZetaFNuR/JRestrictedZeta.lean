@@ -157,7 +157,9 @@ def multB : ℕ := 6
 /-- The discriminator integer `mult_B = 6` agrees with the framework's
     standard-NCG count, by `compute/majorana-block-residue`. -/
 theorem multB_eq_NCG :
-    multB = SpectralPhysics.MajoranaBlock.three_gen_dirac_multiplicity := rfl
+    multB = JSC_multiplicity standardModelTriple standardModelTriple_KOdim
+      standardModelTriple_J_signs standardModelTriple_uses_extendedDirac :=
+  HypothesisB.standardModelTriple_JSC_multiplicity_eq_six.symm
 
 /-- **Tier 1.**  Under Hypothesis A, the J-restricted residue at `s = 0`
     is exactly `1`. -/

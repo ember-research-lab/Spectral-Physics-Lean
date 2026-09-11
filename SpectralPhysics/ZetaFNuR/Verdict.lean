@@ -153,13 +153,14 @@ theorem cross_branch_alignment :
     -- "8" is not the AS index (cross-ref to AS branch's exponent verdict)
     (multA ≠ 8) ∧ (multB ≠ 8) ∧
     -- standard NCG selects multB
-    (SpectralPhysics.MajoranaBlock.three_gen_dirac_multiplicity = multB) ∧
+    (JSC_multiplicity standardModelTriple standardModelTriple_KOdim
+      standardModelTriple_J_signs standardModelTriple_uses_extendedDirac = multB) ∧
     -- 288 closure consistent with both branches numerically
     (S_nuL + S_nuR = 1061 / 100) := by
   refine ⟨?_, ?_, ?_, K_seesaw_decimal⟩
   · unfold multA; decide
   · unfold multB; decide
-  · rfl
+  · exact multB_eq_NCG.symm
 
 /-! ## What remains transcendent IC (the standing claim) -/
 
