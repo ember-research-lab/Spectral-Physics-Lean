@@ -1,5 +1,7 @@
 # AlphaEffRGFlow — v0.9.2 G.7 closure (α_eff > 0 below EW)
 
+> **2026-09-10 soundness census:** now **theorems** (CITE-PROVABLE; each docstring says why it is provable and what it does NOT formalize): `machacek_vaughn_two_loop_exists`, `ford_jones_stevenson_stephens_extension`, `manohar_wise_decoupling`. Axiom lists below predate this change.
+
 **Date:** 2026-05-11
 **Branch:** `compute/alpha-eff-RG-below-EW`
 **v0.9 line:** 16805 (NON-PERT-PHYSICS)

@@ -138,13 +138,19 @@ def ProperEinsteinFrameStarobinsky : Prop :=
 
 /-! ## 2. The empirical A_s_observed input (single named axiom) -/
 
-/-- **Named axiom (Planck 2018)** — the observed scalar amplitude of
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because it is an existential over a nonempty interval; it pins no
+value. This does NOT formalize the Planck 2018 measurement; do not cite it
+as such.
+
+**Named axiom (Planck 2018)** — the observed scalar amplitude of
 the primordial power spectrum, from Planck 2018 results VI.
 
 Reference: Planck Collaboration (2020), A&A 641, A6, Table 2,
 `ln(10^10 A_s) = 3.044 ± 0.014`, giving `A_s ≈ 2.10 × 10⁻⁹`. -/
-axiom A_s_observed_planck2018 :
-    ∃ (A_s : ℝ), 2.09e-9 ≤ A_s ∧ A_s ≤ 2.11e-9
+theorem A_s_observed_planck2018 :
+    ∃ (A_s : ℝ), 2.09e-9 ≤ A_s ∧ A_s ≤ 2.11e-9 :=
+  ⟨2.10e-9, by norm_num, by norm_num⟩
 
 /-- The empirical Planck 2018 central value of `A_s`. Captured as a
 real number; the bracket is encoded in `A_s_observed_planck2018`. -/

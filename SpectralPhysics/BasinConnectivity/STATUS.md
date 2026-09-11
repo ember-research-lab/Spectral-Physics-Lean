@@ -1,5 +1,7 @@
 # Basin Connectivity — Honest STATUS
 
+> **2026-09-10 soundness census:** `morse_two_minima_disconnect` **deleted as UNSOUND** (∀-topology after the U1 fix derives False); honest negative `morse_obstruction_not_universal` proved; `MorseObstruction F` is a hypothesis of `basin_connectivity_fails_of_two_minima`, `at_most_one_min_of_basin_connectivity`, `v092_G3_verdict`. Axiom lists below predate this change.
+
 **Branch**: `compute/basin-connectivity`
 **Target**: v0.9 line 16763 — the "basin is everything" claim requires
 sublevel sets of the SAGF functional to be (path-)connected.

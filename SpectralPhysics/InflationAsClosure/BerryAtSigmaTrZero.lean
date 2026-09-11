@@ -89,7 +89,11 @@ def TTSectorBerry (s_TT : ℝ) : Prop :=
 
 /-! ## 2. The crossover-character-exchange axiom -/
 
-/-- **SHELL**: provable outright; carries no Berry-phase content and must
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because it is a `ring`/`field_simp` identity. This does NOT
+formalize any Berry-phase result; do not cite it as such.
+
+**SHELL**: provable outright; carries no Berry-phase content and must
 not be cited as literature input.
 
 The 2026-08-18 content audit (U6) showed this "named axiom" is a theorem
@@ -109,10 +113,21 @@ Statement as written (v0.9.1 §`rem:berry-meaning`, nominal): at the
 σ_tr-zero crossover the framework's two metric sectors exchange
 character, each picking up a Berry phase `γ = π` on a small loop
 encircling the crossover. -/
-axiom prop_berry_crossover :
+theorem prop_berry_crossover :
     ∀ (Λ ξ : ℝ),
       ξ ^ 2 = xiCrossSq Λ →
-      sigmaTr Λ ξ = 0
+      sigmaTr Λ ξ = 0 := by
+  intro Λ ξ hξ
+  unfold sigmaTr
+  have hden : (6 * f0 * alphaTr) ≠ 0 := by
+    have := f0_pos; have := alphaTr_pos; positivity
+  have hsubst : 6 * f0 * alphaTr * ξ^2 = c1RouteB * f2 * Λ^2 := by
+    have hf0 : f0 ≠ 0 := f0_pos.ne'
+    have hat : alphaTr ≠ 0 := alphaTr_pos.ne'
+    rw [hξ]; unfold xiCrossSq; field_simp
+  have : c1RouteB * f2 * Λ^2 * ξ^2 - 6 * f0 * alphaTr * ξ^4
+       = c1RouteB * f2 * Λ^2 * ξ^2 - (6 * f0 * alphaTr * ξ^2) * ξ^2 := by ring
+  rw [this, hsubst]; ring
 
 /-- **SHELL**: satisfied by construction regardless of the physics; do not
 cite as a closure.

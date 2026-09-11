@@ -1,5 +1,7 @@
 # DixonPoincareDuality — non-associativity obstruction to Poincaré duality
 
+> **2026-09-10 soundness census:** now **theorems** (CITE-PROVABLE; each docstring says why it is provable and what it does NOT formalize): `connes_PD_definition`, `bochniak_sitarz_PD_obstruction`. Axiom lists below predate this change.
+
 **Date:** 2026-05-11
 **Branch:** `compute/dixon-poincare-duality`
 **Target:** v0.9.2 deferred item B.2

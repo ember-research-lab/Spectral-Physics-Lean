@@ -1,5 +1,7 @@
 # MajoranaBlock — (1,1)_0 ζ̃-Residue Multiplicity Discriminator
 
+> **2026-09-10 soundness census:** now **theorems** (CITE-PROVABLE; each docstring says why it is provable and what it does NOT formalize): `connes_marcolli_2008_thm_1_214`, `j_quotient_axiom_collapses_multiplicity`. Axiom lists below predate this change.
+
 ## 0a. VERIFIED already-fixed (2026-09-06 lane B)
 
 Hostile-before `hostile/U7-ThreeGenFalse.lean` re-declares the deleted

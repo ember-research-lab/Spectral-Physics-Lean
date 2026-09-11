@@ -1,5 +1,7 @@
 # InflationAsClosure — the `5³ · 2² = 500` vs `510` structural-factor comparison
 
+> **2026-09-10 soundness census:** now **theorems** (CITE-PROVABLE; each docstring says why it is provable and what it does NOT formalize): `A_s_observed_planck2018`, `prop_berry_crossover`. Axiom lists below predate this change.
+
 **Date:** 2026-05-11 (corrected 2026-08-18 after the Lean content audit)
 **Branch:** `compute/inflation-As-from-5cubed-2squared`
 **Build:** `lake build` succeeds (2544 jobs in worktree).

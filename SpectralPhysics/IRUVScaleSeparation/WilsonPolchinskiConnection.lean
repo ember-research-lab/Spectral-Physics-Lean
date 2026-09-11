@@ -127,7 +127,12 @@ This is the *only* free axiom of this directory. It cites Wilson
 (1971) and Polchinski (1984) as the source of the analogy between
 spectral universality and RG-flow convergence. -/
 
-/-- **SHELL**: provable outright from the two predicate definitions; it
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+    Provable because `WilsonianUniversality` follows from the `CutoffFamily`
+    fields; there is no RG content. This does NOT formalize Wilson–Polchinski
+    universality; do not cite it as such.
+
+    **SHELL**: provable outright from the two predicate definitions; it
     carries no Wilson–Polchinski content and must not be cited as a
     closure.
 
@@ -151,8 +156,12 @@ spectral universality and RG-flow convergence. -/
 
     Statement as written: for every cutoff family `R`, the spectral
     universality predicate is equivalent to RG-flow convergence. -/
-axiom wilson_polchinski_analogy :
-    ∀ (R : CutoffFamily), WilsonianUniversality R
+theorem wilson_polchinski_analogy :
+    ∀ (R : CutoffFamily), WilsonianUniversality R := by
+  intro R
+  constructor
+  · intro h μ hμ Λ Λ' hΛ hΛ'; exact h.symmetric μ hμ Λ Λ' hΛ hΛ'
+  · intro h μ hμ Λ Λ' hΛ hΛΛ'; exact h μ hμ Λ Λ' hΛ (le_trans hΛ hΛΛ')
 
 /-- The Wilson–Polchinski axiom, in the direction
     `SpectralUniversality → RGFlowConverges`. -/

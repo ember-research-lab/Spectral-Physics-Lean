@@ -157,7 +157,12 @@ This is the textbook decoupling theorem (Manohar–Wise 2000,
 Chapter 5).  We do **not** assert any concrete matching value;
 the axiom is purely existential in the matching-condition predicates. -/
 
-/-- **Named axiom — Manohar–Wise (2000), *Heavy Quark Physics***.
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because the conclusion follows from the continuity already in the
+hypothesis. This does NOT formalize the Manohar–Wise decoupling theorem; do
+not cite it as such.
+
+**Named axiom — Manohar–Wise (2000), *Heavy Quark Physics***.
 
 For any SM trajectory `c` solving the SM RG equations on a log-scale
 window `[t₁, t₂]` containing all four threshold scales
@@ -171,12 +176,17 @@ Cambridge Monographs vol. 10, 2000, Chapter 5 (heavy-particle
 decoupling in mass-independent renormalisation schemes).
 Cross-references: Appelquist–Carazzone (1975) for the original
 theorem; Bernreuther–Wetzel (1982) for the MS-bar version. -/
-axiom manohar_wise_decoupling :
+theorem manohar_wise_decoupling :
     ∀ (c : SMTrajectory) (t₁ t₂ : ℝ),
       SMRGEquationsOn c t₁ t₂ →
       t₁ ≤ Real.log (m_tau / M_Z) →
       Real.log (m_top / M_Z) ≤ t₂ →
-      DecouplingAtThresholds c
+      DecouplingAtThresholds c := by
+  intro c t₁ t₂ h _ _
+  obtain ⟨h1, h2, h3, h4, h5, h6, h7⟩ := h.cont
+  have m : ∀ t, MatchingAtThreshold c t :=
+    fun _ => ⟨h1, h2, h3, h4, h5, h6, h7, 1, one_pos, fun _ _ => trivial⟩
+  exact ⟨m _, m _, m _, m _⟩
 
 /-! ## A small convenience: existence of a decoupling-compatible
     trajectory on the full SM-below-EW window -/

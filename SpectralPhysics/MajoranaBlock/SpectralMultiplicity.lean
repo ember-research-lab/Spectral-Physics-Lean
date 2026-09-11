@@ -224,7 +224,11 @@ quantified over `FiniteSpectralTriple` — the `REPAIRED-SOUND` class
 (axiom → pinned to a concrete object). It is declared after
 `standardModelTriple` further down this file. -/
 
-/-- **Named axiom — Tier 2 (Connes-Marcolli 2008 Theorem 1.214).**
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because it is arithmetic on definitions (`⟨_, rfl⟩`); it does not
+formalize Connes–Marcolli Theorem 1.214. Do not cite it as such.
+
+**Named axiom — Tier 2 (Connes-Marcolli 2008 Theorem 1.214).**
 The extended-Dirac multiplicity rule.
 
 For a finite spectral triple `T` with KO-dim 6, real-structure
@@ -249,15 +253,19 @@ declared as a numeric literal.
 **Citation**: Connes-Marcolli (2008) Theorem 1.214, §17.5
 eq. (1.620); van Suijlekom (2015) Theorem 5.5.7, eq. (5.139);
 Chamseddine-Connes-Marcolli (2007) Appendix A. -/
-axiom connes_marcolli_2008_thm_1_214 :
+theorem connes_marcolli_2008_thm_1_214 :
     ∀ T : FiniteSpectralTriple,
       T.KOdim_eq_six → T.J_sign_triple_KO6 →
         T.usesExtendedDiracConstruction →
           ∃ jsc_mult : ℕ,
             jsc_mult = diracDoublingFactor * T.n_generations ∧
-            jsc_mult = jscPerGenerationModes * diracDoublingFactor * T.n_generations
+            jsc_mult = jscPerGenerationModes * diracDoublingFactor * T.n_generations :=
+  fun _ _ _ _ => ⟨_, rfl, by simp [jscPerGenerationModes]⟩
 
-/-- **Named axiom — Tier 3 (NON-STANDARD).**  The J-quotient
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because the conclusion `∃ m, m = 1` is trivially true.
+
+**Named axiom — Tier 3 (NON-STANDARD).**  The J-quotient
 collapse rule for the (1,1)_0 sub-block.
 
 If a (hypothetical, non-standard) finite spectral triple uses
@@ -276,12 +284,13 @@ or Barrett (2007).  It is recorded here only to formalise what
 (non-standard) makes the redemption honest: Hypothesis A is
 defensible only if one is willing to take on this additional,
 unpublished structural input. -/
-axiom j_quotient_axiom_collapses_multiplicity :
+theorem j_quotient_axiom_collapses_multiplicity :
     ∀ T : FiniteSpectralTriple,
       T.KOdim_eq_six → T.J_sign_triple_KO6 →
         T.usesJQuotientAxiom →
           ∃ jsc_mult_under_quotient : ℕ,
-            jsc_mult_under_quotient = 1
+            jsc_mult_under_quotient = 1 :=
+  fun _ _ _ _ => ⟨1, rfl⟩
 
 /-! ## The two multiplicity functions
 

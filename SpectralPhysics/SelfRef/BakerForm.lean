@@ -66,7 +66,11 @@ theorem coeff_from_KP : (K : ℤ) - P = 214 ∧ K / 2 = 110 := by
 
 /-! ### Baker's theorem (axiomatized) -/
 
-/-- **Baker's theorem (axiomatized)**: A non-vanishing linear form in
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because there is no algebraicity hypothesis, so it holds for every
+`Lambda ≠ 0`; this is not Baker's theorem. Do not cite it as such.
+
+**Baker's theorem (axiomatized)**: A non-vanishing linear form in
 logarithms of algebraic numbers with integer coefficients is bounded
 away from zero. If Lambda != 0, then
 |Lambda| > exp(-C * (log B)^{n+1}) for effective constant C.
@@ -74,10 +78,20 @@ away from zero. If Lambda != 0, then
 This is a deep result in transcendental number theory (Baker 1966).
 We axiomatize it as it requires the full machinery of algebraic number
 theory (heights, degree bounds, etc.) which is not in Mathlib. -/
-axiom baker_theorem_bound
+theorem baker_theorem_bound
     (Lambda : ℝ) (h_nonzero : Lambda ≠ 0)
     (B : ℝ) (hB : B > 1) :
-    ∃ (C : ℝ), C > 0 ∧ |Lambda| > Real.exp (-C * (Real.log B) ^ 3)
+    ∃ (C : ℝ), C > 0 ∧ |Lambda| > Real.exp (-C * (Real.log B) ^ 3) := by
+  have hL : 0 < Real.log B := Real.log_pos hB
+  have hL3 : 0 < (Real.log B) ^ 3 := pow_pos hL 3
+  have hA : 0 < |Lambda| := abs_pos.mpr h_nonzero
+  refine ⟨(abs (Real.log (abs Lambda)) + 1) / (Real.log B) ^ 3, by positivity, ?_⟩
+  have : -((abs (Real.log (abs Lambda)) + 1) / (Real.log B) ^ 3) * (Real.log B) ^ 3
+        = -(abs (Real.log (abs Lambda)) + 1) := by field_simp
+  rw [this, gt_iff_lt]
+  calc Real.exp (-(abs (Real.log (abs Lambda)) + 1)) < Real.exp (Real.log (abs Lambda)) :=
+        Real.exp_lt_exp.mpr (by linarith [neg_abs_le (Real.log (abs Lambda))])
+    _ = abs Lambda := Real.exp_log hA
 
 /-! ### Multiplicative independence -/
 

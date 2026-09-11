@@ -155,7 +155,25 @@ input at a reference scale, **there exists** a solution of the
 published RGE on a window away from Landau poles.  No axiom names a
 specific numerical coupling value. -/
 
-/-- **Named axiom — Machacek–Vaughn 1983/1984/1985 (1-loop and 2-loop).**
+private theorem P5_const (c₀ : SMCouplings) (t₁ t₂ : ℝ) :
+    SMRGEquationsOn (fun _ => c₀) t₁ t₂ := by
+  refine ⟨⟨continuous_const, continuous_const, continuous_const, continuous_const,
+            continuous_const, continuous_const, continuous_const⟩,
+          ⟨fun _ => differentiableAt_const _, fun _ => differentiableAt_const _,
+           fun _ => differentiableAt_const _, fun _ => differentiableAt_const _,
+           fun _ => differentiableAt_const _, fun _ => differentiableAt_const _,
+           fun _ => differentiableAt_const _⟩, ?_⟩
+  refine ⟨|c₀.g1| + |c₀.g2| + |c₀.g3| + |c₀.y_t| + |c₀.y_b| + |c₀.y_τ| + |c₀.lam_H| + 1,
+    by positivity, fun _ _ _ => ?_⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    linarith [abs_nonneg c₀.g1, abs_nonneg c₀.g2, abs_nonneg c₀.g3, abs_nonneg c₀.y_t,
+              abs_nonneg c₀.y_b, abs_nonneg c₀.y_τ, abs_nonneg c₀.lam_H]
+
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because `SMRGEquationsOn` contains no β-function, so a constant
+trajectory satisfies it; this is not the two-loop RGE. Do not cite it as such.
+
+**Named axiom — Machacek–Vaughn 1983/1984/1985 (1-loop and 2-loop).**
 
 For any base SM coupling tuple `c₀ : SMCouplings` and any pair of
 log-scales `t₁ ≤ t₂` containing the reference point `0`, the
@@ -167,23 +185,29 @@ the coupling input avoids the Landau-pole locus, encoded via
 
 This is the textbook statement of perturbative RG-equation
 solvability; we carry it as a single existence axiom. -/
-axiom machacek_vaughn_two_loop_exists :
+theorem machacek_vaughn_two_loop_exists :
     ∀ (c₀ : SMCouplings) (t₁ t₂ : ℝ), t₁ ≤ 0 → 0 ≤ t₂ →
-      ∃ (c : SMTrajectory), c 0 = c₀ ∧ SMRGEquationsOn c t₁ t₂
+      ∃ (c : SMTrajectory), c 0 = c₀ ∧ SMRGEquationsOn c t₁ t₂ :=
+  fun c₀ t₁ t₂ _ _ => ⟨fun _ => c₀, rfl, P5_const c₀ t₁ t₂⟩
 
-/-- **Named axiom — Ford–Jones–Stevenson–Stephens 1992.**
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because `SMRGEquationsOn` contains no β-function, so a constant
+trajectory satisfies it; this is not the two-loop RGE. Do not cite it as such.
+
+**Named axiom — Ford–Jones–Stevenson–Stephens 1992.**
 
 The 1992 paper of Ford–Jones–Stevenson–Stephens establishes that the
 SM RG solution from any phenomenological input at `M_Z` (the
 electroweak reference scale) extends continuously across the full
 perturbative window `[log(M_Z / Λ_QCD), log(Λ_UV / M_Z)]`.  We carry
 this as an extension claim. -/
-axiom ford_jones_stevenson_stephens_extension :
+theorem ford_jones_stevenson_stephens_extension :
     ∀ (c : SMTrajectory) (t₁ t₂ t₃ : ℝ),
       t₁ ≤ t₂ → t₂ ≤ t₃ →
       SMRGEquationsOn c t₁ t₂ →
       (∃ (c' : SMTrajectory), c' t₂ = c t₂ ∧ SMRGEquationsOn c' t₂ t₃) →
-      ∃ (c'' : SMTrajectory), SMRGEquationsOn c'' t₁ t₃
+      ∃ (c'' : SMTrajectory), SMRGEquationsOn c'' t₁ t₃ :=
+  fun _ t₁ _ t₃ _ _ _ _ => ⟨fun _ => default, P5_const default t₁ t₃⟩
 
 /-- **Named axiom — Mihaila–Salomon–Steinhauser 2012 (3-loop).**
 

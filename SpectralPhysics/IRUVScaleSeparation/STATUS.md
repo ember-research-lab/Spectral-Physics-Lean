@@ -1,5 +1,7 @@
 # IRUVScaleSeparation — IR/UV Scale Separation in `prop:spectral-convergence`
 
+> **2026-09-10 soundness census:** now **theorems** (CITE-PROVABLE; each docstring says why it is provable and what it does NOT formalize): `wilson_polchinski_analogy`. Axiom lists below predate this change.
+
 **Date:** 2026-05-11
 **Branch:** `compute/IR-UV-scale-separation`
 **Build:** `lake build SpectralPhysics.IRUVScaleSeparation.Verdict` succeeds (1980 jobs).

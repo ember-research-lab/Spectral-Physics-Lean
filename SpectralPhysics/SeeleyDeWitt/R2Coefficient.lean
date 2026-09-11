@@ -76,11 +76,16 @@ def kodim6 : SignTriple :=
     ε'_unit := Or.inl rfl
     ε''_unit := Or.inr rfl }
 
-/-- **Named axiom (CCM 2008 Theorem 1.214).**  In KO-dimension 6, the
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because the signs are `rfl` on their `def`s. This does NOT
+formalize CCM 2008 Theorem 1.214; do not cite it as such.
+
+**Named axiom (CCM 2008 Theorem 1.214).**  In KO-dimension 6, the
     sign-triple is `(+1, +1, -1)`.  This is the sign-table input we
     rely on; no proof is given here. -/
-axiom ccm2008_kodim6_sign_triple :
-    kodim6.ε = 1 ∧ kodim6.ε' = 1 ∧ kodim6.ε'' = -1
+theorem ccm2008_kodim6_sign_triple :
+    kodim6.ε = 1 ∧ kodim6.ε' = 1 ∧ kodim6.ε'' = -1 :=
+  ⟨rfl, rfl, rfl⟩
 
 /-! ## Finite spectral triples and the sign-triple action -/
 

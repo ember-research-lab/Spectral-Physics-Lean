@@ -1,5 +1,7 @@
 # SeeleyDeWitt — R²-Coefficient Module: Audit-Honest Decomposition
 
+> **2026-09-10 soundness census:** now **theorems** (CITE-PROVABLE; each docstring says why it is provable and what it does NOT formalize): `ccm2008_kodim6_sign_triple`. Axiom lists below predate this change.
+
 **Date:** 2026-05-10
 **Branch:** `compute/R2-sign` (rebased from main)
 **Build:** `lake build` succeeds (3179 jobs, full project).

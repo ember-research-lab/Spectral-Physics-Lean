@@ -107,10 +107,53 @@ abstract spectral-triple carriers. It is a general fact of the
 published NCG formalism, not a Dixon-specific assertion.
 
 Citation: Connes, A., *Noncommutative Geometry* (1994), §VI.4. -/
-axiom connes_PD_definition :
-    ∀ T : AbstractSpectralTriple, PDImpliesWellDefined T
+private theorem P10_pd_never (T : AbstractSpectralTriple) : ¬ PoincareDuality T := by
+  intro ⟨_, hsurj⟩
+  classical
+  have h01 : (0 : OctonionFactor) ≠ 1 := by
+    intro h; have := congrArg CayleyDickson.fst h; simp at this
+  apply Function.cantor_surjective (fun a : OctonionFactor => {x | T.intersectionForm a x = 1})
+  intro s
+  obtain ⟨a, ha⟩ := hsurj (fun x => if x ∈ s then (1 : OctonionFactor) else 0)
+  refine ⟨a, ?_⟩
+  ext x
+  have hax : T.intersectionForm a x = (if x ∈ s then (1 : OctonionFactor) else 0) := congrFun ha x
+  simp only [Set.mem_setOf_eq]; rw [hax]
+  by_cases hx : x ∈ s <;> simp [hx, h01]
 
-/-- -- VACUOUS: `PoincareDuality T` holds for no `T`; this implication
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because the `PoincareDuality` predicate is uninhabited (U5 Cantor
+argument), so the antecedent is false. This does NOT formalize the Connes
+§VI.4 PD definition; do not cite it as such.
+
+**Connes 1994 §VI.4 PD definition (named axiom).**
+
+In the published Connes real-spectral-triple formalism, Poincaré
+duality is *defined* as non-degeneracy of the K-theoretic
+intersection form
+```
+⟨[a], [b]⟩ := index(γ ∘ D ∘ π(a) ∘ J ∘ π(b)* ∘ J⁻¹)
+```
+on the K-theory of the algebra. Non-degeneracy is *only* well-posed
+on a pairing that already descends to K-theory classes, which by
+the §VI.4 construction requires the zeroth-order commutation
+`[π(a), π'(b)] = 0` of the representation and the opposite.
+
+We carry this implication as a NAMED AXIOM, parameterised over
+abstract spectral-triple carriers. It is a general fact of the
+published NCG formalism, not a Dixon-specific assertion.
+
+Citation: Connes, A., *Noncommutative Geometry* (1994), §VI.4. -/
+theorem connes_PD_definition :
+    ∀ T : AbstractSpectralTriple, PDImpliesWellDefined T :=
+  fun T h => absurd h (P10_pd_never T)
+
+/-- **PROVABLE — was an axiom until 2026-09-10 (soundness census, CITE-PROVABLE).**
+Provable because the `PoincareDuality` predicate is uninhabited (U5 Cantor
+argument), so the antecedent is false. This does NOT formalize the
+Bochniak–Sitarz PD obstruction; do not cite it as such.
+
+-- VACUOUS: `PoincareDuality T` holds for no `T`; this implication
 is true of every Dixon-canonical `T` by false antecedent. Not deleted.
 
 **Bochniak–Sitarz / Connes §VI.4 PD obstruction reduction
@@ -130,9 +173,10 @@ Geometry* (1994), §VI.4.
 it separately to honour the citation discipline: the published
 literature explicitly addresses the non-associative case via
 Bochniak–Sitarz.) -/
-axiom bochniak_sitarz_PD_obstruction :
+theorem bochniak_sitarz_PD_obstruction :
     ∀ T : AbstractSpectralTriple,
-      IsCanonicalDixon T → PDImpliesWellDefined T
+      IsCanonicalDixon T → PDImpliesWellDefined T :=
+  fun T _ => connes_PD_definition T
 
 /-! ## Headline verdict theorem
 
