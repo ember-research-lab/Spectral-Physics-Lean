@@ -39,6 +39,27 @@ For each `axiom` declaration:
 
 With `--apply-fixes`, rewrites vacuous axioms as theorems with placeholder docstrings.
 
+### Kernel-level soundness census (~5 minutes)
+
+```bash
+lake build && python3 scripts/census.py            # exit 1 on regression
+python3 scripts/census.py --update                  # re-record after an improvement
+```
+
+`scripts/census/Census.lean` runs `#print axioms` (`Lean.collectAxioms`) on every
+`SpectralPhysics` theorem and axiom, private ones included, and flags `True`-conclusion
+and decoupled-witness shells. `census.py` compares the result with
+`scripts/census/baseline.json` and fails on any new project axiom, new
+`sorry`-dependent theorem, new shell-flagged theorem, new `native_decide` dependency,
+or a new orphan file (not imported by `SpectralPhysics.lean`, and not listed in
+`orphans_allowed`).
+
+The census checks **dependencies**, not meaning. It cannot tell whether a hypothesis
+or axiom is consistent. A universally quantified axiom that derives `False` passes
+it (this is how `morse_two_minima_disconnect` slipped through, 2026-09-07→10), so
+keep writing hostile files. It also cannot see a shell definition behind a clean
+proof. The regex and elaboration checks above cover some of that.
+
 ### CI integration
 
 Add to your pre-commit hook or CI pipeline:
