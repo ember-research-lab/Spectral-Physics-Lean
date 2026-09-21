@@ -216,3 +216,33 @@ honest that it claims only a compact-base spectral gap and leaves the ℝ⁴ Cla
 
 **Distinguish "checked, clean" from "not reached":** the A-classifications above are *checked-clean* (read +
 `#print axioms` where built); the four bullets in this clause are *not reached* and must not be assumed clean.
+
+---
+
+## Addendum 2026-09-17 — Axiom 3 self-model map: Lean still one-piece (noted, not closed)
+
+Added on Aaron's decision D-4 of `~/ember-review/NOTE-2026-09-17-closure-residual-dynamical-reading.md`
+("note and proceed"). Source is the manuscript's own annotation, not a new audit.
+
+| Manuscript claim (ch/line) | Lean (file:theorem) | Cat | Evidence | Notes |
+| --- | --- | --- | --- | --- |
+| `def:self-model-map-axioms-stub` carries the **two-piece** map `(ζ_L, Spec_N(A))` since 2026-09-06 (Aaron's reading rule, Connes completeness); on that map `ax:self-ref` clause (i) is a *theorem* in finite dimensions | `Axioms/SelfRefClosure.lean` (§8 `reconstruct_selfModel`, `spectrallyFaithful`) — but the file **still encodes the one-piece (zeta-only) map** | **A** | Manuscript annotation at `spectral-physics.tex:845-847`: *"Lean `Axioms/SelfRefClosure.lean` still encodes the one-piece map --- follow-up"*. Both Lean names verified present in `SpectralPhysics/Examples/SelfModelVacuity.lean` (2026-09-17, grep only; no `lake build`) | Formalization lag, not an audit finding: Lean is behind the manuscript's 2026-09-06 revision, and the one-piece reading it encodes is the one the manuscript proves **unsatisfiable** on any isospectral class (`not_zetaFaithful_of_cospectral`). Related: `prop:isospectral-reduction` was WITHDRAWN 2026-09-06 for the same reason. **Not closed here.** Nothing in the 2026-09-17 note depends on it (its C1 is [T3] and takes no lift from these Lean results), but a future claim that reads Axiom 3 *out of Lean* would read the superseded map. |
+
+**Status:** OPEN, deliberately. Recorded so the gap is not silent; closing it is a separate decision.
+
+## Addendum 2026-09-21 — Axiom 3 reading ruled LOSSY (Aaron); clause (i) filter superseded — **Category B**
+
+Aaron ruled (2026-09-21) that the self-model map M is a **lossy** compression of the system; what M does not carry is the system's blind spot (the
+closure fibre, 2026-09-17 addendum). Consequences for alignment:
+- `Axioms/SelfRefClosure.lean` §8 (`SpectrallyFaithful`, `reconstruct_selfModel`) formalises the two-piece LOSSLESS map. That is now a **Category B** finding:
+  Lean checked the claim and exposed that clause (i) is a theorem in finite dimension (no content) — the manuscript is revised DOWN (axiom demoted from
+  filter to description; annotation at `ax:self-ref`). Lean must NOT be advanced to match a lossless axiom; the one-piece `ZetaFaithful` + `not_zetaFaithful_of_cospectral`
+  is the honest formal content (M lossy on every cospectral class) and should be the primary object in any re-formalisation.
+- `SelfRef/SelfModelDeficit.lean` `deficit_eq_dark` (384 − 96 = 288) is arithmetic on a POSIT; the manuscript's `rem:self-model-deficit` identity
+  −ζ̃′_vis(0) = 288 is retagged Tier 3 / CLOSED-NEGATIVE{blind-spot}; `open:self-model-determinant` closed negative. Any Lean statement that reads the
+  identity as a theorem would be predicate-shell laundering — none found; the Prop-valued bounds in `SelfModelDeficitRigorous/` stay as bounds.
+- `SelfModelDeficit/Kappa2.lean` `kappa2_full_closed_form`: the manuscript display (:eq:kappa2-full-closed) omits the between-sector term (prints as 402.67,
+  states 529.42); check the Lean closed form carries the term before citing it; inputs are deficit-filled (Tier 3).
+- `NeutrinoMassPrediction.lean` `two_route_consistency`: arithmetic consistency only; the two route values are not independent (Route 2 embeds Route 1).
+Authority: `~/ember-review/NOTE-2026-09-21-faithfulness-one-constraint.md` §7–8; `NOTE-2026-09-21-trace-cosmology-under-lossy-self-model.md`; table
+`artifacts-2026-09-21-lossy-audit/DEPENDENCY-TABLE.md`. Read-and-classify only; no Lean edited.
