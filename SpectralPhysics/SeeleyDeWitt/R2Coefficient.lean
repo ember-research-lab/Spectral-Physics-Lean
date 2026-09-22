@@ -51,6 +51,15 @@ not alter `A4Weights.vassilevich.w_R2`, and therefore does not alter
   of the spectral action).
 * Vassilevich, D.V. (2003). "Heat kernel expansion: user's manual."
   *Phys. Rep.* **388**, 279. Theorem 4.1.
+
+**2026-09-22 note (operator identification; statements below unchanged).** `cR2` is the *bare* `R²`
+weight of the general Vassilevich formula. The total `R²` coefficient of a given operator also
+receives `R·tr E`, `tr E²` and `tr Ω²` contributions. So `cR2 vassilevich = 1/72` is the minimal
+**scalar** Laplacian's value, not the Dirac operator's. For the spin Dirac square the total `R²`
+coefficient is `0` (`a₄ ∝ −18 C² + 11 E`), and for the graph Dirac `d + d*` adopted as the SAGF operator
+(manuscript `rem:graph-dirac-adoption`) it is `15/360 = 1/24`. See
+`SpectralPhysics.SeeleyDeWitt.GraphDirac` (`rTwo_spinDirac`, `rTwo_graphDirac`). The theorems in this
+file remain true as statements about `cR2`; they do not give a Dirac operator's `R²` coefficient.
 -/
 
 namespace SpectralPhysics.SeeleyDeWitt
