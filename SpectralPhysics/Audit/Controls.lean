@@ -81,4 +81,23 @@ error: PHYSICS-FREE: SpectralPhysics.ImmirziParameter.immirzi_from_black_hole re
 #guard_msgs in
 #audit_uses a2_graphDirac oneForm
 
+/-! ## Check 4 — literal laundering (a copied number has no dependency edge) -/
+
+/-- A number pasted from an external script: provenance invisible to the closure walk. -/
+noncomputable def launderedValue : ℝ := 609 / 10000
+theorem launderedValue_pos : 0 < launderedValue := by unfold launderedValue; norm_num
+
+/--
+error: UNDECLARED-LITERAL: SpectralPhysics.Audit.Controls.launderedValue_pos depends on SpectralPhysics.Audit.Controls.launderedValue
+-/
+#guard_msgs in
+#audit_literals launderedValue_pos
+
+audit_input launderedValue "MEASURED: synthetic control"
+
+-- negative control: once provenance is declared the check passes
+/-- info: audit_literals: every hard-coded number in the closure has declared provenance -/
+#guard_msgs in
+#audit_literals launderedValue_pos
+
 end SpectralPhysics.Audit.Controls

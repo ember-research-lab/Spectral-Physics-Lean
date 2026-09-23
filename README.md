@@ -55,6 +55,16 @@ History" below):
 - `audit_bridge d "claim" shadow P` decides a finite shadow `P` of a physical identification with
   kernel `decide`, and fails the build if the shadow is refuted.
 - `#audit_uses t c` fails if `t` re-typechecks with `c` replaced by an arbitrary value (physics-free).
+- `#audit_literals t` fails if a hard-coded number in `t`'s closure (a definition with no framework
+  constant in its value, e.g. `609 / 10000` pasted from a script) has no declared provenance
+  (`audit_datum` / `audit_input`). A copied number carries no dependency edge, so the circularity walk
+  cannot otherwise see where it came from.
+- `#audit_free t` abstracts every framework definition/axiom `t` touches and re-typechecks (a sweep form).
+
+`Audit/Registry.lean` holds the repository's real tags, each citing the manuscript's own provenance
+line. Its detections are pinned as a known-issues baseline: six predictions are CIRCULAR across κ₂/Λ_obs,
+T_c/v, A_s and Koide. Fixing one breaks its pin, and the pin is updated in the same change. Known blind
+spot: an identification built into a formula (α_s with f₀ = τ inside `π(2+φ)/96`) has no constant to tag.
 
 `Audit/Controls.lean` pins a positive and a negative control for each check with `#guard_msgs`. The
 positive controls are the Immirzi back-solve, `immirzi_from_black_hole := trivial`, and the refuted

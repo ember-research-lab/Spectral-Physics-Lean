@@ -61,7 +61,18 @@ where
 private def register (k : String) (n : Name) (tag : String) : CommandElabM Unit :=
   modifyEnv (auditExt.addEntry · { kind := k, decl := n, tag := tag })
 
+/-- Is `n` defined in a library module (Mathlib, core, …) rather than in the framework? -/
+def isLibConst (env : Environment) (n : Name) : Bool :=
+  match env.getModuleIdxFor? n with
+  | some i =>
+    let m := (env.header.moduleNames[i.toNat]!).toString
+    ["Mathlib", "Init", "Lean", "Std", "Batteries", "Aesop", "Qq", "Plausible"].any (fun p => m.startsWith p)
+  | none => false
+
 syntax (name := auditDatum) "audit_datum " ident str : command
+/-- Declare provenance for a literal-bearing input that is NOT fitted to a prediction target
+(measured value, posit, convention). Kind "input"; it satisfies `#audit_literals`. -/
+syntax (name := auditInput) "audit_input " ident str : command
 syntax (name := auditPrediction) "audit_prediction " ident str : command
 syntax (name := auditCircularity) "#audit_circularity" : command
 syntax (name := auditUses) "#audit_uses " ident ident : command
@@ -72,6 +83,9 @@ elab_rules : command
   | `(audit_datum $id:ident $s:str) => do
     let n ← liftCoreM <| realizeGlobalConstNoOverloadWithInfo id
     register "datum" n s.getString
+  | `(audit_input $id:ident $s:str) => do
+    let n ← liftCoreM <| realizeGlobalConstNoOverloadWithInfo id
+    register "input" n s.getString
   | `(audit_prediction $id:ident $s:str) => do
     let n ← liftCoreM <| realizeGlobalConstNoOverloadWithInfo id
     register "prediction" n s.getString
@@ -187,6 +201,30 @@ def freeOfAll (thm : Name) (cs : Array Name) : MetaM Bool := do
   go 0 info.type v
 
 syntax (name := auditFree) "#audit_free " ident+ : command
+syntax (name := auditLiterals) "#audit_literals " ident+ : command
+
+/-- Framework definitions in `thm`'s closure whose value is a hard-coded number and whose
+provenance is not declared in the registry (any kind). Closes literal laundering: a number copied
+from elsewhere carries no dependency edge, so the closure walk alone cannot see where it came from. -/
+def undeclaredLiterals (env : Environment) (thm : Name) : Array Name := Id.run do
+  let declared : NameSet := (auditExt.getState env).foldl (fun acc e => acc.insert e.decl) {}
+  let mut out := #[]
+  for n in (closure env thm).toList do
+    if isLibConst env n || declared.contains n then continue
+    if let some (.defnInfo d) := env.find? n then
+      -- hard-coded number: no framework constant in the value, and a decimal or a numeral ≥ 3
+      -- (catches `0.0609` and `609 / 10000` alike)
+      -- only framework defs / opaques / axioms count; shared auxiliary proofs (`_proof_k`) do not
+      let isFrameworkObj (m : Name) : Bool :=
+        !isLibConst env m && !m.isInternal &&
+          (match env.find? m with
+           | some (.defnInfo _) | some (.opaqueInfo _) | some (.axiomInfo _) => true
+           | _ => false)
+      let noFramework := !(d.value.getUsedConstants.any isFrameworkObj)
+      let numeral := d.value.find? fun e =>
+        e.isAppOf ``OfScientific.ofScientific || (match e with | .lit (.natVal k) => k ≥ 3 | _ => false)
+      if noFramework && numeral.isSome then out := out.push n
+  return out.qsort (·.toString < ·.toString)
 
 elab_rules : command
   | `(#audit_free $ts:ident*) => do
@@ -203,5 +241,17 @@ elab_rules : command
         else if free then "PHYSICS-FREE" else "USES"
       lines := lines.push s!"{verdict}  {tn}  [{cs.size} framework const(s): {String.intercalate ", " (cs.toList.map toString)}]"
     logInfo m!"{String.intercalate "\n" lines.toList}"
+
+elab_rules : command
+  | `(#audit_literals $ts:ident*) => do
+    let env ← getEnv
+    let mut bad : Array String := #[]
+    for t in ts do
+      let tn ← liftCoreM <| realizeGlobalConstNoOverloadWithInfo t
+      let u := undeclaredLiterals env tn
+      unless u.isEmpty do
+        bad := bad.push s!"UNDECLARED-LITERAL: {tn} depends on {String.intercalate ", " (u.toList.map toString)}"
+    if bad.isEmpty then logInfo m!"audit_literals: every hard-coded number in the closure has declared provenance"
+    else throwError (String.intercalate "\n" bad.toList)
 
 end SpectralPhysics.Audit
