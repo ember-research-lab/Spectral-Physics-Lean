@@ -66,6 +66,12 @@ recommended sidecar location:
 | Number of named axioms | 1                            | 4                                        |
 | Closure form          | 1 predicate → 1 named axiom  | 3 predicates → 4 named axioms            |
 | Sidecar required      | No                           | **Yes** (Python/mpmath, see STATUS.md)   |
+
+**2026-09-22 note.** The positivity studied here is of `α_eff = 1/120`, which is the minimal-scalar
+value. Under the graph Dirac adopted as the SAGF operator (manuscript `rem:graph-dirac-adoption`),
+`α_eff = −1/24 < 0`, while the basis-independent coefficients stay positive: `β_eff = 1/4`,
+`α_tr = 1/24`, `α_* = α_eff + β_eff/4 = 1/48` (`SeeleyDeWitt.GraphDirac`). The RG question moves to
+`α_tr` and `β_eff`. The verdicts below are unchanged as statements about the value they take as input.
 -/
 
 noncomputable section

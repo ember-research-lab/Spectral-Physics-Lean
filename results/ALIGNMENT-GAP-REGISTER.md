@@ -246,3 +246,16 @@ closure fibre, 2026-09-17 addendum). Consequences for alignment:
 - `NeutrinoMassPrediction.lean` `two_route_consistency`: arithmetic consistency only; the two route values are not independent (Route 2 embeds Route 1).
 Authority: `~/ember-review/NOTE-2026-09-21-faithfulness-one-constraint.md` §7–8; `NOTE-2026-09-21-trace-cosmology-under-lossy-self-model.md`; table
 `artifacts-2026-09-21-lossy-audit/DEPENDENCY-TABLE.md`. Read-and-classify only; no Lean edited.
+
+
+## Addendum 2026-09-22 — a₄ operator identification; graph Dirac adopted (Category A: mislabel, statements true for their inputs)
+Manuscript main 956ef4c (`rem:graph-dirac-adoption`, `prop:eff-couplings` annotation). Exact-spectra run plus an independent verifier (lab
+`~/ember-tasks/weyl-sign-sagf-2026-09-22/`, `~/ember-review/artifacts-2026-09-22-a4-verify/`) and the new `SeeleyDeWitt/GraphDirac.lean`:
+- `SeeleyDeWitt/R2Coefficient.lean` `R2_coefficient_of_a4_value`, `r2_value_is_universal`: `cR2 = 1/72` is the bare R² weight = the minimal
+  scalar's total R² coefficient. The spin Dirac's is 0; the graph Dirac's is 1/24. Docstring note added; statements unchanged.
+- `AlphaEffRGFlow/*`, `Cosmology/SigmaTrDispersion`, `SeeleyDeWitt/SpectralActionR2`, `Cosmology/H4Nonlinear`, `InflationAsClosure/AsConventionChain`:
+  these use α_eff = 1/120 or α_tr = 1/72, the scalar values. Under the graph Dirac α_eff = −1/24 < 0, while α_tr = 1/24 and β_eff = 1/4.
+- `SelfModelDeficit/F4Coefficient` (`f_2_value = 48e⁶` with K = 64): the graph Dirac uses K = 32 with f₂ = 96e⁶; the product is unchanged
+  (`GraphDirac.Kf2_invariant`). So `Kappa2`, `NeutrinoMassPrediction` and `ClosureRefinement` are numerically unchanged.
+- Value migration of the scalar-labelled files is NOT done in this addendum: it is a follow-up once the manuscript's downstream recomputation
+  (graph-Dirac downstream audit, `artifacts-2026-09-22-s-vs-ms-audit/GRAPH-DIRAC-DOWNSTREAM.md`) settles which statements carry over.

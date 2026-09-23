@@ -207,3 +207,13 @@ Build completed successfully (3179 jobs).
    into `GeomInvariants` for `M` and `signTriple` for `F`.
 
 These are all **deliberate scope limitations**, not hidden assumptions.
+
+## 2026-09-22 — operator identification (graph Dirac adopted as SAGF operator)
+Manuscript `rem:graph-dirac-adoption` (main 956ef4c). The "Dirac" curvature coefficients used here are the minimal **scalar**
+Laplacian's: (5, −2, 2)/360 gives α_eff = 1/120, β_eff = 1/60, α_tr = 1/72.
+- Spin Dirac: (5, −8, −7)/360, with no R² term.
+- Adopted graph Dirac d + d*: (−35, 170, −20)/360, giving α_eff = −1/24, β_eff = 1/4, α_tr = 1/24, Weyl² +1/8, α_* = 1/48.
+- M_Pl² = 32 f₂Λ²/π with f₂ = 96e⁶ (K·f₂ unchanged).
+
+Proved (assembly from trace data) in `SeeleyDeWitt/GraphDirac.lean`; confirmed on exact spectra. Files in this directory that encode
+1/120, 1/60, 1/72 or K = 64 keep their statements (true for the values they take as input), but those values are no longer the SAGF operator's.
