@@ -48,6 +48,18 @@ History" below):
    to derive themselves; a number like `Λ_obs` enters as a single
    `Tier-2` axiom and is consumed once.
 
+**Mechanized (prototype, 2026-09-23): `SpectralPhysics/Audit/`.** Rules 3 and 4 and the
+"name matches object" requirement are compile-time checks:
+- `#audit_circularity` fails the build if a theorem tagged `audit_prediction … "tag"` reaches a
+  constant tagged `audit_datum … "tag"` in its transitive closure (the traversal `#print axioms` uses).
+- `audit_bridge d "claim" shadow P` decides a finite shadow `P` of a physical identification with
+  kernel `decide`, and fails the build if the shadow is refuted.
+- `#audit_uses t c` fails if `t` re-typechecks with `c` replaced by an arbitrary value (physics-free).
+
+`Audit/Controls.lean` pins a positive and a negative control for each check with `#guard_msgs`. The
+positive controls are the Immirzi back-solve, `immirzi_from_black_hole := trivial`, and the refuted
+graph-Dirac identification. What stays trusted is the printed registry (`#audit_report`).
+
 Each `compute/*` branch carries a `STATUS.md` recording: which theorems
 are Tier 1 (proved), which named axioms it introduces (with citation),
 which predicates carry open content, and the explicit verdict —

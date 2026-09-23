@@ -280,6 +280,7 @@ import SpectralPhysics.Eta.IntegerCounts
 -- ═══ R²-SIGN REDEMPTION (Seeley-DeWitt a_4 with separated unconditional/conditional claims) ═══
 import SpectralPhysics.SeeleyDeWitt.A4Coefficients
 import SpectralPhysics.SeeleyDeWitt.GraphDirac
+import SpectralPhysics.Audit.Controls
 import SpectralPhysics.SeeleyDeWitt.R2Coefficient
 import SpectralPhysics.SeeleyDeWitt.SpectralActionR2
 -- ═══ SAGF JOINT-UNIQUENESS REDEMPTION (5 substantive constraints; H3 preserved with honest scope) ═══
