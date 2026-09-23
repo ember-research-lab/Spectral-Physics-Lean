@@ -146,4 +146,62 @@ elab_rules : command
     let line (e : Entry) := s!"  [{e.kind}] {e.decl} : {e.tag}"
     logInfo m!"trusted-meaning base ({es.size} entries):\n{String.intercalate "\n" (es.toList.map line)}"
 
+
+/-- Framework (non-library) definitions, opaques and axioms reachable from `thm`'s statement and proof. -/
+def frameworkConsts (env : Environment) (thm : Name) : Array Name := Id.run do
+  let some info := env.find? thm | return #[]
+  let used := info.type.getUsedConstants ++ ((info.value? (allowOpaque := true)).map (·.getUsedConstants) |>.getD #[])
+  let isLib (n : Name) : Bool :=
+    match env.getModuleIdxFor? n with
+    | some i =>
+      let m := (env.header.moduleNames[i.toNat]!).toString
+      m.startsWith "Mathlib" || m.startsWith "Init" || m.startsWith "Lean" || m.startsWith "Std" || m.startsWith "Batteries" || m.startsWith "Aesop" || m.startsWith "Qq" || m.startsWith "Plausible"
+    | none => false
+  let mut out : Array Name := #[]
+  for n in used do
+    if out.contains n || n == thm || isLib n then continue
+    match env.find? n with
+    | some (.defnInfo d) => if d.levelParams.isEmpty then out := out.push n
+    | some (.opaqueInfo d) => if d.levelParams.isEmpty then out := out.push n
+    | some (.axiomInfo d) => if d.levelParams.isEmpty then out := out.push n
+    | _ => pure ()
+  return out
+
+/-- `true` iff `thm` re-typechecks with ALL of `cs` abstracted (physics-free with respect to them). -/
+def freeOfAll (thm : Name) (cs : Array Name) : MetaM Bool := do
+  let info ← getConstInfo thm
+  let some v := info.value? (allowOpaque := true) | return false
+  let rec go (i : Nat) (ty v : Expr) : MetaM Bool := do
+    if h : i < cs.size then
+      let c := cs[i]
+      let cty ← instantiateMVars (← getConstInfo c).type
+      -- earlier abstractions already applied to ty/v; types of later constants keep the originals (conservative)
+      withLocalDeclD (Name.mkSimple s!"x{i}") cty fun x => do
+        let rep (e : Expr) : Expr := e.replace fun s => if s.isConstOf c then some x else none
+        go (i + 1) (rep ty) (rep v)
+    else
+      try
+        Meta.check v
+        isDefEq (← inferType v) ty
+      catch _ => return false
+  go 0 info.type v
+
+syntax (name := auditFree) "#audit_free " ident+ : command
+
+elab_rules : command
+  | `(#audit_free $ts:ident*) => do
+    let env ← getEnv
+    let mut lines : Array String := #[]
+    for t in ts do
+      let tn ← liftCoreM <| realizeGlobalConstNoOverloadWithInfo t
+      let cs := frameworkConsts env tn
+      let free ← liftTermElabM <| freeOfAll tn cs
+      let concTrue ← liftTermElabM do
+        forallTelescope (← getConstInfo tn).type fun _ b => return b.isConstOf ``True
+      let verdict :=
+        if cs.isEmpty then (if concTrue then "VACUOUS (conclusion True)" else "NO-FRAMEWORK-CONSTANTS")
+        else if free then "PHYSICS-FREE" else "USES"
+      lines := lines.push s!"{verdict}  {tn}  [{cs.size} framework const(s): {String.intercalate ", " (cs.toList.map toString)}]"
+    logInfo m!"{String.intercalate "\n" lines.toList}"
+
 end SpectralPhysics.Audit

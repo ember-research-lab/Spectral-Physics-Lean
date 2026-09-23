@@ -1,0 +1,36 @@
+import SpectralPhysics
+
+/-! Physics-free sweep over the census shell theorems (NNR-20260922-10). Report only; not in the build. -/
+
+#audit_free ClassicalFields.sagf_monotone
+#audit_free ClassicalFields.sagf_reduces_to_ricci_flow
+#audit_free RelationalStructure.SpectralLaplacian.spectral_gap_pos
+#audit_free SpectralPhysics.AlphaEffRGFlow.sidecar_pointer
+#audit_free SpectralPhysics.AlphaEffRGFlow.sign_flip_risk_not_excluded_by_lean_alone
+#audit_free SpectralPhysics.BakerForm.effective_separation
+#audit_free SpectralPhysics.Consciousness.complexity_threshold_spectral
+#audit_free SpectralPhysics.Consciousness.consciousness_requires_existence
+#audit_free SpectralPhysics.Consciousness.eigenvectors_are_fixed_points
+#audit_free SpectralPhysics.Consciousness.power_method_convergence
+#audit_free SpectralPhysics.Consciousness.trace_unique_scalar
+#audit_free SpectralPhysics.Convergence.SpectralConvergence.nonCollapse
+#audit_free SpectralPhysics.DiracQFT.strong_coupling_cross_ref
+#audit_free SpectralPhysics.DiracQFT.vertex_is_commutator
+#audit_free SpectralPhysics.EinsteinFromSpectral.heat_kernel_expansion
+#audit_free SpectralPhysics.GeometryFromHeat.heat_determines_local_geometry
+#audit_free SpectralPhysics.ImmirziParameter.immirzi_from_black_hole
+#audit_free SpectralPhysics.KoideFormula.triad_circulant_structure
+#audit_free SpectralPhysics.OSAxiomsProved.os_axioms_status
+#audit_free SpectralPhysics.RMForcesDivisionAlgebras.reading_B_verdict
+#audit_free SpectralPhysics.SigmaMPlHodgePeriod.loday_quillen_tsygan_rationality
+#audit_free SpectralPhysics.SpacetimeEmergence.closure_at_level_2
+#audit_free SpectralPhysics.SpacetimeEmergence.dimension_running
+#audit_free SpectralPhysics.SpacetimeEmergence.spacetime_emergence
+#audit_free SpectralPhysics.SpacetimeEmergence.spatial_compactness
+#audit_free SpectralPhysics.SpectralArithmetic.cpf_product
+#audit_free SpectralPhysics.SpectralArithmetic.resonance_sublinear
+#audit_free SpectralPhysics.SpinStatistics.os_reconstruction_spin_statistics
+#audit_free SpectralPhysics.Weyl.WeylAsymptotics.eigenfunction_bound
+#audit_free SpectralPhysics.WilsonLattice.ym_convergent_sequence
+#audit_free forcing_contains_octonions
+#audit_free voisin_counterexample_is_below_threshold
