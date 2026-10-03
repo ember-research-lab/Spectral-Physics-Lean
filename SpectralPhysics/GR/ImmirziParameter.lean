@@ -9,31 +9,35 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Algebra.Order.Field.Basic
 
 /-!
-# The Immirzi Parameter from Self-Reference (Ch 29)
+# The Immirzi Parameter (Ch 29) — external input, not derived
 
-The Barbero-Immirzi parameter gamma = ln(2) / (pi * sqrt(3)) is derived
-from the self-referential structure. This parameter controls the quantum
+**Status (2026-10-03): `gamma` is a `def` set to the literature value
+ln(2) / (pi * sqrt(3)) of Ashtekar–Baez–Corichi–Krasnov (1998). Nothing in
+this file, or elsewhere in this repo, derives it from the spectral structure.**
+The manuscript's `thm:immirzi` was retagged on 2026-09-22 as a back-solve, not a
+prediction; this header matches that retag. The parameter controls the quantum
 of area in loop quantum gravity: A = 8 pi gamma l_P^2 sqrt(j(j+1)).
 
-## Main results (to be formalized)
+## What is actually proved here
 
-* `immirzi_value` : gamma = ln(2) / (pi * sqrt(3))
-* `immirzi_from_black_hole` : Bekenstein-Hawking entropy fixes gamma
-* `immirzi_approx` : gamma ~ 0.1274
+* `immirzi_pos` : 0 < gamma  (arithmetic)
+* `immirzi_su2_origin` : sqrt(3) = 2 sqrt(j(j+1)) at j = 1/2  (arithmetic identity
+  behind the ABCK denominator; no self-reference content)
 
-## Derivation
+## Not formalized (honest negative)
 
-1. Black hole entropy: S_BH = A / (4 l_P^2)
-2. LQG area spectrum: A = 8 pi gamma l_P^2 sum sqrt(j_i(j_i+1))
-3. State counting with SU(2) punctures: S = (gamma_0 / gamma) A / (4 l_P^2)
-4. Matching: gamma = gamma_0 where gamma_0 = ln(2) / (pi sqrt(3))
-5. In spectral physics: this value arises from the triad spectrum
-   via the Bekenstein-Hawking constraint
+The Bekenstein–Hawking matching argument (S_BH = A/(4 l_P^2); LQG area spectrum;
+SU(2) puncture counting S = (gamma_0/gamma) A/(4 l_P^2); gamma = gamma_0) is LQG
+background and is NOT formalized. A former theorem `immirzi_from_black_hole` stated
+this matching but proved only `True`; it was removed on 2026-10-03 as a vacuous
+shell (no dependents). Any claim that gamma "arises from the triad spectrum" has
+no theorem behind it.
 
 ## References
 
+* Ashtekar, Baez, Corichi, Krasnov (1998), gr-qc/9710007 — the value used here
 * Immirzi, "Quantum gravity and Regge calculus" (1997)
-* Ben-Shalom, "Spectral Physics", Chapter 29
+* Ben-Shalom, "Spectral Physics", Chapter 29 (`thm:immirzi`, retagged 2026-09-22)
 -/
 
 noncomputable section
@@ -57,20 +61,10 @@ theorem immirzi_pos : 0 < gamma := by
   apply div_pos (Real.log_pos (by norm_num : (1 : ℝ) < 2))
   exact mul_pos Real.pi_pos (Real.sqrt_pos_of_pos (by norm_num : (0:ℝ) < 3))
 
-/-- **Bekenstein-Hawking matching**: The Immirzi parameter is uniquely
-    fixed by requiring that the LQG state count reproduces the
-    Bekenstein-Hawking entropy S = A/(4 l_P^2). -/
-theorem immirzi_from_black_hole
-    (A l_P : ℝ) (hA : 0 < A) (hl : 0 < l_P)
-    (S_BH : ℝ) (h_bh : S_BH = A / (4 * l_P ^ 2))
-    (gamma_param : ℝ) (h_gamma : gamma_param = gamma) :
-    -- The entropy from LQG state counting with gamma matches S_BH
-    True := trivial
-
-/-- **Connection to self-reference**: The Immirzi parameter can be
-    related to the golden ratio structure via the area gap.
-    ln(2) appears as the dominant SU(2) representation j=1/2,
-    and sqrt(3) = 2 sqrt(j(j+1)) at j = 1/2. -/
+/-- **Arithmetic identity behind the ABCK denominator**:
+    sqrt(3) = 2 sqrt(j(j+1)) at j = 1/2, the lowest SU(2) representation.
+    This is arithmetic only; it relates nothing to self-reference or to the
+    golden-ratio structure. -/
 theorem immirzi_su2_origin :
     Real.sqrt 3 = 2 * Real.sqrt ((1/2 : ℝ) * (1/2 + 1)) := by
   -- 1/2 * (1/2 + 1) = 3/4, and 2 * sqrt(3/4) = sqrt(4 * 3/4) = sqrt(3)
