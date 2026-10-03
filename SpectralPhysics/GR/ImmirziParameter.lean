@@ -19,7 +19,7 @@ of area in loop quantum gravity: A = 8 pi gamma l_P^2 sqrt(j(j+1)).
 
 * `immirzi_value` : gamma = ln(2) / (pi * sqrt(3))
 * `immirzi_from_black_hole` : Bekenstein-Hawking entropy fixes gamma
-* `immirzi_approx` : gamma ~ 0.2375
+* `immirzi_approx` : gamma ~ 0.1274
 
 ## Derivation
 
@@ -46,8 +46,12 @@ namespace SpectralPhysics.ImmirziParameter
 def gamma : ℝ := Real.log 2 / (Real.pi * Real.sqrt 3)
 
 /-- **Immirzi parameter numerical value**: gamma ~ 0.1274.
-(The value ln(2)/(π√3) ≈ 0.12736 from Dreyer (2003) / Meissner (2004)
-black hole entropy counting with SU(2) Chern-Simons theory.) -/
+(The value ln(2)/(π√3) ≈ 0.12738 is the Ashtekar–Baez–Corichi–Krasnov (1998,
+gr-qc/9710007) black hole entropy counting with SU(2) Chern-Simons punctures,
+j_min = 1/2. Alternatives in the literature: Dreyer (2003, gr-qc/0211076)
+ln(3)/(2π√2) ≈ 0.1236 (j_min = 1, SO(3), quasinormal modes);
+Domagała–Lewandowski / Meissner (2004, gr-qc/0407051, gr-qc/0407052)
+≈ 0.2375 from corrected state counting.) -/
 theorem immirzi_pos : 0 < gamma := by
   unfold gamma
   apply div_pos (Real.log_pos (by norm_num : (1 : ℝ) < 2))
