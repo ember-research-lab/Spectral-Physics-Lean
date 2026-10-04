@@ -84,7 +84,7 @@ open SpectralPhysics.CompositionUniqueness
 
 A binary operation `op` "is Kasparov" iff there exists a
 `KasparovProductWitness` for it.  This is **not** `:= True`: as of
-2026-09-06 the witness carries `symm` and `card_mul` (the former
+2026-09-06 the witness carries `symm` and `sq_shape` (2026-10-04; `card_mul` derived, the former
 K1; excludes the U2 `zeroOp` witness). Mesland–Rennie remains
 UNFORMALISED; `IsKasparov` is not a KK-equivalence predicate.
 

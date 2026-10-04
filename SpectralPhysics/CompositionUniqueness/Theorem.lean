@@ -34,7 +34,7 @@ new axioms.**
 Unconditional Kasparov uniqueness is **OPEN**. Mesland–Rennie
 2014/2016, Rosenberg–Schochet 1987, and Kassel 1987/1989 are
 **UNFORMALISED literature**. The implication theorem below takes
-a `KasparovProductWitness` (now carrying `card_mul`, the former
+a `KasparovProductWitness` (now carrying `sq_shape`; `card_mul` derived, the former
 K1, so the U2 `zeroOp` witness is excluded) plus explicit K2/K3
 hypotheses; nothing in this repo discharges those hypotheses.
 
@@ -130,7 +130,7 @@ theorem three_conditions_trace_unique
 /-! ## Scope 3: Kasparov-product narrow uniqueness (re-exported) -/
 
 /-- **Scope 3 re-export — OPEN (2026-09-06).** Implication only:
-`KasparovProductWitness` (carries `card_mul`) plus K2/K3 hypotheses
+`KasparovProductWitness` (carries `sq_shape`) plus K2/K3 hypotheses
 yields `ThreeConditions`. Mesland–Rennie / Rosenberg–Schochet /
 Kassel remain **UNFORMALISED literature**. See
 `KasparovProductUniqueness.lean`. -/
