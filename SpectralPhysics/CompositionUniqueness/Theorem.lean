@@ -36,7 +36,10 @@ Unconditional Kasparov uniqueness is **OPEN**. Mesland–Rennie
 **UNFORMALISED literature**. The implication theorem below takes
 a `KasparovProductWitness` (now carrying `sq_shape`; `card_mul` derived, the former
 K1, so the U2 `zeroOp` witness is excluded) plus explicit K2/K3
-hypotheses; nothing in this repo discharges those hypotheses.
+hypotheses. **That implication is VACUOUS:** `kasparov_witness_K3_inconsistent`
+proves `KasparovProductWitness op ∧ HamiltonianAdditivity op` is unsatisfiable,
+so it holds only by contradiction and characterises nothing. The repair of K3
+is an open decision (Spectral-Physics-Lean#10).
 
 ## Scope 4 (OPEN) — broader pointwise uniqueness
 
@@ -129,9 +132,11 @@ theorem three_conditions_trace_unique
 
 /-! ## Scope 3: Kasparov-product narrow uniqueness (re-exported) -/
 
-/-- **Scope 3 re-export — OPEN (2026-09-06).** Implication only:
+/-- **Scope 3 re-export — VACUOUS (2026-10-04).** Implication only:
 `KasparovProductWitness` (carries `sq_shape`) plus K2/K3 hypotheses
-yields `ThreeConditions`. Mesland–Rennie / Rosenberg–Schochet /
+yields `ThreeConditions`, but `kasparov_witness_K3_inconsistent` shows the
+witness and K3 cannot both hold, so this is true by contradiction and is not
+a characterisation (K3 repair: Spectral-Physics-Lean#10). Mesland–Rennie / Rosenberg–Schochet /
 Kassel remain **UNFORMALISED literature**. See
 `KasparovProductUniqueness.lean`. -/
 theorem kasparov_three_conditions
