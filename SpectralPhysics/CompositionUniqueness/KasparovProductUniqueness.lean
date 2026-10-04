@@ -5,6 +5,7 @@ Authors: Aaron Ben-Shalom
 -/
 import SpectralPhysics.CompositionUniqueness.HypothesisSet
 import SpectralPhysics.CompositionUniqueness.AdditiveSatisfies
+import Mathlib.Analysis.SpecialFunctions.Sqrt
 
 /-!
 # Kasparov-Product Spectral Uniqueness (Path A, narrow scope)
@@ -22,8 +23,9 @@ infrastructure as of 2026.  What we do here is:
    spectrum-side shadow of an unbounded Kasparov product".
    The 2026-08-18 repair deleted the unsound K1/K2/K3 axioms
    (each derived `False` via `zeroOp`). The 2026-09-06 lane-B
-   pass replaces the remaining `is_kk_product : True` shell by
-   the weakest field that excludes that witness (`card_mul`).
+   pass replaced the `is_kk_product : True` shell by `card_mul`; the
+   2026-10-04 decision (Spectral-Physics-Lean#9, option 2) replaces that
+   by the product-spectrum shape `sq_shape` (card_mul now derived).
 
 2. K2 (Rosenberg–Schochet cancellation) and K3 (Kassel residue)
    remain **explicit hypotheses** of the implication theorems
@@ -73,10 +75,10 @@ code — axioms gone).
 **2026-08-18 repair**: K1, K2, K3 deleted as axioms; statements
 moved to explicit hypothesis parameters.
 
-**2026-09-06 remaining**: `is_kk_product : True` still admitted
-`zeroOp`. Replaced by `card_mul` (cardinality multiplicativity —
-the former K1 statement). FLAG for Aaron: weakest hypothesis that
-excludes the zero witness; not a formalisation of Mesland–Rennie.
+**2026-09-06**: `is_kk_product : True` still admitted `zeroOp`;
+replaced by `card_mul`. **2026-10-04 (Aaron, #9 option 2)**: `card_mul`
+strengthened to `sq_shape` (spec D² = λ²+μ²); `card_mul` derived. Not a
+formalisation of Mesland–Rennie.
 K2 and K3 stay as named hypotheses on the implication theorems.
 Uniqueness verdict is **OPEN**; the literature is UNFORMALISED.
 `open:kasparov-uniqueness` in the trunk remains open.
@@ -101,30 +103,47 @@ namespace SpectralPhysics.CompositionUniqueness
 
 /-- A `KasparovProductWitness op` records the assertion that the
 binary operation `op` on spectra is a spectrum-side shadow of an
-unbounded Kasparov product.
+unbounded Kasparov product `D = D₁⊗1 + γ⊗D₂`.
 
-Recorded:
+Since `D₁⊗1` and `γ⊗D₂` anticommute, `D² = D₁²⊗1 + 1⊗D₂²`, so the
+eigenvalues of `D²` are exactly `λ² + μ²` over eigenvalue pairs. The
+sign of each eigenvalue of `D` is not determined by the factor spectra
+alone, so the shape constraint is stated on squares:
 
-* `symm` — the underlying multiset is symmetric in the two
-  factors. **SUBSTANTIVE**.
-* `card_mul` — cardinality of the composite spectrum equals the
-  product of the factor cardinalities (former K1 statement).
-  **SUBSTANTIVE**; excludes the `zeroOp` witness of U2.
+* `symm` — symmetry in the two factors. **SUBSTANTIVE**.
+* `sq_shape` — the multiset of squared eigenvalues of `op μ ν` is the
+  additive convolution of the squared-eigenvalue multisets of `μ` and
+  `ν` (eigenvalues of `D` are `±√(λ²+μ²)`). **SUBSTANTIVE**; this is
+  the K1 *content* at spectrum level (2026-10-04, option 2 of
+  Spectral-Physics-Lean#9, Aaron).
+* `card_mul` is now a **derived theorem**
+  (`KasparovProductWitness.card_mul`), not a field.
 
 Mesland–Rennie 2014/2016 (unbounded Kasparov product),
 Rosenberg–Schochet 1987 (KK-Künneth), and Kassel 1987/1989
 (noncommutative residue) remain **UNFORMALISED literature**. This
 structure is not a KK-equivalence predicate.
 
-FLAG for Aaron (2026-09-06): `card_mul` is the weakest field that
-excludes `zeroOp := ⟨fun _ _ => (0 : Spectrum)⟩`. A real KK-class
-constraint is not supplied. -/
+**WARNING (proved below, `kasparov_witness_K3_inconsistent`)**: this
+witness and the `K3` hypothesis (`HamiltonianAdditivity`, trace of
+`op μ ν` = additive trace law) are jointly inconsistent, so
+`kasparov_product_satisfies_three_conditions` is vacuously true. K3 as
+stated is the *additive* Hamiltonian law and does not hold for the
+Kasparov shape. See Spectral-Physics-Lean issue filed 2026-10-04. -/
 structure KasparovProductWitness (op : BinaryOpOnSpectra) : Prop where
   /-- Symmetry of the spectrum-side shadow (SUBSTANTIVE). -/
   symm : ∀ μ ν : Spectrum, op μ ν = op ν μ
-  /-- Cardinality multiplicativity (former K1; weakest zeroOp-excluding field). -/
-  card_mul : ∀ μ ν : Spectrum,
-    Multiset.card (op μ ν) = Multiset.card μ * Multiset.card ν
+  /-- Product-spectrum shape on squares: spec(D²) = spec(D₁²) ⊞ spec(D₂²). -/
+  sq_shape : ∀ μ ν : Spectrum,
+    (op μ ν).map (fun x : ℝ => x ^ 2) =
+      additiveConv (μ.map (fun x : ℝ => x ^ 2)) (ν.map (fun x : ℝ => x ^ 2))
+
+/-- Cardinality multiplicativity (former K1 statement), now derived. -/
+theorem KasparovProductWitness.card_mul {op : BinaryOpOnSpectra}
+    (h : KasparovProductWitness op) (μ ν : Spectrum) :
+    Multiset.card (op μ ν) = Multiset.card μ * Multiset.card ν := by
+  have := congrArg Multiset.card (h.sq_shape μ ν)
+  simpa using this
 
 /-! ## The three named axioms (K1, K2, K3) — DELETED (see below) -/
 
@@ -223,5 +242,55 @@ theorem kasparov_product_trace_eq_additive
         (Multiset.card μ : ℝ) * Spectrum.trace ν :=
     K3 μ ν
   rw [h_op, trace_additiveConv]
+
+/-! ## Sanity: the witness is non-vacuous, excludes `zeroOp`, and clashes with K3 -/
+
+/-- Concrete inhabitant: nonnegative roots of the squared-spectrum convolution. -/
+noncomputable def sqrtShapeOp : BinaryOpOnSpectra :=
+  ⟨fun μ ν => (additiveConv (μ.map (fun x : ℝ => x ^ 2))
+    (ν.map (fun x : ℝ => x ^ 2))).map Real.sqrt⟩
+
+private lemma additiveConv_comm (μ ν : Spectrum) :
+    additiveConv μ ν = additiveConv ν μ := by
+  unfold additiveConv
+  rw [Multiset.bind_map_comm]
+  simp [add_comm]
+
+theorem sqrtShapeOp_witness : KasparovProductWitness sqrtShapeOp where
+  symm μ ν := by
+    show Multiset.map Real.sqrt _ = Multiset.map Real.sqrt _
+    rw [additiveConv_comm]
+  sq_shape μ ν := by
+    show Multiset.map _ (Multiset.map Real.sqrt _) = _
+    rw [Multiset.map_map]
+    have : ∀ x ∈ additiveConv (μ.map (fun x : ℝ => x ^ 2)) (ν.map (fun x : ℝ => x ^ 2)),
+        ((fun x : ℝ => x ^ 2) ∘ Real.sqrt) x = x := by
+      intro x hx
+      simp only [additiveConv, Multiset.mem_bind, Multiset.mem_map] at hx
+      obtain ⟨_, ⟨a, _, rfl⟩, _, ⟨b, _, rfl⟩, rfl⟩ := hx
+      simp only [Function.comp]
+      exact Real.sq_sqrt (by positivity)
+    rw [Multiset.map_congr rfl this, Multiset.map_id']
+
+/-- The old `zeroOp` witness is still excluded. -/
+theorem zeroOp_not_witness :
+    ¬ KasparovProductWitness (⟨fun _ _ => (0 : Spectrum)⟩ : BinaryOpOnSpectra) := by
+  intro h
+  have := h.card_mul ({0} : Multiset ℝ) ({0} : Multiset ℝ)
+  simp at this
+
+/-- **Honest negative (T1)**: the witness and K3 are jointly inconsistent
+(μ = {3}, ν = {4}: |op| = 5 by `sq_shape`, but K3 forces trace 7).
+Hence `kasparov_product_satisfies_three_conditions` is vacuously true. -/
+theorem kasparov_witness_K3_inconsistent {op : BinaryOpOnSpectra}
+    (h : KasparovProductWitness op) (K3 : HamiltonianAdditivity op) : False := by
+  have hc : Multiset.card (op {3} {4}) = 1 := by
+    simpa using h.card_mul ({3} : Multiset ℝ) ({4} : Multiset ℝ)
+  obtain ⟨x, hx⟩ := Multiset.card_eq_one.mp hc
+  have hsq := h.sq_shape ({3} : Multiset ℝ) ({4} : Multiset ℝ)
+  have ht := K3 ({3} : Multiset ℝ) ({4} : Multiset ℝ)
+  rw [hx] at hsq ht
+  simp [additiveConv, Spectrum.trace] at hsq ht
+  nlinarith [hsq, ht]
 
 end SpectralPhysics.CompositionUniqueness

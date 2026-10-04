@@ -1,5 +1,18 @@
 # CompositionUniqueness — Honest STATUS
 
+## 0b. DECIDED 2026-10-04 (Aaron, Spectral-Physics-Lean#9 option 2) — read this first
+
+`KasparovProductWitness` now carries `symm` + `sq_shape` (spec of D² =
+additive convolution of the squared factor spectra, i.e. eigenvalues
+`±√(λ²+μ²)`); `card_mul` is a derived theorem. `zeroOp` still excluded
+(`zeroOp_not_witness`; `hostile/U2-after-zeroOp.lean` still fails to
+compile); the witness is non-vacuous (`sqrtShapeOp_witness`).
+**HONEST NEGATIVE (T1, `kasparov_witness_K3_inconsistent`)**: witness and
+hypothesis K3 are jointly inconsistent, so
+`kasparov_product_satisfies_three_conditions` is now *vacuously* true; K3
+as stated (additive trace law) does not hold for the Kasparov shape.
+Scope 3 stays **OPEN**. No new axiom.
+
 ## 0a. OPEN (2026-09-06 lane B — read this first)
 
 Hostile `hostile/U2-K1Unsound.lean` against current code: **does not
